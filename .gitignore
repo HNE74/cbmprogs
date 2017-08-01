@@ -1,5 +1,6 @@
 # CBM Prog Studio Files to be ignored.
 *.dmp
 *.dbg
+*.tmp
 
 
