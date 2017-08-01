@@ -1,3 +1,0 @@
-10 PRINT "hallo"
-20 SYS 59749
-30 PRINT "welt"
