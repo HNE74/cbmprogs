@@ -1,5 +1,5 @@
 *=$C000
-
+; ***********************************
 ; VARIABLES USED BY JOYSTK ROUTINE
 OFSET           = $CF10
 NEUTRAL         = 0
