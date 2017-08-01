@@ -1,0 +1,36 @@
+*=$C000
+        
+
+SCREENCOLOR1 = 55296
+SCREENCHAR1 = 1024
+SCREENCOLOR2 = 55546
+SCREENCHAR2 = 1274
+SCREENCOLOR3 = 55796
+SCREENCHAR3 = 1524
+SCREENCOLOR4 = 56046
+SCREENCHAR4 = 1774
+
+
+
+        JSR     $E544   ; CLS
+        LDX     #0      ; INDEX
+        LDY     #1      ; CHARACTER AND COLOR
+
+; FILL FIRST 255 POSITION OF SCREEN
+@START  TYA
+        STA     SCREENCOLOR1,X
+        STA     SCREENCOLOR2,X
+        STA     SCREENCOLOR3,X
+        STA     SCREENCOLOR4,X
+        TXA
+        STA     SCREENCHAR1,X
+        STA     SCREENCHAR2,X
+        STA     SCREENCHAR3,X
+        STA     SCREENCHAR4,X
+        INX
+        INY
+        CPX     #250
+        BNE     @START
+
+        RTS
+
