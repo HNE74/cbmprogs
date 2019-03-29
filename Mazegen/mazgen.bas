@@ -1,8 +1,9 @@
 10 print "{clear}"
 12 x=0:y=0:i=0:j=0 : rem *** Counter
+14 g=20 : rem *** Gaps
 15 w=4 : rem *** Wall
 18 s=5 : rem *** Space
-19 xs=10:ys=10 : rem *** Maze size
+19 xs=20:ys=20 : rem *** Maze size
 20 dim m(ys,xs) : rem *** Maze
 30 dim xd(3):dim yd(3) : rem *** Movement vectors
 40 sx=1:sy=1 : rem *** Start position
@@ -52,12 +53,25 @@
 560 m(cy,cx)=s:cx=nx:cy=ny
 570 goto 510 
 580 return
+600 rem *******************
+601 rem *** Create gaps ***
+602 rem *******************
+610 for i=0 to g
+620 x=int(rnd(1)*(xs-2))+1:y=int(rnd(1)*(ys-2))+1
+630 if m(y,x)=s then goto 620
+640 if m(y-1,x)=w and m(y+1,x)=w and m(y,x-1)<>w and m(y,x+1)<>w then goto 670
+650 if m(y,x-1)=w and m(y,x+1)=w and m(y-1,x)<>w and m(y+1,x)<>w then goto 670
+660 goto 620 
+670 m(y,x)=s
+680 next i
+690 return
 10001 rem ********************
 10002 rem *** Main routine ***
 10003 rem ********************
 10010 print "creating maze":print:gosub 210
 10020 cx=sx:cy=sy
 10030 gosub 510
-10032 m(sy,sx)=5
-10035 gosub 310
-10040 end
+10040 m(sy,sx)=5
+10050 gosub 610
+10060 gosub 310
+10070 end
