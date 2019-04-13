@@ -47,10 +47,22 @@
         <FileName>aclash7.asm</FileName>
         <FileName>aclash8.asm</FileName>
         <FileName>mazgen.bas</FileName>
+        <FileName>mazegame.bas</FileName>
     </BuildList>
     <DetermineBuildOrder>0</DetermineBuildOrder>
     <PaddingByte>234</PaddingByte>
     <SourceFiles>
+        <SourceFile>
+            <Name>mazegame.bas</Name>
+            <PrgName />
+            <FileType>1</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>True</Topmost>
+            <FileOpen>True</FileOpen>
+        </SourceFile>
         <SourceFile>
             <Name>mazgen.bas</Name>
             <PrgName />
@@ -59,7 +71,7 @@
             <Regions />
             <Breakpoints />
             <Bookmarks />
-            <Topmost>True</Topmost>
+            <Topmost>False</Topmost>
             <FileOpen>True</FileOpen>
         </SourceFile>
     </SourceFiles>
