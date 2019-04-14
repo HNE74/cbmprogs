@@ -1,9 +1,12 @@
-10 print "{clear}"
+1 print "{clear}"
+2 rem *******************************
+3 rem *** Maze creation variables ***
+4 rem *******************************
 12 x=0:y=0:i=0:j=0 : rem *** Counter
-14 g=20 : rem *** Gaps
+14 g=5 : rem *** Gaps
 15 w=4 : rem *** Wall
 18 s=5 : rem *** Space
-19 xs=20:ys=20 : rem *** Maze size
+19 xs=10:ys=12 : rem *** Maze size
 20 dim m(ys,xs) : rem *** Maze
 30 dim xd(3):dim yd(3) : rem *** Movement vectors
 35 dim mz$(ys) : rem *** String representation of maze
@@ -12,6 +15,12 @@
 50 cx=1:cy=1 : rem *** Crurrent position
 55 nx=1:ny=1 : rem *** New position
 60 dp=0 : rem *** Movement vector pointer
+70 rem **********************
+71 rem *** Game variables ***
+72 rem **********************
+75 px=2:py=2   : rem player position
+76 vx=18:vy=10 : rem maze view position
+80 c$=""       : rem keyboard input
 100 goto 10010
 200 rem *************************
 201 rem *** Initialize arrays ***
@@ -83,10 +92,37 @@
 820 print mz$(y)
 830 next y
 840 return
+1000 rem ***********************
+1001 rem *** Print maze view ***
+1002 rem ***********************
+1010 v1$=mid$(mz$(py-2),(px+1)-2,5):v2$=mid$(mz$(py-1),(px+1)-2,5)
+1011 v3$=mid$(mz$(py),(px+1)-2,2):v4$=mid$(mz$(py),(px+1)+1,2)
+1012 v5$=mid$(mz$(py+1),(px+1)-2,5):v6$=mid$(mz$(py+2),(px+1)-2,5)
+1020 poke 214,vy:poke 211,vx:sys 58640:print v1$
+1025 poke 214,vy+1:poke 211,vx:sys 58640:print v2$
+1030 poke 214,vy+2:poke 211,vx:sys 58640:print v3$
+1035 poke 214,vy+2:poke 211,vx+2:sys 58640:print "{113}""
+1040 poke 214,vy+2:poke 211,vx+3:sys 58640:print v4$
+1045 poke 214,vy+3:poke 211,vx:sys 58640:print v5$
+1050 poke 214,vy+4:poke 211,vx:sys 58640:print v6$ 
+1060 return
+8000 rem *****************
+8001 rem *** Main game ***
+8002 rem *****************
+8010 print "{clear}"
+8015 gosub 1010
+8020 get c$:if c$="" then 8020
+8030 if c$="w" and mid$(mz$(py-1),px+1,1)="{32}" then py=py-1: goto 8100
+8035 if c$="s" and mid$(mz$(py+1),px+1,1)="{32}" then py=py+1: goto 8100
+8040 if c$="a" and mid$(mz$(py),px,1)="{32}" then px=px-1: goto 8100
+8045 if c$="d" and mid$(mz$(py),px+2,1)="{32}" then px=px+1: goto 8100
+8050 goto 8020
+8100 goto 8015
 10001 rem ********************
 10002 rem *** Main routine ***
 10003 rem ********************
-10010 print "creating maze":print:gosub 210
+10010 print "creating maze":print:goto 10100
+10015 gosub 210
 10020 cx=sx:cy=sy
 10030 gosub 510
 10040 m(sy,sx)=5
@@ -94,3 +130,24 @@
 10060 gosub 710
 10065 gosub 810
 10070 end
+10100 gosub 20010
+10110 gosub 8010 
+10120 end
+20000 rem ************************
+20001 rem *** Create test maze ***
+20002 rem ************************
+20010 mz$(0)= "{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}"
+20011 mz$(1)= "{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}"
+20012 mz$(2)= "{166}{166}{ 32}{ 32}{ 32}{ 32}{166}{166}{166}{166}{166}"
+20013 mz$(3)= "{166}{166}{166}{166}{166}{ 32}{ 32}{ 32}{166}{166}{166}"
+20014 mz$(4)= "{166}{166}{ 32}{ 32}{ 32}{ 32}{166}{ 32}{166}{166}{166}"
+20015 mz$(5)= "{166}{166}{ 32}{166}{166}{166}{166}{ 32}{166}{166}{166}"
+20016 mz$(6)= "{166}{166}{ 32}{ 32}{ 32}{ 32}{166}{ 32}{ 32}{166}{166}"
+20017 mz$(7)= "{166}{166}{ 32}{166}{ 32}{166}{166}{ 32}{166}{166}{166}"
+20018 mz$(8)= "{166}{166}{ 32}{166}{ 32}{166}{166}{ 32}{ 32}{166}{166}"
+20019 mz$(9)= "{166}{166}{ 32}{166}{ 32}{166}{166}{166}{166}{166}{166}"
+20020 mz$(10)="{166}{166}{ 32}{ 32}{166}{166}{166}{166}{166}{166}{166}"
+20021 mz$(11)="{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}"
+20022 mz$(12)="{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}"
+20030 return
+
