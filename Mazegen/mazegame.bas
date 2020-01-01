@@ -114,18 +114,31 @@
 2110 poke 214,vy+3:poke 211,vx:sys 58640:print v5$
 2120 poke 214,vy+4:poke 211,vx:sys 58640:print v6$ 
 2130 return
+2500 rem *****************
+2501 rem *** Gem found ***
+2502 rem *****************
+2510 m(py,px)=s
+2515 y=py:mz$(y)=""
+2520 for x=0 to xs
+2530 if m(y,x)=4 then mz$(y)=mz$(y)+"{166}"
+2540 if m(y,x)=5 then mz$(y)=mz$(y)+" "
+2550 if m(y,x)=6 then mz$(y)=mz$(y)+"{218}"
+2560 if m(y,x)<4 then mz$(y)=mz$(y)+"#"
+2570 next x
+2580 return
 8000 rem *****************
 8001 rem *** Main game ***
 8002 rem *****************
 8010 print "{clear}"
 8015 gosub 2010
 8020 get c$:if c$="" then 8020
-8030 if c$="w" and mid$(mz$(py-1),px+1,1)<>"{166}" then py=py-1: goto 8100
-8035 if c$="s" and mid$(mz$(py+1),px+1,1)<>"{166}" then py=py+1: goto 8100
-8040 if c$="a" and mid$(mz$(py),px,1)<>"{166}" then px=px-1: goto 8100
-8045 if c$="d" and mid$(mz$(py),px+2,1)<>"{166}" then px=px+1: goto 8100
+8030 if c$="w" and m(py-1,px)<>w then py=py-1: goto 8100
+8035 if c$="s" and m(py+1,px)<>w then py=py+1: goto 8100
+8040 if c$="a" and m(py,px-1)<>w then px=px-1: goto 8100
+8045 if c$="d" and m(py,px+1)<>w then px=px+1: goto 8100
 8050 goto 8020
-8100 goto 8015
+8100 if m(py,px)=t then gosub 2510
+8110 goto 8015
 10001 rem ********************
 10002 rem *** Main routine ***
 10003 rem ********************
