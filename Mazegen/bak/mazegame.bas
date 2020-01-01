@@ -3,23 +3,24 @@
 3 rem *** Maze creation variables ***
 4 rem *******************************
 12 x=0:y=0:i=0:j=0 : rem *** Counter
-14 g=5 : rem *** Gaps
+14 g=2 : rem *** Gaps
 15 w=4 : rem *** Wall
 18 s=5 : rem *** Space
-19 xs=10:ys=10 : rem *** Maze size
+19 xs=10:ys=12 : rem *** Maze size
 20 dim m(ys,xs) : rem *** Maze
 30 dim xd(3):dim yd(3) : rem *** Movement vectors
 35 dim mz$(ys) : rem *** String representation of maze
-40 sx=1:sy=1 : rem *** Start position
-45 ox=1:oy=1 : rem *** Old position
-50 cx=1:cy=1 : rem *** Crurrent position
-55 nx=1:ny=1 : rem *** New position
+40 sx=2:sy=2 : rem *** Start position
+45 ox=2:oy=2 : rem *** Old position
+50 cx=2:cy=2 : rem *** Crurrent position
+55 nx=2:ny=2 : rem *** New position
 60 dp=0 : rem *** Movement vector pointer
 70 rem **********************
 71 rem *** Game variables ***
 72 rem **********************
-75 px=1:py=1 : rem player position
-76 c$=""     : rem keyboard input
+75 px=2:py=2   : rem player position
+76 vx=18:vy=10 : rem maze view position
+80 c$=""       : rem keyboard input
 100 goto 10010
 200 rem *************************
 201 rem *** Initialize arrays ***
@@ -46,7 +47,7 @@
 410 dp=int(rnd(1)*4)
 420 i=0
 430 nx=cx+xd(dp)*2:ny=cy+yd(dp)*2
-440 if nx<1 or nx>=xs or ny<1 or ny>=ys or (nx=sx and ny=sy) then goto 460
+440 if nx<2 or nx>=xs-1 or ny<2 or ny>=ys-1 or (nx=sx and ny=sy) then goto 460
 450 if m(ny,nx)=w then m(cy+yd(dp),cx+xd(dp))=s:cx=nx:cy=ny:m(cy,cx)=dp:return
 460 dp=dp+1:if dp>3 then dp=0
 470 i=i+1
@@ -67,7 +68,7 @@
 601 rem *** Create gaps ***
 602 rem *******************
 610 for i=0 to g
-620 x=int(rnd(1)*(xs-2))+1:y=int(rnd(1)*(ys-2))+1
+620 x=int(rnd(1)*(xs-4))+2:y=int(rnd(1)*(ys-4))+2
 630 if m(y,x)=s then goto 620
 640 if m(y-1,x)=w and m(y+1,x)=w and m(y,x-1)<>w and m(y,x+1)<>w then goto 670
 650 if m(y,x-1)=w and m(y,x+1)=w and m(y-1,x)<>w and m(y+1,x)<>w then goto 670
@@ -94,16 +95,29 @@
 1000 rem ***********************
 1001 rem *** Print maze view ***
 1002 rem ***********************
-1010 poke 214,10:poke 211,10:sys 58640:print mid$(mz$(py-1),(px+1)-1,3)
-1020 poke 214,11:poke 211,10:sys 58640:print mid$(mz$(py),(px+1)-1,3)
-1030 poke 214,12:poke 211,10:sys 58640:print mid$(mz$(py+1),(px+1)-1,3)
-1040 return
+1010 v1$=mid$(mz$(py-2),px-1,5):v2$=mid$(mz$(py-1),px-1,5)
+1011 v3$=mid$(mz$(py),px-1,2):v4$=mid$(mz$(py),px+2,2)
+1012 v5$=mid$(mz$(py+1),px-1,5):v6$=mid$(mz$(py+2),px-1,5)
+1020 poke 214,vy:poke 211,vx:sys 58640:print v1$
+1025 poke 214,vy+1:poke 211,vx:sys 58640:print v2$
+1030 poke 214,vy+2:poke 211,vx:sys 58640:print v3$
+1035 poke 214,vy+2:poke 211,vx+2:sys 58640:print "{113}""
+1040 poke 214,vy+2:poke 211,vx+3:sys 58640:print v4$
+1045 poke 214,vy+3:poke 211,vx:sys 58640:print v5$
+1050 poke 214,vy+4:poke 211,vx:sys 58640:print v6$ 
+1060 return
 8000 rem *****************
 8001 rem *** Main game ***
 8002 rem *****************
 8010 print "{clear}"
 8015 gosub 1010
-8020 return
+8020 get c$:if c$="" then 8020
+8030 if c$="w" and mid$(mz$(py-1),px+1,1)="{32}" then py=py-1: goto 8100
+8035 if c$="s" and mid$(mz$(py+1),px+1,1)="{32}" then py=py+1: goto 8100
+8040 if c$="a" and mid$(mz$(py),px,1)="{32}" then px=px-1: goto 8100
+8045 if c$="d" and mid$(mz$(py),px+2,1)="{32}" then px=px+1: goto 8100
+8050 goto 8020
+8100 goto 8015
 10001 rem ********************
 10002 rem *** Main routine ***
 10003 rem ********************
@@ -115,6 +129,7 @@
 10050 gosub 610
 10060 gosub 710
 10065 gosub 810
+10068 gosub 8010
 10070 end
 10100 gosub 20010
 10110 gosub 8010 
@@ -122,16 +137,18 @@
 20000 rem ************************
 20001 rem *** Create test maze ***
 20002 rem ************************
-20010 mz$(0)="{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}"
-20011 mz$(1)="{166}{ 32}{ 32}{ 32}{ 32}{ 32}{166}{166}{166}{ 32}{166}"
-20012 mz$(2)="{166}{166}{166}{166}{166}{ 32}{ 32}{ 32}{166}{ 32}{166}"
-20013 mz$(3)="{166}{ 32}{ 32}{ 32}{ 32}{ 32}{166}{ 32}{166}{ 32}{166}"
-20014 mz$(4)="{166}{166}{ 32}{166}{166}{166}{166}{ 32}{166}{ 32}{166}"
-20015 mz$(5)="{166}{166}{ 32}{ 32}{ 32}{ 32}{166}{ 32}{ 32}{ 32}{166}"
-20016 mz$(6)="{166}{ 32}{ 32}{166}{ 32}{166}{166}{ 32}{166}{166}{166}"
-20017 mz$(7)="{166}{ 32}{ 32}{166}{ 32}{166}{166}{ 32}{ 32}{ 32}{166}"
-20018 mz$(8)="{166}{166}{ 32}{166}{ 32}{166}{166}{166}{166}{ 32}{166}"
-20019 mz$(9)="{166}{166}{ 32}{ 32}{166}{166}{166}{166}{166}{ 32}{166}"
-20020 mz$(10)="{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}"
+20010 mz$(0)= "{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}"
+20011 mz$(1)= "{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}"
+20012 mz$(2)= "{166}{166}{ 32}{ 32}{ 32}{ 32}{166}{166}{166}{166}{166}"
+20013 mz$(3)= "{166}{166}{166}{166}{166}{ 32}{ 32}{ 32}{166}{166}{166}"
+20014 mz$(4)= "{166}{166}{ 32}{ 32}{ 32}{ 32}{166}{ 32}{166}{166}{166}"
+20015 mz$(5)= "{166}{166}{ 32}{166}{166}{166}{166}{ 32}{166}{166}{166}"
+20016 mz$(6)= "{166}{166}{ 32}{ 32}{ 32}{ 32}{166}{ 32}{ 32}{166}{166}"
+20017 mz$(7)= "{166}{166}{ 32}{166}{ 32}{166}{166}{ 32}{166}{166}{166}"
+20018 mz$(8)= "{166}{166}{ 32}{166}{ 32}{166}{166}{ 32}{ 32}{166}{166}"
+20019 mz$(9)= "{166}{166}{ 32}{166}{ 32}{166}{166}{166}{166}{166}{166}"
+20020 mz$(10)="{166}{166}{ 32}{ 32}{166}{166}{166}{166}{166}{166}{166}"
+20021 mz$(11)="{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}"
+20022 mz$(12)="{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}{166}"
 20030 return
 
