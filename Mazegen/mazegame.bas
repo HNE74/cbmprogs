@@ -2,6 +2,7 @@
 2 rem *******************************
 3 rem *** Maze creation variables ***
 4 rem *******************************
+10 sc=0
 12 x=0:y=0:i=0:j=0 : rem *** Counter
 14 g=2 : rem *** Gaps
 15 tc=5 : rem *** Gems
@@ -118,14 +119,9 @@
 2501 rem *** Gem found ***
 2502 rem *****************
 2510 m(py,px)=s
-2515 y=py:mz$(y)=""
-2520 for x=0 to xs
-2530 if m(y,x)=4 then mz$(y)=mz$(y)+"{166}"
-2540 if m(y,x)=5 then mz$(y)=mz$(y)+" "
-2550 if m(y,x)=6 then mz$(y)=mz$(y)+"{218}"
-2560 if m(y,x)<4 then mz$(y)=mz$(y)+"#"
-2570 next x
-2580 return
+2530 mz$(py)=left$(mz$(py),px)+" "+right$(mz$(py),xs-px)
+2540 sc=sc+1
+2550 return
 8000 rem *****************
 8001 rem *** Main game ***
 8002 rem *****************
