@@ -1,10 +1,3 @@
-//.var chrin=$ffe4
-// .var screenmem=$0400
-// .var cls=$e544
-// .var bgcolor=$d021
-// .var brdcolor=$d020
-// .var txtcolor=$286
-
 .var cls=$e544
 .var bgcolor=$d021
 .var brdcolor=$d020
@@ -24,7 +17,7 @@ start:
 
     lda #2
     sta plot_x
-    lda #0
+    lda #1
     sta plot_y
     lda #40
     sta plot_chr
@@ -47,7 +40,7 @@ plot_inc1:
     iny 
     iny
     inx
-    cpy plot_y
+    cpx plot_y
     bne plot_inc1
     lda clrtable,y // Load y address offset into zeropage
     sta zeroadr+1
@@ -64,7 +57,7 @@ plot_inc2:
     iny 
     iny
     inx
-    cpy plot_y
+    cpx plot_y
     bne plot_inc2
     lda scrtable,y // Load y address offset into zeropage
     sta zeroadr+1
