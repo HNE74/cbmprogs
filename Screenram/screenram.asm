@@ -1,10 +1,18 @@
 .var chrin=$ffe4
 .var screenmem=$0400
 .var cls=$e544
+.var bgcolor=$d021
+.var brdcolor=$d020
+.var txtcolor=$286
 BasicUpstart2(start)
 *=$2000
 
 start:
+    lda #BLACK
+    sta brdcolor
+    sta bgcolor
+    lda #WHITE
+    sta txtcolor
     jsr cls
     ldx #$0
 introloop:

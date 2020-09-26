@@ -10,5 +10,5 @@ Memory Map
 Default-segment:
   $0801-$080c Basic
   $080e-$080d Basic End
-  $2000-$2058 Unnamed
+  $2000-$2065 Unnamed
 
