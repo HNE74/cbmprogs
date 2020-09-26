@@ -19,7 +19,7 @@ start:
     sta plot_x
     lda #1
     sta plot_y
-    lda #40
+    lda #81
     sta plot_chr
     lda #WHITE
     sta plot_color
