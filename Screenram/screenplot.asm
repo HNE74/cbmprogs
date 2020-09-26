@@ -10,10 +10,6 @@
 .var brdcolor=$d020
 .var chrin=$ffe4
 
-.var xpos = $cf11 
-.var ypos = $cf12 
-.var chrcode = $cf15
-.var chrcolor = $cf16 
 .var zeroadr = $fb
 BasicUpstart2(start)
 *=$C000
@@ -27,13 +23,13 @@ start:
     ldx #$0
 
     lda #2
-    sta xpos
-    lda #10
-    sta ypos
+    sta plot_x
+    lda #0
+    sta plot_y
     lda #40
-    sta chrcode
+    sta plot_chr
     lda #WHITE
-    sta chrcolor
+    sta plot_color
     jsr plot
 
 charloop:
@@ -51,15 +47,15 @@ plot_inc1:
     iny 
     iny
     inx
-    cpy ypos
+    cpy plot_y
     bne plot_inc1
     lda clrtable,y // Load y address offset into zeropage
     sta zeroadr+1
     iny
     lda clrtable,y
     sta zeroadr
-    lda chrcolor
-    ldy xpos
+    lda plot_color
+    ldy plot_x
     sta (zeroadr),y // Set color using zero page and xoffset
 
     ldy #0
@@ -68,15 +64,15 @@ plot_inc2:
     iny 
     iny
     inx
-    cpy ypos
+    cpy plot_y
     bne plot_inc2
     lda scrtable,y // Load y address offset into zeropage
     sta zeroadr+1
     iny
     lda scrtable,y
     sta zeroadr
-    lda chrcode
-    ldy xpos
+    lda plot_chr
+    ldy plot_x
     sta (zeroadr),y // Set char using zero page and xoffset
     rts
 
@@ -93,3 +89,12 @@ clrtable:
         .byte $D9, $E0, $DA, $08, $DA, $30, $DA, $58, $DA, $80, $DA, $A8 
         .byte $DA, $D0, $DA, $F8, $DB, $20, $DB, $48, $DB, $70, $DB, $98 
         .byte $DB, $C0
+
+plot_x:
+        .byte $00
+plot_y:
+        .byte $00
+plot_color:
+        .byte $00
+plot_chr:
+        .byte $00
