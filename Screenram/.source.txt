@@ -1,3 +1,8 @@
+.disk [filename="MyDisk.d64"]
+{
+        [name="MEMPLOT", type="prg", segments="Code" ]
+}
+
 .var cls=$e544
 .var bgcolor=$d021
 .var brdcolor=$d020
@@ -8,7 +13,8 @@
 .var winystart = $00
 .var winwidth = $07
 .var winheight = $07
-BasicUpstart2(start)
+//BasicUpstart2(start)
+ .segment Code []
 *=$C000
 
 start:
@@ -69,30 +75,6 @@ plot_scrn_data_inc2:
     iny
     cpy scrn_data_width
     bne plot_scrn_data_inc1
-
-// scrn_data_win:
-//     .var winy=winystart
-//     .for(var y=0; y<winheight; y++) {
-//         .var winx=winxstart
-//         .for(var x=0; x<winwidth; x++) {
-//             lda #x
-//             sta plot_x
-//             lda #y
-//             sta plot_y
-//             lda scrn_data+winy*20+winx
-//             cmp #$01
-//             bne *+7
-//             lda #102
-//             jmp *+5
-//             lda #32
-//             sta plot_chr
-//             lda #WHITE
-//             sta plot_color
-//             jsr plot
-//             .eval winx++
-//         }
-//         .eval winy++
-//     }
 
 charloop:
     jsr chrin
