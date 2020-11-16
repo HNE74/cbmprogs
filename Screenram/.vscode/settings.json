@@ -1,0 +1,8 @@
+{
+    "kickassembler.assemblerJar": "C:\\MyProgs\\KickAssembler\\KickAss.jar",
+    "kickassembler.emulatorRuntime": "C:\\MyProgs\\WinVICE-3.0\\WinVICE-3.0-x64\\x64.exe",
+    "kickassembler.javaRuntime": "C:\\MyProgs\\Java\\jdk1.8.0_121\\bin\\java.exe",
+    "kickassembler.startup": "C:\\Users\\hnema\\Documents\\GitHub\\cbmprogs\\Screenram\\memplot2.asm",
+    "kickassembler.debuggerDumpFile": false,
+    "kickassembler.autoAssembleTrigger": "onSave only"
+}
