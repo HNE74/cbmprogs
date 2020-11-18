@@ -24,41 +24,53 @@ start:
     sta bgcolor
     jsr cls
     ldx #$0
+    jsr plot_scrn_data_win
+    jsr plot_player_win
 
+charloop:
+    jsr chrin
+    cmp #$00
+    beq charloop
+quit:
+    jsr cls
+    rts
+
+/******************************************
+ *** Plot part of the maze to the screen
+ ******************************************/
 plot_scrn_data_win:
-
 plot_scrn_data:
     ldy #00
 plot_scrn_data_inc1:
     tya
     clc
     adc scrn_data_yp
-    sta scrn_data_peek_yp
+    sta maze_data_peek_yp
     sta plot_y
     ldx #00 
 plot_scrn_data_inc2:
     txa
     clc
     adc scrn_data_xp
-    sta scrn_data_peek_xp
+    sta maze_data_peek_xp
     sta plot_x
     tya
     pha
     txa
     pha
-    jsr scrn_data_peek
+    jsr maze_data_peek
     pla
     tax
     pla
     tay
-    lda scrn_data_peek_val
+    lda maze_data_peek_val
     cmp #$01
-    bne *+7
-    lda #102
+    bne *+8
+    lda scrn_data_wall_sym
     jmp *+5
     lda #32
     sta plot_chr
-    lda #08
+    lda scrn_data_wall_col
     sta plot_color
     tya
     pha
@@ -75,15 +87,26 @@ plot_scrn_data_inc2:
     iny
     cpy scrn_data_width
     bne plot_scrn_data_inc1
-
-charloop:
-    jsr chrin
-    cmp #$00
-    beq charloop
-quit:
-    jsr cls
     rts
 
+/********************************
+ *** Plot player to the screen
+ ********************************/
+ plot_player_win:
+    lda scrn_data_player_xp
+    sta plot_x
+    lda scrn_data_player_yp
+    sta plot_y
+    lda scrn_data_player_sym
+    sta plot_chr
+    lda scrn_data_player_col
+    sta plot_color
+    jsr plot
+    rts
+
+/*********************************
+ *** Plot a character to screen
+ *********************************/
 plot:
     ldy #0
     ldx #0
@@ -120,23 +143,26 @@ plot_inc2:
     sta (zeroadr),y // Set char using zero page and xoffset
     rts
 
-scrn_data_peek:
+/*****************************************
+ *** Peek a value from maze definition.
+ *****************************************/
+maze_data_peek:
     ldy #0
     ldx #0
-scrn_data_peek_inc1:
+maze_data_peek_inc1:
     iny 
     iny
     inx
-    cpx scrn_data_peek_yp
-    bne scrn_data_peek_inc1
+    cpx maze_data_peek_yp
+    bne maze_data_peek_inc1
     lda scrnaddtable,y // Load y address offset into zeropage
     sta zeroadr+1
     iny
     lda scrnaddtable,y
     sta zeroadr
-    ldy scrn_data_peek_xp
+    ldy maze_data_peek_xp
     lda (zeroadr),y // Peek value and store it to result address
-    sta scrn_data_peek_val
+    sta maze_data_peek_val
     rts
 
 scrtable:
@@ -173,6 +199,19 @@ scrn_data_width:
         .byte $05
 scrn_data_height:
         .byte $05
+scrn_data_wall_sym:
+        .byte $66
+scrn_data_wall_col:
+        .byte $08
+scrn_data_player_xp:
+        .byte $02
+scrn_data_player_yp:
+        .byte $02
+scrn_data_player_sym:
+        .byte $41
+scrn_data_player_col:
+        .byte $07
+
 
 *=$CE00
 scrn_data:
@@ -204,9 +243,9 @@ scrnaddtable:
         .byte $CE, $00, $CE, $14, $CE, $28, $CE, $3C, $CE, $50, $CE, $64, $CE, $78, $CE, $8C, $CE, $A0
         .byte $CE, $B4, $CE, $C8, $CE, $DC, $CE, $F0, $Cf, $04, $CF, $18, $CF, $2C, $CF, $40, $CF, $54
         .byte $CF, $68, $CF, $7C
-scrn_data_peek_yp:
+maze_data_peek_yp:
         .byte $00
-scrn_data_peek_xp:
+maze_data_peek_xp:
         .byte $00
-scrn_data_peek_val:
+maze_data_peek_val:
         .byte $00
