@@ -9,6 +9,7 @@ mazedef   = $cb00
 
 *=$C000
 @start
+          jsr            @init_maze
           jsr            @plot_scrn_data_win
           jsr            @plot_player_win
           rts
@@ -152,30 +153,27 @@ mazedef   = $cb00
 ;*****************************************
 ;*** Initialize maze
 ;*****************************************
-*=$C900
 @init_maze 
         lda #<mazedef ; CHAR ROM SOURCE TO ZP_HELPADR1
         sta zeroadr
         lda #>mazedef
         sta zeroadr+1
+        brk
 @init_maze_loop
         lda #$04
         ldy #$00
         sta (zeroadr),y
-        inc zeroadr
-        bne *+4
-        inc zeroadr+1 ; cc91
-        lda zeroadr+1
+        inc zeroadr+1
+        bcc *+3
+        inc zeroadr ; cc91
+        lda zeroadr
         cmp #$CC
         bne @init_maze_loop
-        lda zeroadr
+        lda zeroadr+1
         cmp #$91
         bne @init_maze_loop
         rts
 
-;******************************************
-;*** Variables and tables
-;******************************************
 scrtable
           BYTE           $04, $00, $04, $28, $04, $50, $04, $78, $04, $A0, $04, $C8
           BYTE           $04, $F0, $05, $18, $05, $40, $05, $68, $05 ,$90, $05, $B8

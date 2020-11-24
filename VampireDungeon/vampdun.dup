@@ -1,0 +1,43 @@
+;labels
+al $C000 .@start
+al $C00A .@plot_scrn_data_win
+al $C00A .@plot_scrn_data
+al $C00C .@plot_scrn_data_inc1
+al $C01E .@plot_scrn_data_inc2
+al $C026 .@plot_scrn_data_char
+al $C064 .@plot_scrn_data_inc
+al $C071 .@plot_player_win
+al $C08D .@scrn_plot
+al $C091 .@plot_inc1
+al $C0B0 .@plot_inc2
+al $C0CC .@maze_data_peek
+al $C0D0 .@maze_data_peek_inc1
+al $C900 .@init_maze
+al $C908 .@init_maze_loop
+al $C921 .scrtable
+al $C953 .clrtable
+al $C985 .plot_x
+al $C986 .plot_y
+al $C987 .plot_color
+al $C988 .plot_chr
+al $CA00 .scrn_plot_xp
+al $CA01 .scrn_plot_yp
+al $CA02 .scrn_data_xp
+al $CA03 .scrn_data_yp
+al $CA04 .scrn_data_width
+al $CA05 .scrn_data_height
+al $CA06 .scrn_data_wall_sym
+al $CA07 .scrn_data_wall_col
+al $CA08 .scrn_data_player_xp
+al $CA09 .scrn_data_player_yp
+al $CA0A .scrn_data_player_sym
+al $CA0B .scrn_data_player_col
+al $CA0C .scrn_data_rows
+al $CA0D .scrn_data_cols
+al $CA0E .scrnaddtable
+al $CA36 .maze_data_peek_yp
+al $CA37 .maze_data_peek_xp
+al $CA38 .maze_data_peek_val
+;breakpoints
+break $C908
+

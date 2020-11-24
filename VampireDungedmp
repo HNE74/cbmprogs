@@ -1,0 +1,76 @@
+
+******* 24 Label(s) *******
+clrtable = $C953 
+maze_data_peek_val = $CA38 
+maze_data_peek_xp = $CA37 
+maze_data_peek_yp = $CA36 
+plot_chr = $C988 
+plot_color = $C987 
+plot_x = $C985 
+plot_y = $C986 
+scrn_data_cols = $CA0D 
+scrn_data_height = $CA05 
+scrn_data_player_col = $CA0B 
+scrn_data_player_sym = $CA0A 
+scrn_data_player_xp = $CA08 
+scrn_data_player_yp = $CA09 
+scrn_data_rows = $CA0C 
+scrn_data_wall_col = $CA07 
+scrn_data_wall_sym = $CA06 
+scrn_data_width = $CA04 
+scrn_data_xp = $CA02 
+scrn_data_yp = $CA03 
+scrn_plot_xp = $CA00 
+scrn_plot_yp = $CA01 
+scrnaddtable = $CA0E 
+scrtable = $C921 
+
+******* 21 Unused label(s) *******
+@init_maze
+@init_maze_loop
+@maze_data_peek
+@maze_data_peek_inc1
+@plot_inc1
+@plot_inc2
+@plot_player_win
+@plot_scrn_data
+@plot_scrn_data_char
+@plot_scrn_data_inc
+@plot_scrn_data_inc1
+@plot_scrn_data_inc2
+@plot_scrn_data_win
+@scrn_plot
+@start
+maze_data_peek_val
+maze_data_peek_xp
+maze_data_peek_yp
+plot_chr
+plot_color
+plot_x
+plot_y
+scrn_data_cols
+scrn_data_height
+scrn_data_player_col
+scrn_data_player_sym
+scrn_data_player_xp
+scrn_data_player_yp
+scrn_data_rows
+scrn_data_wall_col
+scrn_data_wall_sym
+scrn_data_width
+scrn_data_xp
+scrn_data_yp
+scrn_plot_xp
+scrn_plot_yp
+
+******* 5 Variable(s) *******
+chrin  = $FFE4
+cls  = $E544
+mazedef  = $CB00
+tgt_c64  = $0001
+zeroadr  = $00FB
+******* -12 Unused variables(s) *******
+chrin
+cls
+tgt_c64
+
