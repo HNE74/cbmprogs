@@ -164,12 +164,12 @@ mazedef   = $cb00
         sta (zeroadr),y
         inc zeroadr
         bne *+4
-        inc zeroadr+1 ; cc91
+        inc zeroadr+1
         lda zeroadr+1
-        cmp #$CC
+        cmp #$CE
         bne @init_maze_loop
         lda zeroadr
-        cmp #$91
+        cmp #$85
         bne @init_maze_loop
         rts
 
@@ -222,13 +222,14 @@ scrn_data_player_sym
 scrn_data_player_col
           BYTE           $07
 scrn_data_rows
-          BYTE           $14
+          BYTE           $1E
 scrn_data_cols
-          BYTE           $14
+          BYTE           $1E
 scrnaddtable
-          BYTE           $CB, $00, $CB, $14, $CB, $28, $CB, $3C, $CB, $50, $CB, $64, $CB, $78, $CB, $8C, $CB, $A0
-          BYTE           $CB, $B4, $CB, $C8, $CB, $DC, $CB, $F0, $CC, $04, $CC, $18, $CC, $2C, $CC, $40, $CC, $54
-          BYTE           $CC, $68, $CC, $7C
+        BYTE $CB, $00, $CB, $1E, $CB, $3C, $CB, $5A, $CB, $78, $CB, $96, $CB, $B4, $CB, $D2, $CB, $F0
+        BYTE $CC, $0E, $CC, $2C, $CC, $4A, $CC, $68, $CC, $86, $CC, $A4, $CC, $C2, $CC, $E0, $CC, $FE
+        BYTE $CD, $1C, $CD, $3A, $CD, $58, $CD, $76, $CD, $94, $CD, $B2, $CD, $D0, $CD, $EE, $CE, $0C
+        BYTE $CE, $2A, $CE, $48, $CE, $66 
 maze_data_peek_yp
           BYTE           $00
 maze_data_peek_xp
