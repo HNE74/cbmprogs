@@ -12,40 +12,39 @@
 12 s=5: w=4 : rem *** Space, Wall
 13 g=5 : rem *** Number of gaps
 14 i=0: j=0: x=0: y=0 : rem *** Loop counter
+15 ps=51968 : rem *** Maze data start
 19 goto 700
 100 rem *** Create maze ***
 120 e=ti:print "generating maze corridors..."
 130 ox=cx:oy=cy
 140 gosub 310
-150 if cx=sx and cy=sy then poke 51968+sx+sy*xs,s:goto 200
-160 if ox<>cx or oy<>cy then goto 130
-170 nx=cx-xd(peek(51968+cx+cy*xs))*2:ny=cy-yd(peek(51968+cx+cy*xs))*2
-180 poke 51968+cx+cy*xs,s:cx=nx:cy=ny
+150 if cx=sx and cy=sy then poke ps+sx+sy*xs,s:goto 200
+160 if ox<>cx or oy<>cy then 130
+170 nx=cx-xd(peek(ps+cx+cy*xs))*2:ny=cy-yd(peek(ps+cx+cy*xs))*2
+180 poke ps+cx+cy*xs,s:cx=nx:cy=ny
 190 goto 130
 200 print "maze generation time";ti-e:gosub 510:return
 300 rem *** Fetch new position
-310 dp=int(rnd(1)*4)
-320 i=0
+310 dp=int(rnd(1)*4):i=0
 330 nx=cx+xd(dp)*2:ny=cy+yd(dp)*2
 340 if nx<2 or nx>=xs-2 or ny<2 or ny>=ys-2 or (nx=sx and ny=sy) then 390
-350 if peek(51968+nx+ny*xs)=w then goto 370
+350 if peek(ps+nx+ny*xs)=w then 370
 360 goto 390
-370 poke 51968+((cy+yd(dp))*xs)+cx+xd(dp),s:cx=nx:cy=ny
-380 poke 51968+cx+cy*xs,dp:return
+370 poke ps+((cy+yd(dp))*xs)+cx+xd(dp),s:cx=nx:cy=ny
+380 poke ps+cx+cy*xs,dp:return
 390 dp=dp+1:if dp>3 then dp=0
-400 i=i+1
-410 if i<4 then goto 330
+400 i=i+1:if i<4 then 330
 420 return
 500 rem *** Create gaps
 510 print "generating maze gaps..."
 520 for i=0 to g
 530 x=int(rnd(1)*(xs-2))+1:y=int(rnd(1)*(ys-2))+1
-540 if peek(51968+x+y*xs)=s then goto 530
-550 if peek(51968+x+(y-1)*xs)=w and peek(51968+x+(y+1)*xs)=w and peek(51968+x-1+y*xs)<>w and peek(51968+x+1+y*xs)<>w then 580
-560 if peek(51968+x-1+y*xs)=w and peek(51968+x+1+y*xs)=w and peek(51968+x+(y-1)*xs)<>w and peek(51968+x+(y+1)*xs)<>w then 580
+540 if peek(ps+x+y*xs)=s then 530
+550 if peek(ps+x+(y-1)*xs)=w and peek(ps+x+(y+1)*xs)=w and peek(ps+x-1+y*xs)<>w and peek(ps+x+1+y*xs)<>w then 580
+560 if peek(ps+x-1+y*xs)=w and peek(ps+x+1+y*xs)=w and peek(ps+x+(y-1)*xs)<>w and peek(ps+x+(y+1)*xs)<>w then 580
 570 goto 530 
-580 poke 51968+x+y*xs,s
-590 next i
+580 poke ps+x+y*xs,s
+590 next
 600 return
 700 rem *** Main
 710 gosub 20000
@@ -65,7 +64,7 @@
 1050 if asc(a$)=157 then yv=0:xv=-1
 1060 if asc(a$)=29 then yv=0:xv=1
 1070 my=my+yv:mx=mx+xv:yp=yp+yv:xp=xp+xv
-1080 if peek(51968+xp+yp*xs)<>w then 1100
+1080 if peek(ps+xp+yp*xs)<>w then 1100
 1090 my=my-yv:mx=mx-xv:yp=yp-yv:xp=xp-xv:goto 1020
 1100 poke 51714,mx: poke 51715,my
 1110 goto 1010
@@ -73,7 +72,7 @@
 2300 rem *** Print maze
 2305 print
 2310 for i=0 to 29:for j=0 to 29
-2325 c$=str$(peek(51968+j+i*xs))
+2325 c$=str$(peek(ps+j+i*xs))
 2326 print right$(c$,1);
 2330 next j:print:next i
 2335 get a$:if a$="" then 2335
