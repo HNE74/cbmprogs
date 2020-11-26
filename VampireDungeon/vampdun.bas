@@ -10,7 +10,7 @@
 10 ox=1:oy=1 : rem *** Old position
 11 nx=1:ny=1 : rem *** New position
 12 s=5: w=4 : rem *** Space, Wall
-13 g=5 : rem *** Number of gaps
+13 g=10 : rem *** Number of gaps
 14 i=0: j=0: x=0: y=0 : rem *** Loop counter
 15 ps=51968 : rem *** Maze data start
 19 goto 700
