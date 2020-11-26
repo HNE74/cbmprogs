@@ -23,9 +23,7 @@
 190 goto130
 200 gosub520:return
 310 dp=int(rnd(1)*4):fori=0to3:nx=cx+xd(dp)*2:ny=cy+yd(dp)*2:ifnx<2ornx>=xs-2orny<2orny>=ys-2or(nx=sxandny=sy)then390
-350 ifpeek(ps+nx+ny*xs)=wthen370
-360 goto390
-370 pokeps+((cy+yd(dp))*xs)+cx+xd(dp),s:cx=nx:cy=ny:pokeps+cx+cy*xs,dp:return
+350 ifpeek(ps+nx+ny*xs)=wthenpokeps+((cy+yd(dp))*xs)+cx+xd(dp),s:cx=nx:cy=ny:pokeps+cx+cy*xs,dp:return
 390 dp=dp+1:ifdp>3thendp=0
 400 next:return
 520 fori=0tog
