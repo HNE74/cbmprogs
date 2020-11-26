@@ -15,26 +15,20 @@
 15 ps=51968 : rem *** Maze data start
 19 goto 700
 110 rem *** Generate maze
-120 e=ti:print"generating mazecorridors..."
 130 ox=cx:oy=cy
 140 gosub310
 150 ifcx=sxandcy=sythenpokeps+sx+sy*xs,s:goto200
 160 ifox<>cxoroy<>cythen130
-170 nx=cx-xd(peek(ps+cx+cy*xs))*2:ny=cy-yd(peek(ps+cx+cy*xs))*2
-180 pokeps+cx+cy*xs,s:cx=nx:cy=ny
+170 nx=cx-xd(peek(ps+cx+cy*xs))*2:ny=cy-yd(peek(ps+cx+cy*xs))*2:pokeps+cx+cy*xs,s:cx=nx:cy=ny
 190 goto130
-200 print"maze generation time";ti-e:gosub510:return
-310 dp=int(rnd(1)*4):i=0
-330 nx=cx+xd(dp)*2:ny=cy+yd(dp)*2
-340 ifnx<2ornx>=xs-2orny<2orny>=ys-2or(nx=sxandny=sy)then390
+200 gosub520:return
+310 dp=int(rnd(1)*4):fori=0to3:nx=cx+xd(dp)*2:ny=cy+yd(dp)*2:ifnx<2ornx>=xs-2orny<2orny>=ys-2or(nx=sxandny=sy)then390
 350 ifpeek(ps+nx+ny*xs)=wthen370
 360 goto390
 370 pokeps+((cy+yd(dp))*xs)+cx+xd(dp),s:cx=nx:cy=ny
 380 pokeps+cx+cy*xs,dp:return
 390 dp=dp+1:ifdp>3thendp=0
-400 i=i+1:ifi<4then330
-420 return
-510 print"generatingmazegaps..."
+400 next:return
 520 fori=0tog
 530 x=int(rnd(1)*(xs-2))+1:y=int(rnd(1)*(ys-2))+1
 540 ifpeek(ps+x+y*xs)=sthen530
@@ -47,8 +41,9 @@
 700 rem *** Main
 710 gosub 20000
 720 sys 51456
-730 gosub 120
-740 gosub 2300
+725 print "generating maze...":e=ti
+730 gosub 130:print "time";ti-e
+740 rem gosub 2300
 750 print "{clear}"
 760 gosub 19000
 770 poke 53280,2:poke 53281,0
