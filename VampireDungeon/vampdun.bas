@@ -1,26 +1,62 @@
-100 REM *** Variable definitions
-110 mx=0:my=0 : rem Maze window coordinates
-120 xp=2:yp=2 : rem Player in maze position
-130 xv=0:yv=0 : rem Player movement vector
-135 xs=30:ys=30 : rem *** Maze size
-140 dim xd(3):dim yd(3):dp=0 : rem *** Movement vectors and pointer
-145 xd(0)=0:yd(0)=-1:xd(1)=1:yd(1)=0:xd(2)=0:yd(2)=1:xd(3)=-1:yd(3)=0
-150 sx=2:sy=2 : rem *** Start position
-160 cx=sx:cy=sy : rem *** Crurrent position
-170 ox=1:oy=1 : rem *** Old position
-180 nx=1:ny=1 : rem *** New position
-190 s=5: w=4 : rem *** Space, Wall
-195 g=5 : rem *** Number of gaps
-200 i=0: j=0: x=0: y=0 : rem *** Loop counter
-500 gosub 20000
-503 sys 51456
-505 gosub 2000
-508 gosub 2300
-510 print "{clear}"
-520 gosub 19000
-530 poke 53280,2:poke 53281,0
-540 gosub 1000
-550 end
+1 REM *** Variable definitions
+2 mx=0:my=0 : rem Maze window coordinates
+3 xp=2:yp=2 : rem Player in maze position
+4 xv=0:yv=0 : rem Player movement vector
+5 xs=30:ys=30 : rem *** Maze size
+6 dim xd(3):dim yd(3):dp=0 : rem *** Movement vectors and pointer
+7 xd(0)=0:yd(0)=-1:xd(1)=1:yd(1)=0:xd(2)=0:yd(2)=1:xd(3)=-1:yd(3)=0
+8 sx=2:sy=2 : rem *** Start position
+9 cx=sx:cy=sy : rem *** Crurrent position
+10 ox=1:oy=1 : rem *** Old position
+11 nx=1:ny=1 : rem *** New position
+12 s=5: w=4 : rem *** Space, Wall
+13 g=5 : rem *** Number of gaps
+14 i=0: j=0: x=0: y=0 : rem *** Loop counter
+19 goto 700
+100 rem *** Create maze ***
+120 e=ti:print "generating maze corridors..."
+130 ox=cx:oy=cy
+140 gosub 310
+150 if cx=sx and cy=sy then poke 51968+sx+sy*xs,s:goto 200
+160 if ox<>cx or oy<>cy then goto 130
+170 nx=cx-xd(peek(51968+cx+cy*xs))*2:ny=cy-yd(peek(51968+cx+cy*xs))*2
+180 poke 51968+cx+cy*xs,s:cx=nx:cy=ny
+190 goto 130
+200 print "maze generation time";ti-e:gosub 510:return
+300 rem *** Fetch new position
+310 dp=int(rnd(1)*4)
+320 i=0
+330 nx=cx+xd(dp)*2:ny=cy+yd(dp)*2
+340 if nx<2 or nx>=xs-2 or ny<2 or ny>=ys-2 or (nx=sx and ny=sy) then 390
+350 if peek(51968+nx+ny*xs)=w then goto 370
+360 goto 390
+370 poke 51968+((cy+yd(dp))*xs)+cx+xd(dp),s:cx=nx:cy=ny
+380 poke 51968+cx+cy*xs,dp:return
+390 dp=dp+1:if dp>3 then dp=0
+400 i=i+1
+410 if i<4 then goto 330
+420 return
+500 rem *** Create gaps
+510 print "generating maze gaps..."
+520 for i=0 to g
+530 x=int(rnd(1)*(xs-2))+1:y=int(rnd(1)*(ys-2))+1
+540 if peek(51968+x+y*xs)=s then goto 530
+550 if peek(51968+x+(y-1)*xs)=w and peek(51968+x+(y+1)*xs)=w and peek(51968+x-1+y*xs)<>w and peek(51968+x+1+y*xs)<>w then 580
+560 if peek(51968+x-1+y*xs)=w and peek(51968+x+1+y*xs)=w and peek(51968+x+(y-1)*xs)<>w and peek(51968+x+(y+1)*xs)<>w then 580
+570 goto 530 
+580 poke 51968+x+y*xs,s
+590 next i
+600 return
+700 rem *** Main
+710 gosub 20000
+720 sys 51456
+730 gosub 120
+740 gosub 2300
+750 print "{clear}"
+760 gosub 19000
+770 poke 53280,2:poke 53281,0
+780 gosub 1000
+790 end
 1000 REM *** Game dungeon loop
 1010 sys 49152
 1020 get a$:if a$="" then 1020
@@ -34,40 +70,6 @@
 1100 poke 51714,mx: poke 51715,my
 1110 goto 1010
 1999 return
-2000 rem *** Create maze ***
-2005 print "generating maze corridors..."
-2010 ox=cx:oy=cy
-2020 gosub 2100
-2030 if cx=sx and cy=sy then poke 51968+sx+sy*xs,s:goto 2080
-2040 if ox<>cx or oy<>cy then goto 2010
-2050 nx=cx-xd(peek(51968+cx+cy*xs))*2:ny=cy-yd(peek(51968+cx+cy*xs))*2
-2060 poke 51968+cx+cy*xs,s:cx=nx:cy=ny
-2070 goto 2010
-2080 gosub 2200:return
-2100 rem *** Fetch new position
-2110 dp=int(rnd(1)*4)
-2120 i=0
-2130 nx=cx+xd(dp)*2:ny=cy+yd(dp)*2
-2140 if nx<2 or nx>=xs-2 or ny<2 or ny>=ys-2 or (nx=sx and ny=sy) then 2160
-2150 if peek(51968+nx+ny*xs)=w then goto 2155
-2152 goto 2160
-2155 poke 51968+((cy+yd(dp))*xs)+cx+xd(dp),s:cx=nx:cy=ny
-2156 poke 51968+cx+cy*xs,dp:return
-2160 dp=dp+1:if dp>3 then dp=0
-2170 i=i+1
-2180 if i<4 then goto 2130
-2190 return
-2200 rem *** Create gaps
-2205 print "generating maze gaps..."
-2210 for i=0 to g
-2220 x=int(rnd(1)*(xs-2))+1:y=int(rnd(1)*(ys-2))+1
-2230 if peek(51968+x+y*xs)=s then goto 2220
-2240 if peek(51968+x+(y-1)*xs)=w and peek(51968+x+(y+1)*xs)=w and peek(51968+x-1+y*xs)<>w and peek(51968+x+1+y*xs)<>w then 2270
-2250 if peek(51968+x-1+y*xs)=w and peek(51968+x+1+y*xs)=w and peek(51968+x+(y-1)*xs)<>w and peek(51968+x+(y+1)*xs)<>w then 2270
-2260 goto 2220 
-2270 poke 51968+x+y*xs,s
-2280 next i
-2290 return
 2300 rem *** Print maze
 2305 print
 2310 for i=0 to 29:for j=0 to 29

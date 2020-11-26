@@ -1,9 +1,9 @@
 
 ******* 24 Label(s) *******
 clrtable = $C953 
-maze_data_peek_val = $CA38 
-maze_data_peek_xp = $CA37 
-maze_data_peek_yp = $CA36 
+maze_data_peek_val = $CA4C 
+maze_data_peek_xp = $CA4B 
+maze_data_peek_yp = $CA4A 
 plot_chr = $C988 
 plot_color = $C987 
 plot_x = $C985 

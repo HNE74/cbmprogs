@@ -3,7 +3,7 @@
 *.dbg
 *.tmp
 *.prg
-
+*.dup
 
 VampireDungeon/bak/*
 Mazegen/bak/Mazegen.cbmprj
