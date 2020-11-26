@@ -25,25 +25,22 @@
 310 dp=int(rnd(1)*4):fori=0to3:nx=cx+xd(dp)*2:ny=cy+yd(dp)*2:ifnx<2ornx>=xs-2orny<2orny>=ys-2or(nx=sxandny=sy)then390
 350 ifpeek(ps+nx+ny*xs)=wthen370
 360 goto390
-370 pokeps+((cy+yd(dp))*xs)+cx+xd(dp),s:cx=nx:cy=ny
-380 pokeps+cx+cy*xs,dp:return
+370 pokeps+((cy+yd(dp))*xs)+cx+xd(dp),s:cx=nx:cy=ny:pokeps+cx+cy*xs,dp:return
 390 dp=dp+1:ifdp>3thendp=0
 400 next:return
 520 fori=0tog
-530 x=int(rnd(1)*(xs-2))+1:y=int(rnd(1)*(ys-2))+1
-540 ifpeek(ps+x+y*xs)=sthen530
+530 x=int(rnd(1)*(xs-2))+1:y=int(rnd(1)*(ys-2))+1:ifpeek(ps+x+y*xs)=sthen530
 550 ifpeek(ps+x+(y-1)*xs)=wandpeek(ps+x+(y+1)*xs)=wandpeek(ps+x-1+y*xs)<>wandpeek(ps+x+1+y*xs)<>wthen580
 560 ifpeek(ps+x-1+y*xs)=wandpeek(ps+x+1+y*xs)=wandpeek(ps+x+(y-1)*xs)<>wandpeek(ps+x+(y+1)*xs)<>wthen580
 570 goto530
-580 pokeps+x+y*xs,s
-590 next
+580 pokeps+x+y*xs,s:next
 600 return
 700 rem *** Main
 710 gosub 20000
 720 sys 51456
 725 print "generating maze...":e=ti
 730 gosub 130:print "time";ti-e
-740 rem gosub 2300
+740 gosub 2300
 750 print "{clear}"
 760 gosub 19000
 770 poke 53280,2:poke 53281,0
@@ -64,7 +61,7 @@
 1999 return
 2300 rem *** Print maze
 2305 print
-2310 for i=0 to 29:for j=0 to 29
+2310 for i=0 to 20:for j=0 to 20
 2325 c$=str$(peek(ps+j+i*xs))
 2326 print right$(c$,1);
 2330 next j:print:next i
