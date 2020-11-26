@@ -14,36 +14,34 @@
 14 i=0: j=0: x=0: y=0 : rem *** Loop counter
 15 ps=51968 : rem *** Maze data start
 19 goto 700
-100 rem *** Create maze ***
-120 e=ti:print "generating maze corridors..."
+110 rem *** Generate maze
+120 e=ti:print"generating mazecorridors..."
 130 ox=cx:oy=cy
-140 gosub 310
-150 if cx=sx and cy=sy then poke ps+sx+sy*xs,s:goto 200
-160 if ox<>cx or oy<>cy then 130
+140 gosub310
+150 ifcx=sxandcy=sythenpokeps+sx+sy*xs,s:goto200
+160 ifox<>cxoroy<>cythen130
 170 nx=cx-xd(peek(ps+cx+cy*xs))*2:ny=cy-yd(peek(ps+cx+cy*xs))*2
-180 poke ps+cx+cy*xs,s:cx=nx:cy=ny
-190 goto 130
-200 print "maze generation time";ti-e:gosub 510:return
-300 rem *** Fetch new position
+180 pokeps+cx+cy*xs,s:cx=nx:cy=ny
+190 goto130
+200 print"maze generation time";ti-e:gosub510:return
 310 dp=int(rnd(1)*4):i=0
 330 nx=cx+xd(dp)*2:ny=cy+yd(dp)*2
-340 if nx<2 or nx>=xs-2 or ny<2 or ny>=ys-2 or (nx=sx and ny=sy) then 390
-350 if peek(ps+nx+ny*xs)=w then 370
-360 goto 390
-370 poke ps+((cy+yd(dp))*xs)+cx+xd(dp),s:cx=nx:cy=ny
-380 poke ps+cx+cy*xs,dp:return
-390 dp=dp+1:if dp>3 then dp=0
-400 i=i+1:if i<4 then 330
+340 ifnx<2ornx>=xs-2orny<2orny>=ys-2or(nx=sxandny=sy)then390
+350 ifpeek(ps+nx+ny*xs)=wthen370
+360 goto390
+370 pokeps+((cy+yd(dp))*xs)+cx+xd(dp),s:cx=nx:cy=ny
+380 pokeps+cx+cy*xs,dp:return
+390 dp=dp+1:ifdp>3thendp=0
+400 i=i+1:ifi<4then330
 420 return
-500 rem *** Create gaps
-510 print "generating maze gaps..."
-520 for i=0 to g
+510 print"generatingmazegaps..."
+520 fori=0tog
 530 x=int(rnd(1)*(xs-2))+1:y=int(rnd(1)*(ys-2))+1
-540 if peek(ps+x+y*xs)=s then 530
-550 if peek(ps+x+(y-1)*xs)=w and peek(ps+x+(y+1)*xs)=w and peek(ps+x-1+y*xs)<>w and peek(ps+x+1+y*xs)<>w then 580
-560 if peek(ps+x-1+y*xs)=w and peek(ps+x+1+y*xs)=w and peek(ps+x+(y-1)*xs)<>w and peek(ps+x+(y+1)*xs)<>w then 580
-570 goto 530 
-580 poke ps+x+y*xs,s
+540 ifpeek(ps+x+y*xs)=sthen530
+550 ifpeek(ps+x+(y-1)*xs)=wandpeek(ps+x+(y+1)*xs)=wandpeek(ps+x-1+y*xs)<>wandpeek(ps+x+1+y*xs)<>wthen580
+560 ifpeek(ps+x-1+y*xs)=wandpeek(ps+x+1+y*xs)=wandpeek(ps+x+(y-1)*xs)<>wandpeek(ps+x+(y+1)*xs)<>wthen580
+570 goto530
+580 pokeps+x+y*xs,s
 590 next
 600 return
 700 rem *** Main
