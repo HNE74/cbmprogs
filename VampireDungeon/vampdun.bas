@@ -1,4 +1,5 @@
-10 REM *** Variable definitions
+1 REM *** Variable definitions
+10 kf=0 : rem Key found
 12 mx=0:my=0 : rem Maze window coordinates
 14 xp=2:yp=2 : rem Player in maze position
 16 xv=0:yv=0 : rem Player movement vector
@@ -14,14 +15,14 @@
 36 i=0: j=0: x=0: y=0 : rem *** Loop counter
 38 ps=51968 : rem *** Maze data start
 40 dim xm(3):dim ym(3):dim fm(3):dim nm$(3) : rem Monster definition
-42 xm(0)=-1:ym(0)=-1:fm(0)=8:nm$(0)="rat"
-44 xm(0)=-1:ym(0)=-1:fm(0)=6:nm$(0)="bat"
+42 xm(0)=-1:ym(0)=-1:fm(0)=1:nm$(0)="rat"
+44 xm(0)=-1:ym(0)=-1:fm(0)=2:nm$(0)="bat"
 46 xm(0)=-1:ym(0)=-1:fm(0)=4:nm$(0)="skeleton"
-48 xm(0)=-1:ym(0)=-1:fm(0)=1:nm$(0)="vampire"
+48 xm(0)=-1:ym(0)=-1:fm(0)=8:nm$(0)="vampire"
 50 dim tx$(4):tn$="": rem Text definition
 60 tx$(0)="                              ":tx$(1)="                              "
 62 tx$(2)="                              ":tx$(3)="                              "
-64 tx$(4)="beware of the dark adventurer!"
+64 tx$(4)="beware of the evil adventurer!"
 100 goto 900
 110 rem *** Generate maze
 120 ox=cx:oy=cy
@@ -66,13 +67,15 @@
 1000 REM *** Game dungeon loop
 1005 gosub 2000
 1010 sys 49152
+1015 gosub 2200
 1020 get a$:if a$="" then 1020
-1030 if asc(a$)=17 then yv=1:xv=0:tn$="going south                   ":gosub2100:gosub2000
-1040 if asc(a$)=145 then yv=-1:xv=0:tn$="going north                   ":gosub2100:gosub2000
-1050 if asc(a$)=157 then yv=0:xv=-1:tn$="going west                    ":gosub2100:gosub2000
-1060 if asc(a$)=29 then yv=0:xv=1:tn$="going east                    ":gosub2100:gosub2000
+1030 if asc(a$)=17 then yv=1:xv=0:tn$="going south...                ":gosub2100:gosub2000
+1040 if asc(a$)=145 then yv=-1:xv=0:tn$="going north..                 ":gosub2100:gosub2000
+1050 if asc(a$)=157 then yv=0:xv=-1:tn$="going west...                 ":gosub2100:gosub2000
+1060 if asc(a$)=29 then yv=0:xv=1:tn$="going east...                 ":gosub2100:gosub2000
 1070 my=my+yv:mx=mx+xv:yp=yp+yv:xp=xp+xv
 1080 if peek(ps+xp+yp*xs)<>w then 1100
+1085 tn$="not this way!                 ":gosub2100:gosub2000
 1090 my=my-yv:mx=mx-xv:yp=yp-yv:xp=xp-xv:goto 1020
 1100 poke 51714,mx: poke 51715,my
 1110 gosub 2000
@@ -80,18 +83,15 @@
 1999 return
 2000 rem *** Print message array
 2010 for i=0 to 4
-2020 POKE 214,16+i: POKE211,5: SYS 58640:print tx$(i)
+2020 POKE 214,17+i: POKE211,5: SYS 58640:print tx$(i)
 2030 next:return
 2100 rem *** Update message array
 2110 for i=1 to 4:tx$(i-1)=tx$(i):next::tx$(4)=tn$:return
-2300 rem *** Print maze
-2305 print
-2310 for i=0 to 15:for j=0 to 20
-2325 c$=str$(peek(ps+j+i*xs))
-2326 print right$(c$,1);
-2330 next j:print:next i
-2335 get a$:if a$="" then 2335
-2340 return
+2200 rem *** Check items
+2210 if peek(ps+xp+yp*xs)=d and kf=1 then tn$="going to next level...      ":gosub2100:gosub2000
+2220 if peek(ps+xp+yp*xs)=d and kf=0 then tn$="you need the key to enter!  ":gosub2100:gosub2000
+2230 if peek(ps+xp+yp*xs)=t then kf=1:poke ps+xp+yp*xs,s:tn$="you have found the key!     +":gosub2100:gosub2000
+2240 return
 19000 REM *** Init maze plot 
 19010 poke 51712,17: poke 51713,10: rem Maze plot position
 19020 poke 51714,mx: poke 51715,my : rem Maze window coordinates
@@ -177,3 +177,11 @@
 20360 DATA 206,42,206,72,206,102,0,0
 20365 DATA 0
 20370 return
+21000 rem *** Print maze
+21010 print
+21020 for i=0 to 15:for j=0 to 20
+21030 c$=str$(peek(ps+j+i*xs))
+21040 print right$(c$,1);
+21050 next j:print:next i
+21060 get a$:if a$="" then 21060
+21070 return
