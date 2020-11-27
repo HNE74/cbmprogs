@@ -53,13 +53,32 @@ mazedef   = $cb00
           tay
           lda            maze_data_peek_val
           cmp            #$04
-          bne            *+8
+          bne            @plot_scrn_data_item
           lda            scrn_data_wall_sym
-          jmp            *+5
-          lda            #32
           sta            plot_chr
           lda            scrn_data_wall_col
           sta            plot_color
+          jmp            @plot_scrn_data_chr
+@plot_scrn_data_item
+          cmp            #$06
+          bne            @plot_scrn_data_door
+          lda            scrn_data_item_sym
+          sta            plot_chr
+          lda            scrn_data_item_col
+          sta            plot_color
+          jmp            @plot_scrn_data_chr
+@plot_scrn_data_door
+          cmp            #$07
+          bne            @plot_scrn_data_space
+          lda            scrn_data_door_sym
+          sta            plot_chr
+          lda            scrn_data_door_col
+          sta            plot_color
+          jmp            @plot_scrn_data_chr
+@plot_scrn_data_space
+          lda            #32
+          sta            plot_chr
+@plot_scrn_data_chr
           tya
           pha
           txa
@@ -75,7 +94,9 @@ mazedef   = $cb00
           bne            @plot_scrn_data_inc2
           iny
           cpy            scrn_data_width
-          bne            @plot_scrn_data_inc1
+          beq            @plot_scrn_data_end
+          jmp            @plot_scrn_data_inc1
+@plot_scrn_data_end
           rts
 ;********************************
 ;*** Plot player to the screen
@@ -221,6 +242,14 @@ scrn_data_player_sym
           BYTE           $41
 scrn_data_player_col
           BYTE           $07
+scrn_data_item_sym
+          BYTE           $42
+scrn_data_item_col
+          BYTE           $08
+scrn_data_door_sym 
+          BYTE           $43
+scrn_data_door_col
+          BYTE           $09
 scrn_data_rows
           BYTE           $1E
 scrn_data_cols
