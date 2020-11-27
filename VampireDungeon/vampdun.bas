@@ -22,7 +22,7 @@
 50 dim tx$(4):tn$="": rem Text definition
 60 tx$(0)="                              ":tx$(1)="                              "
 62 tx$(2)="                              ":tx$(3)="                              "
-64 tx$(4)="beware of the evil adventurer!"
+64 tx$(4)="*** take care adventurer! *** "
 100 goto 900
 110 rem *** Generate maze
 120 ox=cx:oy=cy
