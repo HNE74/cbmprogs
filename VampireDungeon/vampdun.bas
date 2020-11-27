@@ -1,67 +1,89 @@
-1 REM *** Variable definitions
-2 mx=0:my=0 : rem Maze window coordinates
-3 xp=2:yp=2 : rem Player in maze position
-4 xv=0:yv=0 : rem Player movement vector
-5 xs=30:ys=30 : rem *** Maze size
-6 dim xd(3):dim yd(3):dp=0 : rem *** Movement vectors and pointer
-7 xd(0)=0:yd(0)=-1:xd(1)=1:yd(1)=0:xd(2)=0:yd(2)=1:xd(3)=-1:yd(3)=0
-8 sx=2:sy=2 : rem *** Start position
-9 cx=sx:cy=sy : rem *** Crurrent position
-10 ox=1:oy=1 : rem *** Old position
-11 nx=1:ny=1 : rem *** New position
-12 s=5:w=4:t=6:d=7 : rem *** Space, Wall, Item, Door
-13 g=10 : rem *** Number of gaps
-14 i=0: j=0: x=0: y=0 : rem *** Loop counter
-15 ps=51968 : rem *** Maze data start
-19 goto 900
+10 REM *** Variable definitions
+12 mx=0:my=0 : rem Maze window coordinates
+14 xp=2:yp=2 : rem Player in maze position
+16 xv=0:yv=0 : rem Player movement vector
+18 xs=30:ys=30 : rem *** Maze size
+20 dim xd(3):dim yd(3):dp=0 : rem *** Movement vectors and pointer
+22 xd(0)=0:yd(0)=-1:xd(1)=1:yd(1)=0:xd(2)=0:yd(2)=1:xd(3)=-1:yd(3)=0
+24 sx=2:sy=2 : rem *** Start position
+26 cx=sx:cy=sy : rem *** Crurrent position
+28 ox=1:oy=1 : rem *** Old position
+30 nx=1:ny=1 : rem *** New position
+32 s=5:w=4:t=6:d=7 : rem *** Space, Wall, Item, Door
+34 g=10 : rem *** Number of gaps
+36 i=0: j=0: x=0: y=0 : rem *** Loop counter
+38 ps=51968 : rem *** Maze data start
+40 dim xm(3):dim ym(3):dim fm(3):dim nm$(3) : rem Monster definition
+42 xm(0)=-1:ym(0)=-1:fm(0)=8:nm$(0)="rat"
+44 xm(0)=-1:ym(0)=-1:fm(0)=6:nm$(0)="bat"
+46 xm(0)=-1:ym(0)=-1:fm(0)=4:nm$(0)="skeleton"
+48 xm(0)=-1:ym(0)=-1:fm(0)=1:nm$(0)="vampire"
+50 dim tx$(4):tn$="": rem Text definition
+60 tx$(0)="                              ":tx$(1)="                              "
+62 tx$(2)="                              ":tx$(3)="                              "
+64 tx$(4)="beware of the dark adventurer!"
+100 goto 900
 110 rem *** Generate maze
-130 ox=cx:oy=cy
-140 gosub310
-150 ifcx=sxandcy=sythenpokeps+sx+sy*xs,s:goto200
-160 ifox<>cxoroy<>cythen130
-170 nx=cx-xd(peek(ps+cx+cy*xs))*2:ny=cy-yd(peek(ps+cx+cy*xs))*2:pokeps+cx+cy*xs,s:cx=nx:cy=ny:goto130
-200 gosub520:return
-310 dp=int(rnd(1)*4):fori=0to3:nx=cx+xd(dp)*2:ny=cy+yd(dp)*2:ifnx<2ornx>=xs-2orny<2orny>=ys-2or(nx=sxandny=sy)then390
-350 ifpeek(ps+nx+ny*xs)=wthenpokeps+((cy+yd(dp))*xs)+cx+xd(dp),s:cx=nx:cy=ny:pokeps+cx+cy*xs,dp:return
-390 dp=dp+1:ifdp>3thendp=0
-400 next:return
-520 fori=0tog
-530 x=int(rnd(1)*(xs-2))+1:y=int(rnd(1)*(ys-2))+1:ifpeek(ps+x+y*xs)=sthen530
-550 ifpeek(ps+x+(y-1)*xs)=wandpeek(ps+x+(y+1)*xs)=wandpeek(ps+x-1+y*xs)<>wandpeek(ps+x+1+y*xs)<>wthen580
-560 ifpeek(ps+x-1+y*xs)=wandpeek(ps+x+1+y*xs)=wandpeek(ps+x+(y-1)*xs)<>wandpeek(ps+x+(y+1)*xs)<>wthen580
-570 goto530
-580 pokeps+x+y*xs,s:next
-590 x=int(rnd(1)*(xs-6))+5:y=int(rnd(1)*(ys-6))+5:ifpeek(ps+x+y*xs)<>sthen590
-595 print x;y
-600 pokeps+x+y*xs,t
-610 x=int(rnd(1)*(xs-6))+5:y=int(rnd(1)*(ys-6))+5:ifpeek(ps+x+y*xs)<>sthen610
-620 print x;y
-680 pokeps+x+y*xs,d
-690 return
+120 ox=cx:oy=cy
+130 gosub180
+140 ifcx=sxandcy=sythenpokeps+sx+sy*xs,s:goto170
+150 ifox<>cxoroy<>cythen120
+160 nx=cx-xd(peek(ps+cx+cy*xs))*2:ny=cy-yd(peek(ps+cx+cy*xs))*2:pokeps+cx+cy*xs,s:cx=nx:cy=ny:goto120
+170 gosub220:return
+180 dp=int(rnd(1)*4):fori=0to3:nx=cx+xd(dp)*2:ny=cy+yd(dp)*2:ifnx<2ornx>=xs-2orny<2orny>=ys-2or(nx=sxandny=sy)then200
+190 ifpeek(ps+nx+ny*xs)=wthenpokeps+((cy+yd(dp))*xs)+cx+xd(dp),s:cx=nx:cy=ny:pokeps+cx+cy*xs,dp:return
+200 dp=dp+1:ifdp>3thendp=0
+210 next:return
+220 fori=0tog
+230 x=int(rnd(1)*(xs-2))+1:y=int(rnd(1)*(ys-2))+1:ifpeek(ps+x+y*xs)=sthen230
+240 ifpeek(ps+x+(y-1)*xs)=wandpeek(ps+x+(y+1)*xs)=wandpeek(ps+x-1+y*xs)<>wandpeek(ps+x+1+y*xs)<>wthen270
+250 ifpeek(ps+x-1+y*xs)=wandpeek(ps+x+1+y*xs)=wandpeek(ps+x+(y-1)*xs)<>wandpeek(ps+x+(y+1)*xs)<>wthen270
+260 goto230
+270 pokeps+x+y*xs,s:next
+280 x=int(rnd(1)*(xs-6))+5:y=int(rnd(1)*(ys-6))+5:ifpeek(ps+x+y*xs)<>sthen280
+290 pokeps+x+y*xs,t
+300 x=int(rnd(1)*(xs-6))+5:y=int(rnd(1)*(ys-6))+5:ifpeek(ps+x+y*xs)<>sthen300
+310 pokeps+x+y*xs,d
+320 return
+400 rem *** Spawn monsters
+410 for i=0 to 3
+420 if xm(i)<>-1 and ym(i)<>-1 then 450
+430 x=int(rnd(1)*(xs-6))+5:y=int(rnd(1)*(ys-6))+5:if peek(ps+x+y*xs)=w then 430
+440 xm(i)=x:ym(i)=y
+450 next i
+460 return
 900 rem *** Main
 910 gosub 20000
 920 sys 51456
 925 print "generating maze...":e=ti
 930 gosub 130:print "time";ti-e
-940 gosub 2300
+940 gosub 400
 950 print "{clear}"
 960 gosub 19000
 970 poke 53280,2:poke 53281,0
 980 gosub 1000
 990 end
 1000 REM *** Game dungeon loop
+1005 gosub 2000
 1010 sys 49152
 1020 get a$:if a$="" then 1020
-1030 if asc(a$)=17 then yv=1:xv=0
-1040 if asc(a$)=145 then yv=-1:xv=0
-1050 if asc(a$)=157 then yv=0:xv=-1
-1060 if asc(a$)=29 then yv=0:xv=1
+1030 if asc(a$)=17 then yv=1:xv=0:tn$="going south                   ":gosub2100:gosub2000
+1040 if asc(a$)=145 then yv=-1:xv=0:tn$="going north                   ":gosub2100:gosub2000
+1050 if asc(a$)=157 then yv=0:xv=-1:tn$="going west                    ":gosub2100:gosub2000
+1060 if asc(a$)=29 then yv=0:xv=1:tn$="going east                    ":gosub2100:gosub2000
 1070 my=my+yv:mx=mx+xv:yp=yp+yv:xp=xp+xv
 1080 if peek(ps+xp+yp*xs)<>w then 1100
 1090 my=my-yv:mx=mx-xv:yp=yp-yv:xp=xp-xv:goto 1020
 1100 poke 51714,mx: poke 51715,my
-1110 goto 1010
+1110 gosub 2000
+1990 goto 1010
 1999 return
+2000 rem *** Print message array
+2010 for i=0 to 4
+2020 POKE 214,16+i: POKE211,5: SYS 58640:print tx$(i)
+2030 next:return
+2100 rem *** Update message array
+2110 for i=1 to 4:tx$(i-1)=tx$(i):next::tx$(4)=tn$:return
 2300 rem *** Print maze
 2305 print
 2310 for i=0 to 15:for j=0 to 20
@@ -77,6 +99,8 @@
 19040 poke 51718,102: poke 51719,9 : rem Wall symbol and color
 19050 poke 51720,19: poke 51721,12 : rem Player position
 19060 poke 51722,65: poke 51723,15 : rem Player symbol and color
+19070 poke 51724,88: poke 51725,11 : rem Key symbol and color
+19080 poke 51726,87: poke 51727,8 : rem Door symbol and color
 19090 return
 20000 REM *** Machine routine loader
 20005 SA = 49152
