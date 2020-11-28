@@ -79,10 +79,10 @@
 1015 gosub 2200:gosub 2300
 1020 get a$:if a$="" then 1020
 1025 poke 198,0
-1030 if asc(a$)=17 then ep=ep-1:yv=1:xv=0:tn$="going south...":gosub10100:gosub10000
-1040 if asc(a$)=145 then ep=ep-1:yv=-1:xv=0:tn$="going north...":gosub10100:gosub10000
-1050 if asc(a$)=157 then ep=ep-1:yv=0:xv=-1:tn$="going west...":gosub10100:gosub10000
-1060 if asc(a$)=29 then ep=ep-1:yv=0:xv=1:tn$="going east...":gosub10100:gosub10000
+1030 if asc(a$)=17 then ep=ep-1:yv=1:xv=0
+1040 if asc(a$)=145 then ep=ep-1:yv=-1:xv=0
+1050 if asc(a$)=157 then ep=ep-1:yv=0:xv=-1
+1060 if asc(a$)=29 then ep=ep-1:yv=0:xv=1
 1070 my=my+yv:mx=mx+xv:yp=yp+yv:xp=xp+xv
 1080 if peek(ps+xp+yp*xs)<>w then 1100
 1085 tn$="you can't go this way'!":gosub10100:gosub10000
