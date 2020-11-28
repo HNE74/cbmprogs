@@ -2,6 +2,7 @@
 10 kf=0 : rem Key found
 12 mx=0:my=0 : rem Maze window coordinates
 14 xp=2:yp=2 : rem Player in maze position
+15 ep=100:gp=0: rem Player energy and gold
 16 xv=0:yv=0 : rem Player movement vector
 18 xs=30:ys=30 : rem *** Maze size
 20 dim xd(3):dim yd(3):dp=0 : rem *** Movement vectors and pointer
@@ -15,10 +16,10 @@
 36 i=0: j=0: x=0: y=0 : rem *** Loop counter
 38 ps=51968 : rem *** Maze data start
 40 dim xm(3):dim ym(3):dim fm(3):dim nm$(3) : rem Monster definition
-42 xm(0)=-1:ym(0)=-1:fm(0)=1:nm$(0)="rat!       "
-44 xm(1)=-1:ym(1)=-1:fm(1)=2:nm$(1)="bat!       "
-46 xm(2)=-1:ym(2)=-1:fm(2)=4:nm$(2)="skeleton!  "
-48 xm(3)=-1:ym(3)=-1:fm(3)=8:nm$(3)="vampire!   "
+42 xm(0)=-1:ym(0)=-1:fm(0)=1:nm$(0)="rat!"
+44 xm(1)=-1:ym(1)=-1:fm(1)=2:nm$(1)="bat!"
+46 xm(2)=-1:ym(2)=-1:fm(2)=4:nm$(2)="skeleton!"
+48 xm(3)=-1:ym(3)=-1:fm(3)=8:nm$(3)="vampire!"
 50 dim tx$(4):tn$="": rem Text definition
 60 tx$(0)="                              ":tx$(1)="                              "
 62 tx$(2)="                              ":tx$(3)="                              "
@@ -66,46 +67,54 @@
 980 gosub 1000
 990 end
 1000 REM *** Game dungeon loop
-1005 gosub 2000
-1010 sys 49152
+1010 gosub 2000:gosub2500:gosub2600:sys 49152
 1012 POKE 214,2: POKE211,2: SYS 58640:print "            "
 1013 POKE 214,2: POKE211,2: SYS 58640:print xp;yp
 1015 gosub 2200:gosub 2300
 1020 get a$:if a$="" then 1020
 1025 poke 198,0
-1030 if asc(a$)=17 then yv=1:xv=0:tn$="going south...                ":gosub2100:gosub2000
-1040 if asc(a$)=145 then yv=-1:xv=0:tn$="going north...                ":gosub2100:gosub2000
-1050 if asc(a$)=157 then yv=0:xv=-1:tn$="going west...                 ":gosub2100:gosub2000
-1060 if asc(a$)=29 then yv=0:xv=1:tn$="going east...                 ":gosub2100:gosub2000
+1030 if asc(a$)=17 then ep=ep-1:yv=1:xv=0:tn$="going south...":gosub2100:gosub2000
+1040 if asc(a$)=145 then ep=ep-1:yv=-1:xv=0:tn$="going north...":gosub2100:gosub2000
+1050 if asc(a$)=157 then ep=ep-1:yv=0:xv=-1:tn$="going west...":gosub2100:gosub2000
+1060 if asc(a$)=29 then ep=ep-1:yv=0:xv=1:tn$="going east...":gosub2100:gosub2000
 1070 my=my+yv:mx=mx+xv:yp=yp+yv:xp=xp+xv
 1080 if peek(ps+xp+yp*xs)<>w then 1100
-1085 tn$="not this way!                 ":gosub2100:gosub2000
-1090 my=my-yv:mx=mx-xv:yp=yp-yv:xp=xp-xv:goto 1020
+1085 tn$="you can't go this way'!":gosub2100:gosub2000
+1090 my=my-yv:mx=mx-xv:yp=yp-yv:xp=xp-xv
 1100 poke 51714,mx: poke 51715,my
-1110 gosub 2000
 1990 goto 1010
 1999 return
 2000 rem *** Print message array
-2010 for i=0 to 4
-2020 POKE 214,17+i: POKE211,5: SYS 58640:print tx$(i)
+2010 poke 646,5:for i=0 to 4
+2020 poke214,17+i:poke211,5:sys58640:printtx$(i)
 2030 next:return
 2100 rem *** Update message array
+2105 for i=0 to 30-len(tn$):tn$=tn$+" ":next i
 2110 for i=1 to 4:tx$(i-1)=tx$(i):next::tx$(4)=tn$:return
 2200 rem *** Check items
-2210 if peek(ps+xp+yp*xs)=dandkf=1thentn$="going to next level...      ":gosub2100:gosub2000
-2220 if peek(ps+xp+yp*xs)=dandkf=0thentn$="you need the key to enter!  ":gosub2100:gosub2000
-2230 if peek(ps+xp+yp*xs)=tthenkf=1:pokeps+xp+yp*xs,s:tn$="you have found the key!     ":gosub2100:gosub2000
+2210 if peek(ps+xp+yp*xs)=dandkf=1thentn$="going to next level...":gosub2100:gosub2000
+2220 if peek(ps+xp+yp*xs)=dandkf=0thentn$="you need the key to enter!":gosub2100:gosub2000
+2230 if peek(ps+xp+yp*xs)=tthenkf=1:pokeps+xp+yp*xs,s:tn$="you have found the key!":gosub2100:gosub2000
 2240 return
 2300 rem *** Check monster
 2310 for i=0 to 3
 2315 if xp=xm(i)andyp=ym(i)thengosub 2400:i=3:goto 2330
-2320 if abs(xp-xm(i))<=1andabs(yp-ym(i))<=1thentn$="you sense an evil presence! ":gosub2100:gosub2000
+2320 if abs(xp-xm(i))<=1andabs(yp-ym(i))<=1thentn$="you sense an evil presence!":gosub2100:gosub2000
 2330 next
 2340 return
 2400 rem *** Monster fight
 2410 tn$="you are facing a "+nm$(i):gosub2100:gosub2000
-2420 tn$="{reverse on} a {reverse off}ttack or {reverse on} f {reverse off}lee                 ":gosub2100:gosub2000
+2420 tn$="{reverse on} a {reverse off}ttack or {reverse on} f {reverse off}lee":gosub2100:gosub2000
 2430 return
+2500 rem *** Print player status
+2510 poke214,3:poke211,5:sys58640:poke646,10:print"energy:      "
+2520 poke214,3:poke211,5:sys58640:print"energy:";right$(str$(ep),len(str$(ep))-1);"%"
+2530 poke214,3:poke211,24:sys58640:poke646,7:print"gold:          "
+2540 poke214,3:poke211,24:sys58640:print"gold:";right$(str$(gp),len(str$(gp))-1);"$"
+2550 return
+2600 rem *** Check player status
+2610 if ep=0 then tn$="you're dead!":gosub2100:gosub2000
+2630 return
 19000 REM *** Init maze plot 
 19010 poke 51712,17: poke 51713,10: rem Maze plot position
 19020 poke 51714,mx: poke 51715,my : rem Maze window coordinates
