@@ -19,7 +19,7 @@
 42 xm(0)=-1:ym(0)=-1:fm(0)=1:nm$(0)="rat"
 44 xm(1)=-1:ym(1)=-1:fm(1)=2:nm$(1)="bat"
 46 xm(2)=-1:ym(2)=-1:fm(2)=4:nm$(2)="skeleton"
-48 xm(3)=4:ym(3)=2:fm(3)=8:nm$(3)="vampire"
+48 xm(3)=-1:ym(3)=-1:fm(3)=8:nm$(3)="vampire"
 50 dim tx$(4):tn$="": rem Text definition
 60 tx$(0)="                              ":tx$(1)="                              "
 62 tx$(2)="                              ":tx$(3)="                              "
@@ -73,63 +73,63 @@
 980 gosub 1000
 990 end
 1000 REM *** Game dungeon loop
-1010 gosub 2000:gosub2500:gosub2600:sys 49152
+1010 gosub10000:gosub2500:gosub2600:sys 49152
 1012 POKE 214,2: POKE211,2: SYS 58640:print "            "
 1013 POKE 214,2: POKE211,2: SYS 58640:print xp;yp
 1015 gosub 2200:gosub 2300
 1020 get a$:if a$="" then 1020
 1025 poke 198,0
-1030 if asc(a$)=17 then ep=ep-1:yv=1:xv=0:tn$="going south...":gosub2100:gosub2000
-1040 if asc(a$)=145 then ep=ep-1:yv=-1:xv=0:tn$="going north...":gosub2100:gosub2000
-1050 if asc(a$)=157 then ep=ep-1:yv=0:xv=-1:tn$="going west...":gosub2100:gosub2000
-1060 if asc(a$)=29 then ep=ep-1:yv=0:xv=1:tn$="going east...":gosub2100:gosub2000
+1030 if asc(a$)=17 then ep=ep-1:yv=1:xv=0:tn$="going south...":gosub10100:gosub10000
+1040 if asc(a$)=145 then ep=ep-1:yv=-1:xv=0:tn$="going north...":gosub10100:gosub10000
+1050 if asc(a$)=157 then ep=ep-1:yv=0:xv=-1:tn$="going west...":gosub10100:gosub10000
+1060 if asc(a$)=29 then ep=ep-1:yv=0:xv=1:tn$="going east...":gosub10100:gosub10000
 1070 my=my+yv:mx=mx+xv:yp=yp+yv:xp=xp+xv
 1080 if peek(ps+xp+yp*xs)<>w then 1100
-1085 tn$="you can't go this way'!":gosub2100:gosub2000
+1085 tn$="you can't go this way'!":gosub10100:gosub10000
 1090 my=my-yv:mx=mx-xv:yp=yp-yv:xp=xp-xv
 1100 poke51714,mx:poke51715,my
 1990 goto 1010
 1999 return
-2000 rem *** Print message array
-2010 poke 646,5:fori=0to4:poke214,17+i:poke211,5:sys58640:printtx$(i):next:return
-2100 rem *** Update message array
-2105 for i=0 to 30-len(tn$):tn$=tn$+" ":next i
-2110 for i=1 to 4:tx$(i-1)=tx$(i):next::tx$(4)=tn$:return
 2200 rem *** Check items
 2205 if peek(ps+xp+yp*xs)=sthenreturn
-2210 if peek(ps+xp+yp*xs)=dandkf=1thentn$="going to next level...":gosub2100:gosub2000
-2220 if peek(ps+xp+yp*xs)=dandkf=0thentn$="you need the key to enter!":gosub2100:gosub2000
-2230 if peek(ps+xp+yp*xs)=tthenkf=1:pokeps+xp+yp*xs,s:tn$="you have found the key!":gosub2100:gosub2000
-2240 if peek(ps+xp+yp*xs)=pthen:pokeps+xp+yp*xs,s:tn$="you have been healed.":gosub2100:gosub2000:ep=ep+25:ifep>100thenep=100
-2250 if peek(ps+xp+yp*xs)=mthen:pokeps+xp+yp*xs,s:tn$="you have found 5$ gold.":gosub2100:gosub2000:gp=gp+5
+2210 if peek(ps+xp+yp*xs)=dandkf=1thentn$="going to next level...":gosub10100:gosub10000
+2220 if peek(ps+xp+yp*xs)=dandkf=0thentn$="you need the key to enter!":gosub10100:gosub10000
+2230 if peek(ps+xp+yp*xs)=tthenkf=1:pokeps+xp+yp*xs,s:tn$="you have found the key!":gosub10100:gosub10000
+2240 if peek(ps+xp+yp*xs)=pthen:pokeps+xp+yp*xs,s:tn$="you have been healed.":gosub10100:gosub10000:ep=ep+25:gosub2500:ifep>100thenep=100:gosub2500
+2250 if peek(ps+xp+yp*xs)=mthen:pokeps+xp+yp*xs,s:tn$="you have found 5$ gold.":gosub10100:gosub10000:gp=gp+5:gosub2500
 2260 return
 2300 rem *** Check monster
 2310 for j=0 to 3
 2315 if xp=xm(j)andyp=ym(j)thengosub 2400:j=3:goto 2330
-2320 if abs(xp-xm(j))<=1andabs(yp-ym(j))<=1thentn$="you sense an evil presence!":gosub2100:gosub2000
+2320 if abs(xp-xm(j))<=1andabs(yp-ym(j))<=1thentn$="you sense an evil presence!":gosub10100:gosub10000
 2330 next
 2340 return
 2400 rem *** Monster fight
-2410 tn$="you are facing a "+nm$(j)+"!":gosub2100:gosub2000
-2420 tn$="{reverse on} a {reverse off}ttack or {reverse on} f {reverse off}lee":gosub2100:gosub2000:gosub2500
+2410 tn$="you are facing a "+nm$(j)+"!":gosub10100:gosub10000
+2420 tn$="{reverse on} a {reverse off}ttack or {reverse on} f {reverse off}lee":gosub10100:gosub10000:gosub2500
 2430 geta$:if a$=""then2430
 2435 poke198,0
 2440 if a$="a"then2480
-2450 y=int(rnd(1)*3+1):ify=1thentn$="you have run away.":gosub2100:gosub2000:gosub2700:goto2490
-2460 tn$="the "+nm$(j)+" has hit you.":gosub2100:gosub2000:ep=ep-fm(j):goto2420
-2480 y=int(rnd(1)*fm(j)+1):ify=1thentn$="you killed the "+nm$(j)+"":gosub2100:gosub2000:gp=gp+fm(j):tn$="and have received"+str$(fm(j))+"$ gold.":gosub2100:gosub2000:gosub2500:goto2490
-2485 tn$="the "+nm$(j)+" has hit you.":gosub2100:gosub2000:ep=ep-fm(j):goto2420
+2450 y=int(rnd(1)*3+1):ify=1thentn$="you have run away.":gosub10100:gosub10000:gosub2700:goto2490
+2460 tn$="the "+nm$(j)+" has hit you.":gosub10100:gosub10000:ep=ep-fm(j):goto2420
+2480 y=int(rnd(1)*fm(j)+1):ify=1thentn$="you killed the "+nm$(j)+"":gosub10100:gosub10000:gp=gp+fm(j):tn$="and have received"+str$(fm(j))+"$ gold.":gosub10100:gosub10000:gosub2500:goto2490
+2485 tn$="the "+nm$(j)+" has hit you.":gosub10100:gosub10000:ep=ep-fm(j):goto2420
 2490 xm(j)=-1:ym(j)=-1:gosub400:return
 2500 rem *** Print player status
 2510 poke214,3:poke211,5:sys58640:poke646,10:print"energy:     {left}{left}{left}{left}{left}";right$(str$(ep),len(str$(ep))-1);"%"        "
 2520 ifgo<>gpthengo=gp:poke214,3:poke211,24:sys58640:poke646,7:print"gold:          {left}{left}{left}{left}{left}{left}{left}{left}{left}{left}";right$(str$(gp),len(str$(gp))-1);"$"
 2550 return
 2600 rem *** Check player status
-2610 if ep=0 then tn$="you're dead!":gosub2100:gosub2000
+2610 if ep=0 then tn$="you're dead!":gosub10100:gosub10000
 2630 return
 2700 rem *** Respawn player
 2710 x=int(rnd(1)*(xs-3))+2:y=int(rnd(1)*(ys-3))+2:ifpeek(ps+x+y*xs)<>sthen2710
 2720 xp=x:yp=y:mx=x-2:my=y-2:poke51714,mx:poke51715,my:sys49152:return
+10000 rem *** Print message array
+10010 poke 646,5:fori=0to4:poke214,17+i:poke211,5:sys58640:printtx$(i):next:return
+10100 rem *** Update message array
+10110 for i=0 to 30-len(tn$):tn$=tn$+" ":next i
+10120 for i=1 to 4:tx$(i-1)=tx$(i):next::tx$(4)=tn$:return
 19000 REM *** Init maze plot 
 19010 poke 51712,17: poke 51713,10: rem Maze plot position
 19020 poke 51714,mx: poke 51715,my : rem Maze window coordinates
