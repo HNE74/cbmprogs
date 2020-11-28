@@ -32,7 +32,8 @@ mazedef   = $cb00
           cpx            #02
           bne            @plot_scrn_data_char
           cpy            #02
-          beq            @plot_scrn_data_inc
+          bne            @plot_scrn_data_char  
+          jmp            @plot_scrn_data_inc
 @plot_scrn_data_char          
           txa
           clc
@@ -69,10 +70,26 @@ mazedef   = $cb00
           jmp            @plot_scrn_data_chr
 @plot_scrn_data_door
           cmp            #$07
-          bne            @plot_scrn_data_space
+          bne            @plot_scrn_data_potion
           lda            scrn_data_door_sym
           sta            plot_chr
           lda            scrn_data_door_col
+          sta            plot_color
+          jmp            @plot_scrn_data_chr
+@plot_scrn_data_potion
+          cmp            #$08
+          bne            @plot_scrn_data_treasure
+          lda            scrn_data_potion_sym
+          sta            plot_chr
+          lda            scrn_data_potion_col
+          sta            plot_color
+          jmp            @plot_scrn_data_chr
+@plot_scrn_data_treasure
+          cmp            #$09
+          bne            @plot_scrn_data_space
+          lda            scrn_data_treasure_sym
+          sta            plot_chr
+          lda            scrn_data_treasure_col
           sta            plot_color
           jmp            @plot_scrn_data_chr
 @plot_scrn_data_space
@@ -91,7 +108,9 @@ mazedef   = $cb00
 @plot_scrn_data_inc
           inx
           cpx            scrn_data_width
-          bne            @plot_scrn_data_inc2
+          beq            @plot_scrn_data_line
+          jmp            @plot_scrn_data_inc2
+@plot_scrn_data_line
           iny
           cpy            scrn_data_width
           beq            @plot_scrn_data_end
@@ -250,6 +269,14 @@ scrn_data_door_sym
           BYTE           $43
 scrn_data_door_col
           BYTE           $09
+scrn_data_potion_sym
+          BYTE           $44
+scrn_data_potion_col
+          BYTE           $0E
+scrn_data_treasure_sym
+          BYTE           $5E
+scrn_data_treasure_col
+          BYTE           $05
 scrn_data_rows
           BYTE           $1E
 scrn_data_cols

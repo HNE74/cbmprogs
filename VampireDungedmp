@@ -1,14 +1,14 @@
 
-******* 28 Label(s) *******
+******* 32 Label(s) *******
 clrtable = $C953 
-maze_data_peek_val = $CA50 
-maze_data_peek_xp = $CA4F 
-maze_data_peek_yp = $CA4E 
+maze_data_peek_val = $CA54 
+maze_data_peek_xp = $CA53 
+maze_data_peek_yp = $CA52 
 plot_chr = $C988 
 plot_color = $C987 
 plot_x = $C985 
 plot_y = $C986 
-scrn_data_cols = $CA11 
+scrn_data_cols = $CA15 
 scrn_data_door_col = $CA0F 
 scrn_data_door_sym = $CA0E 
 scrn_data_height = $CA05 
@@ -18,7 +18,11 @@ scrn_data_player_col = $CA0B
 scrn_data_player_sym = $CA0A 
 scrn_data_player_xp = $CA08 
 scrn_data_player_yp = $CA09 
-scrn_data_rows = $CA10 
+scrn_data_potion_col = $CA11 
+scrn_data_potion_sym = $CA10 
+scrn_data_rows = $CA14 
+scrn_data_treasure_col = $CA13 
+scrn_data_treasure_sym = $CA12 
 scrn_data_wall_col = $CA07 
 scrn_data_wall_sym = $CA06 
 scrn_data_width = $CA04 
@@ -26,10 +30,10 @@ scrn_data_xp = $CA02
 scrn_data_yp = $CA03 
 scrn_plot_xp = $CA00 
 scrn_plot_yp = $CA01 
-scrnaddtable = $CA12 
+scrnaddtable = $CA16 
 scrtable = $C921 
 
-******* 25 Unused label(s) *******
+******* 29 Unused label(s) *******
 @init_maze
 @init_maze_loop
 @maze_data_peek
@@ -46,7 +50,10 @@ scrtable = $C921
 @plot_scrn_data_inc1
 @plot_scrn_data_inc2
 @plot_scrn_data_item
+@plot_scrn_data_line
+@plot_scrn_data_potion
 @plot_scrn_data_space
+@plot_scrn_data_treasure
 @plot_scrn_data_win
 @scrn_plot
 @start
@@ -67,7 +74,11 @@ scrn_data_player_col
 scrn_data_player_sym
 scrn_data_player_xp
 scrn_data_player_yp
+scrn_data_potion_col
+scrn_data_potion_sym
 scrn_data_rows
+scrn_data_treasure_col
+scrn_data_treasure_sym
 scrn_data_wall_col
 scrn_data_wall_sym
 scrn_data_width
@@ -82,7 +93,7 @@ cls  = $E544
 mazedef  = $CB00
 tgt_c64  = $0001
 zeroadr  = $00FB
-******* -17 Unused variables(s) *******
+******* -20 Unused variables(s) *******
 chrin
 cls
 tgt_c64
