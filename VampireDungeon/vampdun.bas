@@ -3,10 +3,10 @@
 8 dim xd(3):dim yd(3):dim tx$(4): rem *** Movement vectors, text definition
 10 dim xm(3):dim ym(3):dim fm(3):dim nm$(3) : rem Monster definition
 12 sys 51456
-14 kf=0:dp=0 : rem Key found, Movement pointer
+14 kf=0:vd=0:dp=0 : rem Cruzifix found, Vampire dead, Movement pointer
 16 mx=0:my=0 : rem Maze window coordinates
 18 xp=2:yp=2 : rem Player in maze position
-20 ep=10:gp=0:go=-1 : rem Player energy and gold
+20 ep=100:gp=0:go=-1 : rem Player energy and gold
 22 xv=0:yv=0 : rem Player movement vector
 24 xs=30:ys=30 : rem *** Maze size
 26 xd(0)=0:yd(0)=-1:xd(1)=1:yd(1)=0:xd(2)=0:yd(2)=1:xd(3)=-1:yd(3)=0
@@ -48,7 +48,7 @@
 290 pokeps+x+y*xs,t
 300 x=int(rnd(1)*(xs-6))+5:y=int(rnd(1)*(ys-6))+5:ifpeek(ps+x+y*xs)<>sthen300
 310 pokeps+x+y*xs,d
-320 fori=0to9
+320 fori=0to19
 330 x=int(rnd(1)*(xs-3))+2:y=int(rnd(1)*(ys-3))+2:ifpeek(ps+x+y*xs)<>sthen330
 340 pokeps+x+y*xs,p:next
 350 fori=0to4
@@ -93,10 +93,10 @@
 1990 goto 1010
 2200 rem *** Check items
 2205 if peek(ps+xp+yp*xs)=sthenreturn
-2210 if peek(ps+xp+yp*xs)=dandkf=1thentn$="going to next level...":gosub10100:gosub10000
-2220 if peek(ps+xp+yp*xs)=dandkf=0thentn$="you need the key to enter!":gosub10100:gosub10000
-2230 if peek(ps+xp+yp*xs)=tthenkf=1:pokeps+xp+yp*xs,s:tn$="you have found the key!":gosub10100:gosub10000
-2240 if peek(ps+xp+yp*xs)=pthen:pokeps+xp+yp*xs,s:tn$="you have been healed.":gosub10100:gosub10000:ep=ep+25:gosub2500:ifep>100thenep=100:gosub2500
+2210 if peek(ps+xp+yp*xs)=dandvd=1thentn$="going to next level...":gosub10100:gosub10000
+2220 if peek(ps+xp+yp*xs)=dandvd=0thentn$="you have to find the crucifix":gosub10100:gosub10000:tn$="and to kill the vampire to proceed!":gosub10100:gosub10000
+2230 if peek(ps+xp+yp*xs)=tthenkf=1:pokeps+xp+yp*xs,s:tn$="you have found the crucifix!":gosub10100:gosub10000
+2240 if peek(ps+xp+yp*xs)=pthen:pokeps+xp+yp*xs,s:tn$="you have been healed.":gosub10100:gosub10000:ep=100:gosub2500
 2250 if peek(ps+xp+yp*xs)=mthen:pokeps+xp+yp*xs,s:tn$="you have found 5$ gold.":gosub10100:gosub10000:gp=gp+5:gosub2500
 2260 return
 2300 rem *** Check monster
@@ -107,15 +107,20 @@
 2340 return
 2400 rem *** Monster fight
 2410 tn$="you are facing a "+nm$(j)+"!":gosub10100:gosub10000
-2420 tn$="{reverse on} a {reverse off}ttack or {reverse on} f {reverse off}lee":gosub10100:gosub10000:gosub2500
-2430 geta$:if a$=""then2430
+2420 tn$="{reverse on} a {reverse off}ttack or {reverse on} f {reverse off}lee."
+2422 ifj=3andkf=0thentn$="you have no crucifix, {reverse on} f {reverse off}lee."
+2425 gosub10100:gosub10000:gosub2500
+2430 geta$:if a$=""ora$<>"a"anda$<>"f"then2430
 2435 poke198,0
-2440 if a$="a"then2480
+2440 if a$="a"andj<3ora$="a"andj=3andkf=1then2480
 2450 y=int(rnd(1)*3+1):ify=1thentn$="you have run away.":gosub10100:gosub10000:gosub2700:goto2490
-2460 tn$="the "+nm$(j)+" has hit you.":gosub10100:gosub10000:ep=ep-fm(j):goto2420
+2460 tn$="the "+nm$(j)+" has hit you.":gosub10100:gosub10000:ep=ep-fm(j):ifep>0thengoto2420
+2470 goto 2490
 2480 y=int(rnd(1)*fm(j)+1):ify=1thentn$="you killed the "+nm$(j)+"":gosub10100:gosub10000:gp=gp+fm(j):tn$="and have received"+str$(fm(j))+"$ gold.":gosub10100:gosub10000:gosub2500:goto2490
 2485 tn$="the "+nm$(j)+" has hit you.":gosub10100:gosub10000:ep=ep-fm(j):ifep>0thengoto2420
-2490 xm(j)=-1:ym(j)=-1:gosub400:return
+2490 if j<3orj=3andkf=1thenxm(j)=-1:ym(j)=-1
+2492 if j=3anda$="a"thenvd=1
+2495 gosub400:return
 2500 rem *** Print player status
 2510 poke214,3:poke211,5:sys58640:poke646,10:print"energy:     {left}{left}{left}{left}{left}";right$(str$(ep),len(str$(ep))-1);"%"        "
 2520 ifgo<>gpthengo=gp:poke214,3:poke211,24:sys58640:poke646,7:print"gold:          {left}{left}{left}{left}{left}{left}{left}{left}{left}{left}";right$(str$(gp),len(str$(gp))-1);"$"
