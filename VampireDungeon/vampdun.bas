@@ -1,26 +1,28 @@
 1 REM *** Variable definitions
-10 kf=0 : rem Key found
-12 mx=0:my=0 : rem Maze window coordinates
-14 xp=2:yp=2 : rem Player in maze position
-15 ep=100:gp=0:go=-1 : rem Player energy and gold
-16 xv=0:yv=0 : rem Player movement vector
-18 xs=30:ys=30 : rem *** Maze size
-20 dim xd(3):dim yd(3):dp=0 : rem *** Movement vectors and pointer
-22 xd(0)=0:yd(0)=-1:xd(1)=1:yd(1)=0:xd(2)=0:yd(2)=1:xd(3)=-1:yd(3)=0
-24 sx=2:sy=2 : rem *** Start position
-26 cx=sx:cy=sy : rem *** Crurrent position
-28 ox=1:oy=1 : rem *** Old position
-30 nx=1:ny=1 : rem *** New position
-32 s=5:w=4:t=6:d=7:p=8:m=9 : rem *** Space, Wall, Item, Door, Potion, Treasure
-34 g=10 : rem *** Number of gaps
-36 i=0: j=0: x=0: y=0 : rem *** Loop counter
-38 ps=51968 : rem *** Maze data start
-40 dim xm(3):dim ym(3):dim fm(3):dim nm$(3) : rem Monster definition
-42 xm(0)=-1:ym(0)=-1:fm(0)=1:nm$(0)="rat"
-44 xm(1)=-1:ym(1)=-1:fm(1)=2:nm$(1)="bat"
-46 xm(2)=-1:ym(2)=-1:fm(2)=4:nm$(2)="skeleton"
-48 xm(3)=-1:ym(3)=-1:fm(3)=8:nm$(3)="vampire"
-50 dim tx$(4):tn$="": rem Text definition
+6 gosub 20000
+8 dim xd(3):dim yd(3):dim tx$(4): rem *** Movement vectors, text definition
+10 dim xm(3):dim ym(3):dim fm(3):dim nm$(3) : rem Monster definition
+12 sys 51456
+14 kf=0:dp=0 : rem Key found, Movement pointer
+16 mx=0:my=0 : rem Maze window coordinates
+18 xp=2:yp=2 : rem Player in maze position
+20 ep=10:gp=0:go=-1 : rem Player energy and gold
+22 xv=0:yv=0 : rem Player movement vector
+24 xs=30:ys=30 : rem *** Maze size
+26 xd(0)=0:yd(0)=-1:xd(1)=1:yd(1)=0:xd(2)=0:yd(2)=1:xd(3)=-1:yd(3)=0
+28 sx=2:sy=2 : rem *** Start position
+30 cx=sx:cy=sy : rem *** Crurrent position
+32 ox=1:oy=1 : rem *** Old position
+34 nx=1:ny=1 : rem *** New position
+36 s=5:w=4:t=6:d=7:p=8:m=9 : rem *** Space, Wall, Item, Door, Potion, Treasure
+38 g=10 : rem *** Number of gaps
+40 i=0: j=0: x=0: y=0 : rem *** Loop counter
+42 ps=51968 : rem *** Maze data start
+44 xm(0)=-1:ym(0)=-1:fm(0)=1:nm$(0)="rat"
+46 xm(1)=-1:ym(1)=-1:fm(1)=2:nm$(1)="bat"
+48 xm(2)=-1:ym(2)=-1:fm(2)=4:nm$(2)="skeleton"
+50 xm(3)=-1:ym(3)=-1:fm(3)=8:nm$(3)="vampire"
+52 tn$="": rem Text definition
 60 tx$(0)="                              ":tx$(1)="                              "
 62 tx$(2)="                              ":tx$(3)="                              "
 64 tx$(4)="*** take care adventurer! *** "
@@ -56,13 +58,11 @@
 400 rem *** Spawn monsters
 410 fori=0to3
 420 if xm(i)<>-1 and ym(i)<>-1 then 450
-430 x=int(rnd(1)*(xs-6))+5:y=int(rnd(1)*(ys-6))+5:if peek(ps+x+y*xs)=w then 430
+430 x=int(rnd(1)*(xs-4))+3:y=int(rnd(1)*(ys-4))+3:if peek(ps+x+y*xs)=w then 430
 440 xm(i)=x:ym(i)=y
 450 next
 460 return
 900 rem *** Main
-910 gosub 20000
-920 sys 51456
 925 print "generating maze...":e=ti
 930 gosub 130:print "time";ti-e
 940 gosub 400
@@ -71,12 +71,14 @@
 960 gosub 19000
 970 poke 53280,2:poke 53281,0
 980 gosub 1000
+985 goto 12
 990 end
 1000 REM *** Game dungeon loop
-1010 gosub10000:gosub2500:gosub2600:sys 49152
+1010 gosub10000:gosub2500:sys 49152
 1012 POKE 214,2: POKE211,2: SYS 58640:print "            "
 1013 POKE 214,2: POKE211,2: SYS 58640:print xp;yp
-1015 gosub 2200:gosub 2300
+1015 gosub 2200:gosub2300:gosub2600
+1018 ifep=0thenreturn
 1020 get a$:if a$="" then 1020
 1025 poke 198,0
 1030 if asc(a$)=17 then ep=ep-1:yv=1:xv=0
@@ -89,7 +91,6 @@
 1090 my=my-yv:mx=mx-xv:yp=yp-yv:xp=xp-xv
 1100 poke51714,mx:poke51715,my
 1990 goto 1010
-1999 return
 2200 rem *** Check items
 2205 if peek(ps+xp+yp*xs)=sthenreturn
 2210 if peek(ps+xp+yp*xs)=dandkf=1thentn$="going to next level...":gosub10100:gosub10000
@@ -113,14 +114,14 @@
 2450 y=int(rnd(1)*3+1):ify=1thentn$="you have run away.":gosub10100:gosub10000:gosub2700:goto2490
 2460 tn$="the "+nm$(j)+" has hit you.":gosub10100:gosub10000:ep=ep-fm(j):goto2420
 2480 y=int(rnd(1)*fm(j)+1):ify=1thentn$="you killed the "+nm$(j)+"":gosub10100:gosub10000:gp=gp+fm(j):tn$="and have received"+str$(fm(j))+"$ gold.":gosub10100:gosub10000:gosub2500:goto2490
-2485 tn$="the "+nm$(j)+" has hit you.":gosub10100:gosub10000:ep=ep-fm(j):goto2420
+2485 tn$="the "+nm$(j)+" has hit you.":gosub10100:gosub10000:ep=ep-fm(j):ifep>0thengoto2420
 2490 xm(j)=-1:ym(j)=-1:gosub400:return
 2500 rem *** Print player status
 2510 poke214,3:poke211,5:sys58640:poke646,10:print"energy:     {left}{left}{left}{left}{left}";right$(str$(ep),len(str$(ep))-1);"%"        "
 2520 ifgo<>gpthengo=gp:poke214,3:poke211,24:sys58640:poke646,7:print"gold:          {left}{left}{left}{left}{left}{left}{left}{left}{left}{left}";right$(str$(gp),len(str$(gp))-1);"$"
 2550 return
 2600 rem *** Check player status
-2610 if ep=0 then tn$="you're dead!":gosub10100:gosub10000
+2610 if ep<=0 then ep=0:tn$="you're dead!":gosub2500:gosub10100:gosub10000
 2630 return
 2700 rem *** Respawn player
 2710 x=int(rnd(1)*(xs-3))+2:y=int(rnd(1)*(ys-3))+2:ifpeek(ps+x+y*xs)<>sthen2710
