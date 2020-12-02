@@ -3,7 +3,7 @@
 8 dim xd(3):dim yd(3):dim tx$(4): rem *** Movement vectors, text definition
 10 dim xm(3):dim ym(3):dim fm(3):dim nm$(3) : rem Monster definition
 12 sys 51456
-14 kf=1:vd=1:dp=0 : rem Cruzifix found, Vampire dead, Movement pointer
+14 kf=0:vd=0:dp=0 : rem Cruzifix found, Vampire dead, Movement pointer
 16 mx=0:my=0 : rem Maze window coordinates
 18 xp=2:yp=2 : rem Player in maze position
 20 ep=100:gp=0:go=-1 : rem Player energy and gold
@@ -66,12 +66,13 @@
 900 rem *** Main
 905 gosub 19000
 910 print "{clear}"
+915 gosub 11000
 920 poke 53280,2:poke 53281,0:sys49152
 930 tn$="descending into the dungeon...":gosub10100:gosub10000
 940 gosub 130
 950 gosub 400
 980 gosub 1000
-982 if nl=1thennl=0:xp=2:yp=2:mx=0:my=0:sys 51456:poke51714,mx:poke51715,my:goto920
+982 if nl=1thennl=0:xp=2:yp=2:mx=0:my=0:kf=0:vd=0:sys 51456:poke51714,mx:poke51715,my:goto920
 984 tn$="press any key to restart.":gosub10100:gosub10000
 986 get a$:if a$=""then986
 988 poke 198,0:goto 12
@@ -123,27 +124,50 @@
 2492 if j=3anda$="a"thenvd=1
 2495 gosub400:return
 2500 rem *** Print player status
-2510 poke214,3:poke211,5:sys58640:poke646,10:print"energy:     {left}{left}{left}{left}{left}";right$(str$(ep),len(str$(ep))-1);"%"        "
-2520 ifgo<>gpthengo=gp:poke214,3:poke211,24:sys58640:poke646,7:print"gold:          {left}{left}{left}{left}{left}{left}{left}{left}{left}{left}";right$(str$(gp),len(str$(gp))-1);"$"
-2530 poke214,5:poke211,12:sys58640:poke646,3:print"position:        {left}{left}{left}{left}{left}{left}{left}{left}"+right$(str$(xp),len(str$(xp))-1)+"-"+right$(str$(yp),len(str$(yp))-1)
+2510 poke214,2:poke211,5:sys58640:poke646,10:print"energy:     {left}{left}{left}{left}{left}";right$(str$(ep),len(str$(ep))-1);"%"        "
+2520 ifgo<>gpthengo=gp:poke214,2:poke211,24:sys58640:poke646,7:print"gold:        {left}{left}{left}{left}{left}{left}{left}{left}";right$(str$(gp),len(str$(gp))-1);"$"
+2530 poke214,4:poke211,12:sys58640:poke646,3:print"position:        {left}{left}{left}{left}{left}{left}{left}{left}"+right$(str$(xp),len(str$(xp))-1)+"-"+right$(str$(yp),len(str$(yp))-1)
 2550 return
 2600 rem *** Check player status
 2610 if ep<=0 then ep=0:tn$="you're dead!":gosub2500:gosub10100:gosub10000
 2630 return
-2700 rem *** Respawn player
+2700 rem *** Player has run away
 2710 x=int(rnd(1)*(xs-3))+2:y=int(rnd(1)*(ys-3))+2:ifpeek(ps+x+y*xs)<>sthen2710
 2720 xp=x:yp=y:mx=x-2:my=y-2:poke51714,mx:poke51715,my:sys49152:return
 10000 rem *** Print message array
-10010 poke 646,5:fori=0to4:poke214,17+i:poke211,5:sys58640:printtx$(i):next:return
+10010 poke 646,5:fori=0to4:poke214,18+i:poke211,3:sys58640:printtx$(i):next:return
 10100 rem *** Update message array
-10110 for i=0 to 30-len(tn$):tn$=tn$+" ":next i
+10110 for i=0 to 32-len(tn$):tn$=tn$+" ":next i
 10120 for i=1 to 4:tx$(i-1)=tx$(i):next::tx$(4)=tn$:return
+11000 rem *** Main screen 
+11005 print "  {gray}UCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCI"
+11010 print "  {125}                                  {125}"
+11020 print "  {125}                                  {125}"
+11030 print "  {125}                                  {125}"
+11040 print "  JCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCK"
+11045 print "{down}"
+11050 print "                    {gray}UCCCCCCCCCCCCCCCCI"
+11060 print "                    {125}                {125}"
+11065 print "                    {125}                {125}"
+11070 print "                    {125}                {125}" 
+11075 print "                    {125}                {125}"
+11080 print "                    {125}                {125}"
+11090 print "                    JCCCCCCCCCCCCCCCCK"
+11100 print "{down}"
+11150 PRINT "  UCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCI"
+11160 PRINT "  {125}                                  {125}"
+11170 PRINT "  {125}                                  {125}"
+11180 PRINT "  {125}                                  {125}"
+11190 PRINT "  {125}                                  {125}"
+11200 PRINT "  {125}                                  {125}"
+11210 PRINT "  JCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCK"
+11220 return
 19000 REM *** Init maze plot 
-19010 poke 51712,17: poke 51713,9: rem Maze plot position
+19010 poke 51712,8: poke 51713,9: rem Maze plot position
 19020 poke 51714,mx: poke 51715,my : rem Maze window coordinates
 19030 poke 51716,5: poke 51717,5 : rem Maze window size
 19040 poke 51718,102: poke 51719,9 : rem Wall symbol and color
-19050 poke 51720,19: poke 51721,11 : rem Player position
+19050 poke 51720,10: poke 51721,11 : rem Player position
 19060 poke 51722,65: poke 51723,15 : rem Player symbol and color
 19070 poke 51724,88: poke 51725,11 : rem Key symbol and color
 19080 poke 51726,87: poke 51727,8 : rem Door symbol and color
@@ -151,6 +175,7 @@
 19100 poke 51730,94: poke 51729,5 : rem Treasure symbol and color
 19110 return
 20000 REM *** Machine routine loader
+20002 print "initializing..."
 20005 SA = 49152
 20010 FOR N = 0 TO 320
 20015 READ A%:POKE SA+N,A%:NEXT N
