@@ -124,12 +124,12 @@
 2492 if j=3anda$="a"thenvd=1
 2495 gosub400:return
 2500 rem *** Print player status
-2510 poke214,2:poke211,5:sys58640:poke646,10:print"energy:     {left}{left}{left}{left}{left}";right$(str$(ep),len(str$(ep))-1);"%"        "
-2520 ifgo<>gpthengo=gp:poke214,2:poke211,24:sys58640:poke646,7:print"gold:        {left}{left}{left}{left}{left}{left}{left}{left}";right$(str$(gp),len(str$(gp))-1);"$"
-2530 poke214,4:poke211,12:sys58640:poke646,3:print"position:        {left}{left}{left}{left}{left}{left}{left}{left}"+right$(str$(xp),len(str$(xp))-1)+"-"+right$(str$(yp),len(str$(yp))-1)
+2510 poke214,9:poke211,21:sys58640:poke646,10:print"energy:     {left}{left}{left}{left}{left}";right$(str$(ep),len(str$(ep))-1);"%"        "
+2520 ifgo<>gpthengo=gp:poke214,11:poke211,21:sys58640:poke646,7:print"gold:        {left}{left}{left}{left}{left}{left}{left}{left}";right$(str$(gp),len(str$(gp))-1);"$"
+2530 poke214,13:poke211,21:sys58640:poke646,3:print"position:       {left}{left}{left}{left}{left}{left}{left}"+right$(str$(xp),len(str$(xp))-1)+"-"+right$(str$(yp),len(str$(yp))-1)
 2550 return
 2600 rem *** Check player status
-2610 if ep<=0 then ep=0:tn$="you're dead!":gosub2500:gosub10100:gosub10000
+2610 if ep<=0thenep=0:tn$="you're dead!":gosub2500:gosub10100:gosub10000
 2630 return
 2700 rem *** Player has run away
 2710 x=int(rnd(1)*(xs-3))+2:y=int(rnd(1)*(ys-3))+2:ifpeek(ps+x+y*xs)<>sthen2710
