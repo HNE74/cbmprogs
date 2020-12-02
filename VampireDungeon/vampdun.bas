@@ -3,7 +3,7 @@
 8 dim xd(3):dim yd(3):dim tx$(4): rem *** Movement vectors, text definition
 10 dim xm(3):dim ym(3):dim fm(3):dim nm$(3) : rem Monster definition
 12 sys 51456
-14 kf=0:vd=0:dp=0 : rem Cruzifix found, Vampire dead, Movement pointer
+14 kf=1:vd=1:dp=0 : rem Cruzifix found, Vampire dead, Movement pointer
 16 mx=0:my=0 : rem Maze window coordinates
 18 xp=2:yp=2 : rem Player in maze position
 20 ep=100:gp=0:go=-1 : rem Player energy and gold
@@ -14,6 +14,7 @@
 30 cx=sx:cy=sy : rem *** Crurrent position
 32 ox=1:oy=1 : rem *** Old position
 34 nx=1:ny=1 : rem *** New position
+35 nl=0: : rem Next level flag
 36 s=5:w=4:t=6:d=7:p=8:m=9 : rem *** Space, Wall, Item, Door, Potion, Treasure
 38 g=10 : rem *** Number of gaps
 40 i=0: j=0: x=0: y=0 : rem *** Loop counter
@@ -58,25 +59,27 @@
 400 rem *** Spawn monsters
 410 fori=0to3
 420 if xm(i)<>-1 and ym(i)<>-1 then 450
-430 x=int(rnd(1)*(xs-4))+3:y=int(rnd(1)*(ys-4))+3:if peek(ps+x+y*xs)=w then 430
+430 x=int(rnd(1)*(xs-4))+3:y=int(rnd(1)*(ys-4))+3:if peek(ps+x+y*xs)=wthen430
 440 xm(i)=x:ym(i)=y
 450 next
 460 return
 900 rem *** Main
-925 print "generating maze...":e=ti
-930 gosub 130:print "time";ti-e
-940 gosub 400
-945 get a$:if a$="" then 945
-950 print "{clear}"
-960 gosub 19000
-970 poke 53280,2:poke 53281,0
+905 gosub 19000
+910 print "{clear}"
+920 poke 53280,2:poke 53281,0:sys49152
+930 tn$="descending into the dungeon...":gosub10100:gosub10000
+940 gosub 130
+950 gosub 400
 980 gosub 1000
-985 goto 12
+982 if nl=1thennl=0:xp=2:yp=2:mx=0:my=0:sys 51456:poke51714,mx:poke51715,my:goto920
+984 tn$="press any key to restart.":gosub10100:gosub10000
+986 get a$:if a$=""then986
+988 poke 198,0:goto 12
 990 end
 1000 REM *** Game dungeon loop
 1010 gosub10000:gosub2500:sys 49152
 1015 gosub 2200:gosub2300:gosub2600
-1018 ifep=0thenreturn
+1018 ifep=0orpeek(ps+xp+yp*xs)=dandvd=1thenreturn
 1020 get a$:if a$="" then 1020
 1025 poke 198,0
 1030 if asc(a$)=17 then ep=ep-1:yv=1:xv=0
@@ -85,13 +88,13 @@
 1060 if asc(a$)=29 then ep=ep-1:yv=0:xv=1
 1070 my=my+yv:mx=mx+xv:yp=yp+yv:xp=xp+xv
 1080 if peek(ps+xp+yp*xs)<>w then 1100
-1085 tn$="you can't go this way'!":gosub10100:gosub10000
+1085 tn$="you can't go this way!":gosub10100:gosub10000
 1090 my=my-yv:mx=mx-xv:yp=yp-yv:xp=xp-xv
 1100 poke51714,mx:poke51715,my
 1990 goto 1010
 2200 rem *** Check items
 2205 if peek(ps+xp+yp*xs)=sthenreturn
-2210 if peek(ps+xp+yp*xs)=dandvd=1thentn$="going to next level...":gosub10100:gosub10000
+2210 if peek(ps+xp+yp*xs)=dandvd=1thentn$="well done, level completed.":gosub10100:gosub10000:nl=1:return
 2220 if peek(ps+xp+yp*xs)=dandvd=0thentn$="find the crucifix and kill":gosub10100:gosub10000:tn$="the vampire to proceed!":gosub10100:gosub10000
 2230 if peek(ps+xp+yp*xs)=tthenkf=1:pokeps+xp+yp*xs,s:tn$="you have found the crucifix!":gosub10100:gosub10000
 2240 if peek(ps+xp+yp*xs)=pthen:pokeps+xp+yp*xs,s:tn$="you have been healed.":gosub10100:gosub10000:ep=100:gosub2500
@@ -136,11 +139,11 @@
 10110 for i=0 to 30-len(tn$):tn$=tn$+" ":next i
 10120 for i=1 to 4:tx$(i-1)=tx$(i):next::tx$(4)=tn$:return
 19000 REM *** Init maze plot 
-19010 poke 51712,17: poke 51713,10: rem Maze plot position
+19010 poke 51712,17: poke 51713,9: rem Maze plot position
 19020 poke 51714,mx: poke 51715,my : rem Maze window coordinates
 19030 poke 51716,5: poke 51717,5 : rem Maze window size
 19040 poke 51718,102: poke 51719,9 : rem Wall symbol and color
-19050 poke 51720,19: poke 51721,12 : rem Player position
+19050 poke 51720,19: poke 51721,11 : rem Player position
 19060 poke 51722,65: poke 51723,15 : rem Player symbol and color
 19070 poke 51724,88: poke 51725,11 : rem Key symbol and color
 19080 poke 51726,87: poke 51727,8 : rem Door symbol and color
