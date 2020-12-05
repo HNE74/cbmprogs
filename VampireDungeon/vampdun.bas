@@ -1,5 +1,5 @@
 1 REM *** Variable definitions
-6 gosub 20000
+6 rnd(0):gosub 20000
 8 dim xd(3):dim yd(3):dim tx$(5): rem *** Movement vectors, text definition
 10 dim xm(3):dim ym(3):dim fm(3):dim nm$(3) : rem Monster definition
 12 sys 51456
