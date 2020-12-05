@@ -1,6 +1,6 @@
 1 REM *** Variable definitions
 6 gosub 20000
-8 dim xd(3):dim yd(3):dim tx$(4): rem *** Movement vectors, text definition
+8 dim xd(3):dim yd(3):dim tx$(5): rem *** Movement vectors, text definition
 10 dim xm(3):dim ym(3):dim fm(3):dim nm$(3) : rem Monster definition
 12 sys 51456
 14 kf=0:vd=0:dp=0 : rem Cruzifix found, Vampire dead, Movement pointer
@@ -151,32 +151,30 @@
 2950 print"{right}{right}{right}{right}{right} "
 2960 return
 10000 rem *** Print message array
-10010 poke 646,5:fori=0to4:poke214,18+i:poke211,3:sys58640:printtx$(i):next:return
+10010 poke 646,5:fori=0to5:poke214,17+i:poke211,3:sys58640:printtx$(i):next:return
 10100 rem *** Update message array
 10110 for i=0 to 32-len(tn$):tn$=tn$+" ":next i
-10120 for i=1 to 4:tx$(i-1)=tx$(i):next::tx$(4)=tn$:return
-11000 rem *** Main screen 
-11005 print "  {gray}UCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCI"
-11010 print "  {125}                                  {125}"
-11020 print "  {125}                                  {125}"
-11030 print "  {125}                                  {125}"
-11040 print "  JCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCK"
-11045 print "{down}"
+10120 for i=1 to 5:tx$(i-1)=tx$(i):next::tx$(4)=tn$:return
+11000 rem *** Main screen
+11015 PRINT "{red}     I U U{096}I UIUI UCFI U UCFI UCF"
+11020 PRINT "     H G {125} {125} {125}JK{125} {125}  G {125} {125}  G {125}   "
+11025 PRINT "     Y T {171}D{179} G  Y {171}CCK {125} {171}{178}CK {171}D  "
+11030 PRINT "     {167} {180} G H {165}  {167} {125}   UK {125}JCI JFF "
+11040 PRINT "      {183}{down}{light gray}{left}{left}{left}{left}{left}d u n g e o n     {cyan}(c) noltisoft 2020{down}"
 11050 print "  {gray}UCCCCCI  {gray}UCCCCCI  {gray}UCCCCCCCCCCCCCCCCI"
 11060 print "  {125}     {125}  {125}     {125}  {125}                {125}"
 11065 print "  {125}     {125}  {125}     {125}  {125}                {125}"
 11070 print "  {125}     {125}  {125}     {125}  {125}                {125}" 
 11075 print "  {125}     {125}  {125}     {125}  {125}                {125}"
 11080 print "  {125}     {125}  {125}     {125}  {125}                {125}"
-11090 print "  JCCCCCK  JCCCCCK  JCCCCCCCCCCCCCCCCK"
-11100 print "{down}"
+11090 print "  JCCCCCK  JCCCCCK  JCCCCCCCCCCCCCCCCK{down}"
 11150 PRINT "  UCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCI"
 11160 PRINT "  {125}                                  {125}"
 11170 PRINT "  {125}                                  {125}"
 11180 PRINT "  {125}                                  {125}"
 11190 PRINT "  {125}                                  {125}"
 11200 PRINT "  {125}                                  {125}"
-11210 PRINT "  JCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCK"
+11210 PRINT "  JCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCK{up}"
 11220 return
 19000 REM *** Init maze plot 
 19010 poke 51712,12: poke 51713,9: rem Maze plot position
