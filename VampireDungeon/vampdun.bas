@@ -16,13 +16,13 @@
 34 nx=1:ny=1 : rem *** New position
 35 nl=0: : rem Next level flag
 36 s=5:w=4:t=6:d=7:p=8:m=9 : rem *** Space, Wall, Item, Door, Potion, Treasure
-38 g=10 : rem *** Number of gaps
+38 g=20 : rem *** Number of gaps
 40 i=0: j=0: x=0: y=0 : rem *** Loop counter
 42 ps=51968 : rem *** Maze data start
 44 xm(0)=-1:ym(0)=-1:fm(0)=1:nm$(0)="rat"
 46 xm(1)=-1:ym(1)=-1:fm(1)=2:nm$(1)="bat"
-48 xm(2)=-1:ym(2)=-1:fm(2)=4:nm$(2)="skeleton"
-50 xm(3)=-1:ym(3)=-1:fm(3)=8:nm$(3)="vampire"
+48 xm(2)=-1:ym(2)=-1:fm(2)=3:nm$(2)="skeleton"
+50 xm(3)=-1:ym(3)=-1:fm(3)=4:nm$(3)="vampire"
 52 tn$="": rem Text definition
 60 tx$(0)="                              ":tx$(1)="                              "
 62 tx$(2)="                              ":tx$(3)="                              "
@@ -41,8 +41,8 @@
 210 next:return
 220 fori=0tog
 230 x=int(rnd(1)*(xs-2))+1:y=int(rnd(1)*(ys-2))+1:ifpeek(ps+x+y*xs)=sthen230
-240 ifpeek(ps+x+(y-1)*xs)=wandpeek(ps+x+(y+1)*xs)=wandpeek(ps+x-1+y*xs)<>wandpeek(ps+x+1+y*xs)<>wthen270
-250 ifpeek(ps+x-1+y*xs)=wandpeek(ps+x+1+y*xs)=wandpeek(ps+x+(y-1)*xs)<>wandpeek(ps+x+(y+1)*xs)<>wthen270
+240 ifpeek(ps+x+y*xs)=wandpeek(ps+x+(y-1)*xs)=wandpeek(ps+x+(y+1)*xs)=wandpeek(ps+x-1+y*xs)<>wandpeek(ps+x+1+y*xs)<>wthen270
+250 ifpeek(ps+x+y*xs)=wandpeek(ps+x-1+y*xs)=wandpeek(ps+x+1+y*xs)=wandpeek(ps+x+(y-1)*xs)<>wandpeek(ps+x+(y+1)*xs)<>wthen270
 260 goto230
 270 pokeps+x+y*xs,s:next
 280 x=int(rnd(1)*(xs-6))+5:y=int(rnd(1)*(ys-6))+5:ifpeek(ps+x+y*xs)<>sthen280
@@ -71,15 +71,17 @@
 930 tn$="descending into the dungeon...":gosub10100:gosub10000
 940 gosub 130
 950 gosub 400
+960 tn$="find the crucifix to kill":gosub10100:gosub10000
+965 tn$="the evil vampire!":gosub10100:gosub10000
 980 gosub 1000
-982 if nl=1thennl=0:xp=2:yp=2:mx=0:my=0:kf=0:vd=0:sys 51456:poke51714,mx:poke51715,my:goto920
-984 tn$="press any key to restart.":gosub10100:gosub10000
+982 if nl=1thennl=0:xp=2:yp=2:mx=0:my=0:kf=0:vd=0:gosub2900:sys 51456:poke51714,mx:poke51715,my:goto920
+984 tn$="press any key to restart.":gosub10100:gosub10000:fori=0to500:next
 986 get a$:if a$=""then986
 988 poke 198,0:goto 12
 990 end
 1000 REM *** Game dungeon loop
-1010 gosub10000:gosub2500:sys 49152
-1015 gosub 2200:gosub2300:gosub2600
+1010 gosub10000:gosub2500:sys49152
+1015 gosub2200:gosub2300:gosub2600
 1018 ifep=0orpeek(ps+xp+yp*xs)=dandvd=1thenreturn
 1020 get a$:if a$="" then 1020
 1025 poke 198,0
@@ -97,7 +99,7 @@
 2205 if peek(ps+xp+yp*xs)=sthenreturn
 2210 if peek(ps+xp+yp*xs)=dandvd=1thentn$="well done, level completed.":gosub10100:gosub10000:nl=1:return
 2220 if peek(ps+xp+yp*xs)=dandvd=0thentn$="find the crucifix and kill":gosub10100:gosub10000:tn$="the vampire to proceed!":gosub10100:gosub10000
-2230 if peek(ps+xp+yp*xs)=tthenkf=1:pokeps+xp+yp*xs,s:tn$="you have found the crucifix!":gosub10100:gosub10000
+2230 if peek(ps+xp+yp*xs)=tthenkf=1:pokeps+xp+yp*xs,s:tn$="you have found the crucifix!":gosub10100:gosub10000:gosub2800
 2240 if peek(ps+xp+yp*xs)=pthen:pokeps+xp+yp*xs,s:tn$="you have been healed.":gosub10100:gosub10000:ep=100:gosub2500
 2250 if peek(ps+xp+yp*xs)=mthen:pokeps+xp+yp*xs,s:tn$="you have found 5$ gold.":gosub10100:gosub10000:gp=gp+5:gosub2500
 2260 return
@@ -121,7 +123,7 @@
 2480 y=int(rnd(1)*fm(j)+1):ify=1thentn$="you killed the "+nm$(j)+"":gosub10100:gosub10000:gp=gp+fm(j):tn$="and have received"+str$(fm(j))+"$ gold.":gosub10100:gosub10000:gosub2500:goto2490
 2485 tn$="the "+nm$(j)+" has hit you.":gosub10100:gosub10000:ep=ep-fm(j):ifep>0thengoto2420
 2490 if j<3orj=3andkf=1thenxm(j)=-1:ym(j)=-1
-2492 if j=3anda$="a"thenvd=1
+2492 if j=3anda$="a"thenvd=1:"now find the door!":gosub10100:gosub10000
 2495 gosub400:return
 2500 rem *** Print player status
 2510 poke214,9:poke211,21:sys58640:poke646,10:print"energy:     {left}{left}{left}{left}{left}";right$(str$(ep),len(str$(ep))-1);"%"        "
@@ -134,6 +136,20 @@
 2700 rem *** Player has run away
 2710 x=int(rnd(1)*(xs-3))+2:y=int(rnd(1)*(ys-3))+2:ifpeek(ps+x+y*xs)<>sthen2710
 2720 xp=x:yp=y:mx=x-2:my=y-2:poke51714,mx:poke51715,my:sys49152:return
+2800 rem *** Print crucifix
+2810 poke214,9:poke211,5:sys58640:poke646,14:print"Q"
+2820 print"{right}{right}{right}QQQQQ"
+2830 print"{right}{right}{right}{right}{right}Q"
+2840 print"{right}{right}{right}{right}{right}Q"
+2850 print"{right}{right}{right}{right}{right}Q"
+2860 return
+2900 rem *** Remove crucifix
+2910 poke214,9:poke211,5:sys58640:poke646,14:print" "
+2920 print"{right}{right}{right}     "
+2930 print"{right}{right}{right}{right}{right} "
+2940 print"{right}{right}{right}{right}{right} "
+2950 print"{right}{right}{right}{right}{right} "
+2960 return
 10000 rem *** Print message array
 10010 poke 646,5:fori=0to4:poke214,18+i:poke211,3:sys58640:printtx$(i):next:return
 10100 rem *** Update message array
@@ -146,13 +162,13 @@
 11030 print "  {125}                                  {125}"
 11040 print "  JCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCK"
 11045 print "{down}"
-11050 print "                    {gray}UCCCCCCCCCCCCCCCCI"
-11060 print "                    {125}                {125}"
-11065 print "                    {125}                {125}"
-11070 print "                    {125}                {125}" 
-11075 print "                    {125}                {125}"
-11080 print "                    {125}                {125}"
-11090 print "                    JCCCCCCCCCCCCCCCCK"
+11050 print "  {gray}UCCCCCI  {gray}UCCCCCI  {gray}UCCCCCCCCCCCCCCCCI"
+11060 print "  {125}     {125}  {125}     {125}  {125}                {125}"
+11065 print "  {125}     {125}  {125}     {125}  {125}                {125}"
+11070 print "  {125}     {125}  {125}     {125}  {125}                {125}" 
+11075 print "  {125}     {125}  {125}     {125}  {125}                {125}"
+11080 print "  {125}     {125}  {125}     {125}  {125}                {125}"
+11090 print "  JCCCCCK  JCCCCCK  JCCCCCCCCCCCCCCCCK"
 11100 print "{down}"
 11150 PRINT "  UCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCI"
 11160 PRINT "  {125}                                  {125}"
@@ -163,11 +179,11 @@
 11210 PRINT "  JCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCK"
 11220 return
 19000 REM *** Init maze plot 
-19010 poke 51712,8: poke 51713,9: rem Maze plot position
+19010 poke 51712,12: poke 51713,9: rem Maze plot position
 19020 poke 51714,mx: poke 51715,my : rem Maze window coordinates
 19030 poke 51716,5: poke 51717,5 : rem Maze window size
 19040 poke 51718,102: poke 51719,9 : rem Wall symbol and color
-19050 poke 51720,10: poke 51721,11 : rem Player position
+19050 poke 51720,14: poke 51721,11 : rem Player position
 19060 poke 51722,65: poke 51723,15 : rem Player symbol and color
 19070 poke 51724,88: poke 51725,11 : rem Key symbol and color
 19080 poke 51726,87: poke 51727,8 : rem Door symbol and color
