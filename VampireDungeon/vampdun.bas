@@ -33,7 +33,7 @@
 130 gosub180
 140 ifcx=sxandcy=sythenpokeps+sx+sy*xs,s:goto170
 150 ifox<>cxoroy<>cythen120
-160 nx=cx-xd(peek(ps+cx+cy*xs))*2:ny=cy-yd(peek(ps+cx+cy*xs))*2:pokeps+cx+cy*xs,s:cx=nx:cy=ny:goto120
+160 nx=cx-xd(peek(ps+cx+cy*xs))*2:ny=cy-yd(peek(ps+cx+cy*xs))*2:pokeps+cx+cy*xs,s:cx=nx:cy=ny:poke53280,nx+ny:goto120
 170 gosub220:return
 180 dp=int(rnd(1)*4):fori=0to3:nx=cx+xd(dp)*2:ny=cy+yd(dp)*2:ifnx<2ornx>=xs-2orny<2orny>=ys-2or(nx=sxandny=sy)then200
 190 ifpeek(ps+nx+ny*xs)=wthenpokeps+((cy+yd(dp))*xs)+cx+xd(dp),s:cx=nx:cy=ny:pokeps+cx+cy*xs,dp:return
@@ -44,12 +44,12 @@
 240 ifpeek(ps+x+y*xs)=wandpeek(ps+x+(y-1)*xs)=wandpeek(ps+x+(y+1)*xs)=wandpeek(ps+x-1+y*xs)<>wandpeek(ps+x+1+y*xs)<>wthen270
 250 ifpeek(ps+x+y*xs)=wandpeek(ps+x-1+y*xs)=wandpeek(ps+x+1+y*xs)=wandpeek(ps+x+(y-1)*xs)<>wandpeek(ps+x+(y+1)*xs)<>wthen270
 260 goto230
-270 pokeps+x+y*xs,s:next
+270 pokeps+x+y*xs,s:poke53280,x+y:next
 280 x=int(rnd(1)*(xs-6))+5:y=int(rnd(1)*(ys-6))+5:ifpeek(ps+x+y*xs)<>sthen280
 290 pokeps+x+y*xs,t
 300 x=int(rnd(1)*(xs-6))+5:y=int(rnd(1)*(ys-6))+5:ifpeek(ps+x+y*xs)<>sthen300
 310 pokeps+x+y*xs,d
-320 fori=0to19
+320 fori=0to12
 330 x=int(rnd(1)*(xs-3))+2:y=int(rnd(1)*(ys-3))+2:ifpeek(ps+x+y*xs)<>sthen330
 340 pokeps+x+y*xs,p:next
 350 fori=0to4
@@ -67,15 +67,15 @@
 905 gosub 19000
 910 print "{clear}"
 915 gosub 11000
-920 poke 53280,2:poke 53281,0:sys49152
+920 poke 53281,0:sys49152
 930 tn$="descending into the dungeon...":gosub10100:gosub10000
-940 gosub 130
+940 gosub 130:poke53280,12
 950 gosub 400
 960 tn$="find the crucifix to kill":gosub10100:gosub10000
 965 tn$="the evil vampire!":gosub10100:gosub10000
 980 gosub 1000
-982 if nl=1thennl=0:xp=2:yp=2:mx=0:my=0:kf=0:vd=0:gosub2900:sys 51456:poke51714,mx:poke51715,my:goto920
-984 tn$="press any key to restart.":gosub10100:gosub10000:fori=0to500:next
+982 if nl=1thennl=0:xp=2:yp=2:mx=0:my=0:kf=0:vd=0:gosub2900:sys 51456:poke51714,mx:poke51715,my:fori=0to3:fm(i)=fm(i)+1:nexti:goto920
+984 tn$="press any key to restart.":gosub10100:gosub10000:fori=0to1000:next
 986 get a$:if a$=""then986
 988 poke 198,0:goto 12
 990 end
@@ -123,7 +123,7 @@
 2480 y=int(rnd(1)*fm(j)+1):ify=1thentn$="you killed the "+nm$(j)+"":gosub10100:gosub10000:gp=gp+fm(j):tn$="and have received"+str$(fm(j))+"$ gold.":gosub10100:gosub10000:gosub2500:goto2490
 2485 tn$="the "+nm$(j)+" has hit you.":gosub10100:gosub10000:ep=ep-fm(j):ifep>0thengoto2420
 2490 if j<3orj=3andkf=1thenxm(j)=-1:ym(j)=-1
-2492 if j=3anda$="a"thenvd=1:"now find the door!":gosub10100:gosub10000
+2492 if j=3anda$="a"thenvd=1:tn$="now find the door!":gosub10100:gosub10000
 2495 gosub400:return
 2500 rem *** Print player status
 2510 poke214,9:poke211,21:sys58640:poke646,10:print"energy:     {left}{left}{left}{left}{left}";right$(str$(ep),len(str$(ep))-1);"%"        "
