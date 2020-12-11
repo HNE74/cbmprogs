@@ -1,37 +1,37 @@
 
 ******* 32 Label(s) *******
-clrtable = $C953 
-maze_data_peek_val = $CA54 
-maze_data_peek_xp = $CA53 
-maze_data_peek_yp = $CA52 
-plot_chr = $C988 
-plot_color = $C987 
-plot_x = $C985 
-plot_y = $C986 
-scrn_data_cols = $CA15 
-scrn_data_door_col = $CA0F 
-scrn_data_door_sym = $CA0E 
-scrn_data_height = $CA05 
-scrn_data_item_col = $CA0D 
-scrn_data_item_sym = $CA0C 
-scrn_data_player_col = $CA0B 
-scrn_data_player_sym = $CA0A 
-scrn_data_player_xp = $CA08 
-scrn_data_player_yp = $CA09 
-scrn_data_potion_col = $CA11 
-scrn_data_potion_sym = $CA10 
-scrn_data_rows = $CA14 
-scrn_data_treasure_col = $CA13 
-scrn_data_treasure_sym = $CA12 
-scrn_data_wall_col = $CA07 
-scrn_data_wall_sym = $CA06 
-scrn_data_width = $CA04 
-scrn_data_xp = $CA02 
-scrn_data_yp = $CA03 
-scrn_plot_xp = $CA00 
-scrn_plot_yp = $CA01 
-scrnaddtable = $CA16 
-scrtable = $C921 
+clrtable = $CD73 
+maze_data_peek_val = $CF54 
+maze_data_peek_xp = $CF53 
+maze_data_peek_yp = $CF52 
+plot_chr = $CDA8 
+plot_color = $CDA7 
+plot_x = $CDA5 
+plot_y = $CDA6 
+scrn_data_cols = $CF15 
+scrn_data_door_col = $CF0F 
+scrn_data_door_sym = $CF0E 
+scrn_data_height = $CF05 
+scrn_data_item_col = $CF0D 
+scrn_data_item_sym = $CF0C 
+scrn_data_player_col = $CF0B 
+scrn_data_player_sym = $CF0A 
+scrn_data_player_xp = $CF08 
+scrn_data_player_yp = $CF09 
+scrn_data_potion_col = $CF11 
+scrn_data_potion_sym = $CF10 
+scrn_data_rows = $CF14 
+scrn_data_treasure_col = $CF13 
+scrn_data_treasure_sym = $CF12 
+scrn_data_wall_col = $CF07 
+scrn_data_wall_sym = $CF06 
+scrn_data_width = $CF04 
+scrn_data_xp = $CF02 
+scrn_data_yp = $CF03 
+scrn_plot_xp = $CF00 
+scrn_plot_yp = $CF01 
+scrnaddtable = $CF16 
+scrtable = $CD41 
 
 ******* 29 Unused label(s) *******
 @init_maze
@@ -90,7 +90,7 @@ scrn_plot_yp
 ******* 5 Variable(s) *******
 chrin  = $FFE4
 cls  = $E544
-mazedef  = $CB00
+mazedef  = $0400
 tgt_c64  = $0001
 zeroadr  = $00FB
 ******* -20 Unused variables(s) *******

@@ -5,139 +5,33 @@
 cls       = $e544
 chrin     = $ffe4
 zeroadr   = $fb
-mazedef   = $8C00
+mazedef   = $0400
 
-VICCHARSETADR           = $C000
-CHARROMADR              = $D000
-VICBANKCONTROL          = $DD00
-VICCIACONTROL           = $DD02
-VICMEMCONTROL           = $D018
-KERNALSCREENRAM         = $288
-ZP_HELPADR1             = $FB
-ZP_HELPADR2             = $FD
-CHARPTR                 = $CF1C
-CHARDEFPTR              = $CF1D
-CHARBYTE                = $CF1E
+;*****************************************
+;*** Initialize maze
+;*****************************************
+*=$033C; DEC:828
+@init_maze 
+        lda #<mazedef ; LSB
+        sta zeroadr
+        lda #>mazedef ; MSB
+        sta zeroadr+1
+@init_maze_loop
+        lda #$04
+        ldy #$00
+        sta (zeroadr),y
+        inc zeroadr
+        bne *+4
+        inc zeroadr+1
+        lda zeroadr+1
+        cmp #$07
+        bne @init_maze_loop
+        lda zeroadr
+        cmp #$85
+        bne @init_maze_loop
+        rts
 
-*=$CC00; DEC: 52224 
-@CHREDEF
-
-        ; *** DETERMINE CHARSET START
-        SEI             ; BLOCK INTERRUPTS
-        LDA $01         ; ROM-KONFIG
-        PHA             ; RESCUE ROM-KONFIG
-        AND #%11111011  ; FADE OUT IO-AREA
-        STA $01
-        JSR @CHRCPY     ; COPY CHARSET
-        PLA             ; RESTORE ROM SETTINGS
-        STA $01
-        CLI             ; UNBLOCK INTERRUPTS
-        JSR @DEFCHR     ; CHARACTER REDEFINITION
-
-        ; *** SET VIC VIDEOBANK
-        lda #%00000011                     ;Datenrichtung für Bit 0 & 1 des Port-A
-        sta VICCIACONTROL                  ;zum Schreiben freigeben
-        lda #%00000000                     ;Bank-3
-        sta VICBANKCONTROL                 ;auswählen
-
-        ; *** SET SCREENRAM PAGE
-        lda VICMEMCONTROL                  ;VIC-II Register 24 in den Akku holen
-        and #%00001111                     ;Über Bits 7-4 
-        ora #%00100000                     ;den Beginn des
-        sta VICMEMCONTROL                  ;Bildschirmspeichers festlegen
-
-        ; *** ADJUST KERNAL POINTER TO SCREENRAM
-        lda #$C8                           ; $C000 / 256
-        sta KERNALSCREENRAM
-
-        ; SET CHARRAM PAGE
-        lda VICMEMCONTROL                  ;VIC-II Register 24 in den Akku holen
-        and #%11110001                     ;Über Bits 3-1 
-        ora #%00000000                     ;den Beginn des
-        sta VICMEMCONTROL                  ;Zeichensatzes festlegen $F800
-        RTS
-
-        ; *** COPY CHARSET
-@CHRCPY LDA #<CHARROMADR ; CHAR ROM SOURCE TO ZP_HELPADR1
-        STA ZP_HELPADR1
-        LDA #>CHARROMADR
-        STA ZP_HELPADR1+1
-
-        LDA #<VICCHARSETADR ; CHAR RAM DEST TO ZP_HELPADR2
-        STA ZP_HELPADR2
-        LDA #>VICCHARSETADR
-        STA ZP_HELPADR2+1
-
-        LDX #$08            ; COPY CHAR ROM TO RAM LOOP
-@CHRC1  LDY #$00
-@CHRC2  LDA (ZP_HELPADR1),Y
-        STA (ZP_HELPADR2),Y
-        DEY
-        BNE @CHRC2
-        INC ZP_HELPADR1+1
-        INC ZP_HELPADR2+1
-        DEX
-        BNE @CHRC1
-        RTS
-
-        ; **** REDEFINE CHARACTERS
-@DEFCHR LDX #0
-        STX CHARPTR
-        STX CHARDEFPTR
-@DFCH1  LDY CHARPTR     ; FOR EACH ENTRY IN CHRDEF
-        LDX CHRDEF,Y   ; CARRY OUT CHARACTER REDEFINITION 
-        JSR @RECHR              
-        INC CHARPTR
-        LDX CHARPTR
-        CPX #6
-        BNE @DFCH1
-        RTS
-
-@RECHR  TXA                    ; SCREENCODE * 8
-        AND #%00011111
-        ASL
-        ASL
-        ASL
-        CLC
-        ADC #<VICCHARSETADR     ; LZP DESTCHAR TO ZP
-        STA ZP_HELPADR2
-
-        TXA                     ; SCREENCODE TO AKKU
-        LSR                     ; TOP 3 BYTES TO CALC PAGE
-        LSR
-        LSR
-        LSR
-        LSR
-        CLC
-        ADC #>VICCHARSETADR     ; MSB DESTCHAR TO ZP
-        STA ZP_HELPADR2+1
-
-        LDX #$00                ; COPY DEFINITION STARTING AT
-@RECHR1 LDY CHARDEFPTR          ; CHRDATA PLUS CHARDEFPTR
-        LDA CHRDATA,Y
-        STA CHARBYTE
-        TXA
-        TAY
-        LDA CHARBYTE
-        STA (ZP_HELPADR2),Y
-        INX
-        INC CHARDEFPTR
-        CPX #8
-        BNE @RECHR1
-        RTS
-
-CHRDEF
-        BYTE 65,87,88,91,94,102
-CHRDATA
-        BYTE    24,60,24,60,255,189,36,102        
-        BYTE    255,213,171,255,249,249,255,255
-        BYTE    24,24,126,126,24,24,60,126
-        BYTE    24,60,24,60,126,126,60,24
-        BYTE    60,126,255,253,249,251,118,60
-        BYTE    221,221,0,182,182,0,237,237
-
-
-*=$8000; DEC: 32768 
+*=$CC00; DEC: 52224
 @start
           jsr            @plot_scrn_data_win
           jsr            @plot_player_win
@@ -319,29 +213,6 @@ CHRDATA
           lda            (zeroadr),y; Peek value and store it to result address
           sta            maze_data_peek_val
           rts
-;*****************************************
-;*** Initialize maze
-;*****************************************
-*=$8900; DEC:35072
-@init_maze 
-        lda #<mazedef ; CHAR ROM SOURCE TO ZP_HELPADR1
-        sta zeroadr
-        lda #>mazedef
-        sta zeroadr+1
-@init_maze_loop
-        lda #$04
-        ldy #$00
-        sta (zeroadr),y
-        inc zeroadr
-        bne *+4
-        inc zeroadr+1
-        lda zeroadr+1
-        cmp #$8F
-        bne @init_maze_loop
-        lda zeroadr
-        cmp #$85
-        bne @init_maze_loop
-        rts
 
 ;******************************************
 ;*** Variables and tables
@@ -367,7 +238,7 @@ plot_color
           BYTE           $00
 plot_chr
           BYTE           $00
-*=$8A00; DEC:35328
+*=$CF00; DEC:52992
 scrn_plot_xp
           BYTE           $05
 scrn_plot_yp
@@ -413,13 +284,14 @@ scrn_data_rows
 scrn_data_cols
           BYTE           $1E
 scrnaddtable
-          BYTE $8C, $00, $8C, $1E, $8C, $3C, $8C, $5A, $8C, $78, $8C, $96, $8C, $B4, $8C, $D2, $8C, $F0
-          BYTE $8D, $0E, $8D, $2C, $8D, $4A, $8D, $68, $8D, $86, $8D, $A4, $8D, $C2, $8D, $E0, $8D, $FE
-          BYTE $8E, $1C, $8E, $3A, $8E, $58, $8E, $76, $8E, $94, $8E, $B2, $8E, $D0, $8E, $EE, $8F, $0C
-          BYTE $8F, $2A, $8F, $48, $8F, $66
+          BYTE $04, $00, $04, $1E, $04, $3C, $04, $5A, $04, $78, $04, $96, $04, $B4, $04, $D2, $04, $F0
+          BYTE $05, $0E, $05, $2C, $05, $4A, $05, $68, $05, $86, $05, $A4, $05, $C2, $05, $E0, $05, $FE
+          BYTE $06, $1C, $06, $3A, $06, $58, $06, $76, $06, $94, $06, $B2, $06, $D0, $06, $EE, $07, $0C
+          BYTE $07, $2A, $07, $48, $07, $66
 maze_data_peek_yp
           BYTE           $00
 maze_data_peek_xp
           BYTE           $00
 maze_data_peek_val
           BYTE           $00
+

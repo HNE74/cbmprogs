@@ -10,7 +10,7 @@ CHARPTR                 = $CF1C
 CHARDEFPTR              = $CF1D
 CHARBYTE                = $CF1E
 
-*=$CC00
+*=$CC00; DEC: 52224
 @CHREDEF
 
         ; *** DETERMINE CHARSET START
@@ -38,14 +38,14 @@ CHARBYTE                = $CF1E
         sta VICMEMCONTROL                  ;Bildschirmspeichers festlegen
 
         ; *** ADJUST KERNAL POINTER TO SCREENRAM
-        lda #$C8                           ; $C000 / 256
+        lda #$C8                           ; $C800 / 256
         sta KERNALSCREENRAM
 
         ; SET CHARRAM PAGE
         lda VICMEMCONTROL                  ;VIC-II Register 24 in den Akku holen
         and #%11110001                     ;Über Bits 3-1 
         ora #%00000000                     ;den Beginn des
-        sta VICMEMCONTROL                  ;Zeichensatzes festlegen $F800
+        sta VICMEMCONTROL                  ;Zeichensatzes festlegen $C000
         RTS
 
         ; *** COPY CHARSET
