@@ -45,7 +45,6 @@
 260 goto230
 270 pokeps+x+y*xs,s:poke53280,x+y:next
 280 x=int(rnd(1)*(xs-6))+5:y=int(rnd(1)*(ys-6))+5:ifpeek(ps+x+y*xs)<>sthen280
-285 x=5:y=2
 290 pokeps+x+y*xs,t
 300 x=int(rnd(1)*(xs-6))+5:y=int(rnd(1)*(ys-6))+5:ifpeek(ps+x+y*xs)<>sthen300
 310 pokeps+x+y*xs,d
