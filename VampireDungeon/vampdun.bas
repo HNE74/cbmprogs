@@ -1,4 +1,5 @@
 1 REM *** Variable definitions
+4 hi=0: rem Highscore
 6 x=rnd(0):gosub20000:sys52224:gosub25000
 8 dim xd(3):dim yd(3):dim tx$(5): rem *** Movement vectors, text definition
 10 dim xm(3):dim ym(3):dim fm(3):dim nm$(3) : rem Monster definition
@@ -13,7 +14,7 @@
 30 cx=sx:cy=sy : rem *** Crurrent position
 32 ox=1:oy=1 : rem *** Old position
 34 nx=1:ny=1 : rem *** New position
-35 nl=0: : rem Next level flag
+35 nl=0: rem Next level flag
 36 s=5:w=4:t=6:d=7:p=8:m=9 : rem *** Space, Wall, Item, Door, Potion, Treasure
 38 g=20 : rem *** Number of gaps
 40 i=0: j=0: x=0: y=0 : rem *** Loop counter
@@ -130,8 +131,8 @@
 2530 poke214,13:poke211,21:sys58640:poke646,3:print"position:       {left}{left}{left}{left}{left}{left}{left}"+right$(str$(xp),len(str$(xp))-1)+"-"+right$(str$(yp),len(str$(yp))-1)
 2550 return
 2600 rem *** Check player status
-2610 if ep<=0thenep=0:tn$="you're dead!":gosub2500:gosub10100:gosub10000
-2630 return
+2610 if ep<=0thenep=0:tn$="you're dead!":gosub2500:gosub10100:gosub10000:if gp>hithenhi=gp:tn$="great new high score:"+str$(hi)+"!":gosub10100:gosub10000
+2620 return
 2700 rem *** Player has run away
 2710 x=int(rnd(1)*(xs-3))+2:y=int(rnd(1)*(ys-3))+2:ifpeek(ps+x+y*xs)<>sthen2710
 2720 xp=x:yp=y:mx=x-2:my=y-2:poke52994,mx:poke52995,my:sys52224:return
