@@ -41,6 +41,7 @@
         <FileName>vampdun2.bas</FileName>
         <FileName>charset.asm</FileName>
         <FileName>charset2.asm</FileName>
+        <FileName>scratch.bas</FileName>
     </BuildList>
     <DetermineBuildOrder>0</DetermineBuildOrder>
     <PaddingByte>0</PaddingByte>
@@ -76,6 +77,17 @@
             <Name>mazedraw.asm</Name>
             <PrgName />
             <FileType>2</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>False</Topmost>
+            <FileOpen>True</FileOpen>
+        </SourceFile>
+        <SourceFile>
+            <Name>scratch.bas</Name>
+            <PrgName />
+            <FileType>1</FileType>
             <IncludeInBuild>True</IncludeInBuild>
             <Regions />
             <Breakpoints />

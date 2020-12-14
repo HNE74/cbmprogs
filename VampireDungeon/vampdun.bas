@@ -27,6 +27,7 @@
 60 tx$(0)="                              ":tx$(1)="                              "
 62 tx$(2)="                              ":tx$(3)="                              "
 64 tx$(4)="*** take care adventurer! *** "
+66 si=54272:fl=si:fh=si+1:wv=si+4:a=si+5:h=si+6:l=si+24:tl=si+2:th=si+3
 100 goto 900
 110 rem *** Generate maze
 120 ox=cx:oy=cy
@@ -91,17 +92,17 @@
 1060 if asc(a$)=29 then ep=ep-1:yv=0:xv=1
 1070 my=my+yv:mx=mx+xv:yp=yp+yv:xp=xp+xv
 1080 if peek(ps+xp+yp*xs)<>w then 1100
-1085 tn$="you can't go this way!":gosub10100:gosub10000
+1085 gosub3020:tn$="you can't go this way!":gosub10100:gosub10000:gosub3000
 1090 my=my-yv:mx=mx-xv:yp=yp-yv:xp=xp-xv
 1100 poke52994,mx:poke52995,my
 1990 goto 1010
 2200 rem *** Check items
 2205 if peek(ps+xp+yp*xs)=sthenreturn
-2210 if peek(ps+xp+yp*xs)=dandvd=1thentn$="well done, level completed.":gosub10100:gosub10000:nl=1:return
-2220 if peek(ps+xp+yp*xs)=dandvd=0thentn$="find the crucifix and kill":gosub10100:gosub10000:tn$="the vampire to proceed!":gosub10100:gosub10000
-2230 if peek(ps+xp+yp*xs)=tthenkf=1:pokeps+xp+yp*xs,s:tn$="you have found the crucifix!":gosub10100:gosub10000:gosub2800
-2240 if peek(ps+xp+yp*xs)=pthen:pokeps+xp+yp*xs,s:tn$="you have been healed.":gosub10100:gosub10000:ep=100:gosub2500
-2250 if peek(ps+xp+yp*xs)=mthen:pokeps+xp+yp*xs,s:tn$="you have found 5$ gold.":gosub10100:gosub10000:gp=gp+5:gosub2500
+2210 if peek(ps+xp+yp*xs)=dandvd=1thentn$="well done, level completed.":gosub10100:gosub10000:gosub3170:nl=1:return
+2220 if peek(ps+xp+yp*xs)=dandvd=0thengosub3020:tn$="find the crucifix and kill":gosub10100:gosub10000:tn$="the vampire to proceed!":gosub10100:gosub10000
+2230 if peek(ps+xp+yp*xs)=tthengosub3070:kf=1:pokeps+xp+yp*xs,s:tn$="you have found the crucifix!":gosub10100:gosub10000:gosub2800
+2240 if peek(ps+xp+yp*xs)=pthengosub3040:pokeps+xp+yp*xs,s:tn$="you have been healed.":gosub10100:gosub10000:ep=100:gosub2500
+2250 if peek(ps+xp+yp*xs)=mthengosub3070:pokeps+xp+yp*xs,s:tn$="you have found 5$ gold.":gosub10100:gosub10000:gp=gp+5:gosub2500
 2260 return
 2300 rem *** Check monster
 2310 for j=0 to 3
@@ -117,11 +118,11 @@
 2430 geta$:if a$=""ora$<>"a"anda$<>"f"then2430
 2435 poke198,0
 2440 if a$="a"andj<3ora$="a"andj=3andkf=1then2480
-2450 y=int(rnd(1)*3+1):ify=1thentn$="you have run away.":gosub10100:gosub10000:gosub2700:goto2490
-2460 tn$="the "+nm$(j)+" has hit you.":gosub10100:gosub10000:ep=ep-fm(j):ifep>0thengoto2420
+2450 y=int(rnd(1)*3+1):ify=1then:gosub3070:tn$="you have run away.":gosub10100:gosub10000:gosub2700:goto2490
+2460 gosub3100:tn$="the "+nm$(j)+" has hit you.":gosub10100:gosub10000:ep=ep-fm(j):ifep>0thengoto2420
 2470 goto 2490
-2480 y=int(rnd(1)*fm(j)+1):ify=1thentn$="you killed the "+nm$(j)+"":gosub10100:gosub10000:gp=gp+fm(j):tn$="and have received"+str$(fm(j))+"$ gold.":gosub10100:gosub10000:gosub2500:goto2490
-2485 tn$="the "+nm$(j)+" has hit you.":gosub10100:gosub10000:ep=ep-fm(j):ifep>0thengoto2420
+2480 y=int(rnd(1)*fm(j)+1):ify=1thengosub3070:tn$="you killed the "+nm$(j)+"":gosub10100:gosub10000:gp=gp+fm(j):tn$="and have received"+str$(fm(j))+"$ gold.":gosub10100:gosub10000:gosub2500:goto2490
+2485 gosub3100:tn$="the "+nm$(j)+" has hit you.":gosub10100:gosub10000:ep=ep-fm(j):ifep>0thengoto2420
 2490 if j<3orj=3andkf=1thenxm(j)=-1:ym(j)=-1
 2492 if j=3anda$="a"thenvd=1:tn$="now find the door!":gosub10100:gosub10000
 2495 gosub400:return
@@ -131,7 +132,7 @@
 2530 poke214,13:poke211,21:sys58640:poke646,3:print"position:       {left}{left}{left}{left}{left}{left}{left}"+right$(str$(xp),len(str$(xp))-1)+"-"+right$(str$(yp),len(str$(yp))-1)
 2550 return
 2600 rem *** Check player status
-2610 if ep<=0thenep=0:tn$="you're dead!":gosub2500:gosub10100:gosub10000:if gp>hithenhi=gp:tn$="great new high score:"+str$(hi)+"!":gosub10100:gosub10000
+2610 if ep<=0thenep=0:tn$="you're dead!":gosub2500:gosub10100:gosub10000:gosub3140:if gp>hithenhi=gp:tn$="great new high score:"+str$(hi)+"!":gosub10100:gosub10000
 2620 return
 2700 rem *** Player has run away
 2710 x=int(rnd(1)*(xs-3))+2:y=int(rnd(1)*(ys-3))+2:ifpeek(ps+x+y*xs)<>sthen2710
@@ -151,6 +152,26 @@
 2940 print"{right}{right}{right}{right}{right} "
 2950 print"{right}{right}{right}{right}   "
 2960 return
+3000 rem *** Sound off
+3010 pokewv,0:pokea,0:pokeh,0:return 
+3020 rem *** Walk wall sound
+3030 poke l,15:pokea,3:pokeh,1:pokefh,10:pokefl,5:poketl,30:poketh,20:pokewv,17
+3035 for i=0to50:nexti:gosub3000:return
+3040 rem *** Heal sound
+3050 poke l,15:pokea,4:pokeh,10:pokefh,50:pokefl,50:poketl,30:poketh,20:pokewv,17
+3060 for i=0to100:nexti:gosub3000:return
+3070 rem *** Gold sound
+3080 poke l,15:pokea,4:pokeh,10:pokefh,100:pokefl,50:poketl,30:poketh,20:pokewv,17
+3090 for i=0to100:nexti:gosub3000:return
+3100 rem *** Hit by enemy sound
+3110 poke l,15:pokea,10:pokeh,20:pokefh,40:pokefl,50:poketl,30:poketh,20:pokewv,129
+3120 for i=0to100:nexti:gosub3000:return
+3130 rem *** Dead sound
+3140 poke l,15:pokea,10:pokeh,20:pokefh,40:pokefl,50:poketl,10:poketh,40:pokewv,17
+3150 for i=100to0step-1:pokefh,i:pokefl,50:nexti:gosub3000:return
+3160 rem *** Next level sound
+3170 poke l,15:pokea,10:pokeh,20:pokefh,40:pokefl,50:poketl,10:poketh,40:pokewv,17
+3180 for j=0to3:for i=0to50+j*20:pokefh,i:pokefl,30:nexti:nextj:gosub3000:return
 10000 rem *** Print message array
 10010 poke 646,5:fori=0to5:poke214,17+i:poke211,3:sys58640:printtx$(i):next:return
 10100 rem *** Update message array
