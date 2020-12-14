@@ -75,14 +75,14 @@
   <character>
     <charcode>102</charcode>
     <chardata>
-      <data>221</data>
-      <data>221</data>
       <data>0</data>
-      <data>182</data>
-      <data>182</data>
+      <data>239</data>
+      <data>239</data>
+      <data>239</data>
       <data>0</data>
-      <data>237</data>
-      <data>237</data>
+      <data>251</data>
+      <data>251</data>
+      <data>251</data>
     </chardata>
   </character>
 </charset>

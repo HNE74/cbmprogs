@@ -45,6 +45,7 @@
 260 goto230
 270 pokeps+x+y*xs,s:poke53280,x+y:next
 280 x=int(rnd(1)*(xs-6))+5:y=int(rnd(1)*(ys-6))+5:ifpeek(ps+x+y*xs)<>sthen280
+285 x=5:y=2
 290 pokeps+x+y*xs,t
 300 x=int(rnd(1)*(xs-6))+5:y=int(rnd(1)*(ys-6))+5:ifpeek(ps+x+y*xs)<>sthen300
 310 pokeps+x+y*xs,d
@@ -136,18 +137,19 @@
 2710 x=int(rnd(1)*(xs-3))+2:y=int(rnd(1)*(ys-3))+2:ifpeek(ps+x+y*xs)<>sthen2710
 2720 xp=x:yp=y:mx=x-2:my=y-2:poke52994,mx:poke52995,my:sys52224:return
 2800 rem *** Print crucifix
-2810 poke214,9:poke211,5:sys58640:poke646,14:print"Q"
-2820 print"{right}{right}{right}QQQQQ"
-2830 print"{right}{right}{right}{right}{right}Q"
-2840 print"{right}{right}{right}{right}{right}Q"
-2850 print"{right}{right}{right}{right}{right}Q"
+2810 poke214,9:poke211,5:sys58640:poke646,14
+2820 PRINT "{reverse on}{white} "
+2830 PRINT "{right}{right}{right}{reverse on}  {red}V{white}{reverse on}  "
+2840 PRINT "{right}{right}{right}{right}{right}{reverse on} "
+2850 PRINT "{right}{right}{right}{right}{right}{reverse on} "
+2855 print "{right}{right}{right}{right}{reverse on}{169} {127}"
 2860 return
 2900 rem *** Remove crucifix
 2910 poke214,9:poke211,5:sys58640:poke646,14:print" "
 2920 print"{right}{right}{right}     "
 2930 print"{right}{right}{right}{right}{right} "
 2940 print"{right}{right}{right}{right}{right} "
-2950 print"{right}{right}{right}{right}{right} "
+2950 print"{right}{right}{right}{right}   "
 2960 return
 10000 rem *** Print message array
 10010 poke 646,5:fori=0to5:poke214,17+i:poke211,3:sys58640:printtx$(i):next:return
@@ -182,10 +184,10 @@
 19040 poke 52998,102: poke 52999,9 : rem Wall symbol and color
 19050 poke 53000,14: poke 53001,11 : rem Player position
 19060 poke 53002,65: poke 53003,15 : rem Player symbol and color
-19070 poke 53004,88: poke 53005,11 : rem Key symbol and color
+19070 poke 53004,88: poke 53005,11 : rem Crucifix symbol and color
 19080 poke 53006,87: poke 53007,8 : rem Door symbol and color
 19090 poke 53008,91: poke 53009,14 : rem Potion symbol and color
-19100 poke 53010,94: poke 53011,5 : rem Treasure symbol and color
+19100 poke 53010,94: poke 53011,7 : rem Treasure symbol and color
 19110 return
 20000 REM GENERATED ML LOADER
 20005 SA = 52224
@@ -217,8 +219,8 @@
 20135 DATA 249,249,255,255,24,24,126,126
 20140 DATA 24,24,60,126,24,60,24,60
 20145 DATA 126,126,60,24,60,126,255,253
-20150 DATA 249,251,118,60,221,221,0,182
-20155 DATA 182,0,237,237
+20150 DATA 249,251,118,60,0,239,239,239
+20155 DATA 0,251,251,251
 20165 return
 25000 REM GENERATED ML LOADER
 25005 SA = 828

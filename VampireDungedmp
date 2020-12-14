@@ -1,100 +1,31 @@
 
-******* 32 Label(s) *******
-clrtable = $CD73 
-maze_data_peek_val = $CF54 
-maze_data_peek_xp = $CF53 
-maze_data_peek_yp = $CF52 
-plot_chr = $CDA8 
-plot_color = $CDA7 
-plot_x = $CDA5 
-plot_y = $CDA6 
-scrn_data_cols = $CF15 
-scrn_data_door_col = $CF0F 
-scrn_data_door_sym = $CF0E 
-scrn_data_height = $CF05 
-scrn_data_item_col = $CF0D 
-scrn_data_item_sym = $CF0C 
-scrn_data_player_col = $CF0B 
-scrn_data_player_sym = $CF0A 
-scrn_data_player_xp = $CF08 
-scrn_data_player_yp = $CF09 
-scrn_data_potion_col = $CF11 
-scrn_data_potion_sym = $CF10 
-scrn_data_rows = $CF14 
-scrn_data_treasure_col = $CF13 
-scrn_data_treasure_sym = $CF12 
-scrn_data_wall_col = $CF07 
-scrn_data_wall_sym = $CF06 
-scrn_data_width = $CF04 
-scrn_data_xp = $CF02 
-scrn_data_yp = $CF03 
-scrn_plot_xp = $CF00 
-scrn_plot_yp = $CF01 
-scrnaddtable = $CF16 
-scrtable = $CD41 
+******* 2 Label(s) *******
+CHRDATA = $CCAC 
+CHRDEF = $CCA6 
 
-******* 29 Unused label(s) *******
-@init_maze
-@init_maze_loop
-@maze_data_peek
-@maze_data_peek_inc1
-@plot_inc1
-@plot_inc2
-@plot_player_win
-@plot_scrn_data
-@plot_scrn_data_char
-@plot_scrn_data_chr
-@plot_scrn_data_door
-@plot_scrn_data_end
-@plot_scrn_data_inc
-@plot_scrn_data_inc1
-@plot_scrn_data_inc2
-@plot_scrn_data_item
-@plot_scrn_data_line
-@plot_scrn_data_potion
-@plot_scrn_data_space
-@plot_scrn_data_treasure
-@plot_scrn_data_win
-@scrn_plot
-@start
-maze_data_peek_val
-maze_data_peek_xp
-maze_data_peek_yp
-plot_chr
-plot_color
-plot_x
-plot_y
-scrn_data_cols
-scrn_data_door_col
-scrn_data_door_sym
-scrn_data_height
-scrn_data_item_col
-scrn_data_item_sym
-scrn_data_player_col
-scrn_data_player_sym
-scrn_data_player_xp
-scrn_data_player_yp
-scrn_data_potion_col
-scrn_data_potion_sym
-scrn_data_rows
-scrn_data_treasure_col
-scrn_data_treasure_sym
-scrn_data_wall_col
-scrn_data_wall_sym
-scrn_data_width
-scrn_data_xp
-scrn_data_yp
-scrn_plot_xp
-scrn_plot_yp
+******* 0 Unused label(s) *******
+@CHRC1
+@CHRC2
+@CHRCPY
+@CHREDEF
+@DEFCHR
+@DFCH1
+@RECHR
+@RECHR1
 
-******* 5 Variable(s) *******
-chrin  = $FFE4
-cls  = $E544
-mazedef  = $0400
+******* 12 Variable(s) *******
+CHARBYTE  = $CF1E
+CHARDEFPTR  = $CF1D
+CHARPTR  = $CF1C
+CHARROMADR  = $D000
+KERNALSCREENRAM  = $0288
 tgt_c64  = $0001
-zeroadr  = $00FB
-******* -20 Unused variables(s) *******
-chrin
-cls
+VICBANKCONTROL  = $DD00
+VICCHARSETADR  = $C000
+VICCIACONTROL  = $DD02
+VICMEMCONTROL  = $D018
+ZP_HELPADR1  = $00FB
+ZP_HELPADR2  = $00FD
+******* -7 Unused variables(s) *******
 tgt_c64
 
