@@ -73,7 +73,7 @@
 960 tn$="find the crucifix to kill":gosub10100:gosub10000
 965 tn$="the evil vampire!":gosub10100:gosub10000
 980 gosub 1000
-982 if nl=1thennl=0:xp=2:yp=2:mx=0:my=0:kf=0:vd=0:gosub2900:sys 51456:poke52994,mx:poke52995,my:fori=0to3:fm(i)=fm(i)+1:nexti:goto920
+982 if nl=1thennl=0:xp=2:yp=2:mx=0:my=0:kf=0:vd=0:gosub2900:sys828:poke52994,mx:poke52995,my:fori=0to3:fm(i)=fm(i)+1:nexti:goto920
 984 tn$="press any key to restart.":gosub10100:gosub10000:fori=0to1000:next
 986 get a$:if a$=""then986
 988 poke 198,0:goto 14
