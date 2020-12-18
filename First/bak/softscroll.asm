@@ -1,0 +1,28 @@
+*=$C000
+
+SCROLLREG = $D016
+RASTERREG = $D012
+
+@SSCRL  LDA SCROLLREG           ; PREPARE SCROLL REGISTER
+        AND #%11111000
+        ORA SCROLLPOS:
+        STA SCROLLREG
+
+        LDA #250 
+         ; READ RASTER INTERRUPT AND WAIT
+        CMP RASTERREG
+        BEQ *-3
+        CMP RASTERREG
+        BNE *-3
+
+        DEC SCROLLPOS:          ; SCROLL ONE PIXEL LEFT
+        LDA #%00000111
+        AND SCROLLPOS:
+        STA SCROLLPOS:
+        CMP #7
+        BNE @SSCRL
+        ;JMP HARDSCROLL
+        JMP @SSCRL
+
+SCROLLPOS:
+        BYTE 7

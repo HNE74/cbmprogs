@@ -4,7 +4,7 @@
 <!-- Project Target : C64 -->
 <Project>
     <Target>2</Target>
-    <Executable>vampdun.prg</Executable>
+    <Executable>bookgame.prg</Executable>
     <StartAddress>2049</StartAddress>
     <FilesGlobal>False</FilesGlobal>
     <BatchMode>False</BatchMode>
@@ -14,7 +14,7 @@
     <d64Name />
     <Comments />
     <Author />
-    <AutoLaunchName>vampdun.prg</AutoLaunchName>
+    <AutoLaunchName>bookgame.prg</AutoLaunchName>
     <Cartridge>
         <CrtBuildingCartridge>False</CrtBuildingCartridge>
         <CrtSignature>C64 CARTRIDGE</CrtSignature>
@@ -36,17 +36,19 @@
         <PostBuildCommands />
     </BuildEvents>
     <BuildList>
-        <FileName>vampdun.bas</FileName>
-        <FileName>mazedraw.asm</FileName>
-        <FileName>charset.asm</FileName>
-        <FileName>scratch.bas</FileName>
+        <FileName>chardef.asm</FileName>
+        <FileName>simpleSprite.asm</FileName>
+        <FileName>memory.asm</FileName>
+        <FileName>bookgame.asm</FileName>
+        <FileName>macros.asm</FileName>
+        <FileName>subroutines.asm</FileName>
     </BuildList>
     <DetermineBuildOrder>0</DetermineBuildOrder>
-    <PaddingByte>0</PaddingByte>
+    <PaddingByte>234</PaddingByte>
     <AssyBinaryFileLocation />
     <SourceFiles>
         <SourceFile>
-            <Name>charset.asm</Name>
+            <Name>bookgame.asm</Name>
             <PrgName />
             <FileType>2</FileType>
             <IncludeInBuild>True</IncludeInBuild>
@@ -57,7 +59,7 @@
             <FileOpen>True</FileOpen>
         </SourceFile>
         <SourceFile>
-            <Name>mazedraw.asm</Name>
+            <Name>macros.asm</Name>
             <PrgName />
             <FileType>2</FileType>
             <IncludeInBuild>True</IncludeInBuild>
@@ -68,31 +70,20 @@
             <FileOpen>True</FileOpen>
         </SourceFile>
         <SourceFile>
-            <Name>vamp.cst</Name>
+            <Name>memory.asm</Name>
             <PrgName />
-            <FileType>6</FileType>
+            <FileType>2</FileType>
             <IncludeInBuild>True</IncludeInBuild>
             <Regions />
             <Breakpoints />
             <Bookmarks />
             <Topmost>False</Topmost>
-            <FileOpen>False</FileOpen>
+            <FileOpen>True</FileOpen>
         </SourceFile>
         <SourceFile>
-            <Name>vamp.sdd</Name>
+            <Name>subroutines.asm</Name>
             <PrgName />
-            <FileType>9</FileType>
-            <IncludeInBuild>True</IncludeInBuild>
-            <Regions />
-            <Breakpoints />
-            <Bookmarks />
-            <Topmost>False</Topmost>
-            <FileOpen>False</FileOpen>
-        </SourceFile>
-        <SourceFile>
-            <Name>vampdun.bas</Name>
-            <PrgName />
-            <FileType>1</FileType>
+            <FileType>2</FileType>
             <IncludeInBuild>True</IncludeInBuild>
             <Regions />
             <Breakpoints />
