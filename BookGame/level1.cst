@@ -13,10 +13,10 @@
       <data>249</data>
       <data>159</data>
       <data>118</data>
-      <data>237</data>
+      <data>225</data>
       <data>144</data>
       <data>240</data>
-      <data>112</data>
+      <data>64</data>
       <data>224</data>
     </chardata>
   </character>
@@ -25,8 +25,8 @@
     <chardata>
       <data>123</data>
       <data>158</data>
-      <data>185</data>
-      <data>110</data>
+      <data>249</data>
+      <data>34</data>
       <data>0</data>
       <data>0</data>
       <data>0</data>
@@ -39,9 +39,9 @@
       <data>187</data>
       <data>237</data>
       <data>237</data>
-      <data>119</data>
+      <data>55</data>
       <data>11</data>
-      <data>14</data>
+      <data>2</data>
       <data>6</data>
       <data>11</data>
     </chardata>
@@ -51,10 +51,10 @@
     <chardata>
       <data>112</data>
       <data>144</data>
-      <data>112</data>
+      <data>64</data>
       <data>224</data>
       <data>144</data>
-      <data>224</data>
+      <data>192</data>
       <data>112</data>
       <data>208</data>
     </chardata>
@@ -63,11 +63,11 @@
     <charcode>31</charcode>
     <chardata>
       <data>11</data>
-      <data>14</data>
+      <data>2</data>
       <data>7</data>
       <data>9</data>
       <data>7</data>
-      <data>14</data>
+      <data>2</data>
       <data>9</data>
       <data>14</data>
     </chardata>
@@ -76,10 +76,10 @@
     <charcode>33</charcode>
     <chardata>
       <data>208</data>
-      <data>96</data>
+      <data>64</data>
       <data>112</data>
       <data>208</data>
-      <data>238</data>
+      <data>206</data>
       <data>183</data>
       <data>183</data>
       <data>221</data>
@@ -92,9 +92,9 @@
       <data>0</data>
       <data>0</data>
       <data>0</data>
-      <data>238</data>
-      <data>183</data>
-      <data>102</data>
+      <data>50</data>
+      <data>231</data>
+      <data>118</data>
       <data>221</data>
     </chardata>
   </character>
@@ -102,10 +102,10 @@
     <charcode>35</charcode>
     <chardata>
       <data>6</data>
-      <data>11</data>
+      <data>3</data>
       <data>14</data>
       <data>9</data>
-      <data>183</data>
+      <data>135</data>
       <data>110</data>
       <data>249</data>
       <data>159</data>
@@ -117,7 +117,7 @@
       <data>182</data>
       <data>219</data>
       <data>118</data>
-      <data>237</data>
+      <data>233</data>
       <data>183</data>
       <data>110</data>
       <data>221</data>
@@ -132,7 +132,7 @@
       <data>0</data>
       <data>0</data>
       <data>7</data>
-      <data>14</data>
+      <data>2</data>
       <data>7</data>
       <data>9</data>
     </chardata>
@@ -144,7 +144,7 @@
       <data>0</data>
       <data>0</data>
       <data>0</data>
-      <data>176</data>
+      <data>48</data>
       <data>224</data>
       <data>112</data>
       <data>208</data>
@@ -155,7 +155,7 @@
     <chardata>
       <data>11</data>
       <data>13</data>
-      <data>14</data>
+      <data>2</data>
       <data>7</data>
       <data>0</data>
       <data>0</data>
@@ -167,7 +167,7 @@
     <charcode>40</charcode>
     <chardata>
       <data>112</data>
-      <data>160</data>
+      <data>128</data>
       <data>112</data>
       <data>224</data>
       <data>0</data>

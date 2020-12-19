@@ -32,7 +32,6 @@ incasm "data.asm"
 *=PrgStart
         ldx BlackCol
         stx EXTCOL
-        ldx BlueCol
         stx BGCOL0
 
         jsr InitSprites
