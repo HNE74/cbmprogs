@@ -46,7 +46,7 @@
     </BuildList>
     <DetermineBuildOrder>0</DetermineBuildOrder>
     <PaddingByte>234</PaddingByte>
-    <AssyBinaryFileLocation />
+    <AssyBinaryFileLocation>C:\Users\hnema\Documents\GitHub\cbmprogs\BookGame\mLevel1.bin</AssyBinaryFileLocation>
     <SourceFiles>
         <SourceFile>
             <Name>bookgame.asm</Name>
@@ -69,6 +69,28 @@
             <Bookmarks />
             <Topmost>False</Topmost>
             <FileOpen>True</FileOpen>
+        </SourceFile>
+        <SourceFile>
+            <Name>level1.cst</Name>
+            <PrgName />
+            <FileType>6</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>False</Topmost>
+            <FileOpen>False</FileOpen>
+        </SourceFile>
+        <SourceFile>
+            <Name>level1.sdd</Name>
+            <PrgName />
+            <FileType>9</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>False</Topmost>
+            <FileOpen>False</FileOpen>
         </SourceFile>
         <SourceFile>
             <Name>macros.asm</Name>
@@ -108,10 +130,7 @@
             <PrgName />
             <FileType>2</FileType>
             <IncludeInBuild>True</IncludeInBuild>
-            <Regions>
-                <Region>202</Region>
-                <Region>208</Region>
-            </Regions>
+            <Regions />
             <Breakpoints />
             <Bookmarks />
             <Topmost>False</Topmost>

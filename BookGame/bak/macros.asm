@@ -1,5 +1,7 @@
 ;*************************************************
 ;*** Macro definitions
+;*** From book "Programming the Commodore 64 again"
+;*** By Jens Christian Ingvartsen Thomsen in 2020
 ;*************************************************
 
 ; *** Sprite enablement
@@ -15,7 +17,8 @@ defm PointToSpriteData
 endm
 
 ; *** Wait for rasterline
-defm    
+defm WaitForRaster
+RasterLoop 
         lda /1
         cmp Raster
         bne RasterLoop

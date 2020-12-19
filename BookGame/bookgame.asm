@@ -16,18 +16,29 @@ incasm "memory.asm"
 *=SpritesMemory
 incbin "sprites.bin"
 
+; *** Modified character set
+*=CharacterSetMemory
+incbin "cslevel1.bin"
+
+; *** Level map
+*=MapMemory
+incbin "mlevel1.bin"
+
 ; *** Other asm files
 incasm "macros.asm"
 incasm "data.asm"
 
 ; *** Main
 *=PrgStart
-        ldx #00
+        ldx BlackCol
         stx EXTCOL
+        ldx BlueCol
         stx BGCOL0
 
         jsr InitSprites
+        jsr InitCharacterSet
         jsr ClearScreen
+        jsr DrawMap
 
 GameLoop
         WaitForRaster #255

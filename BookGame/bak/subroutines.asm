@@ -1,5 +1,7 @@
 ;*************************************************
 ;*** Bookgame subroutines
+;*** From book "Programming the Commodore 64 again"
+;*** By Jens Christian Ingvartsen Thomsen in 2020
 ;*************************************************
 
 #region Read joystick
@@ -22,6 +24,7 @@ ReadJoystick
         lda CIAPRA
         and #JSMB       ; joy button
         beq go_button
+        rts
 go_right
         ldy #4
         sty Joystickinput
@@ -42,7 +45,8 @@ go_button
         ldy #1
         sty Joystickinput
         rts   
-#endregio
+#endregion
+
 #region Initialize sprites
 ; *** Initializes sprites
 InitSprites
@@ -128,3 +132,134 @@ MovePlayer
         stx PlayerSprindex
         rts
 #endregion
+
+#region Set current player sprite
+; *** Set current player sprite
+SetCurrentPlayerSprite
+        PointToSpriteData PlayerSprindex, SSDP0 ; Macro
+        rts
+#endregion
+
+#region Set player sprite animation
+; *** Set player sprite animation
+SetPlayerAnimation
+        lda Joystickinput
+        cmp PlayerMovedUp
+        bne @joyRight
+        ldx PlayerUp    ; Player up animaiton
+        cpx PlayerUpAnim2
+        bne @contUp
+        ldx PlayerUpAnim1
+        stx PlayerUp
+        rts
+@contUp
+        inx
+        stx PlayerUp
+        rts
+@joyRight
+        lda Joystickinput
+        cmp PlayerMovedRight
+        bne @joyDown
+        ldx PlayerRight    ; Player right animaiton
+        cpx PlayerRightAnim2
+        bne @contRight
+        ldx PlayerRightAnim1
+        stx PlayerRight
+        rts
+@contRight
+        inx
+        stx PlayerRight
+        rts 
+@joyDown
+        lda Joystickinput
+        cmp PlayerMovedDown
+        bne @joyLeft
+        ldx PlayerDown    ; Player down animaiton
+        cpx PlayerDownAnim2
+        bne @contDown
+        ldx PlayerDownAnim1
+        stx PlayerDown
+        rts
+@contDown
+        inx
+        stx PlayerDown
+        rts 
+@joyLeft
+        lda Joystickinput
+        cmp PlayerMovedLeft
+        bne @joyNothing
+        ldx PlayerLeft    ; Player left animaiton
+        cpx PlayerLeftAnim2
+        bne @contLeft
+        ldx PlayerLeftAnim1
+        stx PlayerLeft
+        rts
+@contLeft
+        inx
+        stx PlayerLeft
+        rts 
+@joyNothing
+        rts
+#endregion
+
+#region Clear screen
+; *** Clear the screen
+ClearScreen
+        lda #147
+        jsr $FFD2
+        rts
+#endregion
+
+#region Initialize character set
+; *** Initialize the character set
+InitCharacterSet
+        lda VSCMB
+        ora #$0E        ; char location $3800
+        sta VSCMB
+        lda #18
+        sta SCROLX      ; enable multicolor
+        lda OrangeCol
+        sta BGCOL1
+        lda BrownCol
+        sta BGCOL2
+        lda DarkGreyCol
+        sta BGCOL3
+        rts
+#endregion
+
+#region Draw map to screen
+; *** Draw level map to screen
+DrawMap
+        ldx #0
+@mapLoop1
+        lda MapMemoryBlock1,x
+        tay
+        sta ScreenBlock1,x
+        inx
+        cpx #255
+        bne @mapLoop1
+        ldx #0
+@mapLoop2
+        lda MapMemoryBlock2,x
+        tay
+        sta ScreenBlock2,x
+        inx
+        cpx #255
+        bne @mapLoop2
+        ldx #0
+@mapLoop3
+        lda MapMemoryBlock2,x
+        tay
+        sta ScreenBlock2,x
+        inx
+        cpx #255
+        bne @mapLoop2
+        ldx #0
+        
+#endregion
+
+
+
+
+
+

@@ -4,6 +4,10 @@
 ;*** By Jens Christian Ingvartsen Thomsen in 2020
 ;*************************************************
 
+;character set memory location
+CharacterSetMemory = $3800
+SCROLX = $D016  ; softscroll and multicolor register
+
 ;sprite definition
 SpritesMemory = $2000
 
@@ -34,8 +38,25 @@ BGCOL1 = $D022
 BGCOL2 = $D023
 BGCOL3 = $D024
 
+;character set
+VSCMB = $D018   ; VIC memory bank control register
+
 ;raster
 RASTER = $D012
 
 ;program start
 PrgStart = $0810
+
+;map memory locations
+MapMemory = $4000
+MapMemoryBlock1 = $4000
+MapMemoryBlock2 = $40FF
+MapMemoryBlock3 = $41FE
+MapMemoryBlock4 = $42FD
+
+;screen memory locations
+ScreenBlock1 = $0400
+ScreenBlock2 = $04FF
+ScreenBlock3 = $05FE
+ScreenBlock4 = $06FD
+

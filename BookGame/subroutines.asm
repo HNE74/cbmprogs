@@ -210,6 +210,62 @@ ClearScreen
         rts
 #endregion
 
+#region Initialize character set
+; *** Initialize the character set
+InitCharacterSet
+        lda VSCMB
+        ora #$0E        ; char location $3800
+        sta VSCMB
+        lda #$18
+        sta SCROLX      ; enable multicolor
+        lda OrangeCol
+        sta BGCOL1
+        lda BrownCol
+        sta BGCOL2
+        lda DarkGreyCol
+        sta BGCOL3
+        rts
+#endregion
+
+#region Draw map to screen
+; *** Draw level map to screen
+DrawMap
+        ldx #0
+@mapLoop1
+        lda MapMemoryBlock1,x
+        tay
+        sta ScreenBlock1,x
+        inx
+        cpx #255
+        bne @mapLoop1
+        ldx #0
+@mapLoop2
+        lda MapMemoryBlock2,x
+        tay
+        sta ScreenBlock2,x
+        inx
+        cpx #255
+        bne @mapLoop2
+        ldx #0
+@mapLoop3
+        lda MapMemoryBlock3,x
+        tay
+        sta ScreenBlock3,x
+        inx
+        cpx #255
+        bne @mapLoop3
+        ldx #0
+@mapLoop4
+        lda MapMemoryBlock4,x
+        tay
+        sta ScreenBlock4,x
+        inx
+        cpx #232
+        bne @mapLoop4
+        ldx #0
+        rts        
+#endregion
+
 
 
 
