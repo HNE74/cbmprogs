@@ -14,6 +14,7 @@ Enemy1YPosition byte $31
 Enemy1XMinPos   byte $45
 Enemy1XMaxPos   byte $FF
 Enemy1Sprindex  byte $89
+Enemy1Direction byte $00 ; *** 00=left, 01=right
 
 PlayerIdle      byte $80
 PlayerRight     byte $81

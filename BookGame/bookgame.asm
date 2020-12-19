@@ -43,6 +43,7 @@ GameLoop
         WaitForRaster #255
         jsr ReadJoystick
         jsr MovePlayer
+        jsr MoveEnemy1
         jsr PositionPlayer
         jsr PositionEnemy1
         jsr SetCurrentPlayerSprite

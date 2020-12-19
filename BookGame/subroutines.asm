@@ -78,7 +78,6 @@ PositionPlayer
 #region Position enemy 1 sprite
 ; *** Position enemy 1 sprite
 PositionEnemy1
-        lda Enemy1XMaxPos
         sta Enemy1XPosition
         lda Enemy1XPosition
         sta SP1X
@@ -290,6 +289,31 @@ DrawMap
         bne @mapLoop4
         ldx #0
         rts        
+#endregion
+
+#region Move enemy 1 sprite
+; *** Move enemy 1 sprite horizontally
+MoveEnemy1
+        ldx Enemy1Direction
+        cpx #0
+        bne @goingRight
+        ldx Enemy1XPosition
+        dex
+        stx Enemy1XPosition
+        cpx Enemy1XMinPos
+        bne @continue
+        ldx #$01
+        stx Enemy1Direction
+@goingRight
+        ldx Enemy1XPosition
+        inx
+        stx Enemy1XPosition
+        cpx Enemy1XMaxPos
+        bne @continue
+        ldx #$00
+        stx Enemy1Direction
+@continue
+        rts
 #endregion
 
 
