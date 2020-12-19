@@ -315,6 +315,41 @@
       <data>0</data>
     </sdata>
    </sprite>
+  <sprite>
+    <description>enemy</description>
+    <links></links>
+    <include>True</include>
+    <multi>False</multi>
+    <spbkgnd>1</spbkgnd>
+    <spcolour>0</spcolour>
+    <mcolour1>6</mcolour1>
+    <mcolour2>7</mcolour2>
+    <expandx>False</expandx>
+    <expandy>False</expandy>
+    <sdata>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>65664</data>
+      <data>65280</data>
+      <data>115584</data>
+      <data>501216</data>
+      <data>229824</data>
+      <data>229824</data>
+      <data>501216</data>
+      <data>115584</data>
+      <data>65280</data>
+      <data>97920</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+    </sdata>
+   </sprite>
     <!-- Scratchpad data -->
     <ScratchpadData>
         <MaxSprites>0</MaxSprites>
