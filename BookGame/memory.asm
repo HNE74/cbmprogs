@@ -15,10 +15,14 @@ SpritesMemory = $2000
 SPENA = $D015   ; sprite enable register
 SP0X = $D000    ; sprite 0 horizontal position
 SP0Y = $D001    ; sprite 0 vertical position
+SP1X = $D002    ; sprite 1 horizontal position
+SP1Y = $D003    ; sprite 1 vertical position
 SP0COL = $D027   ; sprite 0 color
+SP1COL = $D028   ; sprite 1 color
 SPBGCL = $D01F  ; sprite to foreground collision register
 MSIGX = $D010   ; sprite extended register
 SSDP0 = $07F8   ; sprite 0 definition data pointer
+SSDP1 = $07F9   ; sprite 1 definition data pointer
 
 ;joystick addresses
 CIAPRA = $DC00

@@ -44,7 +44,9 @@ GameLoop
         jsr ReadJoystick
         jsr MovePlayer
         jsr PositionPlayer
+        jsr PositionEnemy1
         jsr SetCurrentPlayerSprite
+        jsr SetCurrentEnemy1Sprite
         jsr SetPlayerAnimation
         jmp GameLoop
 

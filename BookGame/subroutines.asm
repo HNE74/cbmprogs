@@ -50,11 +50,18 @@ go_button
 #region Initialize sprites
 ; *** Initializes sprites
 InitSprites
-        EnableSprites #%00000001        ; Call sprite enable macro
+        EnableSprites #%00000011        ; Call sprite enable macro
         PointToSpriteData PlayerSprIndex,SSDP0; Adjust sprite shap pointer
-        lda LightBlueCol        ; Set sprite color
+        lda LightBlueCol        ; Set player sprite color
         sta SP0COL
         jsr PositionPlayer      ; Set sprite position
+
+        lda RedCol
+        sta SP1COL
+        lda Enemy1XMaxPos
+        sta Enemy1XPosition
+        jsr PositionEnemy1
+
         rts
 #endregion
 
@@ -65,6 +72,25 @@ PositionPlayer
         sta SP0X
         lda PlayerYPosition
         sta SP0Y
+        rts
+#endregion
+
+#region Position enemy 1 sprite
+; *** Position enemy 1 sprite
+PositionEnemy1
+        lda Enemy1XMaxPos
+        sta Enemy1XPosition
+        lda Enemy1XPosition
+        sta SP1X
+        lda Enemy1YPosition
+        sta SP1Y
+        rts
+#endregion
+
+#region Set current enemy 1 sprite
+; *** Set current enemy 1 sprite
+SetCurrentEnemy1Sprite
+        PointToSpriteData Enemy1Sprindex, SSDP1
         rts
 #endregion
 

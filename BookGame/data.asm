@@ -9,6 +9,12 @@ PlayerXPosition byte $15
 PlayerYPosition byte $32
 PlayerSprindex  byte $80
 
+Enemy1XPosition byte $65
+Enemy1YPosition byte $31
+Enemy1XMinPos   byte $45
+Enemy1XMaxPos   byte $FF
+Enemy1Sprindex  byte $89
+
 PlayerIdle      byte $80
 PlayerRight     byte $81
 PlayerLeft      byte $83
@@ -23,6 +29,8 @@ PlayerUpAnim1    = #$85
 PlayerUpAnim2    = #$86
 PlayerDownAnim1  = #$87
 PlayerDownAnim2  = #$88
+Enemy1           = #$89
+
 
 ; *** Joystick input
 PlayerShoot      = #1
