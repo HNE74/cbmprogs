@@ -10,6 +10,8 @@ PlayerYPosStart byte $33
 PlayerXPosition byte $18
 PlayerYPosition byte $33
 PlayerSprindex  byte $80
+PlayerVisible   byte $01
+PlayerWaitCount byte $AF
 
 Enemy1XPosition byte $65
 Enemy1YPosition byte $31

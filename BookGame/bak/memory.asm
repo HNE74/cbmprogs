@@ -19,6 +19,7 @@ SP1X = $D002    ; sprite 1 horizontal position
 SP1Y = $D003    ; sprite 1 vertical position
 SP0COL = $D027   ; sprite 0 color
 SP1COL = $D028   ; sprite 1 color
+SPSPCL = $D01E  ; sprite to sprite collision
 SPBGCL = $D01F  ; sprite to foreground collision register
 MSIGX = $D010   ; sprite extended register
 SSDP0 = $07F8   ; sprite 0 definition data pointer

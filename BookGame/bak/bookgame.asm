@@ -46,6 +46,7 @@ GameLoop
         jsr MoveEnemy1
         jsr PositionPlayer
         jsr PositionEnemy1
+        jsr CheckForPlayerCollision
         jsr SetCurrentPlayerSprite
         jsr SetCurrentEnemy1Sprite
         jsr SetPlayerAnimation
