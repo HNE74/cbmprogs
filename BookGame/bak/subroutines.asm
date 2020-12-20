@@ -50,11 +50,18 @@ go_button
 #region Initialize sprites
 ; *** Initializes sprites
 InitSprites
-        EnableSprites #%00000001        ; Call sprite enable macro
+        EnableSprites #%00000011        ; Call sprite enable macro
         PointToSpriteData PlayerSprIndex,SSDP0; Adjust sprite shap pointer
-        lda LightBlueCol        ; Set sprite color
+        lda LightBlueCol        ; Set player sprite color
         sta SP0COL
         jsr PositionPlayer      ; Set sprite position
+
+        lda RedCol
+        sta SP1COL
+        lda Enemy1XMaxPos
+        sta Enemy1XPosition
+        jsr PositionEnemy1
+
         rts
 #endregion
 
@@ -65,6 +72,24 @@ PositionPlayer
         sta SP0X
         lda PlayerYPosition
         sta SP0Y
+        rts
+#endregion
+
+#region Position enemy 1 sprite
+; *** Position enemy 1 sprite
+PositionEnemy1
+        sta Enemy1XPosition
+        lda Enemy1XPosition
+        sta SP1X
+        lda Enemy1YPosition
+        sta SP1Y
+        rts
+#endregion
+
+#region Set current enemy 1 sprite
+; *** Set current enemy 1 sprite
+SetCurrentEnemy1Sprite
+        PointToSpriteData Enemy1Sprindex, SSDP1
         rts
 #endregion
 
@@ -216,7 +241,7 @@ InitCharacterSet
         lda VSCMB
         ora #$0E        ; char location $3800
         sta VSCMB
-        lda #18
+        lda #$18
         sta SCROLX      ; enable multicolor
         lda OrangeCol
         sta BGCOL1
@@ -248,14 +273,47 @@ DrawMap
         bne @mapLoop2
         ldx #0
 @mapLoop3
-        lda MapMemoryBlock2,x
+        lda MapMemoryBlock3,x
         tay
-        sta ScreenBlock2,x
+        sta ScreenBlock3,x
         inx
         cpx #255
-        bne @mapLoop2
+        bne @mapLoop3
         ldx #0
-        
+@mapLoop4
+        lda MapMemoryBlock4,x
+        tay
+        sta ScreenBlock4,x
+        inx
+        cpx #232
+        bne @mapLoop4
+        ldx #0
+        rts        
+#endregion
+
+#region Move enemy 1 sprite
+; *** Move enemy 1 sprite horizontally
+MoveEnemy1
+        ldx Enemy1Direction
+        cpx #0
+        bne @goingRight
+        ldx Enemy1XPosition
+        dex
+        stx Enemy1XPosition
+        cpx Enemy1XMinPos
+        bne @continue
+        ldx #$01
+        stx Enemy1Direction
+@goingRight
+        ldx Enemy1XPosition
+        inx
+        stx Enemy1XPosition
+        cpx Enemy1XMaxPos
+        bne @continue
+        ldx #$00
+        stx Enemy1Direction
+@continue
+        rts
 #endregion
 
 

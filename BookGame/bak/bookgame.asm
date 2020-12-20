@@ -30,19 +30,24 @@ incasm "data.asm"
 
 ; *** Main
 *=PrgStart
-        ldx #00
+        ldx BlackCol
         stx EXTCOL
         stx BGCOL0
 
         jsr InitSprites
+        jsr InitCharacterSet
         jsr ClearScreen
+        jsr DrawMap
 
 GameLoop
         WaitForRaster #255
         jsr ReadJoystick
         jsr MovePlayer
+        jsr MoveEnemy1
         jsr PositionPlayer
+        jsr PositionEnemy1
         jsr SetCurrentPlayerSprite
+        jsr SetCurrentEnemy1Sprite
         jsr SetPlayerAnimation
         jmp GameLoop
 
