@@ -280,4 +280,17 @@
       <data>223</data>
     </chardata>
   </character>
+  <character>
+    <charcode>60</charcode>
+    <chardata>
+      <data>60</data>
+      <data>255</data>
+      <data>235</data>
+      <data>255</data>
+      <data>20</data>
+      <data>20</data>
+      <data>20</data>
+      <data>170</data>
+    </chardata>
+  </character>
 </charset>
