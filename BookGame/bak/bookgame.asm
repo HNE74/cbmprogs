@@ -41,17 +41,34 @@ incasm "data.asm"
 
 GameLoop
         WaitForRaster #255
+
+        ; *** Check player visibility
+        ldx PlayerVisible
+        cpx #$01
+        bne @playerNotVisible
+
+        ; *** Player handling
         jsr ReadJoystick
         jsr MovePlayer
-        jsr MoveEnemy1
         jsr PositionPlayer
-        jsr PositionEnemy1
-        jsr CheckForPlayerCollision
         jsr SetCurrentPlayerSprite
-        jsr SetCurrentEnemy1Sprite
         jsr SetPlayerAnimation
-        jmp GameLoop
+        jsr CheckForPlayerCollision
 
+@playerNotVisible
+        ; *** Enemy handling
+        jsr MoveEnemy1
+        jsr PositionEnemy1
+        jsr SetCurrentEnemy1Sprite
+
+        ; *** Increase counter if player not visible
+        ldx PlayerVisible
+        cpx #$00
+        bne @noCounting
+        jsr IncPlayerVisibleCounter
+
+@noCounting
+        jmp GameLoop
         rts
 
 ; *** Include subroutines

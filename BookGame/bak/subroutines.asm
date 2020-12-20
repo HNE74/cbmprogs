@@ -334,15 +334,42 @@ CheckForPlayerCollision
         lda SPSPCL
         cmp #%00000011
         bne @noSprCollision
-        jsr SpawnPlayerAtStartPosition  
+        ldx #$00
+        stx PlayerVisible
+        jsr DisablePlayer
 @noSprCollision
         lda SPBGCL
         cmp #%00000001
         bne @noBgCollision
-        jsr SpawnPlayerAtStartPosition
+        ldx #$00
+        stx PlayerVisible
+        jsr DisablePlayer
 @noBgCollision
         rts
 endregion
 
+#region Disable player
+; *** Disables the player sprite
+DisablePlayer
+        EnableSprites #%00000010
+        rts
+#endregion
 
+#region Increment player visible counter
+; *** Increment player visible counter
+IncPlayerVisibleCounter
+        ldx PlayerWaitCount
+        dex
+        stx PlayerWaitCount
+        cpx #$00
+        bne @playerCountNotFinished
+        ldx #01
+        stx PlayerVisible
+        ldx #$AF
+        stx PlayerWaitCount
+        EnableSprites #%00000011
+        jsr SpawnPlayerAtStartPosition
+@playerCountNotFinished
+        rts
+#endregion
 

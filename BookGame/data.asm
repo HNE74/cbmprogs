@@ -5,10 +5,10 @@
 ;*************************************************
 
 ; *** Sprite data
-PlayerXPosStart byte $18
-PlayerYPosStart byte $33
-PlayerXPosition byte $18
-PlayerYPosition byte $33
+PlayerXPosStart byte $22
+PlayerYPosStart byte $3B
+PlayerXPosition byte $22
+PlayerYPosition byte $3B
 PlayerSprindex  byte $80
 PlayerVisible   byte $01
 PlayerWaitCount byte $AF
