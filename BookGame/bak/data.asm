@@ -5,10 +5,10 @@
 ;*************************************************
 
 ; *** Sprite data
-PlayerXPosStart byte $18
-PlayerYPosStart byte $33
-PlayerXPosition byte $18
-PlayerYPosition byte $33
+PlayerXPosStart byte $22
+PlayerYPosStart byte $3B
+PlayerXPosition byte $22
+PlayerYPosition byte $3B
 PlayerSprindex  byte $80
 PlayerVisible   byte $01
 PlayerWaitCount byte $AF
@@ -35,6 +35,22 @@ PlayerUpAnim2    = #$86
 PlayerDownAnim1  = #$87
 PlayerDownAnim2  = #$88
 Enemy1           = #$89
+
+SprBgCollisionLo = $73
+SprBgCollisionHi = $74
+SprBgColOffsetX1 byte $00
+SprBgColOffsetY1 byte $00
+SprBgColOffsetX2 byte $07
+SprBgColOffsetY2 byte $00
+SprBgColOffsetX3 byte $00
+SprBgColOffsetY3 byte $08
+SprBgColOffsetX4 byte $07
+SprBgColOffsetY4 byte $08
+SprBgColChar    = $75
+SavedXCol       = $76
+SavedYCol       = $77
+PlayerXPosCal   byte $00
+PlayerYPosCal   byte $00
 
 
 ; *** Joystick input

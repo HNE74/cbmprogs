@@ -373,3 +373,207 @@ IncPlayerVisibleCounter
         rts
 #endregion
 
+#region Calculate player position upper left
+; *** Calculate Screenram coordinate of player sprite upper left
+CalculatePlayerPositionsUL
+        clc     ; y coordinate
+        lda PlayerYPosition
+        adc SprBgColOffsetY1
+        sbc #50 ; adjust sprite y coordinate to visible screen area
+        sta PlayerYPosCal
+        
+        lda PlayerYPosCal ; divide y coordinate by 8
+        lsr
+        lsr
+        lsr
+        sta PlayerYPosCal
+
+        lda MSIGX ; check for extended sprite
+        cmp #%00000001
+        beq @spriteIsExtended
+
+        clc     ; x position
+        lda PlayerXPosition
+        adc SprBgColOffsetX1
+        sbc #24 ; adjust sprite x coordinate to visible screen area
+        sta PlayerXPosCal
+        
+        lda PlayerXPosCal ; divide x coordinate by 8
+        lsr
+        lsr
+        lsr
+        sta PlayerXPosCal
+        rts
+@spriteIsExtended
+        clc     ; x position
+        lda PlayerXPosition
+        sta PlayerXPosCal
+        
+        ldy #0            ; Why this?
+        lda PlayerXPosCal ; divide x coordinate by 8
+        lsr
+        lsr
+        lsr
+        sta PlayerXPosCal
+        lda PlayerXPosCal
+        adc #29
+        sta PlayerXPosCal
+        rts
+#endregion
+
+#region Calculate player position upper right
+; *** Calculate Screenram coordinate of player sprite upper right
+CalculatePlayerPositionsUR
+        clc     ; y coordinate
+        lda PlayerYPosition
+        adc SprBgColOffsetY2
+        sbc #50 ; adjust sprite y coordinate to visible screen area
+        sta PlayerYPosCal
+        
+        lda PlayerYPosCal ; divide y coordinate by 8
+        lsr
+        lsr
+        lsr
+        sta PlayerYPosCal
+
+        lda MSIGX ; check for extended sprite
+        cmp #%00000001
+        beq @spriteIsExtended
+
+        clc     ; x position
+        lda PlayerXPosition
+        adc SprBgColOffsetX2
+        sbc #24 ; adjust sprite x coordinate to visible screen area
+        sta PlayerXPosCal
+        
+        lda PlayerXPosCal ; divide x coordinate by 8
+        lsr
+        lsr
+        lsr
+        sta PlayerXPosCal
+        rts
+@spriteIsExtended
+        clc     ; x position
+        lda PlayerXPosition
+        lda SprBgColOffsetX2
+        sta PlayerXPosCal
+        
+        ldy #0            ; Why this?
+        lda PlayerXPosCal ; divide x coordinate by 8
+        lsr
+        lsr
+        lsr
+        sta PlayerXPosCal
+        lda PlayerXPosCal
+        adc #29
+        sta PlayerXPosCal
+        rts
+#endregion
+
+#region Calculate player position lower left
+; *** Calculate Screenram coordinate of player sprite lower left
+CalculatePlayerPositionsLL
+        clc     ; y coordinate
+        lda PlayerYPosition
+        adc SprBgColOffsetY3
+        sbc #50 ; adjust sprite y coordinate to visible screen area
+        sta PlayerYPosCal
+        
+        lda PlayerYPosCal ; divide y coordinate by 8
+        lsr
+        lsr
+        lsr
+        sta PlayerYPosCal
+
+        lda MSIGX ; check for extended sprite
+        cmp #%00000001
+        beq @spriteIsExtended
+
+        clc     ; x position
+        lda PlayerXPosition
+        adc SprBgColOffsetX3
+        sbc #24 ; adjust sprite x coordinate to visible screen area
+        sta PlayerXPosCal
+        
+        lda PlayerXPosCal ; divide x coordinate by 8
+        lsr
+        lsr
+        lsr
+        sta PlayerXPosCal
+        rts
+@spriteIsExtended
+        clc     ; x position
+        lda PlayerXPosition
+        lda SprBgColOffsetX3
+        sta PlayerXPosCal
+        
+        ldy #0            ; Why this?
+        lda PlayerXPosCal ; divide x coordinate by 8
+        lsr
+        lsr
+        lsr
+        sta PlayerXPosCal
+        lda PlayerXPosCal
+        adc #29
+        sta PlayerXPosCal
+        rts
+#endregion
+
+#region Calculate player position lower left
+; *** Calculate Screenram coordinate of player sprite lower right
+CalculatePlayerPositionsLR
+        clc     ; y coordinate
+        lda PlayerYPosition
+        adc SprBgColOffsetY4
+        sbc #50 ; adjust sprite y coordinate to visible screen area
+        sta PlayerYPosCal
+        
+        lda PlayerYPosCal ; divide y coordinate by 8
+        lsr
+        lsr
+        lsr
+        sta PlayerYPosCal
+
+        lda MSIGX ; check for extended sprite
+        cmp #%00000001
+        beq @spriteIsExtended
+
+        clc     ; x position
+        lda PlayerXPosition
+        adc SprBgColOffsetX4
+        sbc #24 ; adjust sprite x coordinate to visible screen area
+        sta PlayerXPosCal
+        
+        lda PlayerXPosCal ; divide x coordinate by 8
+        lsr
+        lsr
+        lsr
+        sta PlayerXPosCal
+        rts
+@spriteIsExtended
+        clc     ; x position
+        lda PlayerXPosition
+        lda SprBgColOffsetX4
+        sta PlayerXPosCal
+        
+        ldy #0            ; Why this?
+        lda PlayerXPosCal ; divide x coordinate by 8
+        lsr
+        lsr
+        lsr
+        sta PlayerXPosCal
+        lda PlayerXPosCal
+        adc #29
+        sta PlayerXPosCal
+        rts
+#endregion
+
+#region Check char collision upper left
+; *** Check player char collision on upper left corner of sprite
+CCCUL
+        jsr CalculatePlayerPositionsUL
+        ldy PlayerXPosCal
+        ldx PlayerYPosCal
+        sty SavedYCol
+        stx SavedXcol
+#endregion

@@ -135,6 +135,9 @@
                 <Breakpoint>80</Breakpoint>
                 <BreakpointDetails>True;0;0;2;0;False;80;False;0</BreakpointDetails>
                 <Enabled>True</Enabled>
+                <Breakpoint>410</Breakpoint>
+                <BreakpointDetails>True;0;0;2;0;False;410;False;0</BreakpointDetails>
+                <Enabled>True</Enabled>
             </Breakpoints>
             <Bookmarks />
             <Topmost>False</Topmost>
