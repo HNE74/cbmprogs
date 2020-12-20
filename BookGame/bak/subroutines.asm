@@ -78,7 +78,6 @@ PositionPlayer
 #region Position enemy 1 sprite
 ; *** Position enemy 1 sprite
 PositionEnemy1
-        sta Enemy1XPosition
         lda Enemy1XPosition
         sta SP1X
         lda Enemy1YPosition

@@ -315,8 +315,32 @@ MoveEnemy1
         rts
 #endregion
 
+#region Spawn player at start position
+; *** Spawn player at start position
+SpawnPlayerAtStartPosition
+        lda PlayerXPosStart
+        sta PlayerXPosition
+        lda PlayerYPosStart
+        sta PlayerYPosition
+        jsr PositionPlayer
+        rts
+#endregion
 
-
+#region Check for player collision
+; *** Check if player collided with enemy or background
+CheckForPlayerCollision
+        lda SPSPCL
+        cmp #%00000011
+        bne @noSprCollision
+        jsr SpawnPlayerAtStartPosition  
+@noSprCollision
+        lda SPBGCL
+        cmp #%00000001
+        bne @noBgCollision
+        jsr SpawnPlayerAtStartPosition
+@noBgCollision
+        rts
+endregion
 
 
 
