@@ -323,6 +323,8 @@ SpawnPlayerAtStartPosition
         lda PlayerYPosStart
         sta PlayerYPosition
         jsr PositionPlayer
+        lda #%00000000
+        sta MSIGX
         rts
 #endregion
 
