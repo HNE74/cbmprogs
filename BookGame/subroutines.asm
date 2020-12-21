@@ -407,197 +407,234 @@ IncPlayerVisibleCounter
 #region Calculate player position upper left
 ; *** Calculate Screenram coordinate of player sprite upper left
 CalculatePlayerPositionsUL
-        clc     ; y coordinate
-        lda PlayerYPosition
-        adc SprBgColOffsetY1
-        sbc #50 ; adjust sprite y coordinate to visible screen area
-        sta PlayerYPosCal
-        
-        lda PlayerYPosCal ; divide y coordinate by 8
-        lsr
-        lsr
-        lsr
-        sta PlayerYPosCal
+        ;** Y position
+        clc                             ;** Clear carry flag
+        lda PlayerYPosition             ;** Load from player y position variable
+        adc SprBgColOffsetY1            ;** Add with carry from value from sprite background collision offset y 1 variable
+        sbc #50                         ;** Subtract with carry the value 50
+        sta PlayerYPosCal               ;** Store in player y position calculated variable
 
-        lda MSIGX ; check for extended sprite
-        cmp #%00000001
-        beq @spriteIsExtended
+        ;** Divide PlayerYPosCal by 8
+        lda PlayerYPosCal               ;** Load from player y position calculated
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        sta PlayerYPosCal               ;** Store in player y position calculated variable
 
-        clc     ; x position
-        lda PlayerXPosition
-        adc SprBgColOffsetX1
-        sbc #24 ; adjust sprite x coordinate to visible screen area
-        sta PlayerXPosCal
-        
-        lda PlayerXPosCal ; divide x coordinate by 8
-        lsr
-        lsr
-        lsr
-        sta PlayerXPosCal
-        rts
-@spriteIsExtended
-        clc     ; x position
-        lda PlayerXPosition
-        adc SprBgColOffsetX1
-        sta PlayerXPosCal
-        
-        ldy #0            ; Why this?
-        lda PlayerXPosCal ; divide x coordinate by 8
-        lsr
-        lsr
-        lsr
-        sta PlayerXPosCal
-        lda PlayerXPosCal
-        adc #29
-        sta PlayerXPosCal
-        rts
+        ;** Check for extended sprite
+        lda MSIGX                       ;** Load from extended sprite register
+        cmp #1                          ;** Compare with value %00000001
+        beq @spriteIsExtendedUL          ;** Branch if equal to spriteIsExtended label
+
+        ;** X position
+        clc                             ;** Clear carry flag
+        lda PlayerXPosition             ;** Load from player y position variable             
+        adc SprBgColOffsetX1            ;** Add with carry from value from sprite background collision offset x 1 variable            
+        sbc #24                         ;** Subtract with carry the value 24                         
+        sta PlayerXPosCal               ;** Store in player x position calculated variable               
+
+        ;** Divide PlayerXPosCal with 8
+        lda PlayerXPosCal               ;** Load from player y position calculated
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+
+        rts                             ;** Return
+
+@spriteIsExtendedUL                     ;** Here we calculate extended
+
+        ;** X position
+        clc                             ;** Clear carry flag
+        lda PlayerXPosition             ;** Load from player x position variable
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+
+        ;** Divide PlayerXPosCal with 8
+        ldy #0                          ;** Load value 0
+        lda PlayerXPosCal               ;** Store in player x position calculated variable
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+        lda PlayerXPosCal               ;** Load from player x position calculated variable
+        adc #29                         ;** Add with carry value 29
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+
+        rts                             ;** Return
 #endregion
 
 #region Calculate player position upper right
 ; *** Calculate Screenram coordinate of player sprite upper right
 CalculatePlayerPositionsUR
-        clc     ; y coordinate
-        lda PlayerYPosition
-        adc SprBgColOffsetY2
-        sbc #50 ; adjust sprite y coordinate to visible screen area
-        sta PlayerYPosCal
-        
-        lda PlayerYPosCal ; divide y coordinate by 8
-        lsr
-        lsr
-        lsr
-        sta PlayerYPosCal
+        ;** Y position
+        clc                             ;** Clear carry flag
+        lda PlayerYPosition             ;** Load from player y position variable
+        adc SprBgColOffsetY2            ;** Add with carry from value from sprite background collision offset y 2 variable
+        sbc #50                         ;** Subtract with carry the value 50
+        sta PlayerYPosCal               ;** Store in player y position calculated variable
 
-        lda MSIGX ; check for extended sprite
-        cmp #%00000001
-        beq @spriteIsExtended
+        ;** Divide PlayerYPosCal by 8
+        lda PlayerYPosCal               ;** Load from player y position calculated
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        sta PlayerYPosCal               ;** Store in player y position calculated variable
 
-        clc     ; x position
-        lda PlayerXPosition
-        adc SprBgColOffsetX2
-        sbc #24 ; adjust sprite x coordinate to visible screen area
-        sta PlayerXPosCal
-        
-        lda PlayerXPosCal ; divide x coordinate by 8
-        lsr
-        lsr
-        lsr
-        sta PlayerXPosCal
-        rts
-@spriteIsExtended
-        clc     ; x position
-        lda PlayerXPosition
-        adc SprBgColOffsetX2
-        sta PlayerXPosCal
-        
-        ldy #0            ; Why this?
-        lda PlayerXPosCal ; divide x coordinate by 8
-        lsr
-        lsr
-        lsr
-        sta PlayerXPosCal
-        lda PlayerXPosCal
-        adc #29
-        sta PlayerXPosCal
-        rts
+        ;** Check for extended sprite
+        lda MSIGX                       ;** Load from extended sprite register
+        cmp #1                          ;** Compare with value %00000001
+        beq @spriteIsExtendedUR          ;** Branch if equal to spriteIsExtended label
+
+        ;** X position
+        clc                             ;** Clear carry flag
+        lda PlayerXPosition             ;** Load from player y position variable
+        adc SprBgColOffsetX2            ;** Add with carry from value from sprite background collision offset x 2 variable
+        sbc #24                         ;** Subtract with carry the value 24
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+
+        ;** Divide PlayerXPosCal with 8
+        lda PlayerXPosCal               ;** Load from player y position calculated
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+
+        rts                             ;** Return
+
+@spriteIsExtendedUR                     ;** Here we calculate extended
+        ;** X position
+        clc                             ;** Clear carry flag
+        lda PlayerXPosition             ;** Load from player x position variable             
+        adc SprBgColOffsetX2            ;** Add with carry the value from sprite background collision offset 2 variable
+        sta PlayerXPosCal               ;** Store in player x position calculated variable               
+
+        ;** Divide PlayerXPosCal with 8
+        lda PlayerXPosCal               ;** Store in player x position calculated variable
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+        lda PlayerXPosCal               ;** Load from player x position calculated variable
+        adc #29                         ;** Add with carry value 29
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+
+        rts                             ;** Return
 #endregion
 
 #region Calculate player position lower left
 ; *** Calculate Screenram coordinate of player sprite lower left
 CalculatePlayerPositionsLL
-        clc     ; y coordinate
-        lda PlayerYPosition
-        adc SprBgColOffsetY3
-        sbc #50 ; adjust sprite y coordinate to visible screen area
-        sta PlayerYPosCal
-        
-        lda PlayerYPosCal ; divide y coordinate by 8
-        lsr
-        lsr
-        lsr
-        sta PlayerYPosCal
+        ; Y position
+        clc                             ;** Clear carry flag
+        lda PlayerYPosition             ;** Load from player y position variable
+        adc SprBgColOffsetY3            ;** Add with carry from value from sprite background collision offset y 3 variable
+        sbc #50                         ;** Subtract with carry the value 50
+        sta PlayerYPosCal               ;** Store in player y position calculated variable
 
-        lda MSIGX ; check for extended sprite
-        cmp #%00000001
-        beq @spriteIsExtended
+        ;** Divide PlayerYPosCal by 8
+        lda PlayerYPosCal               ;** Load from player y position calculated
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        sta PlayerYPosCal               ;** Store in player y position calculated variable
 
-        clc     ; x position
-        lda PlayerXPosition
-        adc SprBgColOffsetX3
-        sbc #24 ; adjust sprite x coordinate to visible screen area
-        sta PlayerXPosCal
-        
-        lda PlayerXPosCal ; divide x coordinate by 8
-        lsr
-        lsr
-        lsr
-        sta PlayerXPosCal
-        rts
-@spriteIsExtended
-        clc     ; x position
-        lda PlayerXPosition
-        adc SprBgColOffsetX3
-        sta PlayerXPosCal
-        
-        ldy #0            ; Why this?
-        lda PlayerXPosCal ; divide x coordinate by 8
-        lsr
-        lsr
-        lsr
-        sta PlayerXPosCal
-        lda PlayerXPosCal
-        adc #29
-        sta PlayerXPosCal
-        rts
+        ;** Check for extended sprite
+        lda MSIGX                       ;** Load from extended sprite register
+        cmp #1                          ;** Compare with value %00000001
+        beq @spriteIsExtendedLL         ;** Branch if equal to spriteIsExtended label
+
+        ; X position
+        clc                             ;** Clear carry flag
+        lda PlayerXPosition             ;** Load from player y position variable
+        adc SprBgColOffsetX3            ;** Add with carry from value from sprite background collision offset x 3 variable
+        sbc #24                         ;** Subtract with carry the value 24
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+
+        ;** Divide PlayerXPosCal with 8
+        lda PlayerXPosCal               ;** Load from player y position calculated
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+
+        rts                             ;** Return
+
+@spriteIsExtendedLL                    ;** Here we calculate extended
+        ;** X position
+        clc                             ;** Clear carry flag
+        lda PlayerXPosition             ;** Load from player x position variable             
+        adc SprBgColOffsetX3            ;** Add with carry the value from sprite background collision offset 3 variable            
+        sta PlayerXPosCal               ;** Store in player x position calculated variable               
+
+        ;** Divide PlayerXPosCal with 8
+        lda PlayerXPosCal               ;** Store in player x position calculated variable
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+        lda PlayerXPosCal               ;** Load from player x position calculated variable
+        adc #29                         ;** Add with carry value 29
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+
+        rts                             ;** Return
 #endregion
 
 #region Calculate player position lower left
 ; *** Calculate Screenram coordinate of player sprite lower right
 CalculatePlayerPositionsLR
-        clc     ; y coordinate
-        lda PlayerYPosition
-        adc SprBgColOffsetY4
-        sbc #50 ; adjust sprite y coordinate to visible screen area
-        sta PlayerYPosCal
+        ; Y Position
+        clc                             ;** Clear carry flag
+        lda PlayerYPosition             ;** Load from player y position variable
+        adc SprBgColOffsetY4            ;** Add with carry from value from sprite background collision offset y 4 variable
+        sbc #50                         ;** Subtract with carry the value 50
+        sta PlayerYPosCal               ;** Store in player y position calculated variable
         
-        lda PlayerYPosCal ; divide y coordinate by 8
-        lsr
-        lsr
-        lsr
-        sta PlayerYPosCal
+        ;** Divide PlayerYPosCal by 8
+        lda PlayerYPosCal               ;** Load from player y position calculated
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        sta PlayerYPosCal               ;** Store in player y position calculated variable
 
-        lda MSIGX ; check for extended sprite
-        cmp #%00000001
-        beq @spriteIsExtended
+        ;** Check for extended sprite
+        lda MSIGX                       ;** Load from extended sprite register
+        cmp #1                          ;** Compare with value %00000001
+        beq @spriteIsExtendedLR         ;** Branch if equal to spriteIsExtended label
 
-        clc     ; x position
-        lda PlayerXPosition
-        adc SprBgColOffsetX4
-        sbc #24 ; adjust sprite x coordinate to visible screen area
-        sta PlayerXPosCal
-        
-        lda PlayerXPosCal ; divide x coordinate by 8
-        lsr
-        lsr
-        lsr
-        sta PlayerXPosCal
-        rts
-@spriteIsExtended
-        clc     ; x position
-        lda PlayerXPosition
-        adc SprBgColOffsetX4
-        sta PlayerXPosCal
-        
-        ldy #0            ; Why this?
-        lda PlayerXPosCal ; divide x coordinate by 8
-        lsr
-        lsr
-        lsr
-        sta PlayerXPosCal
-        lda PlayerXPosCal
-        adc #29
-        sta PlayerXPosCal
-        rts
+        ; X position
+        clc                             ;** Clear carry flag
+        lda PlayerXPosition             ;** Load from player y position variable
+        adc SprBgColOffsetX4            ;** Add with carry from value from sprite background collision offset x 4 variable
+        sbc #24                         ;** Subtract with carry the value 24
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+
+        ;** Divide PlayerXPosCal with 8
+        lda PlayerXPosCal               ;** Load from player y position calculated
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+
+        rts                             ;** Return
+
+@spriteIsExtendedLR                     ;** Here we calculate extended
+        ;** X position
+        clc                             ;** Clear carry flag
+        lda PlayerXPosition             ;** Load from player x position variable             
+        adc SprBgColOffsetX4            ;** Add with carry the value from sprite background collision offset 4 variable            
+        sta PlayerXPosCal               ;** Store in player x position calculated variable               
+
+        ;** Divide PlayerXPosCal with 8
+        lda PlayerXPosCal               ;** Store in player x position calculated variable
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        lsr                             ;** Logical shift right
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+        lda PlayerXPosCal               ;** Load from player x position calculated variable
+        adc #29                         ;** Add with carry value 29
+        sta PlayerXPosCal               ;** Store in player x position calculated variable
+
+        rts                             ;** Return
 #endregion
 
 #region Read character
@@ -614,7 +651,6 @@ ReadCharacterPlayerScreenramPosition
         lda ScreenReaderTableHi,x
         sta SprBgCollisionHi
         lda (SprBgCollisionLo),y
-        sta PlayerYPosCal       ; Why this?
         sta SprBgColChar
         rts
 #endregion

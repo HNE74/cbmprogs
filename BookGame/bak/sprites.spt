@@ -47,14 +47,14 @@
     <expandx>False</expandx>
     <expandy>False</expandy>
     <sdata>
-      <data>122880</data>
-      <data>135168</data>
-      <data>8677376</data>
-      <data>5531648</data>
-      <data>2496512</data>
-      <data>8861696</data>
-      <data>258048</data>
-      <data>122880</data>
+      <data>12320768</data>
+      <data>4325376</data>
+      <data>9240576</data>
+      <data>9764864</data>
+      <data>13303808</data>
+      <data>15138816</data>
+      <data>8257536</data>
+      <data>12320768</data>
       <data>0</data>
       <data>0</data>
       <data>0</data>
@@ -82,14 +82,14 @@
     <expandx>False</expandx>
     <expandy>False</expandy>
     <sdata>
-      <data>122880</data>
-      <data>135168</data>
-      <data>4483072</data>
-      <data>10774528</data>
-      <data>5642240</data>
-      <data>8861696</data>
-      <data>258048</data>
-      <data>122880</data>
+      <data>3932160</data>
+      <data>4325376</data>
+      <data>9240576</data>
+      <data>9240576</data>
+      <data>12779520</data>
+      <data>15138816</data>
+      <data>8257536</data>
+      <data>3932160</data>
       <data>0</data>
       <data>0</data>
       <data>0</data>
@@ -117,14 +117,14 @@
     <expandx>False</expandx>
     <expandy>False</expandy>
     <sdata>
-      <data>3932160</data>
+      <data>3997696</data>
       <data>4325376</data>
-      <data>11601920</data>
-      <data>11620352</data>
-      <data>12787712</data>
-      <data>15140864</data>
+      <data>11599872</data>
+      <data>11075584</data>
+      <data>13828096</data>
+      <data>15138816</data>
       <data>8257536</data>
-      <data>3932160</data>
+      <data>3997696</data>
       <data>0</data>
       <data>0</data>
       <data>0</data>
@@ -154,10 +154,10 @@
     <sdata>
       <data>3932160</data>
       <data>4325376</data>
-      <data>11603968</data>
-      <data>11610112</data>
-      <data>12800000</data>
-      <data>15140864</data>
+      <data>11599872</data>
+      <data>11599872</data>
+      <data>12779520</data>
+      <data>15138816</data>
       <data>8257536</data>
       <data>3932160</data>
       <data>0</data>
@@ -196,9 +196,9 @@
       <data>8257536</data>
       <data>3932160</data>
       <data>12779520</data>
-      <data>1048576</data>
-      <data>2621440</data>
-      <data>1310720</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
       <data>0</data>
       <data>0</data>
       <data>0</data>
@@ -224,16 +224,16 @@
     <sdata>
       <data>3932160</data>
       <data>4325376</data>
-      <data>10027008</data>
+      <data>8978432</data>
       <data>10027008</data>
       <data>12779520</data>
       <data>16711680</data>
       <data>8257536</data>
-      <data>3932160</data>
-      <data>12779520</data>
-      <data>524288</data>
-      <data>1310720</data>
-      <data>2621440</data>
+      <data>12386304</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
       <data>0</data>
       <data>0</data>
       <data>0</data>
@@ -257,11 +257,6 @@
     <expandx>False</expandx>
     <expandy>False</expandy>
     <sdata>
-      <data>1310720</data>
-      <data>2621440</data>
-      <data>1048576</data>
-      <data>524288</data>
-      <data>0</data>
       <data>3932160</data>
       <data>4325376</data>
       <data>10027008</data>
@@ -271,6 +266,11 @@
       <data>8257536</data>
       <data>3932160</data>
       <data>12779520</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
       <data>0</data>
       <data>0</data>
       <data>0</data>
@@ -292,20 +292,20 @@
     <expandx>False</expandx>
     <expandy>False</expandy>
     <sdata>
-      <data>2621440</data>
-      <data>1310720</data>
-      <data>524288</data>
-      <data>1048576</data>
-      <data>0</data>
       <data>3932160</data>
       <data>4325376</data>
       <data>10027008</data>
-      <data>10027008</data>
+      <data>8978432</data>
       <data>12779520</data>
       <data>16711680</data>
       <data>8257536</data>
-      <data>3932160</data>
-      <data>12779520</data>
+      <data>12386304</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
       <data>0</data>
       <data>0</data>
       <data>0</data>

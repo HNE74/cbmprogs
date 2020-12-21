@@ -25,7 +25,6 @@ incbin "mlevel1.bin"
 
 ; *** Other asm files
 incasm "macros.asm"
-*=$C000
 incasm "data.asm"
 
 ; *** Main

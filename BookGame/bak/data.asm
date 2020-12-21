@@ -1,3 +1,6 @@
+PlayerXPosCal   byte $00
+PlayerYPosCal   byte $00
+
 ;*************************************************
 ;*** Bookgame constants
 ;*** From book "Programming the Commodore 64 again"
@@ -49,9 +52,6 @@ SprBgColOffsetY4 byte $08
 SprBgColChar    = $75
 SavedXCol       = $76
 SavedYCol       = $77
-PlayerXPosCal   byte $00
-PlayerYPosCal   byte $00
-
 
 ; *** Joystick input
 PlayerShoot      = #1
@@ -59,6 +59,10 @@ PlayerMovedUp    = #2
 PlayerMovedRight = #4
 PlayerMovedDown  = #8
 PlayerMovedLeft  = #16
+
+; *** Screenram row start adresses
+ScreenReaderTableLo byte $00,$28,$50,$78,$A0,$C8,$F0,$18,$40,$68,$90,$B9,$E0,$08,$30,$58,$80,$A8,$D0,$F8,$20,$48,$70,$98,$C0
+ScreenReaderTableHi byte $04,$04,$04,$04,$04,$04,$04,$05,$05,$05,$05,$05,$05,$06,$06,$06,$06,$06,$06,$06,$07,$07,$07,$07,$07
 
 ; *** Color data
 BlackCol        = #0
