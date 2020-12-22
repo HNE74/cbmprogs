@@ -77,19 +77,19 @@
 980 gosub 1000
 982 if nl=1thennl=0:xp=2:yp=2:mx=0:my=0:kf=0:vd=0:gosub2900:sys828:poke52994,mx:poke52995,my:fori=0to3:fm(i)=fm(i)+1:nexti:goto920
 984 tn$="press any key to restart.":gosub10100:gosub10000:fori=0to1000:next
-986 get a$:if a$=""then986
+986 poke 198,0:wait 198,1:get a$
 988 poke 198,0:goto 14
 990 end
 1000 REM *** Game dungeon loop
 1010 gosub10000:gosub2500:sys52224
 1015 gosub2200:gosub2300:gosub2600
 1018 ifep=0orpeek(ps+xp+yp*xs)=dandvd=1thenreturn
-1020 get a$:if a$="" then 1020
+1020 poke 198,0:wait 198,1:get a$
 1025 poke 198,0
-1030 if asc(a$)=17 then ep=ep-1:yv=1:xv=0
-1040 if asc(a$)=145 then ep=ep-1:yv=-1:xv=0
-1050 if asc(a$)=157 then ep=ep-1:yv=0:xv=-1
-1060 if asc(a$)=29 then ep=ep-1:yv=0:xv=1
+1030 if asc(a$)=17ora$="s" then ep=ep-1:yv=1:xv=0
+1040 if asc(a$)=145ora$="w" then ep=ep-1:yv=-1:xv=0
+1050 if asc(a$)=157ora$="a" then ep=ep-1:yv=0:xv=-1
+1060 if asc(a$)=29ora$="d" then ep=ep-1:yv=0:xv=1
 1070 my=my+yv:mx=mx+xv:yp=yp+yv:xp=xp+xv
 1080 if peek(ps+xp+yp*xs)<>w then 1100
 1085 gosub3020:tn$="you can't go this way!":gosub10100:gosub10000:gosub3000
@@ -115,7 +115,7 @@
 2420 tn$="{reverse on} a {reverse off}ttack or {reverse on} f {reverse off}lee."
 2422 ifj=3andkf=0thentn$="you have no crucifix, {reverse on} f {reverse off}lee."
 2425 gosub10100:gosub10000:gosub2500
-2430 geta$:if a$=""ora$<>"a"anda$<>"f"then2430
+2430 poke 198,0:wait 198,1:geta$:if a$<>"a"anda$<>"f"then2430
 2435 poke198,0
 2440 if a$="a"andj<3ora$="a"andj=3andkf=1then2480
 2450 y=int(rnd(1)*3+1):ify=1then:gosub3070:tn$="you have run away.":gosub10100:gosub10000:gosub2700:goto2490
