@@ -651,7 +651,6 @@ ReadCharacterPlayerScreenramPosition
         lda ScreenReaderTableHi,x
         sta SprBgCollisionHi
         lda (SprBgCollisionLo),y
-        sta PlayerYPosCal       ; Why this?
         sta SprBgColChar
         rts
 #endregion

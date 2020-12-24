@@ -47,6 +47,7 @@ GameLoop
         bne @playerNotVisible
 
         ; *** Player handling
+        jsr DisplayScore
         jsr ReadJoystick
         jsr MovePlayer
         jsr PositionPlayer

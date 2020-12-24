@@ -65,3 +65,6 @@ ScreenBlock2 = $04FF
 ScreenBlock3 = $05FE
 ScreenBlock4 = $06FD
 
+;score screen memory location
+Screen_Score=$07C7
+
