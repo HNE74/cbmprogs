@@ -38,6 +38,8 @@ PlayerUpAnim2    = #$86
 PlayerDownAnim1  = #$87
 PlayerDownAnim2  = #$88
 Enemy1           = #$89
+ExplosionPlaying byte $00
+ExplosionIndex   byte $8A
 
 SprBgCollisionLo = $73
 SprBgCollisionHi = $74
@@ -62,6 +64,7 @@ PlayerMovedLeft  = #16
 
 ; *** Score
 Score   byte $0,$0,$0
+Lives   byte $35
 
 ; *** Screenram row start adresses
 ScreenReaderTableLo byte $00,$28,$50,$78,$A0,$C8,$F0,$18,$40,$68,$90,$B9,$E0,$08,$30,$58,$80,$A8,$D0,$F8,$20,$48,$70,$98,$C0

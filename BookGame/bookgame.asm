@@ -48,6 +48,7 @@ GameLoop
 
         ; *** Player handling
         jsr DisplayScore
+        jsr DisplayLives
         jsr ReadJoystick
         jsr MovePlayer
         jsr PositionPlayer
@@ -60,6 +61,14 @@ GameLoop
         jsr MoveEnemy1
         jsr PositionEnemy1
         jsr SetCurrentEnemy1Sprite
+
+        ; *** Player explosion handling
+        ldx ExplosionPlaying
+        cpx #$01
+        bne @noExplosion
+        jsr PlayExplosionAnimation
+        jsr WaitForExplosion
+@noExplosion
 
         ; *** Increase counter if player not visible
         ldx PlayerVisible

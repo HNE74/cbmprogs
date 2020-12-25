@@ -50,17 +50,24 @@ go_button
 #region Initialize sprites
 ; *** Initializes sprites
 InitSprites
-        EnableSprites #%00000011        ; Call sprite enable macro
+        EnableSprites #%00000111        ; Call sprite enable macro
         PointToSpriteData PlayerSprIndex,SSDP0; Adjust sprite shap pointer
         lda LightBlueCol        ; Set player sprite color
         sta SP0COL
         jsr PositionPlayer      ; Set sprite position
 
-        lda RedCol
+        lda RedCol              ; Init enemy sprite
         sta SP1COL
         lda Enemy1XMaxPos
         sta Enemy1XPosition
         jsr PositionEnemy1
+        
+        lda WhiteCol            ; Init explosion sprite
+        sta SP2COL
+        lda #0                  
+        sta SP2X
+        sta SP2Y
+        PointToSpriteData ExplosionIndex, SSDP2
 
         rts
 #endregion
@@ -383,7 +390,28 @@ endregion
 #region Disable player
 ; *** Disables the player sprite
 DisablePlayer
-        EnableSprites #%00000010
+        lda PlayerXPosition
+        clc
+        sbc #10
+        sta SP2X
+        lda PlayerYPosition
+        clc
+        sbc #10
+        sta SP2Y
+        lda #$01
+        sta ExplosionPlaying
+        lda MSIGX                       ;** Load from extended sprite register
+        cmp #1                          ;** Compare with value %00000001
+        bne @spriteNotExtended          
+        lda #%00000101
+        sta MSIGX
+        jmp @enableExplosion
+@spriteNotExtended
+        lda #%00000000
+        sta MSIGX
+@enableExplosion
+        EnableSprites #%00000110
+        jsr DecrementLives
         rts
 #endregion
 
@@ -736,3 +764,54 @@ IncrementScore
         rts
 #endregion
 
+#region Display lives
+; *** Plot player lives t the screen
+DisplayLives
+        lda Lives      
+        sta Lives_Score
+        rts
+#endregion
+
+#region DecrementLives
+; *** Decrement player lives
+DecrementLives
+        ldx Lives
+        dex
+        stx Lives
+        rts
+#endregion
+
+#region Play explosion animation
+; *** Plays player explosion animation
+PlayExplosionAnimation
+        ldx ExplosionIndex
+        inx
+        stx ExplosionIndex
+        cpx #$8F
+        bne @continueExplosion
+        ldx #$0                 ; Explosion end
+        stx ExplosionPlaying
+        stx SP2X
+        stx SP2Y
+        ldx #$8A
+        stx ExplosionIndex
+@continueExplosion
+        PointToSpriteData ExplosionIndex, SSDP2
+        rts
+#endregion
+
+#region Wait for explosion
+; *** Wait for explosion
+WaitForExplosion
+        ldx #25
+@waitForExplosion1
+        ldy #255
+@waitForExplosion2
+        dey
+        cpy #0
+        bne @waitForExplosion2
+        dex
+        cpx #0
+        bne @waitForExplosion1
+        rts
+#endregion

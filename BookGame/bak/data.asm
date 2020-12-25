@@ -60,6 +60,10 @@ PlayerMovedRight = #4
 PlayerMovedDown  = #8
 PlayerMovedLeft  = #16
 
+; *** Score
+Score   byte $0,$0,$0
+Lives   byte $35
+
 ; *** Screenram row start adresses
 ScreenReaderTableLo byte $00,$28,$50,$78,$A0,$C8,$F0,$18,$40,$68,$90,$B9,$E0,$08,$30,$58,$80,$A8,$D0,$F8,$20,$48,$70,$98,$C0
 ScreenReaderTableHi byte $04,$04,$04,$04,$04,$04,$04,$05,$05,$05,$05,$05,$05,$06,$06,$06,$06,$06,$06,$06,$07,$07,$07,$07,$07

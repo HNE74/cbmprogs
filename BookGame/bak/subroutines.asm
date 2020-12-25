@@ -376,6 +376,7 @@ CheckForPlayerCollision
         sta SprBgCollisionHi
         lda #$20
         sta (SprBgCollisionLo),y
+        jsr IncrementScore
         rts
 endregion
 
@@ -383,6 +384,7 @@ endregion
 ; *** Disables the player sprite
 DisablePlayer
         EnableSprites #%00000010
+        jsr DecrementLives
         rts
 #endregion
 
@@ -684,6 +686,71 @@ CCCLL
 CCCLR
         jsr CalculatePlayerPositionsLR
         jsr ReadCharacterPlayerScreenramPosition
+        rts
+#endregion
+
+#region Display score
+; *** Displays the score on bottom left of the screen
+DisplayScore
+        ldy #5
+        ldx #0
+@sloop
+        lda Score,x
+        pha
+        jsr PlotDigit
+        pla
+        lsr a
+        lsr a
+        lsr a
+        lsr a
+        jsr PlotDigit
+        inx
+        cpx #3
+        bne @sloop
+        rts
+#endregion
+
+#region Plot digit
+; *** Plots score digit to screen ram
+PlotDigit
+        clc
+        adc #48
+        sta Screen_Score,y
+        dey
+        rts
+#endregion
+
+#region Increment score
+IncrementScore
+        sed
+        clc
+        lda Score
+        adc #1
+        sta Score
+        lda Score+1
+        adc #0
+        sta Score+1
+        lda Score+2
+        adc #0
+        sta Score+2
+        cld
+        rts
+#endregion
+
+#region Display lives
+; *** Plot player lives to the screen
+DisplayLives
+        lda Lives      
+        sta Lives_Score
+        rts
+#endregion
+
+#region DecrementLives
+; *** Decrement player lives
+DecrementLives
+        ldx Lives
+        dex
+        stx Lives
         rts
 #endregion
 
