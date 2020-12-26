@@ -69,12 +69,18 @@ InitSprites
         sta SP2Y
         PointToSpriteData ExplosionIndex, SSDP2
 
-        lda PortalXPosition
+        lda PortalXPosition     ; Init portal sprite
         sta SP3X
         lda PortalYPosition
         sta SP3Y
         PointToSpriteData PortalIndex, SSDP3
 
+        lda #0                  ; Init score and lives
+        sta score
+        sta score+1
+        sta score+2
+        lda #$35
+        sta Lives
 
         rts
 #endregion
@@ -303,6 +309,47 @@ DrawMap
         ldx #0
         rts        
 #endregion
+
+
+#region Draw game overmap to screen
+; *** Draw level map to screen
+DrawGameOverMap
+        ldx #0
+@mapLoop1
+        lda MapGameOverMemoryBlock1,x
+        tay
+        sta ScreenBlock1,x
+        inx
+        cpx #255
+        bne @mapLoop1
+        ldx #0
+@mapLoop2
+        lda MapGameOverMemoryBlock2,x
+        tay
+        sta ScreenBlock2,x
+        inx
+        cpx #255
+        bne @mapLoop2
+        ldx #0
+@mapLoop3
+        lda MapGameOverMemoryBlock3,x
+        tay
+        sta ScreenBlock3,x
+        inx
+        cpx #255
+        bne @mapLoop3
+        ldx #0
+@mapLoop4
+        lda MapGameOverMemoryBlock4,x
+        tay
+        sta ScreenBlock4,x
+        inx
+        cpx #232
+        bne @mapLoop4
+        ldx #0
+        rts        
+#endregion
+
 
 #region Move enemy 1 sprite
 ; *** Move enemy 1 sprite horizontally
@@ -898,5 +945,20 @@ ReplacePortalCharacters
         lda #0
         sta $91
         sta $92
+        rts
+#endregion
+
+#region Show game over
+; *** Shows game over screen
+ShowGameOver
+        jsr ClearScreen
+        EnableSprites #%00000000
+        jsr DrawGameOverMap
+@readKey
+        jsr $ffe4
+        beq @readKey
+        lda #0
+        sta GameOver
+        jsr SpawnPlayerAtStartPosition
         rts
 #endregion

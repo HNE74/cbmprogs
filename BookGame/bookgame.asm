@@ -23,6 +23,10 @@ incbin "cslevel1.bin"
 *=MapMemory
 incbin "mlevel1.bin"
 
+; *** Game over map
+*=MapGameOverMemory
+incbin "gameOver.bin"
+
 ; *** Other asm files
 incasm "macros.asm"
 incasm "data.asm"
@@ -32,7 +36,7 @@ incasm "data.asm"
         ldx BlackCol
         stx EXTCOL
         stx BGCOL0
-
+NewGame
         jsr InitSprites
         jsr InitCharacterSet
         jsr ClearScreen
@@ -86,6 +90,8 @@ GameLoop
         beq @gameOver
         jmp GameLoop
 @gameOver
+        jsr ShowGameOver
+        jmp NewGame
         rts
 
 ; *** Include subroutines
