@@ -68,6 +68,7 @@ PortalIndex  byte $90
 PortalActive byte $01
 PortalXPosition byte $9A
 PortalYPosition byte $92
+GameOver byte $00
 
 ; *** Score
 Score   byte $0,$0,$0

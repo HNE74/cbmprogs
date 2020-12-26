@@ -80,7 +80,12 @@ GameLoop
         jsr IncPlayerVisibleCounter
 
 @noCounting
+        ; *** Game over check
+        lda GameOver
+        cmp #1
+        beq @gameOver
         jmp GameLoop
+@gameOver
         rts
 
 ; *** Include subroutines

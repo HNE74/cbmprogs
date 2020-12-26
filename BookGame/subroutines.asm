@@ -351,7 +351,15 @@ CheckForPlayerCollision
         ldx #$00
         stx PlayerVisible
         jsr DisablePlayer
+        jmp @noSprCollision2
 @noSprCollision
+        cmp #%00001001
+        bne @noSprCollision2
+        lda #1
+        sta GameOver
+        sta $70
+        rts
+@noSprCollision2
         lda SPBGCL
         cmp #%00000001
         bne @noBgCollision
