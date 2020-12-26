@@ -280,4 +280,43 @@
       <data>170</data>
     </chardata>
   </character>
+  <character>
+    <charcode>61</charcode>
+    <chardata>
+      <data>24</data>
+      <data>52</data>
+      <data>44</data>
+      <data>24</data>
+      <data>36</data>
+      <data>56</data>
+      <data>52</data>
+      <data>44</data>
+    </chardata>
+  </character>
+  <character>
+    <charcode>62</charcode>
+    <chardata>
+      <data>121</data>
+      <data>222</data>
+      <data>190</data>
+      <data>219</data>
+      <data>44</data>
+      <data>52</data>
+      <data>44</data>
+      <data>24</data>
+    </chardata>
+  </character>
+  <character>
+    <charcode>63</charcode>
+    <chardata>
+      <data>24</data>
+      <data>44</data>
+      <data>52</data>
+      <data>44</data>
+      <data>219</data>
+      <data>190</data>
+      <data>222</data>
+      <data>121</data>
+    </chardata>
+  </character>
 </charset>

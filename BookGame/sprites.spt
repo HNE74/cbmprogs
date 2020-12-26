@@ -560,6 +560,41 @@
       <data>0</data>
     </sdata>
    </sprite>
+  <sprite>
+    <description>portal</description>
+    <links></links>
+    <include>True</include>
+    <multi>False</multi>
+    <spbkgnd>1</spbkgnd>
+    <spcolour>0</spcolour>
+    <mcolour1>6</mcolour1>
+    <mcolour2>7</mcolour2>
+    <expandx>False</expandx>
+    <expandy>False</expandy>
+    <sdata>
+      <data>12779520</data>
+      <data>8454144</data>
+      <data>3932160</data>
+      <data>2359296</data>
+      <data>2359296</data>
+      <data>3932160</data>
+      <data>8454144</data>
+      <data>12779520</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+    </sdata>
+   </sprite>
     <!-- Scratchpad data -->
     <ScratchpadData>
         <MaxSprites>0</MaxSprites>

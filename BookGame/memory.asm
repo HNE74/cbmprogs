@@ -19,15 +19,19 @@ SP1X = $D002    ; sprite 1 horizontal position
 SP1Y = $D003    ; sprite 1 vertical position
 SP2X = $D004    ; sprite 2 horizontal position
 SP2Y = $D005    ; sprite 2 vertical position
+SP3X = $D006    ; sprite 3 horizontal position
+SP3Y = $D007    ; sprite 3 vertical position
 SP0COL = $D027   ; sprite 0 color
 SP1COL = $D028   ; sprite 1 color
 SP2COL = $D029   ; sprite 2 color
+SP3COL = $D030   ; sprite 3 color
 SPSPCL = $D01E  ; sprite to sprite collision
 SPBGCL = $D01F  ; sprite to foreground collision register
 MSIGX = $D010   ; sprite extended register
 SSDP0 = $07F8   ; sprite 0 definition data pointer
 SSDP1 = $07F9   ; sprite 1 definition data pointer
 SSDP2 = $07FA   ; sprite 2 definition data pointer
+SSDP3 = $07FB   ; sprite 2 definition data pointer
 
 ;joystick addresses
 CIAPRA = $DC00

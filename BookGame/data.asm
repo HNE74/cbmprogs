@@ -62,6 +62,13 @@ PlayerMovedRight = #4
 PlayerMovedDown  = #8
 PlayerMovedLeft  = #16
 
+; *** Portal
+Portal = $90
+PortalIndex  byte $90
+PortalActive byte $01
+PortalXPosition byte $9A
+PortalYPosition byte $92
+
 ; *** Score
 Score   byte $0,$0,$0
 Lives   byte $35

@@ -50,7 +50,7 @@ go_button
 #region Initialize sprites
 ; *** Initializes sprites
 InitSprites
-        EnableSprites #%00000111        ; Call sprite enable macro
+        EnableSprites #%00001111        ; Call sprite enable macro
         PointToSpriteData PlayerSprIndex,SSDP0; Adjust sprite shap pointer
         lda LightBlueCol        ; Set player sprite color
         sta SP0COL
@@ -68,6 +68,13 @@ InitSprites
         sta SP2X
         sta SP2Y
         PointToSpriteData ExplosionIndex, SSDP2
+
+        lda PortalXPosition
+        sta SP3X
+        lda PortalYPosition
+        sta SP3Y
+        PointToSpriteData PortalIndex, SSDP3
+
 
         rts
 #endregion
@@ -412,7 +419,7 @@ DisablePlayer
         lda #%00000000
         sta MSIGX
 @enableExplosion
-        EnableSprites #%00000110
+        EnableSprites #%00001110
         jsr DecrementLives
         rts
 #endregion
@@ -429,7 +436,7 @@ IncPlayerVisibleCounter
         stx PlayerVisible
         ldx #$AF
         stx PlayerWaitCount
-        EnableSprites #%00000011
+        EnableSprites #%00001011
         jsr SpawnPlayerAtStartPosition
 @playerCountNotFinished
         rts
