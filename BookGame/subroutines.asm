@@ -61,6 +61,8 @@ InitSprites
         lda Enemy1XMaxPos
         sta Enemy1XPosition
         jsr PositionEnemy1
+        lda #0
+        sta Enemy1Direction
         
         lda WhiteCol            ; Init explosion sprite
         sta SP2COL
@@ -81,6 +83,9 @@ InitSprites
         sta score+2
         lda #$35
         sta Lives
+
+        lda #1                  ; Set portal active
+        sta PortalActive
 
         rts
 #endregion
