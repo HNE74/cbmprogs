@@ -46,9 +46,12 @@ GameLoop
         cpx #$01
         bne @playerNotVisible
 
-        ; *** Player handling
+        ; *** Screen change handling
         jsr DisplayScore
         jsr DisplayLives
+        jsr CheckGateActive
+
+        ; *** Player handling
         jsr ReadJoystick
         jsr MovePlayer
         jsr PositionPlayer

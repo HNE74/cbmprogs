@@ -24,3 +24,15 @@ RasterLoop
         bne RasterLoop
 endm
 
+; *** Place char on screen
+defm PlaceCharOnScreen
+        ldy /1
+        ldx /2
+        lda ScreenReaderTableLo,x
+        sta $91
+        lda ScreenReaderTableHi,x
+        sta $92
+        lda /3
+        sta ($91),y
+endm
+

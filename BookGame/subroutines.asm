@@ -864,3 +864,31 @@ PlayPickupSound
         sta VCREG1
         rts
 #endregion
+
+#region Check if gate is active
+; *** Check if gate is active
+CheckGateActive
+        ldy PortalActive
+        cpy #1
+        bne @noRemovePortal
+        ldx Score
+        cpx #7
+        bne @noRemovePortal
+        jsr ReplacePortalCharacters
+        lda #0
+        sta PortalActive
+@noRemovePortal
+        rts
+#endregion
+
+#region Replace portal characters
+; *** Replace portal characters
+ReplacePortalCharacters
+        PlaceCharOnScreen #19, #11, #$1C
+        PlaceCharOnScreen #20, #12, #$20
+        PlaceCharOnScreen #20, #13, #$22
+        lda #0
+        sta $91
+        sta $92
+        rts
+#endregion
