@@ -72,3 +72,13 @@ ScreenBlock4 = $06FD
 ;score screen memory location
 Screen_Score=$07C7
 Lives_Score=$07D5
+
+;sound memory locations
+FRELO1 = $D400
+FREHI1 = $D401
+PWLO1  = $D402
+PWLH1  = $D403
+VCREG1 = $D404
+ATDCY1 = $D405
+SURELI = $D406
+SIGVOL = $D418

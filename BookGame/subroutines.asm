@@ -375,6 +375,7 @@ CheckForPlayerCollision
 @noBgCollision
         rts
 @pickedUp
+        jsr PlayPickupSound
         ldy SavedYCol   ; Remove picked up item
         ldx SavedXCol
         lda ScreenReaderTableLo,x
@@ -390,6 +391,7 @@ endregion
 #region Disable player
 ; *** Disables the player sprite
 DisablePlayer
+        jsr PlayExplosionSound
         lda PlayerXPosition
         clc
         sbc #10
@@ -813,5 +815,45 @@ WaitForExplosion
         dex
         cpx #0
         bne @waitForExplosion1
+        rts
+#endregion
+
+#region Play explosion sound
+; *** Play explosion sound
+PlayExplosionSound
+        lda #15
+        sta SIGVOL
+        lda #0
+        sta FRELO1
+        lda #30
+        sta FREHI1
+        lda #10
+        sta ATDCY1
+        lda #1
+        sta SURELI
+        lda #0
+        sta VCREG1
+        lda #129
+        sta VCREG1
+        rts
+#endregion
+
+#region Play pick up sound
+; *** Play pick up sound
+PlayPickupSound
+        lda #25
+        sta SIGVOL
+        lda #0
+        sta FRELO1
+        lda #40
+        sta FREHI1
+        lda #22
+        sta ATDCY1
+        lda #7
+        sta SURELI
+        lda #0
+        sta VCREG1
+        lda #17
+        sta VCREG1
         rts
 #endregion
