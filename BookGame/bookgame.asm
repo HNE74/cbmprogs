@@ -46,7 +46,6 @@ NewGame
         jsr InitSprites
         jsr ClearScreen
         jsr DrawMap
-
 GameLoop
         WaitForRaster #255
 
@@ -73,7 +72,6 @@ GameLoop
         jsr MoveEnemy1
         jsr PositionEnemy1
         jsr SetCurrentEnemy1Sprite
-
         ; *** Player explosion handling
         ldx ExplosionPlaying
         cpx #$01
@@ -81,13 +79,11 @@ GameLoop
         jsr PlayExplosionAnimation
         jsr WaitForExplosion
 @noExplosion
-
         ; *** Increase counter if player not visible
         ldx PlayerVisible
         cpx #$00
         bne @noCounting
         jsr IncPlayerVisibleCounter
-
 @noCounting
         ; *** Game over check
         lda GameOver

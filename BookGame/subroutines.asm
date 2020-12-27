@@ -54,7 +54,7 @@ InitSprites
         PointToSpriteData PlayerSprIndex,SSDP0; Adjust sprite shap pointer
         lda LightBlueCol        ; Set player sprite color
         sta SP0COL
-        jsr PositionPlayer      ; Set sprite position
+        jsr SpawnPlayerAtStartPosition
 
         lda RedCol              ; Init enemy sprite
         sta SP1COL
@@ -1012,6 +1012,8 @@ ShowGameOver
         EnableSprites #%00000000
         jsr DrawGameOverMap
 @readKey
+        lda #0
+        sta $C6
         jsr $ffe4
         beq @readKey
         lda #0
@@ -1033,6 +1035,6 @@ ShowStartGame
         bne @readJoystick
         lda #0
         sta GameOver
-        jsr SpawnPlayerAtStartPosition
+        lda SPSPCL
         rts
 #endregion
