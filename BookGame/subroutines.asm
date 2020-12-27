@@ -444,11 +444,10 @@ CheckForPlayerCollision
         jsr DisablePlayer
         jmp @noSprCollision2
 @noSprCollision
-        cmp #%00001001
+        cmp #%00001001          ; Entered portal
         bne @noSprCollision2
         lda #1
         sta GameOver
-        sta $70
         rts
 @noSprCollision2
         lda SPBGCL
@@ -520,6 +519,7 @@ DisablePlayer
 @enableExplosion
         EnableSprites #%00001110
         jsr DecrementLives
+        jsr CheckLives
         rts
 #endregion
 
@@ -880,12 +880,25 @@ DisplayLives
         rts
 #endregion
 
-#region DecrementLives
+#region Decrement lives
 ; *** Decrement player lives
 DecrementLives
         ldx Lives
         dex
         stx Lives
+@noGameOver
+        rts
+#endregion
+
+#region Check lives
+; *** Check lives
+CheckLives
+        lda Lives
+        cmp #$30
+        bne @alive
+        lda #1
+        sta GameOver
+@alive
         rts
 #endregion
 
@@ -1020,5 +1033,6 @@ ShowStartGame
         bne @readJoystick
         lda #0
         sta GameOver
+        jsr SpawnPlayerAtStartPosition
         rts
 #endregion
