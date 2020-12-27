@@ -27,6 +27,10 @@ incbin "mlevel1.bin"
 *=MapGameOverMemory
 incbin "gameOver.bin"
 
+; *** Start game menu map
+*=MapStartMenuMemory
+incbin "start.bin"
+
 ; *** Other asm files
 incasm "macros.asm"
 incasm "data.asm"
@@ -36,9 +40,10 @@ incasm "data.asm"
         ldx BlackCol
         stx EXTCOL
         stx BGCOL0
-NewGame
-        jsr InitSprites
         jsr InitCharacterSet
+NewGame
+        jsr ShowStartGame
+        jsr InitSprites
         jsr ClearScreen
         jsr DrawMap
 

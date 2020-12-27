@@ -74,6 +74,13 @@ MapGameOverMemoryBlock2 = $50FF
 MapGameOverMemoryBlock3 = $51FE
 MapGameOverMemoryBlock4 = $52FD
 
+;game over memory locations
+MapStartMenuMemory = $6000
+MapStartMenuMemoryBlock1 = $6000
+MapStartMenuMemoryBlock2 = $60FF
+MapStartMenuMemoryBlock3 = $61FE
+MapStartMenuMemoryBlock4 = $62FD
+
 ;screen memory locations
 ScreenBlock1 = $0400
 ScreenBlock2 = $04FF

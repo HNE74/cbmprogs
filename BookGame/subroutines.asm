@@ -42,7 +42,7 @@ go_down
         sty Joystickinput
         rts
 go_button
-        ldy #1
+        ldy #32
         sty Joystickinput
         rts   
 #endregion
@@ -316,8 +316,8 @@ DrawMap
 #endregion
 
 
-#region Draw game overmap to screen
-; *** Draw level map to screen
+#region Draw game over map to screen
+; *** Draw game over map to screen
 DrawGameOverMap
         ldx #0
 @mapLoop1
@@ -346,6 +346,45 @@ DrawGameOverMap
         ldx #0
 @mapLoop4
         lda MapGameOverMemoryBlock4,x
+        tay
+        sta ScreenBlock4,x
+        inx
+        cpx #232
+        bne @mapLoop4
+        ldx #0
+        rts        
+#endregion
+
+#region Draw start game map to screen
+; *** Draw start game map to screen
+DrawStartGameMap
+        ldx #0
+@mapLoop1
+        lda MapStartMenuMemoryBlock1,x
+        tay
+        sta ScreenBlock1,x
+        inx
+        cpx #255
+        bne @mapLoop1
+        ldx #0
+@mapLoop2
+        lda MapStartMenuMemoryBlock2,x
+        tay
+        sta ScreenBlock2,x
+        inx
+        cpx #255
+        bne @mapLoop2
+        ldx #0
+@mapLoop3
+        lda MapStartMenuMemoryBlock3,x
+        tay
+        sta ScreenBlock3,x
+        inx
+        cpx #255
+        bne @mapLoop3
+        ldx #0
+@mapLoop4
+        lda MapStartMenuMemoryBlock4,x
         tay
         sta ScreenBlock4,x
         inx
@@ -965,5 +1004,21 @@ ShowGameOver
         lda #0
         sta GameOver
         jsr SpawnPlayerAtStartPosition
+        rts
+#endregion
+
+#region Show start game menu
+; *** Shows the start game menu on screen
+ShowStartGame
+        jsr ClearScreen
+        EnableSprites #%00000000
+        jsr DrawStartGameMap
+@readJoystick
+        jsr ReadJoystick
+        lda JoystickInput
+        cmp #32
+        bne @readJoystick
+        lda #0
+        sta GameOver
         rts
 #endregion

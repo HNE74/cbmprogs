@@ -1,6 +1,3 @@
-PlayerXPosCal   byte $00
-PlayerYPosCal   byte $00
-
 ;*************************************************
 ;*** Bookgame constants
 ;*** From book "Programming the Commodore 64 again"
@@ -15,6 +12,8 @@ PlayerYPosition byte $3B
 PlayerSprindex  byte $80
 PlayerVisible   byte $01
 PlayerWaitCount byte $AF
+PlayerXPosCal   byte $00
+PlayerYPosCal   byte $00
 
 Enemy1XPosition byte $65
 Enemy1YPosition byte $31
@@ -61,7 +60,7 @@ PlayerMovedUp    = #2
 PlayerMovedRight = #4
 PlayerMovedDown  = #8
 PlayerMovedLeft  = #16
-
+PlayerFire       = #32
 ; *** Portal
 Portal = $90
 PortalIndex  byte $90
