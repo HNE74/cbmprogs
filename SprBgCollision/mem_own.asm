@@ -7,6 +7,6 @@
 ;*****************************************************
 
 PROGRAM_START = $C000   ; program start
-SPRITE0_DEFINITION = $0340   ; sprite 0 definition
+SPRITE0_DEFINITION = $3000   ; sprite 0 definition
 
 

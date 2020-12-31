@@ -7,4 +7,4 @@
 ;*****************************************************
 
 ; *** sprite data
-sprite0Page byte $0D   ; BLOCK 13
+sprite0Page byte $C0
