@@ -32,6 +32,10 @@ COLOR_LIGHT_GREEN  = #13
 COLOR_LIGHT_BLUE   = #14
 COLOR_LIGHT_GREY   = #15
 
+;*** Min and max value for random background generation
+BGMIN_COORD = #0
+BGMAX_COORD = #20
+
 ;*** Screenram tables
 SCREEN_TABLE
         BYTE $04, $00, $04, $28, $04, $50, $04, $78, $04, $A0, $04, $C8 

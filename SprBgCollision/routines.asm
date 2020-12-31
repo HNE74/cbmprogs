@@ -150,7 +150,7 @@ CreateRandomNumber
         eor CIA_TIMERLOW_A
         eor CIA_TIMERHIGH_A
         eor VIC_SCREEN_RASTER
-        cmp #20
+        cmp #BGMAX_COORD-#BGMIN_COORD
         bcs CreateRandomNumber
         sta rndResultValue
         rts
