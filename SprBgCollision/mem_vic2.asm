@@ -7,7 +7,7 @@
 ;*****************************************************
 
 ;*** screen color registers
-VIC_BORDER_COLOLOR  = $D020   ; border color  
+VIC_BORDER_COLOR    = $D020   ; border color  
 VIC_SCREEN_BGCOLOR  = $D021   ; background color
 VIC_SCREEN_BGCOLOR1 = $D022   ; background color 1 (ext color mode)
 VIC_SCREEN_BGCOLOR2 = $D023   ; background color 2 (ext color mode)

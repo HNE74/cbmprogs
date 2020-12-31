@@ -28,3 +28,79 @@ InitSprite
         sta VIC_SPRITE0_YPOS
         rts
 #endregion
+
+#region Read joystick
+; *** Read joystick input
+ReadJoystick
+        ldy #0
+        sty joystickInput
+        lda CIA_PORT_A
+        and #JOY_RIGHT
+        beq @goRight
+        lda CIA_PORT_A
+        and #JOY_LEFT
+        beq @goLeft
+        lda CIA_PORT_A
+        and #JOY_UP
+        beq @goUp
+        lda CIA_PORT_A
+        and #JOY_DOWN
+        beq @goDown
+        lda CIA_PORT_A
+        and #JOY_BUTTON
+        beq @goButton
+        rts
+@goRight
+        ldy #JOY_RIGHT
+        sty joystickInput
+        rts
+@goLeft
+        ldy #JOY_LEFT
+        sty joystickInput
+        rts
+@goUp
+        ldy #JOY_UP
+        sty joystickInput
+        rts
+@goDown
+        ldy #JOY_DOWN
+        sty joystickInput
+        rts
+@goButton
+        ldy #JOY_BUTTON
+        sty joystickInput
+        rts   
+#endregion
+
+#region Move sprite
+MoveSprite
+        lda joystickInput
+        cmp #JOY_IDLE
+        beq @endMove
+        cmp #JOY_UP
+        bne @moveDown
+        ldx VIC_SPRITE0_YPOS
+        dex
+        stx VIC_SPRITE0_YPOS
+        jmp @endMove
+@moveDown
+        cmp #JOY_DOWN
+        bne @moveLeft
+        ldx VIC_SPRITE0_YPOS
+        inx
+        stx VIC_SPRITE0_YPOS
+@moveLeft
+        cmp #JOY_LEFT
+        bne @moveRight
+        ldx VIC_SPRITE0_XPOS
+        dex
+        stx VIC_SPRITE0_XPOS
+@moveRight
+        cmp #JOY_RIGHT
+        bne @endMove
+        ldx VIC_SPRITE0_XPOS
+        inx
+        stx VIC_SPRITE0_XPOS
+@endMove
+        rts
+#endregion

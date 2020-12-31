@@ -6,3 +6,11 @@
 ;*** modified by any interested parties.
 ;*****************************************************
 
+;*** Wait for rasterline
+defm WaitForRaster
+@rasterLoop 
+        lda /1
+        cmp VIC_SCREEN_RASTER
+        bne @rasterLoop
+endm
+

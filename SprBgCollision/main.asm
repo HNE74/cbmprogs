@@ -29,6 +29,12 @@ incbin "crosshair.bin"
 *=PROGRAM_START
         jsr ClearScreen
         jsr InitSprite
+
+mainLoop
+        WaitForRaster #255
+        jsr ReadJoystick
+        jsr MoveSprite
+        jmp mainLoop
         rts
 
 ;*** assembly routines used 

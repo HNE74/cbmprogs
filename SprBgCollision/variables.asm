@@ -6,5 +6,7 @@
 ;*** modified by any interested parties.
 ;*****************************************************
 
-; *** sprite data
-sprite0Page byte $C0
+sprite0Page byte $C0    ; sprite data
+
+joystickInput byte $00  ; joystick input value
+
