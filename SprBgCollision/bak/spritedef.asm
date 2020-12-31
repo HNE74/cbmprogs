@@ -1,0 +1,22 @@
+CROSSHAIR         
+        BYTE $FF,$FF,$FF
+        BYTE $80,$80,$80
+        BYTE $80,$80,$81
+        BYTE $80,$80,$80
+        BYTE $80,$80,$80
+        BYTE $80,$80,$81
+        BYTE $80,$80,$80
+        BYTE $80,$80,$80
+        BYTE $FF,$FF,$FF
+        BYTE $80,$80,$80
+        BYTE $80,$80,$81
+        BYTE $80,$80,$80
+        BYTE $80,$80,$80
+        BYTE $80,$80,$81
+        BYTE $80,$80,$80
+        BYTE $FF,$FF,$FF
+        BYTE $80,$80,$80
+        BYTE $80,$80,$81
+        BYTE $80,$80,$80
+        BYTE $80,$80,$80
+        BYTE $A4,$A4,$C9
