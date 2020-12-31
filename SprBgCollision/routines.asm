@@ -7,7 +7,6 @@
 ;*****************************************************
 
 #region Clear screen
-;*** Clear the screen
 ClearScreen
         lda #147
         jsr KERNAL_CHROUT
@@ -30,7 +29,6 @@ InitSprite
 #endregion
 
 #region Read joystick
-; *** Read joystick input
 ReadJoystick
         ldy #0
         sty joystickInput
@@ -102,5 +100,85 @@ MoveSprite
         inx
         stx VIC_SPRITE0_XPOS
 @endMove
+        rts
+#endregion
+
+#region Plot character to screen
+ScreenPlot
+        ldy #0
+        ldx #0
+@inc1   iny                     ; set offset color ram (y position)
+        iny
+        inx
+        cpx plotYpos
+        bne @inc1
+
+        lda COLOR_TABLE,y+1     ; store offset in zero page pointer register
+        sta ZERO_INDEX
+        lda COLOR_TABLE,y
+        sta ZERO_INDEX+1
+
+        lda plotColor           ; set color ram adding x position to 
+        ldy plotXPos            ; memory position zero page points to
+        sta (ZERO_INDEX),y
+
+        ldy #0                  ; set offset screen ram (y position)
+        ldx #0
+@inc2   iny
+        iny
+        inx
+        cpx plotYpos
+        bne @inc2
+
+        lda SCREEN_TABLE,y+1    ; store offset in zero page pointer register
+        sta ZERO_INDEX
+        lda SCREEN_TABLE,y
+        sta ZERO_INDEX+1
+        
+        lda plotCharacter       ; set screen ram adding x position to 
+        ldy plotXpos            ; memory position zero page points to
+        sta (ZERO_INDEX),y
+        rts
+#endregion
+
+#region Create random number
+CreateRandomNumber
+        lda CIA_TIMERLOW_A
+        eor CIA_TIMERHIGH_A
+        eor CIA_TIMERLOW_A
+        adc CIA_TIMERHIGH_A
+        eor CIA_TIMERLOW_A
+        eor CIA_TIMERHIGH_A
+        eor VIC_SCREEN_RASTER
+        cmp #20
+        bcs CreateRandomNumber
+        sta rndResultValue
+        rts
+#endregion
+
+#region Create background
+CreateBackground
+        lda #20
+        sta counter
+@plotChar
+        jsr CreateRandomNumber  ; Character x position
+        lda rndResultValue
+        sta plotXpos
+
+        jsr CreateRandomNumber  ; Character y position
+        lda rndResultValue
+        sta plotYpos
+
+        lda #90                 ; Plot character
+        sta plotCharacter
+        lda COLOR_WHITE
+        sta plotColor
+        jsr ScreenPlot 
+
+        ldx counter             ; Create 20 characters
+        dex        
+        stx counter
+        cpx #00
+        bne @plotChar
         rts
 #endregion
