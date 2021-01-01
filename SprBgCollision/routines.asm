@@ -141,6 +141,27 @@ ScreenPlot
         rts
 #endregion
 
+#region Screen peek charater
+ScreenPeek
+          ldy            #0
+          ldx            #0
+@inc1
+          iny
+          iny
+          inx
+          cpx            peekYpos
+          bne            @inc1
+          lda            SCREEN_TABLE,y; Load y address offset into zeropage
+          sta            ZERO_INDEX+1
+          iny
+          lda            SCREEN_TABLE,y
+          sta            ZERO_INDEX
+          ldy            peekXpos
+          lda            (ZERO_INDEX),y; Peek value and store it to result 
+          sta            peekValue
+          rts 
+#endregion 
+
 #region Create random number
 CreateRandomNumber
         lda CIA_TIMERLOW_A
@@ -182,3 +203,136 @@ CreateBackground
         bne @plotChar
         rts
 #endregion
+
+#region Calculate sprite 0 upper left screen chr position
+Sprite0UpperLeftScreenPosition
+        clc                          ; y position 
+        lda VIC_SPRITE0_YPOS
+        adc SPRITE_SCREENPOS_YOFFSET_UL
+        sbc #50
+        sta sprite0UpperLeftYpos
+
+        lsr                           ; division by 8
+        lsr  
+        lsr  
+        sta sprite0UpperLeftYpos 
+
+        lda VIC_SPRITE_X255          ; check sprite extended         
+        cmp #1             
+        beq @spriteIsExtended    
+
+        clc                          ; x position
+        lda VIC_SPRITE0_XPOS                     
+        adc SPRITE_SCREENPOS_XOFFSET_UL                   
+        sbc #24                                              
+        sta sprite0UpperLeftXpos                            
+
+        lsr                           ; division by 8
+        lsr                         
+        lsr                            
+        sta sprite0UpperLeftXpos              
+        rts
+
+@spriteIsExtended                   
+        clc                          ; X position
+        lda VIC_SPRITE0_XPOS   
+        sta sprite0UpperLeftXpos       
+
+        lda sprite0UpperLeftXpos   
+        lsr            
+        lsr                  
+        lsr                   
+        sta sprite0UpperLeftXpos      
+        adc #29                   
+        sta sprite0UpperLeftXpos            
+        rts                           
+#endregion
+
+#region Calculate sprite 0 upper right screen chr position
+Sprite0UpperRightScreenPosition
+        clc                          ; y position 
+        lda VIC_SPRITE0_YPOS
+        adc SPRITE_SCREENPOS_YOFFSET_UR
+        sbc #50
+        sta sprite0UpperRightYpos
+
+        lsr                           ; division by 8
+        lsr  
+        lsr  
+        sta sprite0UpperRightYpos 
+
+        lda VIC_SPRITE_X255          ; check sprite extended         
+        cmp #1             
+        beq @spriteIsExtended    
+
+        clc                          ; x position
+        lda VIC_SPRITE0_XPOS                     
+        adc SPRITE_SCREENPOS_XOFFSET_UR                   
+        sbc #24                                              
+        sta sprite0UpperRightXpos                            
+
+        lsr                           ; division by 8
+        lsr                         
+        lsr                            
+        sta sprite0UpperRightXpos              
+        rts
+
+@spriteIsExtended                   
+        clc                          ; X position
+        lda VIC_SPRITE0_XPOS   
+        sta sprite0UpperRightXpos       
+
+        lda sprite0UpperRightXpos   
+        lsr            
+        lsr                  
+        lsr                   
+        sta sprite0UpperRightXpos      
+        adc #29                   
+        sta sprite0UpperRightXpos            
+        rts                           
+#endregion
+
+#region Plot upper left character
+PlotUpperLeftCharacter
+        jsr Sprite0UpperLeftScreenPosition ; calc position
+
+        lda sprite0UpperLeftXpos     ; read character
+        sta peekXpos
+        lda sprite0UpperLeftYpos
+        sta peekYpos
+        jsr ScreenPeek
+
+        lda peekValue                ; plot character
+        sta plotCharacter
+        lda COLOR_LIGHT_RED
+        sta plotColor
+        lda #30
+        sta plotXpos
+        lda #10
+        sta plotYpos
+        jsr ScreenPlot
+        rts
+#endregion
+
+#region Plot upper left character
+PlotUpperRightCharacter
+        jsr Sprite0UpperRightScreenPosition ; calc position
+
+        lda sprite0UpperRightXpos     ; read character
+        sta peekXpos
+        lda sprite0UpperRightYpos
+        sta peekYpos
+        jsr ScreenPeek
+
+        lda peekValue                ; plot character
+        sta plotCharacter
+        lda COLOR_LIGHT_RED
+        sta plotColor
+        lda #31
+        sta plotXpos
+        lda #10
+        sta plotYpos
+        jsr ScreenPlot
+        rts
+#endregion
+                       

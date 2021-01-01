@@ -35,6 +35,8 @@ mainLoop
         WaitForRaster #255
         jsr ReadJoystick
         jsr MoveSprite
+        jsr PlotUpperLeftCharacter
+        jsr PlotUpperRightCharacter
         jmp mainLoop
         rts
 

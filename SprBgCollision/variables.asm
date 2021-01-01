@@ -22,6 +22,17 @@ rndResultValue byte $00
 ;*** counter variable
 counter byte $00
 
+;*** sprite screenram positions
+sprite0UpperLeftXpos byte $00
+sprite0UpperLeftYpos byte $00
+sprite0UpperRightXpos byte $00
+sprite0UpperRightYpos byte $00
+
+;*** peek value from screenram positions
+peekXpos byte $00
+peekYpos byte $00
+peekValue byte $00
+
 
 
 

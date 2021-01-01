@@ -36,6 +36,12 @@ COLOR_LIGHT_GREY   = #15
 BGMIN_COORD = #0
 BGMAX_COORD = #20
 
+;*** Offsets for calculating sprite position on chr screen
+SPRITE_SCREENPOS_XOFFSET_UL = #04
+SPRITE_SCREENPOS_YOFFSET_UL = #04
+SPRITE_SCREENPOS_XOFFSET_UR = #12
+SPRITE_SCREENPOS_YOFFSET_UR = #04
+
 ;*** Screenram tables
 SCREEN_TABLE
         BYTE $04, $00, $04, $28, $04, $50, $04, $78, $04, $A0, $04, $C8 
