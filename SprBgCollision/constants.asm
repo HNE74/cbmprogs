@@ -33,8 +33,8 @@ COLOR_LIGHT_BLUE   = #14
 COLOR_LIGHT_GREY   = #15
 
 ;*** Min and max value for random background generation
-BGMIN_COORD = #0
-BGMAX_COORD = #20
+BGMAX_XPOS = #39
+BGMAX_YPOS = #20
 
 ;*** Offsets for calculating sprite position on chr screen
 SPRITE_SCREENPOS_XOFFSET_UL = #04

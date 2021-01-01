@@ -17,6 +17,7 @@ plotCharacter byte $00
 plotColor byte $00
 
 ;*** rnd routine variables
+rndMaxValue byte $00
 rndResultValue byte $00
 
 ;*** background character

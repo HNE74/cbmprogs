@@ -91,12 +91,22 @@ MoveSprite
         cmp #JOY_LEFT
         bne @moveRight
         ldx VIC_SPRITE0_XPOS
+        cpx #$00
+        bne @decXpos
+        lda #%00000000
+        sta VIC_SPRITE_X255        
+@decXpos
         dex
         stx VIC_SPRITE0_XPOS
 @moveRight
         cmp #JOY_RIGHT
         bne @endMove
         ldx VIC_SPRITE0_XPOS
+        cpx #$FF
+        bne @incXpos
+        lda #%00000001
+        sta VIC_SPRITE_X255
+@incXpos
         inx
         stx VIC_SPRITE0_XPOS
 @endMove
@@ -171,7 +181,7 @@ CreateRandomNumber
         eor CIA_TIMERLOW_A
         eor CIA_TIMERHIGH_A
         eor VIC_SCREEN_RASTER
-        cmp #BGMAX_COORD-#BGMIN_COORD
+        cmp rndMaxValue
         bcs CreateRandomNumber
         sta rndResultValue
         rts
@@ -182,10 +192,14 @@ CreateBackground
         lda #20
         sta counter
 @plotChar
+        lda BGMAX_XPOS
+        sta rndMaxValue
         jsr CreateRandomNumber  ; Character x position
         lda rndResultValue
         sta plotXpos
 
+        lda BGMAX_YPOS
+        sta rndMaxValue        
         jsr CreateRandomNumber  ; Character y position
         lda rndResultValue
         sta plotYpos
@@ -287,7 +301,7 @@ Sprite0UpperRightScreenPosition
         lsr                  
         lsr                   
         sta sprite0UpperRightXpos      
-        adc #29                   
+        adc #30                   
         sta sprite0UpperRightXpos            
         rts                           
 #endregion
@@ -375,7 +389,7 @@ Sprite0LowerRightScreenPosition
         lsr                  
         lsr                   
         sta sprite0LowerRightXpos      
-        adc #29                   
+        adc #30                 
         sta sprite0LowerRightXpos            
         rts                           
 #endregion
@@ -394,15 +408,15 @@ PlotUpperLeftCharacter
         sta plotCharacter
         lda COLOR_LIGHT_RED
         sta plotColor
-        lda #30
-        sta plotXpos
         lda #10
+        sta plotXpos
+        lda #22
         sta plotYpos
         jsr ScreenPlot
         rts
 #endregion
 
-#region Plot upper left character
+#region Plot upper right character
 PlotUpperRightCharacter
         jsr Sprite0UpperRightScreenPosition ; calc position
 
@@ -416,9 +430,9 @@ PlotUpperRightCharacter
         sta plotCharacter
         lda COLOR_LIGHT_RED
         sta plotColor
-        lda #31
+        lda #11
         sta plotXpos
-        lda #10
+        lda #22
         sta plotYpos
         jsr ScreenPlot
         rts
@@ -438,9 +452,9 @@ PlotLowerLeftCharacter
         sta plotCharacter
         lda COLOR_LIGHT_RED
         sta plotColor
-        lda #30
+        lda #10
         sta plotXpos
-        lda #11
+        lda #23
         sta plotYpos
         jsr ScreenPlot
         rts
@@ -460,9 +474,9 @@ PlotLowerRightCharacter
         sta plotCharacter
         lda COLOR_LIGHT_RED
         sta plotColor
-        lda #31
-        sta plotXpos
         lda #11
+        sta plotXpos
+        lda #23
         sta plotYpos
         jsr ScreenPlot
         rts
