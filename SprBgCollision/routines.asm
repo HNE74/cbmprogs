@@ -292,6 +292,94 @@ Sprite0UpperRightScreenPosition
         rts                           
 #endregion
 
+#region Calculate sprite 0 lower left screen chr position
+Sprite0LowerLeftScreenPosition
+        clc                          ; y position 
+        lda VIC_SPRITE0_YPOS
+        adc SPRITE_SCREENPOS_YOFFSET_LL
+        sbc #50
+        sta sprite0LowerLeftYpos
+
+        lsr                           ; division by 8
+        lsr  
+        lsr  
+        sta sprite0LowerLeftYpos 
+
+        lda VIC_SPRITE_X255          ; check sprite extended         
+        cmp #1             
+        beq @spriteIsExtended    
+
+        clc                          ; x position
+        lda VIC_SPRITE0_XPOS                     
+        adc SPRITE_SCREENPOS_XOFFSET_LL                   
+        sbc #24                                              
+        sta sprite0LowerLeftXpos                            
+
+        lsr                           ; division by 8
+        lsr                         
+        lsr                            
+        sta sprite0LowerLeftXpos              
+        rts
+
+@spriteIsExtended                   
+        clc                          ; X position
+        lda VIC_SPRITE0_XPOS   
+        sta sprite0LowerLeftXpos       
+
+        lda sprite0LowerLeftXpos   
+        lsr            
+        lsr                  
+        lsr                   
+        sta sprite0LowerLeftXpos      
+        adc #29                   
+        sta sprite0LowerLeftXpos            
+        rts                           
+#endregion
+
+#region Calculate sprite 0 lower right screen chr position
+Sprite0LowerRightScreenPosition
+        clc                          ; y position 
+        lda VIC_SPRITE0_YPOS
+        adc SPRITE_SCREENPOS_YOFFSET_LR
+        sbc #50
+        sta sprite0LowerRightYpos
+
+        lsr                           ; division by 8
+        lsr  
+        lsr  
+        sta sprite0LowerRightYpos 
+
+        lda VIC_SPRITE_X255          ; check sprite extended         
+        cmp #1             
+        beq @spriteIsExtended    
+
+        clc                          ; x position
+        lda VIC_SPRITE0_XPOS                     
+        adc SPRITE_SCREENPOS_XOFFSET_LR                   
+        sbc #24                                              
+        sta sprite0LowerRightXpos                            
+
+        lsr                           ; division by 8
+        lsr                         
+        lsr                            
+        sta sprite0LowerRightXpos              
+        rts
+
+@spriteIsExtended                   
+        clc                          ; X position
+        lda VIC_SPRITE0_XPOS   
+        sta sprite0LowerRightXpos       
+
+        lda sprite0LowerRightXpos   
+        lsr            
+        lsr                  
+        lsr                   
+        sta sprite0LowerRightXpos      
+        adc #29                   
+        sta sprite0LowerRightXpos            
+        rts                           
+#endregion
+
 #region Plot upper left character
 PlotUpperLeftCharacter
         jsr Sprite0UpperLeftScreenPosition ; calc position
@@ -331,6 +419,50 @@ PlotUpperRightCharacter
         lda #31
         sta plotXpos
         lda #10
+        sta plotYpos
+        jsr ScreenPlot
+        rts
+#endregion
+
+#region Plot lower left character
+PlotLowerLeftCharacter
+        jsr Sprite0LowerLeftScreenPosition ; calc position
+
+        lda sprite0LowerLeftXpos     ; read character
+        sta peekXpos
+        lda sprite0LowerLeftYpos
+        sta peekYpos
+        jsr ScreenPeek
+
+        lda peekValue                ; plot character
+        sta plotCharacter
+        lda COLOR_LIGHT_RED
+        sta plotColor
+        lda #30
+        sta plotXpos
+        lda #11
+        sta plotYpos
+        jsr ScreenPlot
+        rts
+#endregion
+
+#region Plot lower right character
+PlotLowerRightCharacter
+        jsr Sprite0LowerRightScreenPosition ; calc position
+
+        lda sprite0LowerRightXpos     ; read character
+        sta peekXpos
+        lda sprite0LowerRightYpos
+        sta peekYpos
+        jsr ScreenPeek
+
+        lda peekValue                ; plot character
+        sta plotCharacter
+        lda COLOR_LIGHT_RED
+        sta plotColor
+        lda #31
+        sta plotXpos
+        lda #11
         sta plotYpos
         jsr ScreenPlot
         rts

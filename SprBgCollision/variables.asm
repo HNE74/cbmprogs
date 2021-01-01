@@ -27,6 +27,10 @@ sprite0UpperLeftXpos byte $00
 sprite0UpperLeftYpos byte $00
 sprite0UpperRightXpos byte $00
 sprite0UpperRightYpos byte $00
+sprite0LowerLeftXpos byte $00
+sprite0LowerLeftYpos byte $00
+sprite0LowerRightXpos byte $00
+sprite0LowerRightYpos byte $00
 
 ;*** peek value from screenram positions
 peekXpos byte $00

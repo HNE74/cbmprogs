@@ -37,6 +37,8 @@ mainLoop
         jsr MoveSprite
         jsr PlotUpperLeftCharacter
         jsr PlotUpperRightCharacter
+        jsr PlotLowerLeftCharacter
+        jsr PlotLowerRightCharacter
         jmp mainLoop
         rts
 
