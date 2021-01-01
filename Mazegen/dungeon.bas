@@ -1,7 +1,7 @@
 !--------------------------------------------------
 !- Dungeon visualization by N3rdroom
 !- https://www.youtube.com/watch?v=Bc_4hgeVmEg&t=86s
-!- Noltisoft added maze genration routine
+!- Noltisoft added maze genration routine.
 !--------------------------------------------------
 0 PRINT"{clear}";:POKE53280,0:POKE53281,0
 1 DY=39:REM **** MAXIMALE FELDER Y
