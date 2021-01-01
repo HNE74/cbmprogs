@@ -1,0 +1,230 @@
+00001  0000             
+00002  0001             *=$C000
+00003  C000             
+00004  C000             ; VARIABLES USED BY PLOT ROUTINE
+00005  C000             XPOS       = $CF11 ;X-POSITION ZEICHEN
+00006  C000             YPOS       = $CF12 ;Y-POSITION ZEICHEN
+00007  C000             CHRCODE    = $CF15 ;ZEICHENCODE
+00008  C000             CHRCOLOR   = $CF16 ;ZEICHENFARBE
+00009  C000             SCREENZEROADR = $FB   ;ZERO PAGE ZEICHEN
+00010  C000             COLORZEROADR = $FD   ;ZERO PAGE FARBEN
+00011  C000             
+00012  C000             ; VARIABLES USED BY SCROLL ROUTINE
+00013  C000             XSCRL      = $CF17
+00014  C000             YSCRL      = $CF18
+00015  C000             SCRLMINY   = 10
+00016  C000             SCRLMAXX   = 39
+00017  C000             SCRLMAXY   = 50
+00018  C000             
+00019  C000             ;VARIABLES USED BY RND ROUTINE
+00020  C000             TIMERLOW   = $DC04
+00021  C000             TIMERHIGH  = $DC05
+00022  C000             RASTER     = $D012
+00023  C000             RNDMIN     = $CF19
+00024  C000             RNDMAX     = $CF20
+00025  C000             RNDRESULT  = $CF21
+00026  C000             
+00027  C000             ;VARIABLES USED BY PLOT OBJECT ROUTINE
+00028  C000             DOPLOT     = 50
+00029  C000             OBJCHR     = 42
+00030  C000             OBJCLR     = 5
+00031  C000             YOMIN      = 5
+00032  C000             YOMAX      = 24
+00033  C000             
+00034  C000             
+00035  C000             
+00036  C000  20 09 C0   @MAIN      JSR     @SCROLL
+00037  C003  20 72 C0              JSR     @PLTOBJ
+00038  C006  4C 00 C0              JMP     @MAIN
+00039  C009             
+00040  C009  A0 0A      @SCROLL    LDY #SCRLMINY           ; INIT SCROLL POINTER
+00041  C00B  8C 18 CF              STY YSCRL
+00042  C00E             
+00043  C00E  A2 01      @YSCRL     LDX #1
+00044  C010  8E 17 CF              STX XSCRL
+00045  C013             
+00046  C013  AC 18 CF   @XSCRL     LDY YSCRL
+00047  C016  B9 3C C1              LDA CLRTABLE:,Y+1       ; POINT ZERO PAGE TO COLORRAM ADDRESS
+00048  C019  85 FD                 STA COLORZEROADR
+00049  C01B  B9 3B C1              LDA CLRTABLE:,Y
+00050  C01E  85 FE                 STA COLORZEROADR+1
+00051  C020             
+00052  C020  B9 0A C1              LDA SCRTABLE:,Y+1       ; POINT ZERO PAGE TO SCREENRAM ADDRESS
+00053  C023  85 FB                 STA SCREENZEROADR
+00054  C025  B9 09 C1              LDA SCRTABLE:,Y
+00055  C028  85 FC                 STA SCREENZEROADR+1
+00056  C02A             
+00057  C02A  AC 17 CF              LDY XSCRL               ; COPY COLORRAMRAM CONTENT RIGHT TO LEFT
+00058  C02D  B1 FD                 LDA (COLORZEROADR),Y
+00059  C02F  AC 17 CF              LDY XSCRL
+00060  C032  88                    DEY
+00061  C033  91 FD                 STA (COLORZEROADR),Y
+00062  C035             
+00063  C035  AC 17 CF              LDY XSCRL               ; COPY SCREENRAM CONTENT RIGHT TO LEFT
+00064  C038  B1 FB                 LDA (SCREENZEROADR),Y
+00065  C03A  AC 17 CF              LDY XSCRL
+00066  C03D  88                    DEY
+00067  C03E  91 FB                 STA (SCREENZEROADR),Y
+00068  C040             
+00069  C040  AE 17 CF              LDX XSCRL               ; INCREASE COLUMN COUNTER
+00070  C043  E8                    INX
+00071  C044  8E 17 CF              STX XSCRL
+00072  C047  E0 28                 CPX #SCRLMAXX+1
+00073  C049  D0 C8                 BNE @XSCRL
+00074  C04B             
+00075  C04B  AC 17 CF              LDY XSCRL               ; RESET LAST COLOR OF COLUMN
+00076  C04E  B1 FD                 LDA (COLORZEROADR),Y
+00077  C050  AC 17 CF              LDY XSCRL
+00078  C053  88                    DEY
+00079  C054  A9 00                 LDA #0
+00080  C056  91 FD                 STA (COLORZEROADR),Y
+00081  C058             
+00082  C058  AC 17 CF              LDY XSCRL               ; DELETE LAST CHAR OF COLUMN
+00083  C05B  B1 FB                 LDA (SCREENZEROADR),Y
+00084  C05D  AC 17 CF              LDY XSCRL
+00085  C060  88                    DEY
+00086  C061  A9 20                 LDA #32
+00087  C063  91 FB                 STA (SCREENZEROADR),Y
+00088  C065             
+00089  C065  AE 18 CF              LDX YSCRL
+00090  C068  E8                    INX
+00091  C069  E8                    INX
+00092  C06A  8E 18 CF              STX YSCRL
+00093  C06D  E0 32                 CPX #SCRLMAXY
+00094  C06F  D0 9D                 BNE @YSCRL
+00095  C071  60                    RTS
+00096  C072             
+00097  C072                        ; PLOT OBJECT SUBROUTINE
+00098  C072  A9 00      @PLTOBJ    LDA #0
+00099  C074  8D 19 CF              STA RNDMIN
+00100  C077  A9 FA                 LDA #250
+00101  C079  8D 20 CF              STA RNDMAX
+00102  C07C  20 AC C0              JSR @RND
+00103  C07F  AD 21 CF              LDA RNDRESULT
+00104  C082  C9 32                 CMP #DOPLOT
+00105  C084  B0 25                 BCS @ENDOBJ
+00106  C086  A2 27                 LDX #39
+00107  C088  8E 11 CF              STX XPOS
+00108  C08B  A9 05                 LDA #YOMIN
+00109  C08D  8D 19 CF              STA RNDMIN
+00110  C090  A9 18                 LDA #YOMAX
+00111  C092  8D 20 CF              STA RNDMAX
+00112  C095  20 AC C0              JSR @RND
+00113  C098  AC 21 CF              LDY RNDRESULT
+00114  C09B  8C 12 CF              STY YPOS
+00115  C09E  A5 2A                 LDA OBJCHR
+00116  C0A0  8D 15 CF              STA CHRCODE
+00117  C0A3  A5 05                 LDA OBJCLR
+00118  C0A5  8D 16 CF              STA CHRCOLOR
+00119  C0A8  20 CC C0              JSR @PLOT
+00120  C0AB  60         @ENDOBJ    RTS
+00121  C0AC             
+00122  C0AC                        ; RANDOM SUBROUTINE
+00123  C0AC  AD 04 DC   @RND       LDA TIMERLOW
+00124  C0AF  4D 05 DC              EOR TIMERHIGH
+00125  C0B2  4D 04 DC              EOR TIMERLOW
+00126  C0B5  6D 05 DC              ADC TIMERHIGH
+00127  C0B8  4D 04 DC              EOR TIMERLOW
+00128  C0BB  4D 05 DC              EOR TIMERHIGH
+00129  C0BE  4D 12 D0              EOR RASTER
+00130  C0C1  C5 07                 CMP RNDMAX-RNDMIN
+00131  C0C3  B0 E7                 BCS @RND
+00132  C0C5  6D 19 CF              ADC RNDMIN
+00133  C0C8  8D 21 CF              STA RNDRESULT
+00134  C0CB  60                    RTS
+00135  C0CC             
+00136  C0CC                        ; PLOT SUBROUTINE
+00137  C0CC  A0 00      @PLOT      LDY #0
+00138  C0CE  A2 00                 LDX #0
+00139  C0D0  C8         @INC1      INY                     ; SET OFFSET COLOR RAM (Y POSITION)
+00140  C0D1  C8                    INY
+00141  C0D2  E8                    INX
+00142  C0D3  EC 12 CF              CPX YPOS
+00143  C0D6  D0 F8                 BNE @INC1
+00144  C0D8             
+00145  C0D8  B9 3C C1              LDA CLRTABLE:,Y+1       ; STORE OFFSET IN ZERO PAGE POINTER REGISTER
+00146  C0DB  85 FD                 STA COLORZEROADR
+00147  C0DD  B9 3B C1              LDA CLRTABLE:,Y
+00148  C0E0  85 FE                 STA COLORZEROADR+1
+00149  C0E2             
+00150  C0E2  AD 16 CF              LDA CHRCOLOR            ; SET COLOR RAM ADDING X POSITION TO
+00151  C0E5  AC 11 CF              LDY XPOS                ; MEMORY POSITION ZERO PAGE POINTS TO
+00152  C0E8  91 FD                 STA (COLORZEROADR),Y
+00153  C0EA             
+00154  C0EA  A0 00                 LDY #0                  ; SET OFFSET SCREEN RAM (Y POSITION)
+00155  C0EC  A2 00                 LDX #0
+00156  C0EE  C8         @INC2      INY
+00157  C0EF  C8                    INY
+00158  C0F0  E8                    INX
+00159  C0F1  EC 12 CF              CPX YPOS
+00160  C0F4  D0 F8                 BNE @INC2
+00161  C0F6             
+00162  C0F6  B9 0A C1              LDA SCRTABLE:,Y+1       ; STORE OFFSET IN ZERO PAGE POINTER REGISTER
+00163  C0F9  85 FB                 STA SCREENZEROADR
+00164  C0FB  B9 09 C1              LDA SCRTABLE:,Y
+00165  C0FE  85 FC                 STA SCREENZEROADR+1
+00166  C100             
+00167  C100  AD 15 CF              LDA CHRCODE             ; SET SCREEN RAM ADDING X POSITION TO
+00168  C103  AC 11 CF              LDY XPOS                ; MEMORY POSITION ZERO PAGE POINTS TO
+00169  C106  91 FB                 STA (SCREENZEROADR),Y
+00170  C108  60                    RTS
+00171  C109             
+00172  C109             SCRTABLE:
+00173  C109  04 00 04              BYTE $04, $00, $04, $28, $04, $50, $04, $78, $04, $A0, $04, $C8
+00174  C115  04 F0 05              BYTE $04, $F0, $05, $18, $05, $40, $05, $68, $05 ,$90, $05, $B8
+00175  C121  05 E0 06              BYTE $05, $E0, $06, $08, $06, $30, $06, $58, $06 ,$80, $06, $A8
+00176  C12D  06 D0 06              BYTE $06, $D0, $06, $F8, $07, $20, $07, $48, $07, $70, $07, $98
+00177  C139  07 C0                 BYTE $07, $C0
+00178  C13B             
+00179  C13B             
+00180  C13B             CLRTABLE:
+00181  C13B  D8 00 D8              BYTE $D8, $00, $D8, $28, $D8, $50, $D8, $78, $D8, $A0, $D8, $C8
+00182  C147  D8 F0 D9              BYTE $D8, $F0, $D9, $18, $D9, $40, $D9, $68, $D9, $90, $D9, $B8
+00183  C153  D9 E0 DA              BYTE $D9, $E0, $DA, $08, $DA, $30, $DA, $58, $DA, $80, $DA, $A8
+00184  C15F  DA D0 DA              BYTE $DA, $D0, $DA, $F8, $DB, $20, $DB, $48, $DB, $70, $DB, $98
+00185  C16B  DB C0                 BYTE $DB, $C0
+
+******* 2 Label(s) *******
+CLRTABLE: = $C13B 
+SCRTABLE: = $C109 
+
+******* 0 Unused label(s) *******
+@ENDOBJ
+@INC1
+@INC2
+@MAIN
+@PLOT
+@PLTOBJ
+@RND
+@SCROLL
+@XSCRL
+@YSCRL
+
+******* 23 Variable(s) *******
+CHRCODE  = $CF15
+CHRCOLOR  = $CF16
+COLORZEROADR  = $00FD
+DOPLOT  = $0032
+OBJCHR  = $002A
+OBJCLR  = $0005
+RASTER  = $D012
+RNDMAX  = $CF20
+RNDMIN  = $CF19
+RNDRESULT  = $CF21
+SCREENZEROADR  = $00FB
+SCRLMAXX  = $0027
+SCRLMAXY  = $0032
+SCRLMINY  = $000A
+tgt_c64  = $0001
+TIMERHIGH  = $DC05
+TIMERLOW  = $DC04
+XPOS  = $CF11
+XSCRL  = $CF17
+YOMAX  = $0018
+YOMIN  = $0005
+YPOS  = $CF12
+YSCRL  = $CF18
+******* -8 Unused variables(s) *******
+SCRLMAXX
+tgt_c64
+

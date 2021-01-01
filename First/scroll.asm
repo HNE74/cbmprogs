@@ -1,3 +1,11 @@
+; 10 SYS (49152)
+; *** Wait for rasterline
+
+*=$0801
+
+        BYTE    $0E, $08, $0A, $00, $9E, $20, $28,  $34, $39, $31, $35, $32, $29, $00, $00, $00
+
+
 *=$C000
 
 ; VARIABLES USED BY PLOT ROUTINE
@@ -39,7 +47,8 @@ YOMAX           = 24
 @SCROLL LDY #SCRLMINY           ; INIT SCROLL POINTER
         STY YSCRL
 
-@YSCRL  LDX #1
+@YSCRL  
+        LDX #1
         STX XSCRL
 
 @XSCRL  LDY YSCRL

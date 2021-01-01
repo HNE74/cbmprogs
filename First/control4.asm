@@ -16,7 +16,7 @@ FIRE            = 16
 MINX            = 0
 MAXX            = 39
 MINY            = 0
-MAXY            = 24
+MAXY            = 23
 
 JSTICK          = $DC01
 
