@@ -190,7 +190,7 @@ CreateBackground
         lda rndResultValue
         sta plotYpos
 
-        lda #90                 ; Plot character
+        lda bgChar              ; Plot character
         sta plotCharacter
         lda COLOR_WHITE
         sta plotColor

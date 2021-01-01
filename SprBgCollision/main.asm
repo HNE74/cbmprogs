@@ -28,7 +28,13 @@ incbin "crosshair.bin"
 
 *=PROGRAM_START
         jsr ClearScreen
+        lda #81
+        sta bgChar
         jsr CreateBackground
+        lda #102
+        sta bgChar
+        jsr CreateBackground
+
         jsr InitSprite
 
 mainLoop

@@ -19,6 +19,9 @@ plotColor byte $00
 ;*** rnd routine variables
 rndResultValue byte $00
 
+;*** background character
+bgChar byte $00
+
 ;*** counter variable
 counter byte $00
 
