@@ -7,12 +7,16 @@
 ;*****************************************************
 
 ;*** joystick read masks
-JOY_IDLE   = %00000000
-JOY_RIGHT  = %00001000
-JOY_LEFT   = %00000100
-JOY_UP     = %00000001
-JOY_DOWN   = %00000010
-JOY_BUTTON = %00010000
+JOY_IDLE      = %00000000
+JOY_RIGHT     = %00001000
+JOY_LEFT      = %00000100
+JOY_UP        = %00000001
+JOY_DOWN      = %00000010
+JOY_UP_RIGHT  = %00001001
+JOY_UP_LEFT   = %00000101
+JOY_DOWN_RIGHT= %00001010
+JOY_DOWN_LEFT = %00000110
+JOY_BUTTON    = %00010000
 
 ;*** Color codes
 COLOR_BLACK        = #0

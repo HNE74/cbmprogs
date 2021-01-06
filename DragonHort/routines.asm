@@ -44,6 +44,18 @@ ReadJoystick
         ldy #0
         sty joystickInput
         lda CIA_PORT_A
+        and #JOY_UP_LEFT
+        beq @goUpLeft
+        lda CIA_PORT_A
+        and #JOY_UP_RIGHT
+        beq @goUpRight
+        lda CIA_PORT_A
+        and #JOY_DOWN_LEFT
+        beq @goDownLeft
+        lda CIA_PORT_A
+        and #JOY_DOWN_RIGHT
+        beq @goDownRight
+        lda CIA_PORT_A
         and #JOY_RIGHT
         beq @goRight
         lda CIA_PORT_A
@@ -71,8 +83,24 @@ ReadJoystick
         ldy #JOY_UP
         sty joystickInput
         rts
+@goUpLeft
+        ldy #JOY_UP_LEFT
+        sty joystickInput
+        rts
+@goUpRight
+        ldy #JOY_UP_RIGHT
+        sty joystickInput
+        rts
 @goDown
         ldy #JOY_DOWN
+        sty joystickInput
+        rts
+@goDownLeft
+        ldy #JOY_DOWN_LEFT
+        sty joystickInput
+        rts
+@goDownRight
+        ldy #JOY_DOWN_RIGHT
         sty joystickInput
         rts
 @goButton
@@ -86,19 +114,28 @@ MovePlayerSprite
         lda joystickInput
         cmp #JOY_IDLE
         beq @endMove
+
+        lda joystickInput
+        and #JOY_UP
         cmp #JOY_UP
         bne @moveDown
         ldx playerYpos
         dex
         stx playerYpos
-        jmp @endMove
+        jmp @moveLeft
+
 @moveDown
+        lda joystickInput
+        and #JOY_DOWN
         cmp #JOY_DOWN
         bne @moveLeft
         ldx playerYpos
         inx
         stx playerYpos
+
 @moveLeft
+        lda joystickInput
+        and #JOY_LEFT
         cmp #JOY_LEFT
         bne @moveRight
         ldx playerXpos
@@ -109,7 +146,10 @@ MovePlayerSprite
 @decXpos
         dex
         stx playerXpos
+        jmp @endMove
 @moveRight
+        lda joystickInput
+        and #JOY_RIGHT
         cmp #JOY_RIGHT
         bne @endMove
         ldx playerXPos
