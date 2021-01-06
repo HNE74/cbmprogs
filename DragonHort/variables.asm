@@ -6,9 +6,10 @@
 ;*** modified by any interested parties.
 ;*****************************************************
 
-sprite0Page=$80         ; page of sprite 0 (player)
 
 joystickInput byte $00  ; joystick input value
 
-playerXpos byte $50    ; player x position
-playerYpos byte $70    ; player y position
+playerSpritePage byte $80           ; page of player sprite
+playerHorizontalDirection byte $00  ; player horizontal direction flag
+playerXpos byte $50                 ; player x position
+playerYpos byte $50                 ; player y position

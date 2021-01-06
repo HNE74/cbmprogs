@@ -14,6 +14,18 @@ ClearScreen
         rts
 #endregion
 
+#region Spawn player
+SpawnPlayer
+        lda #$80
+        sta playerSpritePage
+        lda #$00
+        sta playerHorizontalDirection
+        lda #$50
+        sta playerXpos
+        lda #$50
+        sta playerYpos
+#endregion
+
 #region Init sprites
 InitSprites
         lda #$00
@@ -28,7 +40,7 @@ InitSprites
         sta VIC_SPRITE_ENABLE
         lda #%00000001          ; enable sprite 0 multicolor
         sta VIC_SPRITE_COLOR_MODE
-        lda #sprite0Page         ; set pointer to sprite data
+        lda playerSpritePage     ; set pointer to sprite data
         sta VIC_SPRITE0_PTR
         lda COLOR_LIGHT_GREY     ; set sprite color
         sta VIC_SPRITE0_COLOR
@@ -138,6 +150,8 @@ MovePlayerSprite
         and #JOY_LEFT
         cmp #JOY_LEFT
         bne @moveRight
+        lda #PLAYER_GOES_RIGHT
+        sta playerHorizontalDirection
         ldx playerXpos
         cpx #$00
         bne @decXpos
@@ -152,6 +166,8 @@ MovePlayerSprite
         and #JOY_RIGHT
         cmp #JOY_RIGHT
         bne @endMove
+        lda #PLAYER_GOES_LEFT
+        sta playerHorizontalDirection
         ldx playerXPos
         cpx #$FF
         bne @incXpos
@@ -165,5 +181,10 @@ MovePlayerSprite
         stx VIC_SPRITE0_XPOS
         ldx playerYpos
         stx VIC_SPRITE0_YPOS
+        rts
+#endregion
+
+#region Animate player
+AnimatePlayer
         rts
 #endregion

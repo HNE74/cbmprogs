@@ -23,12 +23,15 @@ incasm "macros.asm"
 
 *=PROGRAM_START
         jsr     ClearScreen
+        jsr     SpawnPlayer
         jsr     InitSprites
+
 
 gameLoop
         WaitForRaster $255
         jsr     ReadJoystick
         jsr     MovePlayerSprite
+        jsr     AnimatePlayer
         jmp     gameLoop
         rts
 
