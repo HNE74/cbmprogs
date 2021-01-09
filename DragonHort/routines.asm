@@ -125,12 +125,17 @@ ReadJoystick
 MovePlayerSprite
         lda joystickInput
         cmp #JOY_IDLE
-        beq @endMove
-
+        bne @moveUp
+        lda #PLAYER_STOP
+        sta playerHorizontalDirection
+        jmp @endMove
+@moveUp
         lda joystickInput
         and #JOY_UP
         cmp #JOY_UP
         bne @moveDown
+        lda playerLastHorizontalDirection
+        sta playerHorizontalDirection
         ldx playerYpos
         dex
         stx playerYpos
@@ -141,6 +146,8 @@ MovePlayerSprite
         and #JOY_DOWN
         cmp #JOY_DOWN
         bne @moveLeft
+        lda playerLastHorizontalDirection
+        sta playerHorizontalDirection
         ldx playerYpos
         inx
         stx playerYpos
@@ -150,8 +157,9 @@ MovePlayerSprite
         and #JOY_LEFT
         cmp #JOY_LEFT
         bne @moveRight
-        lda #PLAYER_GOES_RIGHT
+        lda #PLAYER_GOES_LEFT           ; init player left animation
         sta playerHorizontalDirection
+        sta playerLastHorizontalDirection
         ldx playerXpos
         cpx #$00
         bne @decXpos
@@ -166,8 +174,9 @@ MovePlayerSprite
         and #JOY_RIGHT
         cmp #JOY_RIGHT
         bne @endMove
-        lda #PLAYER_GOES_LEFT
+        lda #PLAYER_GOES_RIGHT          ; init player right animation
         sta playerHorizontalDirection
+        sta playerLastHorizontalDirection
         ldx playerXPos
         cpx #$FF
         bne @incXpos
@@ -186,5 +195,71 @@ MovePlayerSprite
 
 #region Animate player
 AnimatePlayer
+        lda playerHorizontalDirection
+        cmp #PLAYER_GOES_RIGHT
+        bne @checkLeft
+        jsr AnimatePlayerRight
+
+@checkLeft
+        lda playerHorizontalDirection
+        cmp #PLAYER_GOES_LEFT
+        bne @updateSpritePage
+        jsr AnimatePlayerLeft
+
+@updateSpritePage
+        lda playerSpritePage
+        sta VIC_SPRITE0_PTR
+        rts
+
+AnimatePlayerRight
+        ldx playerAnimWaitCnt
+        cpx #PLAYER_ANIM_WAIT_MAX
+        beq @right
+        inx 
+        stx playerAnimWaitCnt 
+        jmp @endRight
+@right
+        lda #$00
+        sta playerAnimWaitCnt
+        ldx playerRightAnimCnt
+        cpx #PLAYER_RIGHT_END_PAGE
+        beq @startRight
+        ldx playerRightAnimCnt
+        inx
+        stx playerRightAnimCnt
+        jmp @doRight
+@startRight
+        ldx #PLAYER_RIGHT_START_PAGE
+        stx playerRightAnimCnt
+@doRight
+        lda playerRightAnimCnt
+        sta playerSpritePage
+@endRight
+        rts
+
+AnimatePlayerLeft
+        ldx playerAnimWaitCnt
+        cpx #PLAYER_ANIM_WAIT_MAX
+        beq @left
+        inx 
+        stx playerAnimWaitCnt 
+        jmp @endLeft
+@left
+        lda #$00
+        sta playerAnimWaitCnt
+        ldx playerLeftAnimCnt
+        cpx #PLAYER_LEFT_END_PAGE
+        beq @startLeft
+        ldx playerLeftAnimCnt
+        inx
+        stx playerLeftAnimCnt
+        jmp @doLeft
+@startLeft
+        ldx #PLAYER_LEFT_START_PAGE
+        stx playerLeftAnimCnt
+@doLeft
+        lda playerLeftAnimCnt
+        sta playerSpritePage
+@endLeft
         rts
 #endregion
