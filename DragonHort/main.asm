@@ -37,7 +37,6 @@ incasm "macros.asm"
         jsr     SpawnPlayer
         jsr     InitSprites
 
-
 gameLoop
         WaitForRaster $255
         jsr     ReadJoystick

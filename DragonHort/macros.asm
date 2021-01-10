@@ -12,3 +12,16 @@ defm WaitForRaster
         cmp VIC_SCREEN_RASTER
         bne @rasterLoop
 endm
+
+defm PrintString
+        ldx /2    ; Select row
+        ldy /1    ; Select column
+        jsr POSITION_CURSOR
+ 
+        lda /3
+        sta VIC_TEXT_COLOR
+
+        lda #</4
+        ldy #>/4
+        jsr PRINT_STRING
+endm

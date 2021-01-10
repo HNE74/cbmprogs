@@ -18,8 +18,9 @@ ClearScreen
 SpawnPlayer
         lda #$80
         sta playerSpritePage
-        lda #$00
+        lda #PLAYER_GOES_RIGHT
         sta playerHorizontalDirection
+        sta playerLastHorizontalDirection
         lda #$50
         sta playerXpos
         lda #$50
@@ -148,6 +149,11 @@ MovePlayerSprite
         sta playerHorizontalDirection
         jmp @endMove
 @moveUp
+        lda playerXPos
+        sta oldPlayerXPos
+        lda playerYPos  
+        sta oldPlayerYPos        
+
         lda joystickInput
         and #JOY_UP
         cmp #JOY_UP
@@ -204,11 +210,45 @@ MovePlayerSprite
         inx
         stx playerXpos
 @endMove
+        jsr AdjustPlayerPosition
         ldx playerXpos
         stx VIC_SPRITE0_XPOS
         ldx playerYpos
         stx VIC_SPRITE0_YPOS
         rts
+
+AdjustPlayerPosition
+        ldx playerYpos 
+        cpx #58
+        bne @checkDown
+        lda oldPlayerYpos
+        sta playerYpos
+        jmp @checkLeft
+@checkDown
+        ldx playerYpos 
+        cpx #210
+        bne @checkLeft
+        lda oldPlayerYpos
+        sta playerYpos
+@checkLeft
+        ldx VIC_SPRITE_X255
+        cpx #%00000001
+        beq @checkRight
+        ldx playerXpos
+        cpx #32
+        bne @endAdjust
+        lda oldPlayerXpos
+        sta playerXpos
+        jmp @endAdjust
+@checkRight
+        ldx playerXpos
+        cpx #63
+        bne @endAdjust
+        lda oldPlayerXpos
+        sta playerXpos
+@endAdjust
+        rts
+
 #endregion
 
 #region Animate player
@@ -290,6 +330,8 @@ DrawArenaMap
         lda ARENA_MAP_MEM_BLOCK1,x
         tay
         sta VIC_SCREENRAM_BLOCK1,x
+        lda COLOR_RED
+        sta VIC_COLORRAM_BLOCK1,x
         inx
         cpx #255
         bne @arenaLoop1
@@ -298,6 +340,8 @@ DrawArenaMap
         lda ARENA_MAP_MEM_BLOCK2,x
         tay
         sta VIC_SCREENRAM_BLOCK2,x
+        lda COLOR_RED
+        sta VIC_COLORRAM_BLOCK2,x
         inx
         cpx #255
         bne @arenaLoop2
@@ -306,6 +350,8 @@ DrawArenaMap
         lda ARENA_MAP_MEM_BLOCK3,x
         tay
         sta VIC_SCREENRAM_BLOCK3,x
+        lda COLOR_RED
+        sta VIC_COLORRAM_BLOCK3,x
         inx
         cpx #255
         bne @arenaLoop3
@@ -314,9 +360,15 @@ DrawArenaMap
         lda ARENA_MAP_MEM_BLOCK4,x
         tay
         sta VIC_SCREENRAM_BLOCK4,x
+        lda COLOR_RED
+        sta VIC_COLORRAM_BLOCK4,x
         inx
         cpx #235
         bne @arenaLoop4
         ldx #0
+
+        PrintString #2,#23,#COLOR_BLUE,TXT_SCORE
+        PrintString #15,#23,#COLOR_YELLOW,TXT_LEVEL
+        PrintString #29,#23,#COLOR_PURPLE,TXT_KNIGHTS
         rts       
 #endregion

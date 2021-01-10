@@ -6,7 +6,8 @@
 ;*** modified by any interested parties.
 ;*****************************************************
 
-;*** screen color registers
+;*** color registers
+VIC_TEXT_COLOR      = $0286   ; text color
 VIC_SCREEN_BDCOLOR  = $D020   ; border color  
 VIC_SCREEN_BGCOLOR  = $D021   ; background color
 VIC_SCREEN_BGCOLOR1 = $D022   ; background color 1 (ext color mode)
@@ -73,6 +74,7 @@ VIC_SCREENRAM_BLOCK1 = $0400
 VIC_SCREENRAM_BLOCK2 = $04FF
 VIC_SCREENRAM_BLOCK3 = $05FE
 VIC_SCREENRAM_BLOCK4 = $06FD
-
-
-
+VIC_COLORRAM_BLOCK1  = $D800
+VIC_COLORRAM_BLOCK2  = $D8FF
+VIC_COLORRAM_BLOCK3  = $D9FE
+VIC_COLORRAM_BLOCK4  = $DAFD

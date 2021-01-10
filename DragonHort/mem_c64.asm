@@ -12,3 +12,5 @@ CIA_PORT_B = $DC01   ; bit 0-4 joystick port 2
 
 ;*** kernal routine addresses
 KERNAL_CHROUT = $FFD2   ; print character to screen
+POSITION_CURSOR = $E50C ; position cursor
+PRINT_STRING = $AB1E    ; print string

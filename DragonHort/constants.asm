@@ -46,3 +46,11 @@ PLAYER_LEFT_START_PAGE = #$82
 PLAYER_LEFT_END_PAGE = #$83
 PLAYER_ANIM_WAIT_MAX = #10
 
+;*** Strings
+TXT_SCORE text "score:"
+          byte $00
+TXT_LEVEL text "level:"
+          byte $00
+TXT_KNIGHTS text "knights:"
+            byte $00
+
