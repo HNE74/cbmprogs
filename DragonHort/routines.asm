@@ -263,3 +263,42 @@ AnimatePlayerLeft
 @endLeft
         rts
 #endregion
+
+#region Draw screen maps
+; *** Draw arena map to screen
+DrawArenaMap
+        ldx #0
+@arenaLoop1
+        lda ARENA_MAP_MEM_BLOCK1,x
+        tay
+        sta VIC_SCREENRAM_BLOCK1,x
+        inx
+        cpx #255
+        bne @arenaLoop1
+        ldx #0
+@arenaLoop2
+        lda ARENA_MAP_MEM_BLOCK2,x
+        tay
+        sta VIC_SCREENRAM_BLOCK2,x
+        inx
+        cpx #255
+        bne @arenaLoop2
+        ldx #0
+@arenaLoop3
+        lda ARENA_MAP_MEM_BLOCK3,x
+        tay
+        sta VIC_SCREENRAM_BLOCK3,x
+        inx
+        cpx #255
+        bne @arenaLoop3
+        ldx #0
+@arenaLoop4
+        lda ARENA_MAP_MEM_BLOCK4,x
+        tay
+        sta VIC_SCREENRAM_BLOCK4,x
+        inx
+        cpx #235
+        bne @arenaLoop4
+        ldx #0
+        rts       
+#endregion

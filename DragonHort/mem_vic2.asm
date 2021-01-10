@@ -68,3 +68,11 @@ VIC_SCREEN_RASTER = $D012   ; current screen raster line
 VIC_SCROLL_MCOLOR = $D016  ; softscroll and multicolor register
 VIC_MEMORY_CONTROL = $D018   ; VIC memory control register
 
+;*** screenram memory blocks
+VIC_SCREENRAM_BLOCK1 = $0400
+VIC_SCREENRAM_BLOCK2 = $04FF
+VIC_SCREENRAM_BLOCK3 = $05FE
+VIC_SCREENRAM_BLOCK4 = $06FD
+
+
+

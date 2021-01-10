@@ -15,14 +15,19 @@ incasm "mem_own.asm"
 *=SPRITE_DEFINITION
 incbin "sprites.bin"
 
+*=ARENA_MAP_MEMORY
+incbin "arena.bin"
+
 incasm "mem_c64.asm"
 incasm "mem_vic2.asm"
 incasm "constants.asm"
 incasm "variables.asm"
 incasm "macros.asm"
 
+
 *=PROGRAM_START
         jsr     ClearScreen
+        jsr     DrawArenaMap
         jsr     SpawnPlayer
         jsr     InitSprites
 
