@@ -5,7 +5,7 @@
   <BK2>c7</BK2>
   <Col3>77</Col3>
   <Reversed>False</Reversed>
-  <Multicolour>True</Multicolour>
+  <Multicolour>False</Multicolour>
   <Uppercase>True</Uppercase>
   <character>
     <charcode>0</charcode>
@@ -1128,27 +1128,14 @@
   <character>
     <charcode>86</charcode>
     <chardata>
-      <data>89</data>
-      <data>89</data>
-      <data>170</data>
-      <data>101</data>
-      <data>101</data>
-      <data>170</data>
-      <data>89</data>
-      <data>89</data>
-    </chardata>
-  </character>
-  <character>
-    <charcode>87</charcode>
-    <chardata>
       <data>0</data>
-      <data>60</data>
-      <data>126</data>
-      <data>102</data>
-      <data>102</data>
-      <data>126</data>
-      <data>60</data>
+      <data>239</data>
+      <data>239</data>
+      <data>239</data>
       <data>0</data>
+      <data>251</data>
+      <data>251</data>
+      <data>251</data>
     </chardata>
   </character>
   <character>
