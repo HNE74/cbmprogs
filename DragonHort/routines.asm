@@ -60,12 +60,11 @@ InitCharacterSet
         sta VIC_MEMORY_CONTROL
         lda #$18
         sta VIC_SCROLL_MCOLOR      ; enable multicolor
-        lda COLOR_ORANGE
+        lda COLOR_GREY
         sta VIC_SCREEN_BGCOLOR1
-        lda COLOR_BROWN
+        lda COLOR_LIGHT_GREY
         sta VIC_SCREEN_BGCOLOR2
-        lda COLOR_RED
-        sta VIC_SCREEN_BGCOLOR3
+
         rts
 #endregion
 
@@ -219,7 +218,7 @@ MovePlayerSprite
 
 AdjustPlayerPosition
         ldx playerYpos 
-        cpx #58
+        cpx #57
         bne @checkDown
         lda oldPlayerYpos
         sta playerYpos
@@ -242,7 +241,7 @@ AdjustPlayerPosition
         jmp @endAdjust
 @checkRight
         ldx playerXpos
-        cpx #63
+        cpx #64
         bne @endAdjust
         lda oldPlayerXpos
         sta playerXpos
@@ -330,7 +329,7 @@ DrawArenaMap
         lda ARENA_MAP_MEM_BLOCK1,x
         tay
         sta VIC_SCREENRAM_BLOCK1,x
-        lda COLOR_RED
+        lda #10
         sta VIC_COLORRAM_BLOCK1,x
         inx
         cpx #255
@@ -340,7 +339,7 @@ DrawArenaMap
         lda ARENA_MAP_MEM_BLOCK2,x
         tay
         sta VIC_SCREENRAM_BLOCK2,x
-        lda COLOR_RED
+      lda #10
         sta VIC_COLORRAM_BLOCK2,x
         inx
         cpx #255
@@ -350,7 +349,7 @@ DrawArenaMap
         lda ARENA_MAP_MEM_BLOCK3,x
         tay
         sta VIC_SCREENRAM_BLOCK3,x
-        lda COLOR_RED
+      lda #10
         sta VIC_COLORRAM_BLOCK3,x
         inx
         cpx #255
@@ -360,7 +359,7 @@ DrawArenaMap
         lda ARENA_MAP_MEM_BLOCK4,x
         tay
         sta VIC_SCREENRAM_BLOCK4,x
-        lda COLOR_RED
+        lda #10
         sta VIC_COLORRAM_BLOCK4,x
         inx
         cpx #235

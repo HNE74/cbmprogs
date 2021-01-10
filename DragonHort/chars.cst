@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <charset>
   <FileVersion>2</FileVersion>
-  <BK1>07</BK1>
-  <BK2>77</BK2>
-  <Col3>87</Col3>
+  <BK1>87</BK1>
+  <BK2>c7</BK2>
+  <Col3>77</Col3>
   <Reversed>False</Reversed>
   <Multicolour>True</Multicolour>
   <Uppercase>True</Uppercase>
@@ -1128,14 +1128,14 @@
   <character>
     <charcode>86</charcode>
     <chardata>
-      <data>243</data>
-      <data>243</data>
-      <data>0</data>
-      <data>207</data>
-      <data>207</data>
-      <data>0</data>
-      <data>243</data>
-      <data>243</data>
+      <data>89</data>
+      <data>89</data>
+      <data>170</data>
+      <data>101</data>
+      <data>101</data>
+      <data>170</data>
+      <data>89</data>
+      <data>89</data>
     </chardata>
   </character>
   <character>
