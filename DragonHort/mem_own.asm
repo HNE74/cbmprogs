@@ -9,6 +9,8 @@
 PROGRAM_START = $0810   ; program start
 SPRITE_DEFINITION = $2000   ; sprite 0 definition
 
+CHARACTER_DEFINITION = $3800  ; modified charset location
+
 ;*** arena map memory
 ARENA_MAP_MEMORY = $4000
 ARENA_MAP_MEM_BLOCK1 = $4000

@@ -51,6 +51,24 @@ InitSprites
         rts
 #endregion
 
+#region Initialize character set
+; *** Initialize the character set
+InitCharacterSet
+        lda VIC_MEMORY_CONTROL
+        ora #$0E                   ; char location $3800
+        sta VIC_MEMORY_CONTROL
+        lda #$18
+        sta VIC_SCROLL_MCOLOR      ; enable multicolor
+        lda COLOR_ORANGE
+        sta VIC_SCREEN_BGCOLOR1
+        lda COLOR_BROWN
+        sta VIC_SCREEN_BGCOLOR2
+        lda COLOR_RED
+        sta VIC_SCREEN_BGCOLOR3
+        rts
+#endregion
+
+
 #region Read joystick
 ReadJoystick
         ldy #0

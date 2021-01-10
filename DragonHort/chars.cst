@@ -3,7 +3,7 @@
   <FileVersion>2</FileVersion>
   <BK1>07</BK1>
   <BK2>77</BK2>
-  <Col3>37</Col3>
+  <Col3>87</Col3>
   <Reversed>False</Reversed>
   <Multicolour>True</Multicolour>
   <Uppercase>True</Uppercase>
@@ -1128,14 +1128,14 @@
   <character>
     <charcode>86</charcode>
     <chardata>
-      <data>126</data>
-      <data>231</data>
-      <data>157</data>
-      <data>254</data>
-      <data>219</data>
-      <data>191</data>
-      <data>238</data>
-      <data>247</data>
+      <data>243</data>
+      <data>243</data>
+      <data>0</data>
+      <data>207</data>
+      <data>207</data>
+      <data>0</data>
+      <data>243</data>
+      <data>243</data>
     </chardata>
   </character>
   <character>

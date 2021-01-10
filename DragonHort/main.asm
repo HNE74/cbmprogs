@@ -15,6 +15,9 @@ incasm "mem_own.asm"
 *=SPRITE_DEFINITION
 incbin "sprites.bin"
 
+*=CHARACTER_DEFINITION
+incbin "chars.bin"
+
 *=ARENA_MAP_MEMORY
 incbin "arena.bin"
 
@@ -24,8 +27,11 @@ incasm "constants.asm"
 incasm "variables.asm"
 incasm "macros.asm"
 
-
 *=PROGRAM_START
+        lda     COLOR_BLACK
+        sta     VIC_SCREEN_BDCOLOR
+        sta     VIC_SCREEN_BGCOLOR
+        jsr     InitCharacterSet
         jsr     ClearScreen
         jsr     DrawArenaMap
         jsr     SpawnPlayer
