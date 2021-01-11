@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <charset>
   <FileVersion>2</FileVersion>
-  <BK1>87</BK1>
-  <BK2>c7</BK2>
-  <Col3>77</Col3>
+  <BK1>a7</BK1>
+  <BK2>77</BK2>
+  <Col3>e7</Col3>
   <Reversed>False</Reversed>
   <Multicolour>False</Multicolour>
   <Uppercase>True</Uppercase>
@@ -1065,10 +1065,10 @@
     <chardata>
       <data>0</data>
       <data>60</data>
-      <data>126</data>
-      <data>126</data>
-      <data>126</data>
-      <data>126</data>
+      <data>118</data>
+      <data>122</data>
+      <data>122</data>
+      <data>118</data>
       <data>60</data>
       <data>0</data>
     </chardata>
@@ -1089,14 +1089,14 @@
   <character>
     <charcode>83</charcode>
     <chardata>
-      <data>54</data>
-      <data>127</data>
-      <data>127</data>
-      <data>127</data>
-      <data>62</data>
-      <data>28</data>
-      <data>8</data>
-      <data>0</data>
+      <data>129</data>
+      <data>255</data>
+      <data>126</data>
+      <data>60</data>
+      <data>24</data>
+      <data>24</data>
+      <data>60</data>
+      <data>126</data>
     </chardata>
   </character>
   <character>
@@ -1167,25 +1167,25 @@
   <character>
     <charcode>90</charcode>
     <chardata>
-      <data>8</data>
-      <data>28</data>
-      <data>62</data>
-      <data>127</data>
-      <data>62</data>
-      <data>28</data>
-      <data>8</data>
-      <data>0</data>
+      <data>219</data>
+      <data>219</data>
+      <data>255</data>
+      <data>165</data>
+      <data>255</data>
+      <data>255</data>
+      <data>60</data>
+      <data>60</data>
     </chardata>
   </character>
   <character>
     <charcode>91</charcode>
     <chardata>
-      <data>24</data>
-      <data>24</data>
-      <data>24</data>
-      <data>255</data>
-      <data>255</data>
-      <data>24</data>
+      <data>60</data>
+      <data>66</data>
+      <data>66</data>
+      <data>129</data>
+      <data>66</data>
+      <data>126</data>
       <data>24</data>
       <data>24</data>
     </chardata>

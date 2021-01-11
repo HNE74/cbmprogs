@@ -46,6 +46,10 @@ PLAYER_LEFT_START_PAGE = #$82
 PLAYER_LEFT_END_PAGE = #$83
 PLAYER_ANIM_WAIT_MAX = #10
 
+;*** Dragon animation
+DRAGON_START_PAGE = #$84
+DRAGON_END_PAGE = #$85
+
 ;*** Strings
 TXT_SCORE text "score:"
           byte $00

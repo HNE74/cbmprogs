@@ -35,12 +35,16 @@ InitSprites
         sta VIC_SPRITE_MULTICOL1
         lda COLOR_RED
         sta VIC_SPRITE_MULTICOL2
-
-
-        lda #%00000001          ; enable sprite 0
+        lda #%00000011          ; enable sprites
         sta VIC_SPRITE_ENABLE
-        lda #%00000001          ; enable sprite 0 multicolor
+        lda #%00000011          ; enable sprites multicolor
         sta VIC_SPRITE_COLOR_MODE
+        lda #%00000010          ; sprite height expansion
+        sta VIC_SPRITE_HEIGHT_EXP
+        lda #%00000010          ; sprite width expansion
+        sta VIC_SPRITE_WIDTH_EXP
+        
+        ;*** init player sprite
         lda playerSpritePage     ; set pointer to sprite data
         sta VIC_SPRITE0_PTR
         lda COLOR_LIGHT_GREY     ; set sprite color
@@ -49,6 +53,19 @@ InitSprites
         sta VIC_SPRITE0_XPOS
         lda playerYpos
         sta VIC_SPRITE0_YPOS
+
+        ;*** init dragon sprite
+        lda dragonSpritePage     ; set pointer to sprite data
+        sta VIC_SPRITE1_PTR
+        lda COLOR_GREEN          ; set sprite color
+        sta VIC_SPRITE1_COLOR
+        lda dragonXpos           ; position sprite on screen
+        sta VIC_SPRITE1_XPOS
+        lda dragonYpos
+        sta VIC_SPRITE1_YPOS
+        lda VIC_SPRITE_X255
+        eor #%00000010
+        sta VIC_SPRITE_X255
         rts
 #endregion
 
@@ -60,7 +77,7 @@ InitCharacterSet
         sta VIC_MEMORY_CONTROL
         lda #$18
         sta VIC_SCROLL_MCOLOR      ; enable multicolor
-        lda COLOR_ORANGE
+        lda COLOR_YELLOW
         sta VIC_SCREEN_BGCOLOR1
         lda COLOR_BROWN
         sta VIC_SCREEN_BGCOLOR2
@@ -185,7 +202,8 @@ MovePlayerSprite
         ldx playerXpos
         cpx #$00
         bne @decXpos
-        lda #%00000000
+        lda VIC_SPRITE_X255
+        and #%11111110
         sta VIC_SPRITE_X255        
 @decXpos
         dex
@@ -202,7 +220,8 @@ MovePlayerSprite
         ldx playerXPos
         cpx #$FF
         bne @incXpos
-        lda #%00000001
+        lda VIC_SPRITE_X255
+        eor #%00000001
         sta VIC_SPRITE_X255
 @incXpos
         inx

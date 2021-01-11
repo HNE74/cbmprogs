@@ -19,7 +19,7 @@ VIC_SPRITE_MULTICOL2 = $D026  ; sprite multicolor 2
 ;*** overarching sprite registers
 VIC_SPRITE_ENABLE      = $D015   ; sprite enabling 
 VIC_SPRITE_HEIGHT_EXP  = $D017   ; sprite height expansion
-VIC_SPRITE_WITH_EXP    = $D01D   ; sprite width expansion
+VIC_SPRITE_WIDTH_EXP   = $D01D   ; sprite width expansion
 VIC_SPRITE_X255        = $D010   ; sprite extension X>255
 VIC_SPRITE_BACKGR_PRIO = $D01B   ; sprite before(0) or after(1) background
 VIC_SPRITE_COLOR_MODE  = $D01C   ; sprite hires(0) or multicolor(1)
