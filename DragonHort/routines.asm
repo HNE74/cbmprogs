@@ -39,9 +39,9 @@ InitSprites
         sta VIC_SPRITE_ENABLE
         lda #%00000011          ; enable sprites multicolor
         sta VIC_SPRITE_COLOR_MODE
-        lda #%00000010          ; sprite height expansion
+        lda #%00000000          ; sprite height expansion
         sta VIC_SPRITE_HEIGHT_EXP
-        lda #%00000010          ; sprite width expansion
+        lda #%00000000          ; sprite width expansion
         sta VIC_SPRITE_WIDTH_EXP
         
         ;*** init player sprite
