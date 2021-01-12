@@ -84,7 +84,6 @@ InitCharacterSet
         rts
 #endregion
 
-
 #region Read joystick
 ReadJoystick
         ldy #0
@@ -155,7 +154,7 @@ ReadJoystick
         rts   
 #endregion
 
-#region Move player sprite
+#region Move and animate player
 MovePlayerSprite
         lda joystickInput
         cmp #JOY_IDLE
@@ -266,9 +265,6 @@ AdjustPlayerPosition
 @endAdjust
         rts
 
-#endregion
-
-#region Animate player
 AnimatePlayer
         lda playerHorizontalDirection
         cmp #PLAYER_GOES_RIGHT
@@ -340,7 +336,7 @@ AnimatePlayerLeft
 #endregion
 
 #region Move and animate dragon
-MoveDragon
+MoveDragon        
         lda dragonTargetYpos
         cmp dragonYpos
         bne @walk
@@ -366,6 +362,37 @@ MoveDragon
         rts
 
 ChangeDragonVector
+        ldx dragonWaitCnt
+        dex
+        stx dragonWaitCnt
+        cpx #$00
+        beq @newpos
+        ldx #$00
+        stx dragonYmove
+        rts    
+@newpos
+        RndTimer
+        cmp #100
+        bcs @newpos
+        sta dragonWaitCnt        
+        RndTimer
+        cmp #DRAGON_MAXYPOS-#DRAGON_MINYPOS
+        bcs ChangeDragonVector
+        sec
+        adc #DRAGON_MINYPOS
+        sta dragonTargetYpos
+
+        lda dragonTargetYpos
+        cmp dragonYpos
+        beq @endvector
+        bcc @smaller
+        lda #$02
+        sta dragonYmove
+        jmp @endvector
+@smaller
+        lda #$01
+        sta dragonYmove
+@endvector
         rts
 #endregion
 

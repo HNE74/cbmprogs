@@ -49,6 +49,8 @@ PLAYER_ANIM_WAIT_MAX = #10
 ;*** Dragon animation
 DRAGON_START_PAGE = #$84
 DRAGON_END_PAGE = #$85
+DRAGON_MAXYPOS = #205
+DRAGON_MINYPOS = #59
 
 ;*** Strings
 TXT_SCORE text "score:"
