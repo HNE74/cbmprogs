@@ -24,8 +24,8 @@ playerAnimWaitCnt byte $00          ; animation wait counter
 ;*** dragon variables
 dragonSpritePage byte $84           ; page of dragon sprite
 dragonAnminWaitCnt byte $00         ; animation wait counter
-dragonXpos byte 30                  ; x position
+dragonXpos byte 55                  ; x position
 dragonYpos byte 100                 ; y position
-dragonTargetYpos byte 150           ; target y position
-dragonYmove byte $02                ; dragon movement: 0 = no move, 1 = up, 2 = down
+dragonTargetYpos byte 59            ; target y position max=205, min=59
+dragonYmove byte $01                ; dragon movement: 0 = no move, 1 = up, 2 = down
 
