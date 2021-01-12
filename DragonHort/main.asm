@@ -43,6 +43,7 @@ gameLoop
         jsr     MovePlayerSprite
         jsr     AnimatePlayer
         jsr     MoveDragon
+        jsr     AnimateDragon
         jmp     gameLoop
         rts
 

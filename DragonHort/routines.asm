@@ -340,19 +340,19 @@ MoveDragon
         lda dragonTargetYpos
         cmp dragonYpos
         bne @walk
-        jmp ChangeDragonVector
+        jmp ChangeDragonVector 
 @walk
         lda dragonYmove
-        cmp #$00
+        cmp #DRAGON_MOVE_STOP
         beq @endWalk
-        cmp #$01
+        cmp #DRAGON_MOVE_UP
         beq @walkUp
-        ldx dragonYpos
+        ldx dragonYpos          ; dragon walks down
         inx
         stx dragonYpos
         jmp @setPos
 @walkUp
-        ldx dragonYpos
+        ldx dragonYpos          ; dragon walks up
         dex
         stx dragonYpos
 @setPos
@@ -362,7 +362,7 @@ MoveDragon
         rts
 
 ChangeDragonVector
-        ldx dragonWaitCnt
+        ldx dragonWaitCnt       ; check dragon is waiting
         dex
         stx dragonWaitCnt
         cpx #$00
@@ -370,12 +370,12 @@ ChangeDragonVector
         ldx #$00
         stx dragonYmove
         rts    
-@newpos
-        RndTimer
-        cmp #100
+@newpos                  
+        RndTimer                ; reset wait time
+        cmp #DRAGON_WAIT_MAX
         bcs @newpos
         sta dragonWaitCnt        
-        RndTimer
+        RndTimer                ; calculate dragon movement
         cmp #DRAGON_MAXYPOS-#DRAGON_MINYPOS
         bcs ChangeDragonVector
         sec
@@ -386,13 +386,40 @@ ChangeDragonVector
         cmp dragonYpos
         beq @endvector
         bcc @smaller
-        lda #$02
+        lda #DRAGON_MOVE_DOWN
         sta dragonYmove
         jmp @endvector
 @smaller
-        lda #$01
+        lda #DRAGON_MOVE_UP
         sta dragonYmove
 @endvector
+        rts
+
+AnimateDragon
+        lda dragonYmove
+        cmp #DRAGON_MOVE_STOP
+        bne @anicnt
+        rts
+@anicnt
+        ldx dragonAnminWaitCnt
+        cpx #$00
+        beq @animate
+        dex
+        stx dragonAnminWaitCnt
+        rts
+@animate
+        ldx dragonSpritePage
+        cpx #DRAGON_START_PAGE
+        beq @animate1
+        ldx #DRAGON_START_PAGE        
+        jmp @animate2
+@animate1
+        ldx #DRAGON_END_PAGE
+@animate2
+        stx dragonSpritePage
+        stx VIC_SPRITE1_PTR
+        ldx #DRAGON_ANIM_WAIT_MAX
+        stx dragonAnminWaitCnt
         rts
 #endregion
 
