@@ -21,7 +21,7 @@ SpawnPlayer
         lda #PLAYER_GOES_RIGHT
         sta playerHorizontalDirection
         sta playerLastHorizontalDirection
-        lda #$50
+        lda #$FE
         sta playerXpos
         lda #$50
         sta playerYpos
@@ -248,9 +248,9 @@ AdjustPlayerPosition
         lda oldPlayerYpos
         sta playerYpos
 @checkLeft
-        ldx VIC_SPRITE_X255
-        cpx #%00000001
-        beq @checkRight
+        lda VIC_SPRITE_X255
+        and #%00000001
+        bne @checkRight
         ldx playerXpos
         cpx #32
         bne @endAdjust
