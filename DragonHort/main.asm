@@ -42,6 +42,7 @@ gameLoop
         jsr     ReadJoystick
         jsr     MovePlayerSprite
         jsr     AnimatePlayer
+        jsr     MoveDragon
         jmp     gameLoop
         rts
 

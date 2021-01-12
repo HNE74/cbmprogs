@@ -339,8 +339,37 @@ AnimatePlayerLeft
         rts
 #endregion
 
+#region Move and animate dragon
+MoveDragon
+        lda dragonTargetYpos
+        cmp dragonYpos
+        bne @walk
+        jmp ChangeDragonVector
+@walk
+        lda dragonYmove
+        cmp #$00
+        beq @endWalk
+        cmp #$01
+        beq @walkUp
+        ldx dragonYpos
+        inx
+        stx dragonYpos
+        jmp @setPos
+@walkUp
+        ldx dragonYpos
+        dex
+        stx dragonYpos
+@setPos
+        ldx dragonYpos
+        stx VIC_SPRITE1_YPOS
+@endWalk
+        rts
+
+ChangeDragonVector
+        rts
+#endregion
+
 #region Draw screen maps
-; *** Draw arena map to screen
 DrawArenaMap
         ldx #0
 @arenaLoop1
