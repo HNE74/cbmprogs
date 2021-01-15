@@ -44,3 +44,11 @@ fireX255Mask
         BYTE 4, 8, 16            ; fire extended xpos mask
 fireActiveMask
         BYTE 4, 8, 16            ; fire active sprite mask
+fireSpriteXpos
+        BYTE $04, $06, $08       ; fire sprite x position lsb (msb=D0)
+fireSpriteYpos
+        BYTE $05, $07, $09       ; fire sprite y position lsb (msb=D0)
+fireSpritePtr
+        BYTE $FA, $FB, $FC       ; fire sprite pointer lsb (msb=07)
+fireSpriteColor
+        BYTE $29, $2A, $2B       ; fire sprite pointer lsb (msb=D0)

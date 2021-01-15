@@ -438,9 +438,9 @@ LaunchDragonFire
         beq @checknext 
         lda #$01
         sta fireActive,y
-        lda #FIRE_START_XPOS    ; get fire start y positon
+        lda #FIRE_START_XPOS    ; get fire start x positon
         sta fireXpos,y
-        ldx dragonYpos          ; calc fire start x position
+        ldx dragonYpos          ; calc fire start y position
         inx
         inx
         inx
