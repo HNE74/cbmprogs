@@ -150,22 +150,7 @@
             <PrgName />
             <FileType>2</FileType>
             <IncludeInBuild>True</IncludeInBuild>
-            <Regions>
-                <Region>8</Region>
-                <Region>14</Region>
-                <Region>16</Region>
-                <Region>27</Region>
-                <Region>29</Region>
-                <Region>69</Region>
-                <Region>71</Region>
-                <Region>84</Region>
-                <Region>86</Region>
-                <Region>154</Region>
-                <Region>156</Region>
-                <Region>335</Region>
-                <Region>425</Region>
-                <Region>473</Region>
-            </Regions>
+            <Regions />
             <Breakpoints />
             <Bookmarks />
             <Topmost>False</Topmost>

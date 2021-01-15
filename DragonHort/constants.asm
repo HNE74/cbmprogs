@@ -57,6 +57,12 @@ DRAGON_MOVE_UP = #1
 DRAGON_MOVE_DOWN = #2
 DRAGON_ANIM_WAIT_MAX = #12
 
+;*** Fire animation
+FIRE_START_PAGE = #$86
+FIRE_END_PAGE   = #$89
+FIRE_START_XPOS = #$20
+FIRE_END_XPOS   = #$50
+
 ;*** Strings
 TXT_SCORE text "score:"
           byte $00

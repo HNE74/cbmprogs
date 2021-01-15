@@ -28,8 +28,9 @@ incasm "variables.asm"
 incasm "macros.asm"
 
 *=PROGRAM_START
-        lda     COLOR_BLACK
+        lda     #COLOR_BLACK
         sta     VIC_SCREEN_BDCOLOR
+        lda     #COLOR_BLACK
         sta     VIC_SCREEN_BGCOLOR
         jsr     InitCharacterSet
         jsr     ClearScreen
@@ -40,10 +41,11 @@ incasm "macros.asm"
 gameLoop
         WaitForRaster $255
         jsr     ReadJoystick
-        jsr     MovePlayerSprite
         jsr     AnimatePlayer
-        jsr     MoveDragon
+        jsr     MovePlayerSprite
         jsr     AnimateDragon
+        jsr     MoveDragon
+        jsr     LaunchDragonFire
         jmp     gameLoop
         rts
 

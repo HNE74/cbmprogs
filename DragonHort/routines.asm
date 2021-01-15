@@ -423,6 +423,55 @@ AnimateDragon
         rts
 #endregion
 
+#region Handle dragon fire
+LaunchDragonFire
+        lda dragonYmove
+        cmp #DRAGON_MOVE_STOP
+        bne @launchfire
+        rts
+@launchfire
+        ldy fireCheckCnt
+        cpy fireMaxCnt
+        beq @maxcnt
+        lda fireActive,y
+        cmp #$01
+        beq @checknext 
+        lda #$01
+        sta fireActive,y
+        lda #FIRE_START_XPOS    ; get fire start y positon
+        sta fireXpos,y
+        ldx dragonYpos          ; calc fire start x position
+        inx
+        inx
+        inx
+        txa
+        sta fireYpos,y
+        lda VIC_SPRITE_X255     ; sprite x extended
+        ora fireX255Mask,y
+        sta VIC_SPRITE_X255
+        lda fireSpritePage,y    ; TODO: use table with zero page adressing - also for positioning fire
+        sta VIC_SPRITE2_PTR
+        lda VIC_SPRITE_ENABLE
+        ora fireActiveMask,y
+        sta VIC_SPRITE_ENABLE
+        jmp @maxcnt
+@checknext
+        iny                   
+        sty fireCheckCnt
+        jmp @launchfire
+@maxcnt
+        lda #$00
+        sta fireCheckCnt
+@endlaunch
+        rts
+
+MoveDragonFire
+        rts
+
+AnimateDragonFire
+        rts
+#endregion
+
 #region Draw screen maps
 DrawArenaMap
         ldx #0

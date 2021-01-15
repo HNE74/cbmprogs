@@ -6,7 +6,6 @@
 ;*** modified by any interested parties.
 ;*****************************************************
 
-
 joystickInput byte $00  ; joystick input value
 
 ;*** player variables
@@ -30,3 +29,18 @@ dragonTargetYpos byte 59            ; target y position max=205, min=59
 dragonYmove byte $01                ; dragon movement: 0 = no move, 1 = up, 2 = down
 dragonWaitCnt byte $12              ; dragon wait counter
 
+;*** fire variables
+fireMaxCnt byte $02                 ; max fire count starting with $00
+fireCheckCnt byte $00               ; fire check counter
+fireActive 
+        BYTE $00, $00, $00       ; indicates if fire is activated
+fireXpos
+        BYTE $00, $00, $00       ; fire x position
+fireYpos
+        BYTE $00, $00, $00       ; fire y position
+fireSpritePage
+        BYTE $86, $86, $86       ; fire sprite page
+fireX255Mask
+        BYTE 4, 8, 16            ; fire extended xpos mask
+fireActiveMask
+        BYTE 4, 8, 16            ; fire active sprite mask
