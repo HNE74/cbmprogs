@@ -37,7 +37,7 @@ InitSprites
         sta VIC_SPRITE_MULTICOL2
         lda #%00000011          ; enable sprites
         sta VIC_SPRITE_ENABLE
-        lda #%00000011          ; enable sprites multicolor
+        lda #%00011111          ; enable sprites multicolor
         sta VIC_SPRITE_COLOR_MODE
         lda #%00000000          ; sprite height expansion
         sta VIC_SPRITE_HEIGHT_EXP
@@ -436,24 +436,7 @@ LaunchDragonFire
         lda fireActive,y
         cmp #$01
         beq @checknext 
-        lda #$01
-        sta fireActive,y
-        lda #FIRE_START_XPOS    ; get fire start x positon
-        sta fireXpos,y
-        ldx dragonYpos          ; calc fire start y position
-        inx
-        inx
-        inx
-        txa
-        sta fireYpos,y
-        lda VIC_SPRITE_X255     ; sprite x extended
-        ora fireX255Mask,y
-        sta VIC_SPRITE_X255
-        lda fireSpritePage,y    ; TODO: use table with zero page adressing - also for positioning fire
-        sta VIC_SPRITE2_PTR
-        lda VIC_SPRITE_ENABLE
-        ora fireActiveMask,y
-        sta VIC_SPRITE_ENABLE
+        jsr InitDragonFire
         jmp @maxcnt
 @checknext
         iny                   
@@ -463,6 +446,38 @@ LaunchDragonFire
         lda #$00
         sta fireCheckCnt
 @endlaunch
+        rts
+
+InitDragonFire
+        lda #$01
+        sta fireActive,y        ; mark fire active
+        lda #FIRE_START_XPOS    ; set fire start x positon
+        sta fireXpos,y
+        ldx dragonYpos          ; calc fire start y position
+        inx
+        inx
+        inx
+        txa
+        sta fireYpos,y
+
+        lda VIC_SPRITE_X255     ; set sprite xpos extension
+        ora fireX255Mask,y
+        sta VIC_SPRITE_X255
+
+        ; set sprite position
+        VectorCopyIndexedData fireXpos, #$D0, fireSpriteXpos 
+        VectorCopyIndexedData fireYpos, #$D0, fireSpriteYpos
+
+        ; set sprite page
+        VectorCopyIndexedData fireSpritePage, #$07, fireSpritePtr
+
+        ; set sprite color
+        VectorCopyIndexedData fireColor, #$D0, fireSpriteColor
+
+        ldy fireCheckCnt
+        lda VIC_SPRITE_ENABLE     ; activate fire sprite
+        ora fireActiveMask,y
+        sta VIC_SPRITE_ENABLE
         rts
 
 MoveDragonFire

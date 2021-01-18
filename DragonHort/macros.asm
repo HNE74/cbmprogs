@@ -35,3 +35,16 @@ defm RndTimer
         eor CIA_TIMERHIGH
         eor VIC_SCREEN_RASTER
 endm
+
+
+defm VectorCopyIndexedData
+        lda /3 ; set data destination vector
+        sta ZERO_PAGE_PTR1
+        lda /2
+        sta ZERO_PAGE_PTR1+1
+        
+        ldy fireCheckCnt
+        lda /1,y ; load data from source
+        ldy #0
+        sta (ZERO_PAGE_PTR1),y
+endm

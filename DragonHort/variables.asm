@@ -40,6 +40,8 @@ fireYpos
         BYTE $00, $00, $00       ; fire y position
 fireSpritePage
         BYTE $86, $86, $86       ; fire sprite page
+fireColor
+        BYTE $07, $07, $07       ; fire sprite color
 fireX255Mask
         BYTE 4, 8, 16            ; fire extended xpos mask
 fireActiveMask
