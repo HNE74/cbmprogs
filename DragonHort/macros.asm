@@ -42,8 +42,7 @@ defm VectorCopyIndexedData
         sta ZERO_PAGE_PTR1
         lda /2
         sta ZERO_PAGE_PTR1+1
-        
-        ldy fireCheckCnt
+        ldy /4
         lda /1,y ; load data from source
         ldy #0
         sta (ZERO_PAGE_PTR1),y

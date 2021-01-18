@@ -367,8 +367,10 @@ ChangeDragonVector
         stx dragonWaitCnt
         cpx #$00
         beq @newpos
-        ldx #$00
+        ldx #DRAGON_MOVE_STOP
         stx dragonYmove
+        ldx #FIRE_NOT_LAUNCHED_FLAG
+        stx fireLaunched
         rts    
 @newpos                  
         RndTimer                ; reset wait time
@@ -430,6 +432,11 @@ LaunchDragonFire
         bne @launchfire
         rts
 @launchfire
+        lda fireLaunched
+        cmp #FIRE_LAUNCHED_FLAG
+        bne @launchfire2
+        rts
+@launchfire2
         ldy fireCheckCnt
         cpy fireMaxCnt
         beq @maxcnt
@@ -437,6 +444,8 @@ LaunchDragonFire
         cmp #$01
         beq @checknext 
         jsr InitDragonFire
+        lda #FIRE_LAUNCHED_FLAG
+        sta fireLaunched
         jmp @maxcnt
 @checknext
         iny                   
@@ -465,14 +474,14 @@ InitDragonFire
         sta VIC_SPRITE_X255
 
         ; set sprite position
-        VectorCopyIndexedData fireXpos, #$D0, fireSpriteXpos 
-        VectorCopyIndexedData fireYpos, #$D0, fireSpriteYpos
+        VectorCopyIndexedData fireXpos, #$D0, fireSpriteXpos, fireCheckCnt
+        VectorCopyIndexedData fireYpos, #$D0, fireSpriteYpos, fireCheckCnt
 
         ; set sprite page
-        VectorCopyIndexedData fireSpritePage, #$07, fireSpritePtr
+        VectorCopyIndexedData fireSpritePage, #$07, fireSpritePtr, fireCheckCnt
 
         ; set sprite color
-        VectorCopyIndexedData fireColor, #$D0, fireSpriteColor
+        VectorCopyIndexedData fireColor, #$D0, fireSpriteColor, fireCheckCnt
 
         ldy fireCheckCnt
         lda VIC_SPRITE_ENABLE     ; activate fire sprite

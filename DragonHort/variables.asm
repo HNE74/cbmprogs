@@ -32,6 +32,7 @@ dragonWaitCnt byte $12              ; dragon wait counter
 ;*** fire variables
 fireMaxCnt byte $02                 ; max fire count starting with $00
 fireCheckCnt byte $00               ; fire check counter
+fireLaunched byte $00               ; flag is fire launched -> one per stop
 fireActive 
         BYTE $00, $00, $00       ; indicates if fire is activated
 fireXpos
