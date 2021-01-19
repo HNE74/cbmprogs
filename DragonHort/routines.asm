@@ -450,7 +450,7 @@ LaunchDragonFire
 @checknext
         iny                   
         sty fireCheckCnt
-        jmp @launchfire
+        jmp @launchfire2
 @maxcnt
         lda #$00
         sta fireCheckCnt

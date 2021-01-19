@@ -30,7 +30,7 @@ dragonYmove byte $01                ; dragon movement: 0 = no move, 1 = up, 2 = 
 dragonWaitCnt byte $12              ; dragon wait counter
 
 ;*** fire variables
-fireMaxCnt byte $02                 ; max fire count starting with $00
+fireMaxCnt byte $03                 ; max fire count starting with $00
 fireCheckCnt byte $00               ; fire check counter
 fireLaunched byte $00               ; flag is fire launched -> one per stop
 fireActive 
