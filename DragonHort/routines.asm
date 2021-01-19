@@ -511,12 +511,42 @@ MoveDragonFire
         lda VIC_SPRITE_X255 ; unset xpos extension    
         and fireX255UnsetMask,y
         sta VIC_SPRITE_X255
-
 @noxext
         ldy fireMoveCnt
         iny
         jmp @firemove
 @maxcnt
+        rts
+
+ResetDragonFire
+        ldy #0
+@firereset
+        sty fireMoveCnt
+        cpy fireMaxCnt
+        beq @endreset
+
+        ; check xpos extension ***> Hier scheint das Problem zu liegen
+        ldy fireMoveCnt
+        lda VIC_SPRITE_X255
+        and fireX255Mask,y
+        cmp fireX255Mask,y
+        beq @endreset             ; no reset if xpos extension set
+
+        lda fireXpos,y            ; check endpos reached          
+        cmp #FIRE_END_XPOS
+        bne @endreset   
+
+        lda #0                    ; set fire not active
+        sta fireActive,y
+
+        lda VIC_SPRITE_ENABLE     ; inactivate fire sprite
+        and fireInactiveMask,y
+        sta VIC_SPRITE_ENABLE
+
+        ldy fireMoveCnt
+        iny
+        jmp @firereset
+@endreset
         rts
 
 AnimateDragonFire

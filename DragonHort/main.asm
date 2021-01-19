@@ -47,6 +47,7 @@ gameLoop
         jsr     MoveDragon
         jsr     LaunchDragonFire
         jsr     MoveDragonFire
+        jsr     ResetDragonFire
         jmp     gameLoop
         rts
 

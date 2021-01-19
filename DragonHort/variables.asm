@@ -50,6 +50,8 @@ fireX255UnsetMask
         BYTE 251, 247, 239       ; fire extended xpos unset mask
 fireActiveMask
         BYTE 4, 8, 16            ; fire active sprite mask
+fireInactiveMask
+        BYTE 251, 247, 239       ; fire inactive sprite mask
 fireSpriteXpos
         BYTE $04, $06, $08       ; fire sprite x position lsb (msb=D0)
 fireSpriteYpos
