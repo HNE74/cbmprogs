@@ -490,6 +490,33 @@ InitDragonFire
         rts
 
 MoveDragonFire
+        ldy #0
+@firemove
+        sty fireMoveCnt
+        cpy fireMaxCnt
+        beq @maxcnt
+
+        ; decrease fire x position
+        ldx fireXpos,y
+        dex
+        txa
+        sta fireXpos,y
+        VectorCopyIndexedData fireXpos, #$D0, fireSpriteXpos, fireMoveCnt
+
+        ; check sprite xpos extension
+        ldy fireMoveCnt
+        lda fireXpos,y
+        cmp #0
+        bne @noxext
+        lda VIC_SPRITE_X255 ; unset xpos extension    
+        and fireX255UnsetMask,y
+        sta VIC_SPRITE_X255
+
+@noxext
+        ldy fireMoveCnt
+        iny
+        jmp @firemove
+@maxcnt
         rts
 
 AnimateDragonFire

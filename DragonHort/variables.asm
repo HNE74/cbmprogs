@@ -32,6 +32,7 @@ dragonWaitCnt byte $12              ; dragon wait counter
 ;*** fire variables
 fireMaxCnt byte $03                 ; max fire count starting with $00
 fireCheckCnt byte $00               ; fire check counter
+fireMoveCnt byte $00                ; fire move counter
 fireLaunched byte $00               ; flag is fire launched -> one per stop
 fireActive 
         BYTE $00, $00, $00       ; indicates if fire is activated
@@ -45,6 +46,8 @@ fireColor
         BYTE $07, $07, $07       ; fire sprite color
 fireX255Mask
         BYTE 4, 8, 16            ; fire extended xpos mask
+fireX255UnsetMask
+        BYTE 251, 247, 239       ; fire extended xpos unset mask
 fireActiveMask
         BYTE 4, 8, 16            ; fire active sprite mask
 fireSpriteXpos
