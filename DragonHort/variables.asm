@@ -31,6 +31,7 @@ dragonWaitCnt byte $12              ; dragon wait counter
 
 ;*** fire variables
 fireProbability byte 10             ; probability dragon fire shot
+fireProbability2 byte 100 
 fireMaxCnt byte $04                 ; max fire count starting with $00
 fireCheckCnt byte $00               ; fire check counter
 fireMoveCnt byte $00                ; fire move counter

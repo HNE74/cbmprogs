@@ -429,9 +429,14 @@ AnimateDragon
 LaunchDragonFire
         RndTimer                        ; randomly decide firing          
         cmp fireProbability
-        bcc @launchfire
+        bcc @trylaunch
         rts
 @trylaunch
+        RndTimer                        ; randomly decide firing          
+        cmp fireProbability2
+        bcc @trylaunch2
+        rts
+@trylaunch2
         lda dragonYmove                 ; fire only when dragon stopped
         cmp #DRAGON_MOVE_STOP
         bne @launchfire
@@ -511,12 +516,25 @@ MoveDragonFire
         ; check sprite xpos extension
         ldy fireMoveCnt
         lda fireXpos,y
-        cmp #0
+        cmp #255
         bne @noxext
         lda VIC_SPRITE_X255 ; unset xpos extension    
         and fireX255UnsetMask,y
         sta VIC_SPRITE_X255
 @noxext
+        ; animate fire sprite
+        ldx fireSpritePage,y
+        cpx #FIRE_END_PAGE
+        bne @nextpage
+        lda #FIRE_START_PAGE
+        sta fireSpritePage,y
+@nextpage
+        ldx fireSpritePage,y
+        inx
+        txa
+        sta fireSpritePage,y
+        VectorCopyIndexedData fireSpritePage, #$07, fireSpritePtr, fireMoveCnt
+@nextfire
         ldy fireMoveCnt
         iny
         jmp @firemove
@@ -555,8 +573,6 @@ ResetDragonFire
 @maxcnt
         rts
 
-AnimateDragonFire
-        rts
 #endregion
 
 #region Draw screen maps
