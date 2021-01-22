@@ -19,6 +19,7 @@ oldPlayerYpos byte $50              ; old py position
 playerLeftAnimCnt byte $82          ; left animation counter
 playerRightAnimCnt byte $80         ; right animation counter
 playerAnimWaitCnt byte $00          ; animation wait counter
+playerState byte $00                ; player state
 
 ;*** dragon variables
 dragonSpritePage byte $84           ; page of dragon sprite

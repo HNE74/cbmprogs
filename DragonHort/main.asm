@@ -40,6 +40,10 @@ incasm "macros.asm"
 
 gameLoop
         WaitForRaster $255
+        jsr     CheckPlayerSpriteCollision
+        lda     playerState
+        cmp     #PLAYER_STATE_DYING
+        beq     @playerdying
         jsr     ReadJoystick
         jsr     AnimatePlayer
         jsr     MovePlayerSprite
@@ -49,6 +53,7 @@ gameLoop
         jsr     MoveDragonFire
         jsr     ResetDragonFire
         jmp     gameLoop
+@playerdying
         rts
 
 ;*** assembly routines used by main.asm

@@ -16,14 +16,16 @@ ClearScreen
 
 #region Spawn player
 SpawnPlayer
+        lda #PLAYER_STATE_ALIVE
+        sta playerState
         lda #$80
         sta playerSpritePage
         lda #PLAYER_GOES_RIGHT
         sta playerHorizontalDirection
         sta playerLastHorizontalDirection
-        lda #$FE
+        lda #$30
         sta playerXpos
-        lda #$50
+        lda #$80
         sta playerYpos
 #endregion
 
@@ -640,4 +642,19 @@ DrawArenaMap
         PrintString #15,#23,#COLOR_YELLOW,TXT_LEVEL
         PrintString #29,#23,#COLOR_PURPLE,TXT_KNIGHTS
         rts       
+#endregion
+
+#region Player collision detection
+CheckPlayerSpriteCollision
+        lda VIC_SPRITE_SPRITE_COLL
+        and #%00000001
+        cmp #%00000001
+        bne @nocollision
+        jmp @collision
+@nocollision
+        rts
+@collision
+        lda #PLAYER_STATE_DYING
+        sta playerState
+        rts
 #endregion
