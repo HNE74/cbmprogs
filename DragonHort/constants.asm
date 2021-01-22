@@ -67,6 +67,7 @@ FIRE_END_XPOS   = #$20
 FIRE_SPR_POS_MSB = #$D0
 FIRE_SPR_COLOR_MSB = #$D0
 FIRE_SPR_PTR_MSB = #$07
+FIRE_ANIM_WAIT_MAX = $0A
 
 ;*** Strings
 TXT_SCORE text "score:"

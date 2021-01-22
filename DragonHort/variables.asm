@@ -36,7 +36,7 @@ fireMaxCnt byte $04                 ; max fire count starting with $00
 fireCheckCnt byte $00               ; fire check counter
 fireMoveCnt byte $00                ; fire move counter
 fireLaunched byte $00               ; flag is fire launched -> one per stop
-fireActive 
+fireActive
         BYTE $00, $00, $00, $00       ; indicates if fire is activated
 fireXpos
         BYTE $00, $00, $00, $00       ; fire x position
@@ -62,6 +62,8 @@ fireSpritePtr
         BYTE $FA, $FB, $FC, $FD       ; fire sprite pointer lsb (msb=07)
 fireSpriteColor
         BYTE $29, $2A, $2B, $2C       ; fire sprite pointer lsb (msb=D0)
+fireAnimWaitCnt
+        BYTE $00, $00, $00, $00       ; animation counter
 
 ;*** game state variables
 gameLevel byte $01                      ; current difficulty level

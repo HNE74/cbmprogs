@@ -509,6 +509,7 @@ MoveDragonFire
         ; decrease fire x position
         ldx fireXpos,y
         dex
+        dex
         txa
         sta fireXpos,y
         VectorCopyIndexedData fireXpos, #$D0, fireSpriteXpos, fireMoveCnt
@@ -516,13 +517,29 @@ MoveDragonFire
         ; check sprite xpos extension
         ldy fireMoveCnt
         lda fireXpos,y
-        cmp #255
+        cmp #254
         bne @noxext
         lda VIC_SPRITE_X255 ; unset xpos extension    
         and fireX255UnsetMask,y
         sta VIC_SPRITE_X255
 @noxext
+        ldy fireMoveCnt
+        lda fireAnimWaitCnt,y
+        tax
+        inx
+        txa
+        sta fireAnimWaitCnt,y
+        lda fireAnimWaitCnt,y
+        cmp #FIRE_ANIM_WAIT_MAX
+        beq @fireanimate
+        jmp @nextfire
+@fireanimate
+        ldy fireMoveCnt
+        lda #$00
+        sta fireAnimWaitCnt,y
+
         ; animate fire sprite
+        ldy fireMoveCnt
         ldx fireSpritePage,y
         cpx #FIRE_END_PAGE
         bne @nextpage
