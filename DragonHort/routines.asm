@@ -427,17 +427,22 @@ AnimateDragon
 
 #region Handle dragon fire
 LaunchDragonFire
-        lda dragonYmove
+        RndTimer                        ; randomly decide firing          
+        cmp fireProbability
+        bcc @launchfire
+        rts
+@trylaunch
+        lda dragonYmove                 ; fire only when dragon stopped
         cmp #DRAGON_MOVE_STOP
         bne @launchfire
         rts
 @launchfire
-        lda fireLaunched
+        lda fireLaunched                ; fire only once per stop
         cmp #FIRE_LAUNCHED_FLAG
         bne @launchfire2
         rts
 @launchfire2
-        ldy fireCheckCnt
+        ldy fireCheckCnt                ; launch next available fire
         cpy fireMaxCnt
         beq @maxcnt
         lda fireActive,y

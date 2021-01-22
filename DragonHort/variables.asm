@@ -30,6 +30,7 @@ dragonYmove byte $01                ; dragon movement: 0 = no move, 1 = up, 2 = 
 dragonWaitCnt byte $12              ; dragon wait counter
 
 ;*** fire variables
+fireProbability byte 10             ; probability dragon fire shot
 fireMaxCnt byte $04                 ; max fire count starting with $00
 fireCheckCnt byte $00               ; fire check counter
 fireMoveCnt byte $00                ; fire move counter
@@ -62,4 +63,4 @@ fireSpriteColor
         BYTE $29, $2A, $2B, $2C       ; fire sprite pointer lsb (msb=D0)
 
 ;*** game state variables
-level byte $01                      ; current difficulty level
+gameLevel byte $01                      ; current difficulty level
