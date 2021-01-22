@@ -30,33 +30,36 @@ dragonYmove byte $01                ; dragon movement: 0 = no move, 1 = up, 2 = 
 dragonWaitCnt byte $12              ; dragon wait counter
 
 ;*** fire variables
-fireMaxCnt byte $03                 ; max fire count starting with $00
+fireMaxCnt byte $04                 ; max fire count starting with $00
 fireCheckCnt byte $00               ; fire check counter
 fireMoveCnt byte $00                ; fire move counter
 fireLaunched byte $00               ; flag is fire launched -> one per stop
 fireActive 
-        BYTE $00, $00, $00       ; indicates if fire is activated
+        BYTE $00, $00, $00, $00       ; indicates if fire is activated
 fireXpos
-        BYTE $00, $00, $00       ; fire x position
+        BYTE $00, $00, $00, $00       ; fire x position
 fireYpos
-        BYTE $00, $00, $00       ; fire y position
+        BYTE $00, $00, $00, $00       ; fire y position
 fireSpritePage
-        BYTE $86, $86, $86       ; fire sprite page
+        BYTE $86, $86, $86, $86       ; fire sprite page
 fireColor
-        BYTE $07, $07, $07       ; fire sprite color
+        BYTE $07, $07, $07, $07       ; fire sprite color
 fireX255Mask
-        BYTE 4, 8, 16            ; fire extended xpos mask
+        BYTE 4, 8, 16, 32             ; fire extended xpos mask
 fireX255UnsetMask
-        BYTE 251, 247, 239       ; fire extended xpos unset mask
+        BYTE 251, 247, 239, 223       ; fire extended xpos unset mask
 fireActiveMask
-        BYTE 4, 8, 16            ; fire active sprite mask
+        BYTE 4, 8, 16, 32             ; fire active sprite mask
 fireInactiveMask
-        BYTE 251, 247, 239       ; fire inactive sprite mask
+        BYTE 251, 247, 239, 223       ; fire inactive sprite mask
 fireSpriteXpos
-        BYTE $04, $06, $08       ; fire sprite x position lsb (msb=D0)
+        BYTE $04, $06, $08, $0A       ; fire sprite x position lsb (msb=D0)
 fireSpriteYpos
-        BYTE $05, $07, $09       ; fire sprite y position lsb (msb=D0)
+        BYTE $05, $07, $09, $0B       ; fire sprite y position lsb (msb=D0)
 fireSpritePtr
-        BYTE $FA, $FB, $FC       ; fire sprite pointer lsb (msb=07)
+        BYTE $FA, $FB, $FC, $FD       ; fire sprite pointer lsb (msb=07)
 fireSpriteColor
-        BYTE $29, $2A, $2B       ; fire sprite pointer lsb (msb=D0)
+        BYTE $29, $2A, $2B, $2C       ; fire sprite pointer lsb (msb=D0)
+
+;*** game state variables
+level byte $01                      ; current difficulty level

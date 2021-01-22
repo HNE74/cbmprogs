@@ -37,7 +37,7 @@ InitSprites
         sta VIC_SPRITE_MULTICOL2
         lda #%00000011          ; enable sprites
         sta VIC_SPRITE_ENABLE
-        lda #%00011111          ; enable sprites multicolor
+        lda #%01111111          ; enable sprites multicolor
         sta VIC_SPRITE_COLOR_MODE
         lda #%00000000          ; sprite height expansion
         sta VIC_SPRITE_HEIGHT_EXP
@@ -525,7 +525,7 @@ ResetDragonFire
         cpy fireMaxCnt
         beq @maxcnt
 
-        ; check xpos extension ***> Hier scheint das Problem zu liegen
+        ; check xpos extension
         ldy fireMoveCnt
         lda VIC_SPRITE_X255
         and fireX255Mask,y
