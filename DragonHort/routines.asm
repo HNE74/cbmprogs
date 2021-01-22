@@ -523,7 +523,7 @@ ResetDragonFire
 @firereset
         sty fireMoveCnt
         cpy fireMaxCnt
-        beq @endreset
+        beq @maxcnt
 
         ; check xpos extension ***> Hier scheint das Problem zu liegen
         ldy fireMoveCnt
@@ -543,10 +543,11 @@ ResetDragonFire
         and fireInactiveMask,y
         sta VIC_SPRITE_ENABLE
 
+@endreset
         ldy fireMoveCnt
         iny
         jmp @firereset
-@endreset
+@maxcnt
         rts
 
 AnimateDragonFire
