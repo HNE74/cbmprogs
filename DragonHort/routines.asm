@@ -694,6 +694,15 @@ AddScore
         rts
 
 SubBonus
+        ldx gameBonusSubCnt
+        cpx #00
+        beq @substract
+        dex
+        stx gameBonusSubCnt
+        rts
+@substract
+        lda #5
+        sta gameBonusSubCnt 
         sed
         sec
         lda gameBonus+0
