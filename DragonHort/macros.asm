@@ -49,12 +49,14 @@ defm VectorCopyIndexedData
 endm
 
 defm PrintBCD
+        lda /3
+        sta VIC_TEXT_COLOR
         clc
         ldy #/1
         ldx #/2
         jsr POSITION_CURSOR
-        ldx #/3
-@ps1    lda /4,x
+        ldx #/4
+@ps1    lda /5,x
         pha
         lsr
         lsr
@@ -70,5 +72,4 @@ defm PrintBCD
         jsr KERNAL_CHROUT
         dex
         bpl @ps1
-        rts
 endm

@@ -639,8 +639,8 @@ DrawArenaMap
         ldx #0
 
         PrintString #2,#23,#COLOR_BLUE,TXT_SCORE
-        PrintString #15,#23,#COLOR_YELLOW,TXT_LEVEL
-        PrintString #29,#23,#COLOR_PURPLE,TXT_KNIGHTS
+        PrintString #16,#23,#COLOR_YELLOW,TXT_LEVEL
+        PrintString #28,#23,#COLOR_PURPLE,TXT_KNIGHTS
         rts       
 #endregion
 
@@ -660,8 +660,23 @@ CheckPlayerSpriteCollision
 #endregion
 
 #region Manage and show game data
-PrintScore
-        PrintBCD 8,23,2,gameScore
+PrintGameData
+        jsr     PrintGameScore
+        jsr     PrintGameBonus
+        jsr     PrintGameLives
+        rts
+
+PrintGameScore
+        PrintBCD 8,23,#COLOR_BLUE,2,gameScore
+        rts
+
+PrintGameBonus
+        PrintBCD 22,23,#COLOR_YELLOW,1,gameBonus
+        rts
+
+PrintGameLives
+        PrintBCD 36,23,#COLOR_PURPLE,0,gameLives
+        rts
 
 AddScore
         sed
@@ -677,4 +692,17 @@ AddScore
         sta gameScore+2
         cld
         rts
+
+SubBonus
+        sed
+        sec
+        lda gameBonus+0
+        sbc gameBonusSub+0
+        sta gameBonus+0
+        lda gameBonus+1
+        sbc gameBonusSub+1
+        sta gameBonus+1
+        cld
+        rts
+
 #endregion

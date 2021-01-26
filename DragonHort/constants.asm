@@ -76,7 +76,7 @@ FIRE_ANIM_WAIT_MAX = $0A
 ;*** Strings
 TXT_SCORE text "score:"
           byte $00
-TXT_LEVEL text "level:"
+TXT_LEVEL text "bonus:"
           byte $00
 TXT_KNIGHTS text "knights:"
             byte $00

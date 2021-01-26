@@ -37,10 +37,10 @@ incasm "macros.asm"
         jsr     DrawArenaMap
         jsr     SpawnPlayer
         jsr     InitSprites
-
 gameLoop
         WaitForRaster $255
-        jsr     PrintScore
+        jsr     SubBonus
+        jsr     PrintGameData
         jsr     AddScore
         jsr     CheckPlayerSpriteCollision
         lda     playerState
