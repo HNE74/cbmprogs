@@ -658,3 +658,23 @@ CheckPlayerSpriteCollision
         sta playerState
         rts
 #endregion
+
+#region Manage and show game data
+PrintScore
+        PrintBCD 8,23,2,gameScore
+
+AddScore
+        sed
+        clc
+        lda gameScore+0
+        adc gameScoreAdd+0
+        sta gameScore+0
+        lda gameScore+1
+        adc gameScoreAdd+1
+        sta gameScore+1
+        lda gameScore+2
+        adc gameScoreAdd+2
+        sta gameScore+2
+        cld
+        rts
+#endregion

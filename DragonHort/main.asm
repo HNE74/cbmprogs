@@ -40,6 +40,8 @@ incasm "macros.asm"
 
 gameLoop
         WaitForRaster $255
+        jsr     PrintScore
+        jsr     AddScore
         jsr     CheckPlayerSpriteCollision
         lda     playerState
         cmp     #PLAYER_STATE_DYING

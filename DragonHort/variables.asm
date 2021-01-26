@@ -67,4 +67,6 @@ fireAnimWaitCnt
         BYTE $00, $00, $00, $00       ; animation counter
 
 ;*** game state variables
-gameLevel byte $01                      ; current difficulty level
+gameLevel byte $01                    ; game level
+gameScore byte 0, 0, 0               ; game score in bcd format 
+gameScoreAdd byte 1, 0, 0            ; game score addition

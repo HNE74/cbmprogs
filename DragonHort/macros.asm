@@ -47,3 +47,28 @@ defm VectorCopyIndexedData
         ldy #0
         sta (ZERO_PAGE_PTR1),y
 endm
+
+defm PrintBCD
+        clc
+        ldy #/1
+        ldx #/2
+        jsr POSITION_CURSOR
+        ldx #/3
+@ps1    lda /4,x
+        pha
+        lsr
+        lsr
+        lsr
+        lsr
+        clc
+        adc #$30
+        jsr KERNAL_CHROUT
+        pla
+        and #%00001111
+        clc 
+        adc #$30
+        jsr KERNAL_CHROUT
+        dex
+        bpl @ps1
+        rts
+endm
