@@ -337,6 +337,31 @@ AnimatePlayerLeft
         rts
 #endregion
 
+#region Player dying
+InitPlayerDying
+        lda #PLAYER_DYING_START_PAGE
+        sta playerSpritePage
+        sta VIC_SPRITE0_PTR
+        rts
+
+AnimatePlayerDying
+        ldx playerSpritePage
+        inx
+        stx playerSpritePage
+        stx VIC_SPRITE0_PTR
+        ldx #PLAYER_DYING_ANIM_WAIT_MAX 
+@wait
+        dex
+        cpx #$00
+        bne @wait
+        ldx playerSpritePage
+        cpx #PLAYER_DYING_END_PAGE
+        bne AnimatePlayerDying
+        lda #PLAYER_STATE_DEAD
+        sta playerState 
+        rts
+#endregion
+
 #region Move and animate dragon
 MoveDragon        
         lda dragonTargetYpos
@@ -654,6 +679,7 @@ CheckPlayerSpriteCollision
 @nocollision
         rts
 @collision
+        jsr InitPlayerDying
         lda #PLAYER_STATE_DYING
         sta playerState
         rts

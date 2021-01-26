@@ -28,16 +28,27 @@ incasm "variables.asm"
 incasm "macros.asm"
 
 *=PROGRAM_START
+        jsr     InitProgram
+        jsr     InitGame
+        jsr     GameLoop
+        rts
+
+InitProgram
         lda     #COLOR_BLACK
         sta     VIC_SCREEN_BDCOLOR
         lda     #COLOR_BLACK
         sta     VIC_SCREEN_BGCOLOR
         jsr     InitCharacterSet
+        rts
+
+InitGame
         jsr     ClearScreen
         jsr     DrawArenaMap
         jsr     SpawnPlayer
         jsr     InitSprites
-gameLoop
+        rts
+
+GameLoop
         WaitForRaster $255
         jsr     SubBonus
         jsr     PrintGameData
@@ -45,7 +56,7 @@ gameLoop
         jsr     CheckPlayerSpriteCollision
         lda     playerState
         cmp     #PLAYER_STATE_DYING
-        beq     @playerdying
+        beq     playerdying
         jsr     ReadJoystick
         jsr     AnimatePlayer
         jsr     MovePlayerSprite
@@ -54,8 +65,15 @@ gameLoop
         jsr     LaunchDragonFire
         jsr     MoveDragonFire
         jsr     ResetDragonFire
-        jmp     gameLoop
-@playerdying
+        jmp     GameLoop
+playerdying
+        WaitForRaster $255
+        lda     playerState
+        cmp     #PLAYER_STATE_DEAD
+        beq     playerdead
+        jsr     AnimatePlayerDying
+        jmp     playerdying
+playerdead
         rts
 
 ;*** assembly routines used by main.asm
