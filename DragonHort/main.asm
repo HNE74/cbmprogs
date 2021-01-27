@@ -67,12 +67,14 @@ GameLoop
         jsr     ResetDragonFire
         jmp     GameLoop
 playerdying
+        jsr     InitPlayerDying
+dyinganim
         WaitForRaster $255
         lda     playerState
         cmp     #PLAYER_STATE_DEAD
         beq     playerdead
         jsr     AnimatePlayerDying
-        jmp     playerdying
+        jmp     dyinganim
 playerdead
         rts
 

@@ -345,20 +345,49 @@ InitPlayerDying
         rts
 
 AnimatePlayerDying
-        ldx playerSpritePage
+        ldx #PLAYER_DYING_ANIM_WAIT_MAX 
+        stx playerAnimWaitCnt
+@wait
+        ldx playerAnimWaitCnt
+        dex
+        stx playerAnimWaitCnt
+        ldx playerAnimWaitCnt
+        cpx #$00
+        jsr DoWait
+        jsr DoWait
+        jsr DoWait
+        bne @wait
+
+        ldx playerSpritePage    ; next animation frame
         inx
         stx playerSpritePage
         stx VIC_SPRITE0_PTR
-        ldx #PLAYER_DYING_ANIM_WAIT_MAX 
-@wait
-        dex
-        cpx #$00
-        bne @wait
-        ldx playerSpritePage
-        cpx #PLAYER_DYING_END_PAGE
-        bne AnimatePlayerDying
+        
+        ldx playerSpritePage    ; check player dead
+        cpx #PLAYER_DYING_END_PAGE+1
+        bne @nextframe
+        lda #%11111110
+        and VIC_SPRITE_ENABLE
+        sta VIC_SPRITE_ENABLE
         lda #PLAYER_STATE_DEAD
         sta playerState 
+@nextframe
+        rts
+
+DoWait
+        ldy #0
+@w0
+        ldx #0
+@w1     nop
+        nop
+        nop
+        nop
+        inx
+        cpx #255
+        bne @w1
+        iny
+        cpy #40
+        bne @w0
         rts
 #endregion
 
