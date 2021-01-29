@@ -42,6 +42,7 @@ InitProgram
         rts
 
 InitGame
+        jsr     InitGameData
         jsr     ClearScreen
         jsr     DrawArenaMap
         jsr     SpawnPlayer
@@ -76,6 +77,10 @@ dyinganim
         jsr     AnimatePlayerDying
         jmp     dyinganim
 playerdead
+        jsr     PlayerDeadHandler
+        lda     playerState
+        cmp     #PLAYER_STATE_ALIVE
+        beq     GameLoop
         rts
 
 ;*** assembly routines used by main.asm

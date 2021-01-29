@@ -75,3 +75,4 @@ gameBonusSub byte 01, 00              ; game bonus substraction in bcd format st
 gameBonusSubCnt byte $5               ; counter for slowing down bonus deduction
 gameLives byte $03                    ; game lives
 gameLivesSub byte $01                 ; game lives substraction in bcd format starting with low value
+gameState byte $00                    ; game state (0 intro, 1 arena, 2 game over)

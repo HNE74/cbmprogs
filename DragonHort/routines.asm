@@ -27,9 +27,18 @@ SpawnPlayer
         sta playerXpos
         lda #$80
         sta playerYpos
+        lda #%00000001
+        ora VIC_SPRITE_ENABLE
+        sta VIC_SPRITE_ENABLE
+        rts
 #endregion
 
-#region Init sprites
+#region Init game
+InitGameData
+        lda #PLAYER_STATE_ALIVE
+        sta playerState
+        rts
+
 InitSprites
         lda #$00
         sta VIC_SPRITE_X255
@@ -353,9 +362,9 @@ AnimatePlayerDying
         stx playerAnimWaitCnt
         ldx playerAnimWaitCnt
         cpx #$00
-        jsr DoWait
-        jsr DoWait
-        jsr DoWait
+        jsr DoWaitPlayerDying
+        jsr DoWaitPlayerDying
+        jsr DoWaitPlayerDying
         bne @wait
 
         ldx playerSpritePage    ; next animation frame
@@ -374,21 +383,27 @@ AnimatePlayerDying
 @nextframe
         rts
 
-DoWait
-        ldy #0
-@w0
-        ldx #0
-@w1     nop
-        nop
-        nop
-        nop
-        inx
-        cpx #255
-        bne @w1
-        iny
-        cpy #40
-        bne @w0
+DoWaitPlayerDying
+        DoWait 255,40
         rts
+
+PlayerDeadHandler
+        ldx gameLives
+        dex
+        stx gameLives
+        cpx #00
+        beq @gameover
+        jsr SpawnPlayer
+        jsr ResetAllDragonFire
+        lda #PLAYER_STATE_ALIVE
+        sta playerState
+        rts
+@gameover
+        lda #PLAYER_GAME_OVER
+        sta playerState
+        lda #GAME_STATE_OVER
+        sta gameState
+
 #endregion
 
 #region Move and animate dragon
@@ -646,6 +661,38 @@ ResetDragonFire
 @maxcnt
         rts
 
+ResetAllDragonFire
+        ldy #0
+@firereset
+        sty fireMoveCnt
+        cpy fireMaxCnt
+        beq @maxcnt
+
+        lda #0                    ; set fire not active
+        sta fireActive,y
+
+        ldy fireMoveCnt
+        lda VIC_SPRITE_ENABLE     ; inactivate fire sprite
+        and fireInactiveMask,y
+        sta VIC_SPRITE_ENABLE
+
+        ldy fireMoveCnt
+        lda VIC_SPRITE_X255     ; set sprite xpos extension
+        ora fireX255Mask,y
+        sta VIC_SPRITE_X255
+
+        ; set sprite position
+        ldy fireMoveCnt
+        lda #FIRE_START_XPOS
+        sta fireXpos,y
+        VectorCopyIndexedData fireXpos, #$D0, fireSpriteXpos, fireMoveCnt
+
+        ldy fireMoveCnt
+        iny
+        jmp @firereset
+@maxcnt
+        rts
+
 #endregion
 
 #region Draw screen maps
@@ -706,8 +753,10 @@ CheckPlayerSpriteCollision
         bne @nocollision
         jmp @collision
 @nocollision
+        lda VIC_SPRITE_SPRITE_COLL
         rts
 @collision
+        lda VIC_SPRITE_SPRITE_COLL
         jsr InitPlayerDying
         lda #PLAYER_STATE_DYING
         sta playerState

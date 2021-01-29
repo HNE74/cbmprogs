@@ -73,3 +73,19 @@ defm PrintBCD
         dex
         bpl @ps1
 endm
+
+defm DoWait
+        ldy #0
+@wait0
+        ldx #0
+@wait1  nop
+        nop
+        nop
+        nop
+        inx
+        cpx #/1
+        bne @wait1
+        iny
+        cpy #/2
+        bne @wait0
+endm
