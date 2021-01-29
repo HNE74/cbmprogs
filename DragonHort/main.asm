@@ -78,6 +78,7 @@ dyinganim
         jmp     dyinganim
 playerdead
         jsr     PlayerDeadHandler
+        lda     VIC_SPRITE_SPRITE_COLL
         lda     playerState
         cmp     #PLAYER_STATE_ALIVE
         beq     GameLoop

@@ -27,6 +27,11 @@ SpawnPlayer
         sta playerXpos
         lda #$80
         sta playerYpos
+
+        lda VIC_SPRITE_X255
+        and #%11111110
+        sta VIC_SPRITE_X255
+
         lda #%00000001
         ora VIC_SPRITE_ENABLE
         sta VIC_SPRITE_ENABLE
@@ -668,6 +673,7 @@ ResetAllDragonFire
         cpy fireMaxCnt
         beq @maxcnt
 
+        ldy fireMoveCnt
         lda #0                    ; set fire not active
         sta fireActive,y
 
