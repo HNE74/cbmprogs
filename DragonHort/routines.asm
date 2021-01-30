@@ -42,6 +42,12 @@ SpawnPlayer
 InitGameData
         lda #PLAYER_STATE_ALIVE
         sta playerState
+        lda #00
+        sta gameBonus
+        lda #16
+        sta gameBonus+1
+        lda #3
+        sta gameLives
         rts
 
 InitSprites
@@ -804,14 +810,14 @@ AddScore
         rts
 
 SubBonus
-        ldx gameBonusSubCnt
+        ldx gameBonusSubCnt             ; slow down bonus subtraction
         cpx #00
         beq @substract
         dex
         stx gameBonusSubCnt
         rts
 @substract
-        lda #5
+        lda #1                          ; subtract from bonus
         sta gameBonusSubCnt 
         sed
         sec
@@ -822,6 +828,14 @@ SubBonus
         sbc gameBonusSub+1
         sta gameBonus+1
         cld
+
+        lda gameBonus                   ; if bonus is player is dead
+        ora gameBonus+1
+        cmp #00
+        bne @bonus
+        lda #PLAYER_STATE_NOBONUS
+        sta playerState
+@bonus
         rts
 
 #endregion

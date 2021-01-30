@@ -70,9 +70,9 @@ fireAnimWaitCnt
 gameLevel byte $01                    ; game level
 gameScore byte $00, $00, $00          ; game score in bcd format starting with low values
 gameScoreAdd byte $00, $00, $00       ; game score addition in bcd format starting with low values
-gameBonus byte 00, 16                 ; game bonus in bcd format starting with low values
+gameBonus byte 10, 00                 ; game bonus in bcd format starting with low values 00 16
 gameBonusSub byte 01, 00              ; game bonus substraction in bcd format starting with low value
-gameBonusSubCnt byte $5               ; counter for slowing down bonus deduction
+gameBonusSubCnt byte $1               ; counter for slowing down bonus deduction
 gameLives byte $03                    ; game lives
 gameLivesSub byte $01                 ; game lives substraction in bcd format starting with low value
 gameState byte $00                    ; game state (0 intro, 1 arena, 2 game over)

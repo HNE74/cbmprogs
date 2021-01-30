@@ -58,6 +58,9 @@ GameLoop
         lda     playerState
         cmp     #PLAYER_STATE_DYING
         beq     playerdying
+        lda     playerState
+        cmp     #PLAYER_STATE_NOBONUS
+        beq     playernobonus
         jsr     ReadJoystick
         jsr     AnimatePlayer
         jsr     MovePlayerSprite
@@ -74,6 +77,9 @@ dyinganim
         lda     playerState
         cmp     #PLAYER_STATE_DEAD
         beq     playerdead
+        lda     playerState
+        cmp     #PLAYER_STATE_NOBONUS
+        beq     playernobonus
         jsr     AnimatePlayerDying
         jmp     dyinganim
 playerdead
@@ -83,6 +89,9 @@ playerdead
         cmp     #PLAYER_STATE_ALIVE
         beq     GameLoop
         rts
+playernobonus
+        rts
+
 
 ;*** assembly routines used by main.asm
 incasm "routines.asm"
