@@ -414,6 +414,21 @@ PlayerDeadHandler
         sta playerState
         lda #GAME_STATE_OVER
         sta gameState
+        rts
+
+PlayerNoBonusHandler
+        jsr ResetAllDragonFire
+        PrintString #10,#10,#COLOR_CYAN,TXT_NOBONUS
+        DoWait 255,255
+        DoWait 255,255
+        DoWait 255,255
+        DoWait 255,255
+        DoWait 255,255
+        lda #PLAYER_GAME_OVER
+        sta playerState
+        lda #GAME_STATE_OVER
+        sta gameState 
+        rts
 
 #endregion
 
@@ -777,9 +792,9 @@ CheckPlayerSpriteCollision
 
 #region Manage and show game data
 PrintGameData
-        jsr     PrintGameScore
-        jsr     PrintGameBonus
-        jsr     PrintGameLives
+        jsr PrintGameScore
+        jsr PrintGameBonus
+        jsr PrintGameLives
         rts
 
 PrintGameScore

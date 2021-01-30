@@ -90,6 +90,8 @@ playerdead
         beq     GameLoop
         rts
 playernobonus
+        WaitForRaster $255
+        jsr     PlayerNoBonusHandler
         rts
 
 

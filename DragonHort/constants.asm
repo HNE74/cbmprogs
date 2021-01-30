@@ -91,4 +91,6 @@ TXT_LEVEL text "bonus:"
           byte $00
 TXT_KNIGHTS text "knights:"
             byte $00
+TXT_NOBONUS text "you ran out of bonus!"
+            byte $00
 
