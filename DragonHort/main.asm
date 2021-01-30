@@ -43,8 +43,10 @@ InitProgram
 
 InitGame
         jsr     InitGameData
+InitLevel
         jsr     ClearScreen
         jsr     DrawArenaMap
+        jsr     CreateArenaObjects
         jsr     SpawnPlayer
         jsr     InitSprites
         rts

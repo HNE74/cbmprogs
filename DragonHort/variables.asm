@@ -30,6 +30,21 @@ dragonTargetYpos byte 59            ; target y position max=205, min=59
 dragonYmove byte $01                ; dragon movement: 0 = no move, 1 = up, 2 = down
 dragonWaitCnt byte $12              ; dragon wait counter
 
+;*** background variables
+rndMaxValue byte $00                ; max random value
+rndResultValue byte $00             ; result value for random coordinate
+plotXpos byte $00                   ; x position plot
+plotYpos byte $00                   ; y position plot
+bgChar byte $00                     ; background character to plot
+plotCharacter byte $00              ; character to plot
+bgColor byte $00                    ; background character color to plot
+plotColor byte $00                  ; color of char to plot
+plotCnt byte $00                    ; Counter for ploting characters
+peekXpos byte $00                   ; x position to peek value
+peekYpos byte $00                   ; y position to peek value
+peekValue byte $00                  ; peeked value
+treasureCnt byte 10                ; number of treasure objects
+
 ;*** fire variables
 fireProbability byte 10             ; probability dragon fire shot
 fireProbability2 byte 100 

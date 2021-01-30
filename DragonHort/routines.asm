@@ -1,4 +1,4 @@
-;******************************************************
+;***************f***************************************
 ;*** Custom defined routines
 ;***
 ;*** by Noltisoft in 2021 
@@ -94,15 +94,18 @@ InitSprites
 #region Initialize character set
 ; *** Initialize the character set
 InitCharacterSet
+        lda #$18
+        sta VIC_SCROLL_MCOLOR      ; enable multicolor
+
         lda VIC_MEMORY_CONTROL
         ora #$0E                   ; char location $3800
         sta VIC_MEMORY_CONTROL
-        lda #$18
-        sta VIC_SCROLL_MCOLOR      ; enable multicolor
-        lda COLOR_YELLOW
+
+        lda #COLOR_ORANGE
         sta VIC_SCREEN_BGCOLOR1
-        lda COLOR_BROWN
+        lda #COLOR_LIGHT_GREEN
         sta VIC_SCREEN_BGCOLOR2
+
         rts
 #endregion
 
@@ -772,6 +775,53 @@ DrawArenaMap
         rts       
 #endregion
 
+#region Create treasures and obstacles
+CreateArenaObjects
+        lda #$41
+        sta bgChar
+        lda #COLOR_LIGHT_BLUE
+        sta bgColor
+        lda treasureCnt
+        sta plotCnt
+        jsr CreateTreasure
+
+CreateRandomNumber
+        RndTimer
+        cmp rndMaxValue
+        bcs CreateRandomNumber
+        sta rndResultValue
+        rts
+
+CreateTreasure
+@plotChar
+        lda BACKGROUND_MAXXPOS
+        sta rndMaxValue
+        jsr CreateRandomNumber  ; Character x position
+        ldx rndResultValue
+        inx
+        stx plotXpos
+
+        lda BACKGROUND_MAXYPOS
+        sta rndMaxValue        
+        jsr CreateRandomNumber  ; Character y position
+        ldx rndResultValue
+        inx
+        stx plotYpos
+
+        lda bgChar              ; Plot character
+        sta plotCharacter
+        lda bgColor
+        sta plotColor
+        jsr ScreenPlot 
+
+        ldx plotCnt             
+        dex        
+        stx plotCnt
+        cpx #00
+        bne @plotChar
+        rts
+#endregion
+
 #region Player collision detection
 CheckPlayerSpriteCollision
         lda VIC_SPRITE_SPRITE_COLL
@@ -853,4 +903,62 @@ SubBonus
 @bonus
         rts
 
+ScreenPlot
+        ldy #0
+        ldx #0
+@inc1   iny                     ; set offset color ram (y position)
+        iny
+        inx
+        cpx plotYpos
+        bne @inc1
+
+        lda COLOR_TABLE,y+1     ; store offset in zero page pointer register
+        sta ZERO_PAGE_PTR1
+        lda COLOR_TABLE,y
+        sta ZERO_PAGE_PTR1+1
+
+        lda plotColor           ; set color ram adding x position to 
+        ldy plotXPos            ; memory position zero page points to
+        sta (ZERO_PAGE_PTR1),y
+
+        ldy #0                  ; set offset screen ram (y position)
+        ldx #0
+@inc2   iny
+        iny
+        inx
+        cpx plotYpos
+        bne @inc2
+
+        lda SCREEN_TABLE,y+1    ; store offset in zero page pointer register
+        sta ZERO_PAGE_PTR1
+        lda SCREEN_TABLE,y
+        sta ZERO_PAGE_PTR1+1
+        
+        lda plotCharacter       ; set screen ram adding x position to 
+        ldy plotXpos            ; memory position zero page points to
+        sta (ZERO_PAGE_PTR1),y
+        rts
 #endregion
+
+#region Screen peek charater
+ScreenPeek
+          ldy            #0
+          ldx            #0
+@inc1
+          iny
+          iny
+          inx
+          cpx            peekYpos
+          bne            @inc1
+          lda            SCREEN_TABLE,y; Load y address offset into zeropage
+          sta            ZERO_PAGE_PTR1+1
+          iny
+          lda            SCREEN_TABLE,y
+          sta            ZERO_PAGE_PTR1
+          ldy            peekXpos
+          lda            (ZERO_PAGE_PTR1),y; Peek value and store it to result 
+          sta            peekValue
+          rts 
+
+#endregion
+

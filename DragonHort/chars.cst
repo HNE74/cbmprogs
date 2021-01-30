@@ -5,7 +5,7 @@
   <BK2>77</BK2>
   <Col3>e7</Col3>
   <Reversed>False</Reversed>
-  <Multicolour>False</Multicolour>
+  <Multicolour>True</Multicolour>
   <Uppercase>True</Uppercase>
   <character>
     <charcode>0</charcode>
@@ -855,14 +855,14 @@
   <character>
     <charcode>65</charcode>
     <chardata>
-      <data>8</data>
-      <data>28</data>
-      <data>62</data>
-      <data>127</data>
-      <data>127</data>
-      <data>28</data>
-      <data>62</data>
-      <data>0</data>
+      <data>20</data>
+      <data>85</data>
+      <data>105</data>
+      <data>105</data>
+      <data>125</data>
+      <data>125</data>
+      <data>85</data>
+      <data>20</data>
     </chardata>
   </character>
   <character>
@@ -1065,10 +1065,10 @@
     <chardata>
       <data>0</data>
       <data>60</data>
-      <data>118</data>
-      <data>122</data>
-      <data>122</data>
-      <data>118</data>
+      <data>126</data>
+      <data>126</data>
+      <data>126</data>
+      <data>126</data>
       <data>60</data>
       <data>0</data>
     </chardata>
@@ -1089,14 +1089,14 @@
   <character>
     <charcode>83</charcode>
     <chardata>
-      <data>129</data>
-      <data>255</data>
-      <data>126</data>
-      <data>60</data>
-      <data>24</data>
-      <data>24</data>
-      <data>60</data>
-      <data>126</data>
+      <data>54</data>
+      <data>127</data>
+      <data>127</data>
+      <data>127</data>
+      <data>62</data>
+      <data>28</data>
+      <data>8</data>
+      <data>0</data>
     </chardata>
   </character>
   <character>
@@ -1136,6 +1136,19 @@
       <data>251</data>
       <data>251</data>
       <data>251</data>
+    </chardata>
+  </character>
+  <character>
+    <charcode>87</charcode>
+    <chardata>
+      <data>0</data>
+      <data>60</data>
+      <data>126</data>
+      <data>102</data>
+      <data>102</data>
+      <data>126</data>
+      <data>60</data>
+      <data>0</data>
     </chardata>
   </character>
   <character>
