@@ -20,6 +20,7 @@ playerLeftAnimCnt byte $82          ; left animation counter
 playerRightAnimCnt byte $80         ; right animation counter
 playerAnimWaitCnt byte $00          ; animation wait counter
 playerState byte $00                ; player state
+playerCollision byte $00            ; sprite collision register rescue
 
 ;*** dragon variables
 dragonSpritePage byte $84           ; page of dragon sprite
@@ -43,7 +44,7 @@ plotCnt byte $00                    ; Counter for ploting characters
 peekXpos byte $00                   ; x position to peek value
 peekYpos byte $00                   ; y position to peek value
 peekValue byte $00                  ; peeked value
-treasureCnt byte 10                 ; number of treasure objects
+treasureCnt byte 00                 ; number of treasure objects
 
 ;*** player screenram positions
 playerUpperLeftXpos byte $00

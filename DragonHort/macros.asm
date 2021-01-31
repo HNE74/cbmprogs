@@ -116,5 +116,9 @@ defm TreasureCheck
         sta gameScoreAdd
         jsr AddScore
         jsr ScreenPlot
+
+        ldx treasureCnt
+        dex
+        stx treasureCnt
 @notreasure    
 endm

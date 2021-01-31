@@ -48,7 +48,7 @@ InitGameData
         sta gameBonus+1
         lda #3
         sta gameLives
-        lda #10
+        lda #2
         sta treasureCnt
         rts
 
@@ -61,7 +61,7 @@ InitSprites
         sta VIC_SPRITE_MULTICOL2
         lda #%00000011          ; enable sprites
         sta VIC_SPRITE_ENABLE
-        lda #%01111111          ; enable sprites multicolor
+        lda #%11111111          ; enable sprites multicolor
         sta VIC_SPRITE_COLOR_MODE
         lda #%00000000          ; sprite height expansion
         sta VIC_SPRITE_HEIGHT_EXP
@@ -827,6 +827,7 @@ CreateTreasure
 #region Player collision detection
 CheckPlayerSpriteCollision
         lda VIC_SPRITE_SPRITE_COLL
+        sta playerCollision
         and #%00000001
         cmp #%00000001
         bne @nocollision
@@ -836,7 +837,15 @@ CheckPlayerSpriteCollision
         rts
 @collision
         lda VIC_SPRITE_SPRITE_COLL
-        jsr InitPlayerDying
+        lda playerCollision
+        and #%10000001
+        cmp #%10000001
+        bne @playerhit
+        lda #GAME_STATE_NEXTLEVEL       ; exit to next level
+        sta gameState
+        rts
+@playerhit
+        jsr InitPlayerDying             ; player was hit
         lda #PLAYER_STATE_DYING
         sta playerState
         rts
@@ -1153,6 +1162,7 @@ CheckPlayerBackgroundCollisions
         jsr CheckPlayerBGCollUpperRight
         jsr CheckPlayerBGCollLowerLeft
         jsr CheckPlayerBGCollLowerRight
+        jsr CheckActivateExit
         rts
 
 CheckPlayerBGCollUpperLeft
@@ -1175,4 +1185,27 @@ CheckPlayerBGCollLowerRight
         TreasureCheck $41, 10, playerLowerRightXpos, playerLowerRightYpos
         rts
 
+CheckActivateExit
+        lda treasureCnt
+        cmp #00
+        bne @noexit
+        
+        lda #EXIT_PAGE        
+        sta VIC_SPRITE7_PTR
+        
+        lda #EXIT_XPOS
+        sta VIC_SPRITE7_XPOS
+        lda #EXIT_YPOS
+        sta VIC_SPRITE7_YPOS
+
+        lda VIC_SPRITE_ENABLE
+        ora #%10000000
+        sta VIC_SPRITE_ENABLE
+@noexit
+        rts
+#endregion
+
+#region Next level handling
+GameNextLevelHandler       
+        rts
 #endregion

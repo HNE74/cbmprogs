@@ -57,6 +57,10 @@ GameLoop
         jsr     PrintGameData
         jsr     AddScore
         jsr     CheckPlayerSpriteCollision
+        lda     gameState
+        cmp     #GAME_STATE_NEXTLEVEL
+        beq     nextlevel
+        jsr     CheckPlayerBackgroundCollisions
         lda     playerState
         cmp     #PLAYER_STATE_DYING
         beq     playerdying
@@ -71,7 +75,6 @@ GameLoop
         jsr     LaunchDragonFire
         jsr     MoveDragonFire
         jsr     ResetDragonFire
-        jsr     CheckPlayerBackgroundCollisions
         jmp     GameLoop
 playerdying
         jsr     InitPlayerDying
@@ -92,6 +95,10 @@ playerdead
         cmp     #PLAYER_STATE_ALIVE
         beq     GameLoop
         rts
+nextlevel
+        WaitForRaster $255
+        jsr     GameNextLevelHandler
+        jmp     InitLevel
 playernobonus
         WaitForRaster $255
         jsr     PlayerNoBonusHandler
