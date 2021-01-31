@@ -619,6 +619,7 @@ MoveDragonFire
         ldx fireXpos,y
         dex
         dex
+        dex
         txa
         sta fireXpos,y
         VectorCopyIndexedData fireXpos, #$D0, fireSpriteXpos, fireMoveCnt
@@ -626,7 +627,7 @@ MoveDragonFire
         ; check sprite xpos extension
         ldy fireMoveCnt
         lda fireXpos,y
-        cmp #254
+        cmp #253
         bne @noxext
         lda VIC_SPRITE_X255 ; unset xpos extension    
         and fireX255UnsetMask,y
@@ -683,7 +684,7 @@ ResetDragonFire
 
         lda fireXpos,y            ; check endpos reached          
         cmp #FIRE_END_XPOS
-        bne @endreset   
+        bcs @endreset   
 
         lda #0                    ; set fire not active
         sta fireActive,y
