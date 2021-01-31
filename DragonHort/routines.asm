@@ -48,6 +48,8 @@ InitGameData
         sta gameBonus+1
         lda #3
         sta gameLives
+        lda #10
+        sta treasureCnt
         rts
 
 InitSprites
@@ -980,7 +982,8 @@ PlayerUpperLeftScreenPosition
         lsr  
         sta playerUpperLeftYpos 
 
-        lda VIC_SPRITE_X255          ; check sprite extended         
+        lda VIC_SPRITE_X255          ; check sprite extended
+        and #%00000001
         cmp #1             
         beq @spriteIsExtended    
 
@@ -1022,7 +1025,8 @@ PlayerUpperRightScreenPosition
         lsr  
         sta playerUpperRightYpos 
 
-        lda VIC_SPRITE_X255          ; check sprite extended         
+        lda VIC_SPRITE_X255          ; check sprite extended  
+        and #%00000001       
         cmp #1             
         beq @spriteIsExtended    
 
@@ -1064,7 +1068,8 @@ PlayerLowerLeftScreenPosition
         lsr  
         sta playerLowerLeftYpos 
 
-        lda VIC_SPRITE_X255          ; check sprite extended         
+        lda VIC_SPRITE_X255          ; check sprite extended  
+        and #%00000001       
         cmp #1             
         beq @spriteIsExtended    
 
@@ -1093,7 +1098,6 @@ PlayerLowerLeftScreenPosition
         adc #29                   
         sta playerLowerLeftXpos            
         rts                           
-#endregion
 
 PlayerLowerRightScreenPosition
         clc                          ; y position 
@@ -1107,7 +1111,8 @@ PlayerLowerRightScreenPosition
         lsr  
         sta playerLowerRightYpos 
 
-        lda VIC_SPRITE_X255          ; check sprite extended         
+        lda VIC_SPRITE_X255          ; check sprite extended   
+        and #%00000001      
         cmp #1             
         beq @spriteIsExtended    
 

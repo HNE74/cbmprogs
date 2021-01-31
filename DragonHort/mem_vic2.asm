@@ -24,7 +24,7 @@ VIC_SPRITE_X255        = $D010   ; sprite extension X>255
 VIC_SPRITE_BACKGR_PRIO = $D01B   ; sprite before(0) or after(1) background
 VIC_SPRITE_COLOR_MODE  = $D01C   ; sprite hires(0) or multicolor(1)
 VIC_SPRITE_SPRITE_COLL = $D01E   ; sprite to sprite collision
-VIC_SPRITE_BACKGR_COLL = $D01F   ; sprite to foreground collision
+VIC_SPRITE_BACKGR_COLL = $D01F   ; sprite to background collision
 
 ;*** sprite position registers
 VIC_SPRITE0_XPOS = $D000   ; sprite 0 horizontal position
