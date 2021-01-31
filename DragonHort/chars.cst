@@ -439,13 +439,13 @@
   <character>
     <charcode>33</charcode>
     <chardata>
-      <data>24</data>
-      <data>24</data>
-      <data>24</data>
-      <data>24</data>
+      <data>48</data>
+      <data>48</data>
+      <data>48</data>
+      <data>48</data>
+      <data>48</data>
       <data>0</data>
-      <data>0</data>
-      <data>24</data>
+      <data>48</data>
       <data>0</data>
     </chardata>
   </character>
@@ -517,10 +517,10 @@
   <character>
     <charcode>39</charcode>
     <chardata>
-      <data>6</data>
       <data>12</data>
-      <data>24</data>
-      <data>0</data>
+      <data>60</data>
+      <data>48</data>
+      <data>48</data>
       <data>0</data>
       <data>0</data>
       <data>0</data>
@@ -587,8 +587,8 @@
       <data>0</data>
       <data>0</data>
       <data>0</data>
-      <data>24</data>
-      <data>24</data>
+      <data>12</data>
+      <data>12</data>
       <data>48</data>
     </chardata>
   </character>

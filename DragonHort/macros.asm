@@ -36,7 +36,6 @@ defm RndTimer
         eor VIC_SCREEN_RASTER
 endm
 
-
 defm VectorCopyIndexedData
         ldy /4
         lda /3,y ; set data destination

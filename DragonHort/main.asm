@@ -29,7 +29,10 @@ incasm "macros.asm"
 
 *=PROGRAM_START
         jsr     InitProgram
+startNewGame
         jsr     InitGame
+startNewLevel
+        jsr     InitLevel
         jsr     GameLoop
         rts
 
@@ -43,6 +46,7 @@ InitProgram
 
 InitGame
         jsr     InitGameData
+        rts
 InitLevel
         jsr     ClearScreen
         jsr     DrawArenaMap
@@ -57,8 +61,8 @@ GameLoop
         jsr     PrintGameData
         jsr     AddScore
         jsr     CheckPlayerSpriteCollision
-        lda     gameState
-        cmp     #GAME_STATE_NEXTLEVEL
+        lda     playerState
+        cmp     #PLAYER_STATE_NEXTLEVEL
         beq     nextlevel
         jsr     CheckPlayerBackgroundCollisions
         lda     playerState
@@ -98,7 +102,8 @@ playerdead
 nextlevel
         WaitForRaster $255
         jsr     GameNextLevelHandler
-        jmp     InitLevel
+        lda     VIC_SPRITE_SPRITE_COLL
+        jmp     startNewLevel
 playernobonus
         WaitForRaster $255
         jsr     PlayerNoBonusHandler

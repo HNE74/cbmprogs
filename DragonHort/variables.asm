@@ -44,7 +44,8 @@ plotCnt byte $00                    ; Counter for ploting characters
 peekXpos byte $00                   ; x position to peek value
 peekYpos byte $00                   ; y position to peek value
 peekValue byte $00                  ; peeked value
-treasureCnt byte 00                 ; number of treasure objects
+treasureObjects byte $00            ; number of treasure objects on level start
+treasureCnt byte $00                ; number of treasure objects left
 
 ;*** player screenram positions
 playerUpperLeftXpos byte $00

@@ -70,12 +70,12 @@ PLAYER_STATE_DYING = #$01
 PLAYER_STATE_DEAD = #$02
 PLAYER_STATE_NOBONUS = #$03
 PLAYER_GAME_OVER = #$04
+PLAYER_STATE_NEXTLEVEL = #$05
 
 ;*** Game states
 GAME_STATE_INTRO = #$00
 GAME_STATE_ARENA = #$01
 GAME_STATE_OVER  = #$02
-GAME_STATE_NEXTLEVEL = #$03
 
 ;*** Dragon animation
 DRAGON_START_PAGE = #$84
@@ -113,4 +113,9 @@ TXT_KNIGHTS text "knights:"
             byte $00
 TXT_NOBONUS text "you ran out of bonus!"
             byte $00
-
+TXT_NEXTLEVEL1 text "congratulations,"
+            byte $00
+TXT_NEXTLEVEL2 text "you snatched the dragon's treasure!"
+            byte $00
+TXT_NEXTLEVEL3 text "earned bonus:"
+            byte $00

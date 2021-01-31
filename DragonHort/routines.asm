@@ -48,11 +48,14 @@ InitGameData
         sta gameBonus+1
         lda #3
         sta gameLives
-        lda #2
+        lda #1
+        sta treasureObjects
         sta treasureCnt
         rts
 
 InitSprites
+        lda VIC_SPRITE_SPRITE_COLL
+
         lda #$00
         sta VIC_SPRITE_X255
         lda COLOR_PURPLE
@@ -841,8 +844,8 @@ CheckPlayerSpriteCollision
         and #%10000001
         cmp #%10000001
         bne @playerhit
-        lda #GAME_STATE_NEXTLEVEL       ; exit to next level
-        sta gameState
+        lda #PLAYER_STATE_NEXTLEVEL       ; exit to next level
+        sta playerState
         rts
 @playerhit
         jsr InitPlayerDying             ; player was hit
@@ -889,6 +892,18 @@ AddScore
         sta gameScoreAdd+1
         lda #$00
         sta gameScoreAdd+2
+        rts
+
+AddBonusToScore
+        sed
+        clc
+        lda gameScore+0
+        adc gameBonus+0
+        sta gameScore+0
+        lda gameScore+1
+        adc gameBonus+1
+        sta gameScore+1
+        cld
         rts
 
 SubBonus
@@ -1206,6 +1221,35 @@ CheckActivateExit
 #endregion
 
 #region Next level handling
-GameNextLevelHandler       
+GameNextLevelHandler
+        ; print level completed message
+        PrintString #12,#9,#COLOR_LIGHT_GREEN,TXT_NEXTLEVEL1
+        PrintString #3,#11,#COLOR_LIGHT_GREEN,TXT_NEXTLEVEL2
+        PrintString #11,#13,#COLOR_LIGHT_GREEN,TXT_NEXTLEVEL3
+        PrintBCD 25,13,#COLOR_LIGHT_GREEN,1,gameBonus
+
+        jsr ResetAllDragonFire  ; reset sprites
+        lda #%00000000
+        sta VIC_SPRITE_ENABLE
+
+        DoWait 255,255          ; wait a while
+        DoWait 255,255
+        DoWait 255,255
+        DoWait 255,255
+        DoWait 255,255
+ 
+        ldx treasureObjects     ; init treasure objects
+        inx
+        stx treasureObjects
+        stx treasureCnt
+
+        jsr AddBonusToScore     ; add bonus to score and reset it
+        lda #00
+        sta gameBonus
+        lda #16
+        sta gameBonus+1
+
+        lda #GAME_STATE_ARENA   ; set game state 
+        sta gameState
         rts
 #endregion
