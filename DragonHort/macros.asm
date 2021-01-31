@@ -89,3 +89,32 @@ defm DoWait
         cpy #/2
         bne @wait0
 endm
+
+defm FetchPlayerBackground
+        jsr /1     ; calc position
+
+        lda /2     ; read character
+        sta peekXpos
+        lda /3
+        sta peekYpos
+        jsr ScreenPeek
+endm
+
+defm TreasureCheck
+        lda peekValue
+        cmp #/1
+        bne @notreasure
+        
+        lda #$20
+        sta plotCharacter
+        lda /3
+        sta plotXpos
+        lda /4
+        sta plotYpos
+
+        lda #/2
+        sta gameScoreAdd
+        jsr AddScore
+        jsr ScreenPlot
+@notreasure    
+endm

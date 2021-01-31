@@ -872,6 +872,12 @@ AddScore
         adc gameScoreAdd+2
         sta gameScore+2
         cld
+        lda #$00
+        sta gameScoreAdd
+        lda #$00
+        sta gameScoreAdd+1
+        lda #$00
+        sta gameScoreAdd+2
         rts
 
 SubBonus
@@ -959,6 +965,209 @@ ScreenPeek
           lda            (ZERO_PAGE_PTR1),y; Peek value and store it to result 
           sta            peekValue
           rts 
-
 #endregion
 
+#region Player background collision handling
+PlayerUpperLeftScreenPosition
+        clc                          ; y position 
+        lda VIC_SPRITE0_YPOS
+        adc SPRITE_SCREENPOS_YOFFSET_UL
+        sbc #50
+        sta playerUpperLeftYpos
+
+        lsr                           ; division by 8
+        lsr  
+        lsr  
+        sta playerUpperLeftYpos 
+
+        lda VIC_SPRITE_X255          ; check sprite extended         
+        cmp #1             
+        beq @spriteIsExtended    
+
+        clc                          ; x position
+        lda VIC_SPRITE0_XPOS                     
+        adc SPRITE_SCREENPOS_XOFFSET_UL                   
+        sbc #24                                              
+        sta playerUpperLeftXpos                            
+
+        lsr                           ; division by 8
+        lsr                         
+        lsr                            
+        sta playerUpperLeftXpos              
+        rts
+
+@spriteIsExtended                   
+        clc                          ; X position
+        lda VIC_SPRITE0_XPOS   
+        sta playerUpperLeftXpos       
+
+        lda playerUpperLeftXpos   
+        lsr            
+        lsr                  
+        lsr                   
+        sta playerUpperLeftXpos      
+        adc #29                   
+        sta playerUpperLeftXpos            
+        rts                           
+
+PlayerUpperRightScreenPosition
+        clc                          ; y position 
+        lda VIC_SPRITE0_YPOS
+        adc SPRITE_SCREENPOS_YOFFSET_UR
+        sbc #50
+        sta playerUpperRightYpos
+
+        lsr                           ; division by 8
+        lsr  
+        lsr  
+        sta playerUpperRightYpos 
+
+        lda VIC_SPRITE_X255          ; check sprite extended         
+        cmp #1             
+        beq @spriteIsExtended    
+
+        clc                          ; x position
+        lda VIC_SPRITE0_XPOS                     
+        adc SPRITE_SCREENPOS_XOFFSET_UR                   
+        sbc #24                                              
+        sta playerUpperRightXpos                            
+
+        lsr                           ; division by 8
+        lsr                         
+        lsr                            
+        sta playerUpperRightXpos              
+        rts
+
+@spriteIsExtended                   
+        clc                          ; X position
+        lda VIC_SPRITE0_XPOS   
+        sta playerUpperRightXpos       
+
+        lda playerUpperRightXpos   
+        lsr            
+        lsr                  
+        lsr                   
+        sta playerUpperRightXpos      
+        adc #30                   
+        sta playerUpperRightXpos            
+        rts                           
+
+PlayerLowerLeftScreenPosition
+        clc                          ; y position 
+        lda VIC_SPRITE0_YPOS
+        adc SPRITE_SCREENPOS_YOFFSET_LL
+        sbc #50
+        sta playerLowerLeftYpos
+
+        lsr                           ; division by 8
+        lsr  
+        lsr  
+        sta playerLowerLeftYpos 
+
+        lda VIC_SPRITE_X255          ; check sprite extended         
+        cmp #1             
+        beq @spriteIsExtended    
+
+        clc                          ; x position
+        lda VIC_SPRITE0_XPOS                     
+        adc SPRITE_SCREENPOS_XOFFSET_LL                   
+        sbc #24                                              
+        sta playerLowerLeftXpos                            
+
+        lsr                           ; division by 8
+        lsr                         
+        lsr                            
+        sta playerLowerLeftXpos              
+        rts
+
+@spriteIsExtended                   
+        clc                          ; X position
+        lda VIC_SPRITE0_XPOS   
+        sta playerLowerLeftXpos       
+
+        lda playerLowerLeftXpos   
+        lsr            
+        lsr                  
+        lsr                   
+        sta playerLowerLeftXpos      
+        adc #29                   
+        sta playerLowerLeftXpos            
+        rts                           
+#endregion
+
+PlayerLowerRightScreenPosition
+        clc                          ; y position 
+        lda VIC_SPRITE0_YPOS
+        adc SPRITE_SCREENPOS_YOFFSET_LR
+        sbc #50
+        sta playerLowerRightYpos
+
+        lsr                           ; division by 8
+        lsr  
+        lsr  
+        sta playerLowerRightYpos 
+
+        lda VIC_SPRITE_X255          ; check sprite extended         
+        cmp #1             
+        beq @spriteIsExtended    
+
+        clc                          ; x position
+        lda VIC_SPRITE0_XPOS                     
+        adc SPRITE_SCREENPOS_XOFFSET_LR                   
+        sbc #24                                              
+        sta playerLowerRightXpos                            
+
+        lsr                           ; division by 8
+        lsr                         
+        lsr                            
+        sta playerLowerRightXpos              
+        rts
+
+@spriteIsExtended                   
+        clc                          ; X position
+        lda VIC_SPRITE0_XPOS   
+        sta playerLowerRightXpos       
+
+        lda playerLowerRightXpos   
+        lsr            
+        lsr                  
+        lsr                   
+        sta playerLowerRightXpos      
+        adc #30                 
+        sta playerLowerRightXpos            
+        rts                           
+
+CheckPlayerBackgroundCollisions
+        lda VIC_SPRITE_BACKGR_COLL      ; player sprite register check
+        and #%00000001
+        cmp #%00000001
+        beq @checkcoll
+        rts
+@checkcoll                              ; software check
+        jsr CheckPlayerBGCollUpperLeft
+        jsr CheckPlayerBGCollUpperRight
+        jsr CheckPlayerBGCollLowerLeft
+        jsr CheckPlayerBGCollLowerRight
+        rts
+
+CheckPlayerBGCollUpperLeft
+        FetchPlayerBackground PlayerUpperLeftScreenPosition, playerUpperLeftXpos, playerUpperLeftYpos
+        TreasureCheck $41, 10, playerUpperLeftXpos, playerUpperLeftYpos
+        rts
+
+CheckPlayerBGCollUpperRight
+        FetchPlayerBackground PlayerUpperRightScreenPosition, playerUpperRightXpos, playerUpperRightYpos
+        TreasureCheck $41, 10, playerUpperRightXpos, playerUpperRightYpos
+        rts
+
+CheckPlayerBGCollLowerLeft
+        FetchPlayerBackground PlayerLowerLeftScreenPosition, playerLowerLeftXpos, playerLowerLeftYpos
+        TreasureCheck $41, 10, playerLowerLeftXpos, playerLowerLeftYpos
+        rts
+
+CheckPlayerBGCollLowerRight
+        FetchPlayerBackground PlayerLowerRightScreenPosition, playerLowerRightXpos, playerLowerRightYpos
+        TreasureCheck $41, 10, playerLowerRightXpos, playerLowerRightYpos
+        rts
+
+#endregion

@@ -71,6 +71,7 @@ GameLoop
         jsr     LaunchDragonFire
         jsr     MoveDragonFire
         jsr     ResetDragonFire
+        jsr     CheckPlayerBackgroundCollisions
         jmp     GameLoop
 playerdying
         jsr     InitPlayerDying
