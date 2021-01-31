@@ -21,6 +21,9 @@ incbin "chars.bin"
 *=ARENA_MAP_MEMORY
 incbin "arena.bin"
 
+*=START_MAP_MEMORY
+incbin "start.bin"
+
 incasm "mem_c64.asm"
 incasm "mem_vic2.asm"
 incasm "constants.asm"
@@ -29,6 +32,9 @@ incasm "macros.asm"
 
 *=PROGRAM_START
         jsr     InitProgram
+startScreen
+        jsr     ClearScreen
+        jsr     ShowStartScreen
 startNewGame
         jsr     InitGame
 startNewLevel

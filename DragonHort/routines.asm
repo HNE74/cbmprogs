@@ -735,6 +735,50 @@ ResetAllDragonFire
 #endregion
 
 #region Draw screen maps
+DrawStartMap
+        ldx #0
+@startLoop1
+        lda START_MAP_MEM_BLOCK1,x
+        tay
+        sta VIC_SCREENRAM_BLOCK1,x
+        lda #COLOR_RED
+        sta VIC_COLORRAM_BLOCK1,x
+        inx
+        cpx #255
+        bne @startLoop1
+        ldx #0
+@startLoop2
+        lda START_MAP_MEM_BLOCK2,x
+        tay
+        sta VIC_SCREENRAM_BLOCK2,x
+        lda #COLOR_RED
+        sta VIC_COLORRAM_BLOCK2,x
+        inx
+        cpx #255
+        bne @startLoop2
+        ldx #0
+@startLoop3
+        lda START_MAP_MEM_BLOCK3,x
+        tay
+        sta VIC_SCREENRAM_BLOCK3,x
+        lda #COLOR_RED
+        sta VIC_COLORRAM_BLOCK3,x
+        inx
+        cpx #255
+        bne @startLoop3
+        ldx #0
+@startLoop4
+        lda START_MAP_MEM_BLOCK4,x
+        tay
+        sta VIC_SCREENRAM_BLOCK4,x
+        lda #COLOR_RED
+        sta VIC_COLORRAM_BLOCK4,x
+        inx
+        cpx #235
+        bne @startLoop4
+        ldx #0
+        rts
+
 DrawArenaMap
         ldx #0
 @arenaLoop1
@@ -1271,11 +1315,19 @@ GameNextLevelHandler
         lda fireProbability
         adc #10
         sta fireProbability
-        lda #02
-        sta VIC_SCREEN_BDCOLOR
 
 @gamestate
         lda #GAME_STATE_ARENA   ; set game state 
         sta gameState
+        rts
+#endregion
+
+#region Show start screen
+ShowStartScreen
+        jsr DrawStartMap
+@waitfire
+        lda CIA_PORT_A
+        and #JOY_BUTTON
+        bne @waitfire
         rts
 #endregion

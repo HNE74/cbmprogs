@@ -53,7 +53,7 @@
     <DetermineBuildOrder>0</DetermineBuildOrder>
     <PaddingByte>0</PaddingByte>
     <!--Screen designer settings-->
-    <AssyBinaryFileLocation>arena.bin</AssyBinaryFileLocation>
+    <AssyBinaryFileLocation>C:\Users\hnema\Documents\GitHub\cbmprogs\DragonHort\start.bin</AssyBinaryFileLocation>
     <AssyExportList />
     <!--End of screen designer settings-->
     <SourceFiles>
@@ -160,6 +160,17 @@
             <Name>sprites.spt</Name>
             <PrgName />
             <FileType>7</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>False</Topmost>
+            <FileOpen>False</FileOpen>
+        </SourceFile>
+        <SourceFile>
+            <Name>start.sdd</Name>
+            <PrgName />
+            <FileType>9</FileType>
             <IncludeInBuild>True</IncludeInBuild>
             <Regions />
             <Breakpoints />
