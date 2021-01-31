@@ -48,9 +48,13 @@ InitGameData
         sta gameBonus+1
         lda #3
         sta gameLives
-        lda #1
+        lda #10
         sta treasureObjects
         sta treasureCnt
+        lda FIRE_PROBABILITY1
+        sta fireProbability
+        lda FIRE_PROBABILITY2
+        sta fireProbability2
         rts
 
 InitSprites
@@ -805,6 +809,7 @@ CreateTreasure
         ldx rndResultValue
         inx
         stx plotXpos
+        stx peekXpos
 
         lda BACKGROUND_MAXYPOS
         sta rndMaxValue        
@@ -812,6 +817,12 @@ CreateTreasure
         ldx rndResultValue
         inx
         stx plotYpos
+        stx peekYpos
+        
+        jsr ScreenPeek
+        lda peekValue
+        cmp #32
+        bne @plotChar
 
         lda bgChar              ; Plot character
         sta plotCharacter
@@ -1237,10 +1248,15 @@ GameNextLevelHandler
         DoWait 255,255
         DoWait 255,255
         DoWait 255,255
- 
+
+        ldx gameLevel           ; increase game level
+        inx
+        stx gameLevel
+
         ldx treasureObjects     ; init treasure objects
         inx
         stx treasureObjects
+        ldx treasureObjects
         stx treasureCnt
 
         jsr AddBonusToScore     ; add bonus to score and reset it
@@ -1249,6 +1265,16 @@ GameNextLevelHandler
         lda #16
         sta gameBonus+1
 
+        lda fireProbability     ; increase dragon fire probability
+        cmp #240
+        bcs @gamestate
+        lda fireProbability
+        adc #10
+        sta fireProbability
+        lda #02
+        sta VIC_SCREEN_BDCOLOR
+
+@gamestate
         lda #GAME_STATE_ARENA   ; set game state 
         sta gameState
         rts

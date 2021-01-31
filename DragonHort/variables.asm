@@ -58,7 +58,7 @@ playerLowerRightXpos byte $00
 playerLowerRightYpos byte $00
 
 ;*** fire variables
-fireProbability byte 10             ; probability dragon fire shot
+fireProbability byte 20             ; probability dragon fire shot
 fireProbability2 byte 100 
 fireMaxCnt byte $04                 ; max fire count starting with $00
 fireCheckCnt byte $00               ; fire check counter

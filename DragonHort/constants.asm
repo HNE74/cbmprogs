@@ -104,6 +104,10 @@ FIRE_ANIM_WAIT_MAX = $0A
 BACKGROUND_MAXXPOS = #34
 BACKGROUND_MAXYPOS = #21 
 
+;*** Fire probability
+FIRE_PROBABILITY1 = #10
+FIRE_PROBABILITY2 = #100
+
 ;*** Strings
 TXT_SCORE text "score:"
           byte $00

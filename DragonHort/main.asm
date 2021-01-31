@@ -92,6 +92,7 @@ dyinganim
         beq     playernobonus
         jsr     AnimatePlayerDying
         jmp     dyinganim
+
 playerdead
         jsr     PlayerDeadHandler
         lda     VIC_SPRITE_SPRITE_COLL
@@ -99,11 +100,13 @@ playerdead
         cmp     #PLAYER_STATE_ALIVE
         beq     GameLoop
         rts
+
 nextlevel
         WaitForRaster $255
         jsr     GameNextLevelHandler
         lda     VIC_SPRITE_SPRITE_COLL
         jmp     startNewLevel
+
 playernobonus
         WaitForRaster $255
         jsr     PlayerNoBonusHandler
