@@ -108,7 +108,25 @@ BACKGROUND_MAXYPOS = #21
 FIRE_PROBABILITY1 = #10
 FIRE_PROBABILITY2 = #100
 
-;*** Strings
+;*** Start screen strings
+TXT_TITLE text "d r a g o n  h o r t"
+          byte $00
+TXT_CREATOR text "by noltisoft 2021"
+            byte $00
+TXT_HIGHSCORE text "highscore:"
+              byte $00
+TXT_INTRO1 text "hail to you, noble adventurer!"
+           byte $00
+TXT_INTRO2 text "descend into the dragon hort"
+           byte $00
+TXT_INTRO3 text "and collect his legendary treasure."
+           byte $00
+TXT_INTRO4 text "beware of the dragon's fiery breath."
+           byte $00
+TXT_INTRO5 text "press fire to start the game."
+           byte $00
+
+;*** Arena screen strings
 TXT_SCORE text "score:"
           byte $00
 TXT_LEVEL text "bonus:"

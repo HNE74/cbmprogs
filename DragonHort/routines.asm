@@ -1326,6 +1326,16 @@ GameNextLevelHandler
 #region Show start screen
 ShowStartScreen
         jsr DrawStartMap
+        PrintString #10,#4,#COLOR_GREEN,TXT_TITLE
+        PrintString #11,#6,#COLOR_YELLOW,TXT_CREATOR
+        PrintString #12,#8,#COLOR_CYAN,TXT_HIGHSCORE
+        PrintBCD 23,8,#COLOR_CYAN,2,gameHighscore
+        PrintString #3,#13,#COLOR_PURPLE,TXT_INTRO1
+        PrintString #3,#15,#COLOR_PURPLE,TXT_INTRO2
+        PrintString #3,#17,#COLOR_PURPLE,TXT_INTRO3
+        PrintString #3,#19,#COLOR_PURPLE,TXT_INTRO4
+        PrintString #6,#22,#COLOR_BLUE,TXT_INTRO5
+
 @waitfire
         lda CIA_PORT_A
         and #JOY_BUTTON
