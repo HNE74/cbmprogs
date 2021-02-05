@@ -1406,13 +1406,20 @@ ShowGameoverScreen
         lda gameScore+2
         cmp gameHighscore+2
         bcc @nohigh
+        beq @test1
+        bcs @high
+@test1
         lda gameScore+1
         cmp gameHighscore+1
         bcc @nohigh
+        beq @test2
+        bcs @high
+@test2
         lda gameScore
         cmp gameHighscore
         bcc @nohigh
-
+        beq @nohigh
+@high
         PrintString #13,#13,#COLOR_YELLOW,TXT_GAMEOVER_MSG2
         lda gameScore
         sta gameHighscore
