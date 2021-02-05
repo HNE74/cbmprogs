@@ -141,3 +141,11 @@ TXT_NEXTLEVEL2 text "you snatched the dragon's treasure!"
             byte $00
 TXT_NEXTLEVEL3 text "earned bonus:"
             byte $00
+
+;*** Game over screen strings
+TXT_GAMEOVER text "game over!"
+             byte $00
+TXT_GAMEOVER_MSG1 text "sorry, no new highscore."
+                  byte $00
+TXT_GAMEOVER_MSG2 text "a new highscore!"
+                  byte $00

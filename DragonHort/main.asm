@@ -24,6 +24,9 @@ incbin "arena.bin"
 *=START_MAP_MEMORY
 incbin "start.bin"
 
+*=GAMEOVER_MAP_MEMORY
+incbin "gameover.bin"
+
 incasm "mem_c64.asm"
 incasm "mem_vic2.asm"
 incasm "constants.asm"
@@ -31,15 +34,18 @@ incasm "variables.asm"
 incasm "macros.asm"
 
 *=PROGRAM_START
-        jsr     InitProgram
-startScreen
+        jsr     initProgram
+
+StartScreen
         jsr     ClearScreen
         jsr     ShowStartScreen
-startNewGame
-        jsr     InitGame
-startNewLevel
-        jsr     InitLevel
-        jsr     GameLoop
+
+StartNewGame
+        jsr     initGame
+
+StartNewLevel
+        jsr     initLevel
+        jmp     gameLoop
         rts
 
 InitProgram
@@ -50,10 +56,10 @@ InitProgram
         jsr     InitCharacterSet
         rts
 
-InitGame
+initGame
         jsr     InitGameData
         rts
-InitLevel
+initLevel
         jsr     ClearScreen
         jsr     DrawArenaMap
         jsr     CreateArenaObjects
@@ -61,7 +67,7 @@ InitLevel
         jsr     InitSprites
         rts
 
-GameLoop
+gameLoop
         WaitForRaster $255
         jsr     SubBonus
         jsr     PrintGameData
@@ -69,7 +75,7 @@ GameLoop
         jsr     CheckPlayerSpriteCollision
         lda     playerState
         cmp     #PLAYER_STATE_NEXTLEVEL
-        beq     nextlevel
+        beq     nextLevel
         jsr     CheckPlayerBackgroundCollisions
         lda     playerState
         cmp     #PLAYER_STATE_DYING
@@ -85,38 +91,42 @@ GameLoop
         jsr     LaunchDragonFire
         jsr     MoveDragonFire
         jsr     ResetDragonFire
-        jmp     GameLoop
+        jmp     gameLoop
 playerdying
         jsr     InitPlayerDying
 dyinganim
         WaitForRaster $255
         lda     playerState
         cmp     #PLAYER_STATE_DEAD
-        beq     playerdead
+        beq     playerDead
         lda     playerState
         cmp     #PLAYER_STATE_NOBONUS
-        beq     playernobonus
+        beq     playerNobonus
         jsr     AnimatePlayerDying
         jmp     dyinganim
 
-playerdead
+playerDead
         jsr     PlayerDeadHandler
         lda     VIC_SPRITE_SPRITE_COLL
         lda     playerState
         cmp     #PLAYER_STATE_ALIVE
-        beq     GameLoop
-        rts
+        beq     gameLoop
+        jmp     gameOver
 
-nextlevel
+nextLevel
         WaitForRaster $255
         jsr     GameNextLevelHandler
         lda     VIC_SPRITE_SPRITE_COLL
-        jmp     startNewLevel
+        jmp     StartNewLevel
 
-playernobonus
+playerNobonus
         WaitForRaster $255
         jsr     PlayerNoBonusHandler
-        rts
+        jmp     gameOver
+
+gameOver
+        jsr     ShowGameoverScreen
+        jmp     startScreen
 
 
 ;*** assembly routines used by main.asm

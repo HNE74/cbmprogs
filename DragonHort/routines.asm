@@ -43,10 +43,13 @@ InitGameData
         lda #PLAYER_STATE_ALIVE
         sta playerState
         lda #00
+        sta gameScore
+        sta gameScore+1
+        sta gameScore+2
         sta gameBonus
         lda #16
         sta gameBonus+1
-        lda #3
+        lda #1
         sta gameLives
         lda #10
         sta treasureObjects
@@ -429,6 +432,9 @@ PlayerDeadHandler
         rts
 
 PlayerNoBonusHandler
+        lda #%00000000
+        sta VIC_SPRITE_ENABLE
+
         jsr ResetAllDragonFire
         PrintString #10,#10,#COLOR_CYAN,TXT_NOBONUS
         DoWait 255,255
@@ -436,12 +442,12 @@ PlayerNoBonusHandler
         DoWait 255,255
         DoWait 255,255
         DoWait 255,255
+
         lda #PLAYER_GAME_OVER
         sta playerState
         lda #GAME_STATE_OVER
         sta gameState 
         rts
-
 #endregion
 
 #region Move and animate dragon
@@ -826,7 +832,51 @@ DrawArenaMap
         PrintString #2,#23,#COLOR_BLUE,TXT_SCORE
         PrintString #16,#23,#COLOR_YELLOW,TXT_LEVEL
         PrintString #28,#23,#COLOR_PURPLE,TXT_KNIGHTS
-        rts       
+        rts 
+
+DrawGameoverMap
+        ldx #0
+@gameoverLoop1
+        lda GAMEOVER_MAP_MEM_BLOCK1,x
+        tay
+        sta VIC_SCREENRAM_BLOCK1,x
+        lda #COLOR_RED
+        sta VIC_COLORRAM_BLOCK1,x
+        inx
+        cpx #255
+        bne @gameoverLoop1
+        ldx #0
+@gameoverLoop2
+        lda GAMEOVER_MAP_MEM_BLOCK2,x
+        tay
+        sta VIC_SCREENRAM_BLOCK2,x
+        lda #COLOR_RED
+        sta VIC_COLORRAM_BLOCK2,x
+        inx
+        cpx #255
+        bne @gameoverLoop2
+        ldx #0
+@gameoverLoop3
+        lda GAMEOVER_MAP_MEM_BLOCK3,x
+        tay
+        sta VIC_SCREENRAM_BLOCK3,x
+        lda #COLOR_RED
+        sta VIC_COLORRAM_BLOCK3,x
+        inx
+        cpx #255
+        bne @gameoverLoop3
+        ldx #0
+@gameoverLoop4
+        lda GAMEOVER_MAP_MEM_BLOCK4,x
+        tay
+        sta VIC_SCREENRAM_BLOCK4,x
+        lda #COLOR_RED
+        sta VIC_COLORRAM_BLOCK4,x
+        inx
+        cpx #235
+        bne @gameoverLoop4
+        ldx #0
+        rts      
 #endregion
 
 #region Create treasures and obstacles
@@ -1335,6 +1385,44 @@ ShowStartScreen
         PrintString #3,#17,#COLOR_PURPLE,TXT_INTRO3
         PrintString #3,#19,#COLOR_PURPLE,TXT_INTRO4
         PrintString #6,#22,#COLOR_BLUE,TXT_INTRO5
+
+@waitfire
+        lda CIA_PORT_A
+        and #JOY_BUTTON
+        bne @waitfire
+        rts
+#endregion
+
+#region Game over handling
+ShowGameoverScreen
+        lda #%00000000
+        sta VIC_SPRITE_ENABLE
+
+        jsr DrawGameoverMap
+        PrintString #16,#9,#COLOR_GREEN,TXT_GAMEOVER
+        PrintString #14,#11,#COLOR_CYAN,TXT_SCORE
+        PrintBCD 21,11,#COLOR_CYAN,2,gameScore
+
+        lda gameScore+2
+        cmp gameHighscore+2
+        bcc @nohigh
+        lda gameScore+1
+        cmp gameHighscore+1
+        bcc @nohigh
+        lda gameScore
+        cmp gameHighscore
+        bcc @nohigh
+
+        PrintString #13,#13,#COLOR_YELLOW,TXT_GAMEOVER_MSG2
+        lda gameScore
+        sta gameHighscore
+        lda gameScore+1
+        sta gameHighscore+1
+        lda gameScore+2
+        sta gameHighscore+2
+        jmp @waitfire
+@nohigh 
+        PrintString #8,#13,#COLOR_YELLOW,TXT_GAMEOVER_MSG1
 
 @waitfire
         lda CIA_PORT_A
