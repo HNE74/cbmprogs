@@ -104,3 +104,7 @@ gameBonusSubCnt byte $1               ; counter for slowing down bonus deduction
 gameLives byte $01                    ; game lives
 gameLivesSub byte $01                 ; game lives substraction in bcd format starting with low value
 gameState byte $00                    ; game state (0 intro, 1 arena, 2 game over)
+
+;*** sound variables
+ch1FreqLow byte $00                   ; channel 1 frequency low byte
+ch1FreqHigh byte $00                  ; channel 1 frequency high byte

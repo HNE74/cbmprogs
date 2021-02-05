@@ -49,7 +49,7 @@ InitGameData
         sta gameBonus
         lda #16
         sta gameBonus+1
-        lda #1
+        lda #3
         sta gameLives
         lda #10
         sta treasureObjects
@@ -377,9 +377,19 @@ InitPlayerDying
         lda #PLAYER_DYING_START_PAGE
         sta playerSpritePage
         sta VIC_SPRITE0_PTR
+        lda #50
+        sta ch1FreqLow
+        lda #50
+        sta ch1FreqHigh
         rts
 
 AnimatePlayerDying
+        jsr PlayPlayerDiesSound
+        clc        
+        lda ch1FreqHigh
+        sbc #10
+        sta ch1FreqHigh
+
         ldx #PLAYER_DYING_ANIM_WAIT_MAX 
         stx playerAnimWaitCnt
 @wait
@@ -1362,6 +1372,24 @@ PlayDragonfireSound
         lda #WAVE_RAUSCHEN
         sta SID_CHANNEL1_VCREG
         rts
+
+PlayPlayerDiesSound
+        lda #20
+        sta SID_SIGVOL
+        lda ch1FreqLow
+        sta SID_CHANNEL1_FRELO
+        lda ch1FreqHigh
+        sta SID_CHANNEL1_FREHI
+        lda #50
+        sta SID_CHANNEL1_ATDCY
+        lda #10
+        sta SID_SURELI
+        lda #0
+        sta SID_CHANNEL1_VCREG
+        lda #WAVE_SAEGEZAHN
+        sta SID_CHANNEL1_VCREG
+        rts
+
 #endregion
 
 #region Next level handling
