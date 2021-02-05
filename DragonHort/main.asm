@@ -29,6 +29,7 @@ incbin "gameover.bin"
 
 incasm "mem_c64.asm"
 incasm "mem_vic2.asm"
+incasm "mem_sid.asm"
 incasm "constants.asm"
 incasm "variables.asm"
 incasm "macros.asm"

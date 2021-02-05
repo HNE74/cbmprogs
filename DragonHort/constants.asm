@@ -108,6 +108,12 @@ BACKGROUND_MAXYPOS = #21
 FIRE_PROBABILITY1 = #10
 FIRE_PROBABILITY2 = #100
 
+;*** Waveforms
+WAVE_DREIECK   = $11
+WAVE_SAEGEZAHN = $21
+WAVE_RECHTECK  = $41
+WAVE_RAUSCHEN  = $81
+
 ;*** Start screen strings
 TXT_TITLE text "d r a g o n  h o r t"
           byte $00

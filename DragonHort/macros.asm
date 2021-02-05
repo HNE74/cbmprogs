@@ -119,5 +119,6 @@ defm TreasureCheck
         ldx treasureCnt
         dex
         stx treasureCnt
+        jsr PlayTreasureSound
 @notreasure    
 endm

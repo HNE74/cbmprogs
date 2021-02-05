@@ -49,6 +49,7 @@
         <FileName>mem_vic2.asm</FileName>
         <FileName>routines.asm</FileName>
         <FileName>variables.asm</FileName>
+        <FileName>mem_sid.asm</FileName>
     </BuildList>
     <DetermineBuildOrder>0</DetermineBuildOrder>
     <PaddingByte>0</PaddingByte>
@@ -136,6 +137,17 @@
         </SourceFile>
         <SourceFile>
             <Name>mem_own.asm</Name>
+            <PrgName />
+            <FileType>2</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>False</Topmost>
+            <FileOpen>True</FileOpen>
+        </SourceFile>
+        <SourceFile>
+            <Name>mem_sid.asm</Name>
             <PrgName />
             <FileType>2</FileType>
             <IncludeInBuild>True</IncludeInBuild>

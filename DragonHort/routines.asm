@@ -569,6 +569,7 @@ LaunchDragonFire
         cmp #$01
         beq @checknext 
         jsr InitDragonFire
+        jsr PlayDragonfireSound
         lda #FIRE_LAUNCHED_FLAG
         sta fireLaunched
         jmp @maxcnt
@@ -1323,6 +1324,43 @@ CheckActivateExit
         ora #%10000000
         sta VIC_SPRITE_ENABLE
 @noexit
+        rts
+#endregion
+
+#region Sound handling
+#region Play pick up sound
+PlayTreasureSound
+        lda #25
+        sta SID_SIGVOL
+        lda #0
+        sta SID_CHANNEL1_FRELO
+        lda #40
+        sta SID_CHANNEL1_FREHI
+        lda #22
+        sta SID_CHANNEL1_ATDCY
+        lda #7
+        sta SID_SURELI
+        lda #0
+        sta SID_CHANNEL1_VCREG
+        lda #WAVE_DREIECK
+        sta SID_CHANNEL1_VCREG
+        rts
+
+PlayDragonfireSound
+        lda #25
+        sta SID_SIGVOL
+        lda #0
+        sta SID_CHANNEL1_FRELO
+        lda #40
+        sta SID_CHANNEL1_FREHI
+        lda #120
+        sta SID_CHANNEL1_ATDCY
+        lda #8
+        sta SID_SURELI
+        lda #0
+        sta SID_CHANNEL1_VCREG
+        lda #WAVE_RAUSCHEN
+        sta SID_CHANNEL1_VCREG
         rts
 #endregion
 
