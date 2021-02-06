@@ -114,6 +114,32 @@ WAVE_SAEGEZAHN = $21
 WAVE_RECHTECK  = $41
 WAVE_RAUSCHEN  = $81
 
+;*** noten 3rd octave
+NOTE_C_H = #8 
+NOTE_C_L = #180
+NOTE_CQ_H = #9
+NOTE_CQ_L = #56
+NOTE_D_H = #9 
+NOTE_D_L = #196
+NOTE_DQ_H = #10
+NOTE_DQ_L = #89
+NOTE_E_H = #10
+NOTE_E_L = #247
+NOTE_F_H = #11
+NOTE_F_L = #158
+NOTE_FQ_H = #12
+NOTE_FQ_L = #78
+NOTE_G_H = #13
+NOTE_G_L = #10
+NOTE_GQ_H = #13
+NOTE_GQ_L = #208
+NOTE_A_H = #14
+NOTE_A_L = #162
+NOTE_AQ_H = #15
+NOTE_AQ_L = #129
+NOTE_H_H = 16
+NOTE_H_L = 109
+
 ;*** Start screen strings
 TXT_TITLE text "d r a g o n  h o r t"
           byte $00

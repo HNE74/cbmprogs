@@ -1340,7 +1340,6 @@ CheckActivateExit
 #endregion
 
 #region Sound handling
-#region Play pick up sound
 PlayTreasureSound
         lda #25
         sta SID_SIGVOL
@@ -1392,6 +1391,41 @@ PlayPlayerDiesSound
         sta SID_CHANNEL1_VCREG
         rts
 
+PlayTitleSong
+        ldx songCnt
+        lda songLow,x
+        sta noteLow
+        lda songHigh,x
+        sta noteHigh
+        jsr PlayNote
+        DoWait 255,40
+        ldx songCnt
+        inx
+        stx songCnt
+        ldx songCnt
+        cpx songLength
+        bne @noreset
+        ldx #00
+        stx songCnt
+@noreset
+        rts
+
+PlayNote
+        lda #25
+        sta SID_SIGVOL
+        lda noteLow
+        sta SID_CHANNEL1_FRELO
+        lda noteHigh
+        sta SID_CHANNEL1_FREHI
+        lda #5
+        sta SID_CHANNEL1_ATDCY
+        lda #10
+        sta SID_SURELI
+        lda #0
+        sta SID_CHANNEL1_VCREG
+        lda #WAVE_DREIECK
+        sta SID_CHANNEL1_VCREG
+        rts
 #endregion
 
 #region Next level handling
@@ -1455,6 +1489,7 @@ ShowStartScreen
         PrintString #6,#22,#COLOR_BLUE,TXT_INTRO5
 
 @waitfire
+        jsr PlayTitleSong
         lda CIA_PORT_A
         and #JOY_BUTTON
         bne @waitfire

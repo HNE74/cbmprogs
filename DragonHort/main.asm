@@ -39,6 +39,8 @@ incasm "macros.asm"
 
 StartScreen
         jsr     ClearScreen
+        lda     #00
+        sta     songCnt
         jsr     ShowStartScreen
 
 StartNewGame
