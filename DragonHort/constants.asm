@@ -155,3 +155,5 @@ TXT_GAMEOVER_MSG1 text "sorry, no new highscore."
                   byte $00
 TXT_GAMEOVER_MSG2 text "a new highscore!"
                   byte $00
+TXT_GAMEOVER_MSG3 byte "press fire to continue."
+                  byte $00

@@ -1020,6 +1020,8 @@ AddBonusToScore
         lda gameScore+1
         adc gameBonus+1
         sta gameScore+1
+        lda #0
+        adc gameScore+2
         cld
         rts
 
@@ -1465,9 +1467,10 @@ ShowGameoverScreen
         sta VIC_SPRITE_ENABLE
 
         jsr DrawGameoverMap
-        PrintString #16,#9,#COLOR_GREEN,TXT_GAMEOVER
-        PrintString #14,#11,#COLOR_CYAN,TXT_SCORE
-        PrintBCD 21,11,#COLOR_CYAN,2,gameScore
+        PrintString #15,#9,#COLOR_GREEN,TXT_GAMEOVER
+        PrintString #13,#11,#COLOR_CYAN,TXT_SCORE
+        PrintBCD 20,11,#COLOR_CYAN,2,gameScore
+        PrintString #9,#17,#COLOR_BLUE,TXT_GAMEOVER_MSG3
 
         lda gameScore+2
         cmp gameHighscore+2
@@ -1486,7 +1489,7 @@ ShowGameoverScreen
         bcc @nohigh
         beq @nohigh
 @high
-        PrintString #13,#13,#COLOR_YELLOW,TXT_GAMEOVER_MSG2
+        PrintString #12,#13,#COLOR_YELLOW,TXT_GAMEOVER_MSG2
         lda gameScore
         sta gameHighscore
         lda gameScore+1
