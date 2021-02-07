@@ -737,8 +737,8 @@ MoveDragonFireVertical
         jmp @endvert
 @moveup
         ldx fireYpos,y          ; move fire up
-        dex
         dex 
+        dex
         txa
         sta fireYpos,y
         cmp DRAGON_MINYPOS
@@ -781,8 +781,8 @@ MoveDragonFireLeft
         dex
         dex
         lda fireType,y
-        cmp #FIRE_TYPE_FOLLOW
-        beq @moveleft
+        cmp #FIRE_TYPE_NORMAL
+        bne @moveleft
         dex
 @moveleft
         txa
@@ -978,6 +978,18 @@ DrawArenaMap
         PrintString #2,#23,#COLOR_BLUE,TXT_SCORE
         PrintString #16,#23,#COLOR_YELLOW,TXT_LEVEL
         PrintString #28,#23,#COLOR_PURPLE,TXT_KNIGHTS
+
+        ldy #00
+        ldx gameLevel
+@levels
+        iny
+        dex
+        lda #$2A
+        sta VIC_SCREENRAM_BLOCK1,y
+        lda #COLOR_LIGHT_GREEN
+        sta VIC_COLORRAM_BLOCK1,y
+        cpx #00
+        bne @levels 
         rts 
 
 DrawGameoverMap
@@ -1549,8 +1561,8 @@ GameNextLevelHandler
         ; print level completed message
         PrintString #12,#9,#COLOR_LIGHT_GREEN,TXT_NEXTLEVEL1
         PrintString #3,#11,#COLOR_LIGHT_GREEN,TXT_NEXTLEVEL2
-        PrintString #11,#13,#COLOR_LIGHT_GREEN,TXT_NEXTLEVEL3
-        PrintBCD 25,13,#COLOR_LIGHT_GREEN,1,gameBonus
+        PrintString #11,#13,#COLOR_BLUE,TXT_NEXTLEVEL3
+        PrintBCD 25,13,#COLOR_BLUE,1,gameBonus
 
         jsr ResetAllDragonFire  ; reset sprites
         lda #%00000000

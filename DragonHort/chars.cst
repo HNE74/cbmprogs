@@ -556,14 +556,14 @@
   <character>
     <charcode>42</charcode>
     <chardata>
-      <data>0</data>
-      <data>102</data>
-      <data>60</data>
-      <data>255</data>
-      <data>60</data>
-      <data>102</data>
-      <data>0</data>
-      <data>0</data>
+      <data>4</data>
+      <data>28</data>
+      <data>124</data>
+      <data>252</data>
+      <data>204</data>
+      <data>12</data>
+      <data>12</data>
+      <data>12</data>
     </chardata>
   </character>
   <character>
@@ -1141,14 +1141,14 @@
   <character>
     <charcode>87</charcode>
     <chardata>
-      <data>0</data>
+      <data>12</data>
       <data>60</data>
-      <data>126</data>
-      <data>102</data>
-      <data>102</data>
-      <data>126</data>
-      <data>60</data>
-      <data>0</data>
+      <data>252</data>
+      <data>252</data>
+      <data>204</data>
+      <data>12</data>
+      <data>12</data>
+      <data>12</data>
     </chardata>
   </character>
   <character>
