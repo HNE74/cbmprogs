@@ -38,9 +38,7 @@ incasm "macros.asm"
         jsr     initProgram
 
 StartScreen
-        jsr     ClearScreen
-        lda     #00
-        sta     songCnt
+        jsr     InitStartScreen
         jsr     ShowStartScreen
 
 StartNewGame
@@ -128,6 +126,7 @@ playerNobonus
         jmp     gameOver
 
 gameOver
+        jsr     InitGameOverScreen
         jsr     ShowGameoverScreen
         jmp     startScreen
 

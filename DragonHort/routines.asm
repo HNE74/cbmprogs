@@ -442,18 +442,24 @@ PlayerDeadHandler
         rts
 
 PlayerNoBonusHandler
-        lda #%00000000
+        lda #%00000000          ; adjust screen
         sta VIC_SPRITE_ENABLE
 
         jsr ResetAllDragonFire
         PrintString #10,#10,#COLOR_CYAN,TXT_NOBONUS
-        DoWait 255,255
-        DoWait 255,255
-        DoWait 255,255
-        DoWait 255,255
-        DoWait 255,255
 
-        lda #PLAYER_GAME_OVER
+        lda #07                 ; play song
+        sta songLength
+        lda #00
+        sta songCnt
+playsong3
+        PlaySong noBonusSongLow,noBonusSongHigh,255,80
+        lda songCnt
+        cmp songLength
+        bne playsong3
+        DoWait 255,200
+
+        lda #PLAYER_GAME_OVER   ; adjust game state
         sta playerState
         lda #GAME_STATE_OVER
         sta gameState 
@@ -1391,25 +1397,6 @@ PlayPlayerDiesSound
         sta SID_CHANNEL1_VCREG
         rts
 
-PlayTitleSong
-        ldx songCnt
-        lda songLow,x
-        sta noteLow
-        lda songHigh,x
-        sta noteHigh
-        jsr PlayNote
-        DoWait 255,40
-        ldx songCnt
-        inx
-        stx songCnt
-        ldx songCnt
-        cpx songLength
-        bne @noreset
-        ldx #00
-        stx songCnt
-@noreset
-        rts
-
 PlayNote
         lda #25
         sta SID_SIGVOL
@@ -1440,11 +1427,15 @@ GameNextLevelHandler
         lda #%00000000
         sta VIC_SPRITE_ENABLE
 
-        DoWait 255,255          ; wait a while
-        DoWait 255,255
-        DoWait 255,255
-        DoWait 255,255
-        DoWait 255,255
+        lda #16                 ; play song
+        sta songLength
+        lda #00
+        sta songCnt
+playsong
+        PlaySong nextLevelSongLow,nextLevelSongHigh,255,40
+        lda songCnt
+        cmp songLength
+        bne playsong
 
         ldx gameLevel           ; increase game level
         inx
@@ -1476,7 +1467,16 @@ GameNextLevelHandler
 #endregion
 
 #region Show start screen
+InitStartScreen
+        lda     #00
+        sta     songCnt
+        sta     songPlayed
+        lda     #64
+        sta     songLength
+        rts
+
 ShowStartScreen
+        jsr ClearScreen
         jsr DrawStartMap
         PrintString #10,#4,#COLOR_GREEN,TXT_TITLE
         PrintString #11,#6,#COLOR_YELLOW,TXT_CREATOR
@@ -1488,25 +1488,31 @@ ShowStartScreen
         PrintString #3,#19,#COLOR_PURPLE,TXT_INTRO4
         PrintString #6,#22,#COLOR_BLUE,TXT_INTRO5
 
-@waitfire
-        jsr PlayTitleSong
+waitfire2
+        PlaySong titleSongLow,titleSongHigh,songLength,255,40
         lda CIA_PORT_A
         and #JOY_BUTTON
-        bne @waitfire
+        bne waitfire2
         rts
 #endregion
 
 #region Game over handling
-ShowGameoverScreen
+InitGameOverScreen
         lda #%00000000
         sta VIC_SPRITE_ENABLE
 
+        lda #00
+        sta songCnt
+        lda #8
+        sta songLength
+        rts
+
+ShowGameoverScreen
         jsr DrawGameoverMap
         PrintString #15,#9,#COLOR_GREEN,TXT_GAMEOVER
         PrintString #13,#11,#COLOR_CYAN,TXT_SCORE
         PrintBCD 20,11,#COLOR_CYAN,2,gameScore
-        PrintString #9,#17,#COLOR_BLUE,TXT_GAMEOVER_MSG3
-
+ 
         lda gameScore+2
         cmp gameHighscore+2
         bcc @nohigh
@@ -1531,13 +1537,20 @@ ShowGameoverScreen
         sta gameHighscore+1
         lda gameScore+2
         sta gameHighscore+2
-        jmp @waitfire
+        jmp waitfire
 @nohigh 
         PrintString #8,#13,#COLOR_YELLOW,TXT_GAMEOVER_MSG1
 
-@waitfire
+waitfire
+        lda songPlayed
+        cmp #01
+        beq nosong
+        PlaySong gameOverSongLow,gameOverSongHigh,songLength,255,100
+        jmp waitfire
+nosong
+        PrintString #9,#17,#COLOR_BLUE,TXT_GAMEOVER_MSG3
         lda CIA_PORT_A
         and #JOY_BUTTON
-        bne @waitfire
+        bne waitfire
         rts
 #endregion

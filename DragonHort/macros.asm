@@ -120,5 +120,40 @@ defm TreasureCheck
         dex
         stx treasureCnt
         jsr PlayTreasureSound
-@notreasure    
+@notreasure
+endm
+
+defm PlaySong    
+        ldx songCnt     ; play note
+        lda /1,x
+        sta noteLow
+        lda /2,x
+        sta noteHigh
+        jsr PlayNote
+        ldy #0          ; wait
+@wait0
+        ldx #0
+@wait1  nop
+        nop
+        nop
+        nop
+        inx
+        cpx #/4
+        bne @wait1
+        iny
+        cpy #/5
+        bne @wait0
+
+        ldx songCnt     ; next note
+        inx
+        stx songCnt
+        ldx songCnt
+        cpx /3
+        bne @noreset
+        ldx #00
+        stx songCnt
+        ldx songPlayed
+        inx
+        stx songPlayed
+@noreset
 endm

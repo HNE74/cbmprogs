@@ -108,25 +108,8 @@ gameState byte $00                    ; game state (0 intro, 1 arena, 2 game ove
 ;*** sound variables
 ch1FreqLow byte $00                   ; channel 1 frequency low byte
 ch1FreqHigh byte $00                  ; channel 1 frequency high byte
-
 noteLow byte $00                      ; low frequency of tune to play
 noteHigh byte $00                     ; high frequency of tune to play
-
-songLength byte 64                    ; title song
-songCnt byte $00
-songLow byte NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L
-        byte NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L
-        byte NOTE_C_L, NOTE_D_L, NOTE_A_L, NOTE_D_L, NOTE_F_L, NOTE_A_L, NOTE_D_L, NOTE_F_L
-        byte NOTE_C_L, NOTE_D_L, NOTE_A_L, NOTE_D_L, NOTE_F_L, NOTE_A_L, NOTE_D_L, NOTE_F_L
-        byte NOTE_D_L, NOTE_A_L, NOTE_A_L, NOTE_D_L, NOTE_A_L, NOTE_H_L, NOTE_A_L, NOTE_A_L
-        byte NOTE_D_L, NOTE_A_L, NOTE_A_L, NOTE_D_L, NOTE_A_L, NOTE_H_L, NOTE_A_L, NOTE_A_L
-        byte NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L
-        byte NOTE_C_L, NOTE_D_L, NOTE_A_L, NOTE_D_L, NOTE_F_L, NOTE_A_L, NOTE_D_L, NOTE_F_L
-songHigh byte NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H
-         byte NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H
-         byte NOTE_C_H, NOTE_D_H, NOTE_A_H, NOTE_D_H, NOTE_F_H, NOTE_A_H, NOTE_D_H, NOTE_F_H
-         byte NOTE_C_H, NOTE_D_H, NOTE_A_H, NOTE_D_H, NOTE_F_H, NOTE_A_H, NOTE_D_H, NOTE_F_H
-         byte NOTE_D_H, NOTE_A_H, NOTE_A_H, NOTE_D_H, NOTE_A_H, NOTE_H_H, NOTE_A_H, NOTE_A_H
-         byte NOTE_D_H, NOTE_A_H, NOTE_A_H, NOTE_D_H, NOTE_A_H, NOTE_H_H, NOTE_A_H, NOTE_A_H
-         byte NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H
-         byte NOTE_C_H, NOTE_D_H, NOTE_A_H, NOTE_D_H, NOTE_F_H, NOTE_A_H, NOTE_D_H, NOTE_F_H
+songLength byte $00                   ; length of song note table
+songCnt byte $00                      ; current note played
+songPlayed byte $00                   ; flag if song has been played

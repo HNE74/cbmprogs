@@ -151,7 +151,7 @@ TXT_INTRO1 text "hail to you, noble adventurer!"
            byte $00
 TXT_INTRO2 text "descend into the dragon hort"
            byte $00
-TXT_INTRO3 text "and collect his legendary treasure."
+TXT_INTRO3 text "and collect the legendary treasure."
            byte $00
 TXT_INTRO4 text "beware of the dragon's fiery breath."
            byte $00
@@ -183,3 +183,37 @@ TXT_GAMEOVER_MSG2 text "a new highscore!"
                   byte $00
 TXT_GAMEOVER_MSG3 byte "press fire to continue."
                   byte $00
+
+;*** Title song
+titleSongLow byte NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L
+             byte NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L
+             byte NOTE_C_L, NOTE_D_L, NOTE_A_L, NOTE_D_L, NOTE_F_L, NOTE_A_L, NOTE_D_L, NOTE_F_L
+             byte NOTE_C_L, NOTE_D_L, NOTE_A_L, NOTE_D_L, NOTE_F_L, NOTE_A_L, NOTE_D_L, NOTE_F_L
+             byte NOTE_D_L, NOTE_A_L, NOTE_A_L, NOTE_D_L, NOTE_A_L, NOTE_H_L, NOTE_A_L, NOTE_A_L
+             byte NOTE_D_L, NOTE_A_L, NOTE_A_L, NOTE_D_L, NOTE_A_L, NOTE_H_L, NOTE_A_L, NOTE_A_L
+             byte NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L
+             byte NOTE_C_L, NOTE_D_L, NOTE_A_L, NOTE_D_L, NOTE_F_L, NOTE_A_L, NOTE_D_L, NOTE_F_L
+titleSongHigh byte NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H
+              byte NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H
+              byte NOTE_C_H, NOTE_D_H, NOTE_A_H, NOTE_D_H, NOTE_F_H, NOTE_A_H, NOTE_D_H, NOTE_F_H
+              byte NOTE_C_H, NOTE_D_H, NOTE_A_H, NOTE_D_H, NOTE_F_H, NOTE_A_H, NOTE_D_H, NOTE_F_H
+              byte NOTE_D_H, NOTE_A_H, NOTE_A_H, NOTE_D_H, NOTE_A_H, NOTE_H_H, NOTE_A_H, NOTE_A_H
+              byte NOTE_D_H, NOTE_A_H, NOTE_A_H, NOTE_D_H, NOTE_A_H, NOTE_H_H, NOTE_A_H, NOTE_A_H
+              byte NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H
+              byte NOTE_C_H, NOTE_D_H, NOTE_A_H, NOTE_D_H, NOTE_F_H, NOTE_A_H, NOTE_D_H, NOTE_F_H
+
+;*** Game over song
+gameOverSongLow byte NOTE_D_L,NOTE_D_L,NOTE_D_L,NOTE_E_L,NOTE_DQ_L,NOTE_DQ_L,NOTE_CQ_L,NOTE_D_L
+gameOverSongHigh byte NOTE_D_H,NOTE_D_H,NOTE_D_H,NOTE_E_H,NOTE_DQ_H,NOTE_DQ_H,NOTE_CQ_H,NOTE_D_H
+
+;*** Next level song
+nextLevelSongLow byte NOTE_C_L,NOTE_E_L,NOTE_F_L,NOTE_G_L,NOTE_C_L,NOTE_E_L,NOTE_F_L,NOTE_G_L
+                 byte NOTE_C_L,NOTE_E_L,NOTE_F_L,NOTE_G_L,NOTE_E_L,NOTE_C_L,NOTE_E_L,NOTE_D_L
+nextLevelSongHigh byte NOTE_C_H,NOTE_E_H,NOTE_F_H,NOTE_G_H,NOTE_C_H,NOTE_E_H,NOTE_F_H,NOTE_G_H
+                  byte NOTE_C_H,NOTE_E_H,NOTE_F_H,NOTE_G_H,NOTE_E_H,NOTE_C_H,NOTE_E_H,NOTE_D_H
+
+;*** No bonus song
+noBonusSongLow byte NOTE_H_L, NOTE_A_L, NOTE_G_L, NOTE_F_L, NOTE_E_L, NOTE_D_L, NOTE_C_L
+noBonusSongHigh byte NOTE_H_H, NOTE_A_H, NOTE_G_H, NOTE_F_H, NOTE_E_H, NOTE_D_H, NOTE_C_H
+
+
