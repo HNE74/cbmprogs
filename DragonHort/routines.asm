@@ -639,12 +639,20 @@ InitDragonFire
 MoveDragonFire
         ldy #0
 @firemove
-        sty fireMoveCnt
+        sty fireMoveCnt         ; set fire to be moved
+        
+        ldy fireMoveCnt         ; check all fires considered
         cpy fireMaxCnt
         beq @maxcnt
-        jsr MoveDragonFireLeft
 
-        ldy fireMoveCnt
+        ldy fireMoveCnt         ; check fire active
+        lda fireActive,y        
+        cmp #FIRE_LAUNCHED_FLAG
+        bne @nextfire
+
+        jsr MoveDragonFireLeft  ; horizontal move
+
+        ldy fireMoveCnt         ; delay animation
         lda fireAnimWaitCnt,y
         tax
         inx
@@ -655,9 +663,9 @@ MoveDragonFire
         beq @fireanimate
         jmp @nextfire
 @fireanimate
-        jsr AnimateDragonFire
+        jsr AnimateDragonFire   ; fire animation
 @nextfire
-        ldy fireMoveCnt
+        ldy fireMoveCnt         ; next fire to move
         iny
         jmp @firemove
 @maxcnt
