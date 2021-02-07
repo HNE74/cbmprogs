@@ -622,8 +622,14 @@ InitDragonFire
         lda fireType,y
         cmp #FIRE_TYPE_NORMAL         
         beq @normalfire
+        cmp #FIRE_TYPE_FOLLOW
+        beq @followfire
         lda #COLOR_LIGHT_RED
         sta fireColor,y
+        jmp @firesprite
+@followfire
+        lda #COLOR_LIGHT_GREEN
+        sta fireColor,Y
         jmp @firesprite
 @normalfire
         lda #COLOR_YELLOW
@@ -651,17 +657,26 @@ InitDragonFire
         rts
 
 DecideDragonFireType
-        lda gameLevel           ; bumpy fire starts level 3   
+        lda gameLevel             
+        cmp #05
+        bcs @randomtype2          ; follwing fire starts level 5
         cmp #03
-        bcs @randomtype
+        bcs @randomtype1          ; bumpy fire starts level 3 
         lda #00
         sta fireNewType
         jmp @decided
-@randomtype
+@randomtype1
         RndTimer
         cmp #03
-        bcs DecideDragonFireType
+        bcs @randomtype1
         sta fireNewType
+        rts
+@randomtype2
+        RndTimer
+        cmp #04
+        bcs @randomtype2
+        sta fireNewType 
+        rts
 @decided
         rts
 
@@ -708,6 +723,8 @@ MoveDragonFireVertical
         beq @endvert
         cmp #FIRE_TYPE_MOVEUP
         beq @moveup
+        cmp #FIRE_TYPE_FOLLOW
+        beq @follow
         ldx fireYpos,y          ; move fire down
         inx
         inx 
@@ -727,7 +744,31 @@ MoveDragonFireVertical
         cmp DRAGON_MINYPOS
         bcs @endvert
         lda #FIRE_TYPE_MOVEDOWN
-        sta fireType,y 
+        sta fireType,y
+@follow                         ; fire follows 
+        ldx fireFollowCnt
+        inx
+        txa
+        sta fireFollowCnt       ; slow follow fire down
+        and #%00000001
+        cmp #01
+        beq @endvert
+
+        lda fireYpos,y          ; check follow diretion 
+        cmp playerYpos
+        beq @endvert
+        bcc @followdown
+
+        ldx fireYpos,y          ; follow up
+        dex
+        txa
+        sta fireYpos,y
+        jmp @endvert
+@followdown
+        ldx fireYpos,y          ; follow down
+        inx
+        txa
+        sta fireYpos,y
 @endvert
         ldy fireMoveCnt
         VectorCopyIndexedData fireYpos, #$D0, fireSpriteYpos, fireMoveCnt
@@ -736,9 +777,14 @@ MoveDragonFireVertical
 MoveDragonFireLeft
         ldy fireMoveCnt
         ldx fireXpos,y
+        stx fireOldXpos
         dex
         dex
+        lda fireType,y
+        cmp #FIRE_TYPE_FOLLOW
+        beq @moveleft
         dex
+@moveleft
         txa
         sta fireXpos,y
         VectorCopyIndexedData fireXpos, #$D0, fireSpriteXpos, fireMoveCnt
@@ -746,8 +792,8 @@ MoveDragonFireLeft
         ; check sprite xpos extension
         ldy fireMoveCnt
         lda fireXpos,y
-        cmp #253
-        bne @noxext
+        cmp fireOldXpos
+        bcc @noxext
         lda VIC_SPRITE_X255 ; unset xpos extension    
         and fireX255UnsetMask,y
         sta VIC_SPRITE_X255

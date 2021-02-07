@@ -63,8 +63,10 @@ fireProbability2 byte $00
 fireMaxCnt byte $04                 ; max fire count starting with $00
 fireCheckCnt byte $00               ; fire check counter
 fireMoveCnt byte $00                ; fire move counter
+fireFollowCnt byte $00              ; fire follow counter
 fireLaunched byte $00               ; flag is fire launched -> one per stop
 fireNewType byte $00                ; type of launched draong fire
+fireOldXpos byte $00                ; x position before decrement
 fireActive
         BYTE $00, $00, $00, $00       ; indicates if fire is activated
 fireXpos
