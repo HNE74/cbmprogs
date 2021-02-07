@@ -616,6 +616,18 @@ InitDragonFire
         lda fireNewType
         sta fireType,y
 
+        ldy fireCheckCnt              ; determine fire color
+        lda fireType,y
+        cmp #FIRE_TYPE_NORMAL         
+        beq @normalfire
+        lda #COLOR_LIGHT_RED
+        sta fireColor,y
+        jmp @firesprite
+@normalfire
+        lda #COLOR_YELLOW
+        sta fireColor,y
+
+@firesprite
         lda VIC_SPRITE_X255     ; set sprite xpos extension
         ora fireX255Mask,y
         sta VIC_SPRITE_X255
@@ -691,6 +703,10 @@ MoveDragonFireVertical
         inx 
         txa
         sta fireYpos,y
+        cmp DRAGON_MAXYPOS
+        bcc @endvert
+        lda #FIRE_TYPE_MOVEUP
+        sta fireType,y
         jmp @endvert
 @moveup
         ldx fireYpos,y          ; move fire up
@@ -698,6 +714,10 @@ MoveDragonFireVertical
         dex 
         txa
         sta fireYpos,y
+        cmp DRAGON_MINYPOS
+        bcs @endvert
+        lda #FIRE_TYPE_MOVEDOWN
+        sta fireType,y 
 @endvert
         ldy fireMoveCnt
         VectorCopyIndexedData fireYpos, #$D0, fireSpriteYpos, fireMoveCnt
