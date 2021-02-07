@@ -452,6 +452,7 @@ PlayerNoBonusHandler
         sta songLength
         lda #00
         sta songCnt
+        sta songPlayed
 playsong3
         PlaySong noBonusSongLow,noBonusSongHigh,255,80
         lda songCnt
@@ -611,6 +612,10 @@ InitDragonFire
         txa
         sta fireYpos,y
 
+        jsr DecideDragonFireType      ; select dragon fire type
+        lda fireNewType
+        sta fireType,y
+
         lda VIC_SPRITE_X255     ; set sprite xpos extension
         ora fireX255Mask,y
         sta VIC_SPRITE_X255
@@ -637,7 +642,28 @@ MoveDragonFire
         sty fireMoveCnt
         cpy fireMaxCnt
         beq @maxcnt
+        jsr MoveDragonFireLeft
 
+        ldy fireMoveCnt
+        lda fireAnimWaitCnt,y
+        tax
+        inx
+        txa
+        sta fireAnimWaitCnt,y
+        lda fireAnimWaitCnt,y
+        cmp #FIRE_ANIM_WAIT_MAX
+        beq @fireanimate
+        jmp @nextfire
+@fireanimate
+        jsr AnimateDragonFire
+@nextfire
+        ldy fireMoveCnt
+        iny
+        jmp @firemove
+@maxcnt
+        rts
+
+MoveDragonFireLeft
         ; decrease fire x position
         ldx fireXpos,y
         dex
@@ -655,18 +681,10 @@ MoveDragonFire
         lda VIC_SPRITE_X255 ; unset xpos extension    
         and fireX255UnsetMask,y
         sta VIC_SPRITE_X255
-@noxext
-        ldy fireMoveCnt
-        lda fireAnimWaitCnt,y
-        tax
-        inx
-        txa
-        sta fireAnimWaitCnt,y
-        lda fireAnimWaitCnt,y
-        cmp #FIRE_ANIM_WAIT_MAX
-        beq @fireanimate
-        jmp @nextfire
-@fireanimate
+@noxext  
+        rts
+
+AnimateDragonFire
         ldy fireMoveCnt
         lda #$00
         sta fireAnimWaitCnt,y
@@ -684,11 +702,13 @@ MoveDragonFire
         txa
         sta fireSpritePage,y
         VectorCopyIndexedData fireSpritePage, #$07, fireSpritePtr, fireMoveCnt
-@nextfire
-        ldy fireMoveCnt
-        iny
-        jmp @firemove
-@maxcnt
+        rts
+
+DecideDragonFireType
+        RndTimer
+        cmp #02
+        bcs DecideDragonFireType
+        sta fireNewType
         rts
 
 ResetDragonFire
@@ -1503,6 +1523,7 @@ InitGameOverScreen
 
         lda #00
         sta songCnt
+        sta songPlayed
         lda #8
         sta songLength
         rts

@@ -46,7 +46,10 @@ WAVE_RECHTECK  = $41
 WAVE_RAUSCHEN  = $81
 
 start
+        lda #00
+        sta songCnt
         jsr PlaySong
+        jmp start
         rts
 
 PlaySong
@@ -59,7 +62,7 @@ PlaySong
         ldx songCnt
         lda songWait1,x
         sta noteWait1
-        lda songWait2,x
+        lda #40
         sta noteWait2
         jsr WaitNote
         ldx songCnt
@@ -79,7 +82,7 @@ PlayNote
         sta SID_CHANNEL1_FREHI
         lda #5
         sta SID_CHANNEL1_ATDCY
-        lda #8
+        lda #10
         sta SID_SURELI
         lda #0
         sta SID_CHANNEL1_VCREG
@@ -108,10 +111,21 @@ noteHigh byte $00
 noteWait1 byte $00
 noteWait2 byte $00
 
-songLength byte $05
+songLength byte 32
 songCnt byte $00
-songLow byte NOTE_C_L, NOTE_CQ_L, NOTE_D_L, NOTE_DQ_L, NOTE_E_L
-songHigh byte NOTE_C_H, NOTE_CQ_H, NOTE_D_H, NOTE_DQ_H, NOTE_E_H
-songWait1 byte $FF, $FF, $FF, $FF, $FF
-songWait2 byte $64, $64, $64, $64, $64
-
+songLow byte NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L
+        byte NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L, NOTE_G_L, NOTE_C_L, NOTE_E_L
+        byte NOTE_C_L, NOTE_D_L, NOTE_A_L, NOTE_D_L, NOTE_F_L, NOTE_A_L, NOTE_D_L, NOTE_F_L
+        byte NOTE_C_L, NOTE_D_L, NOTE_A_L, NOTE_D_L, NOTE_F_L, NOTE_A_L, NOTE_D_L, NOTE_F_L
+songHigh byte NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H
+         byte NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H, NOTE_G_H, NOTE_C_H, NOTE_E_H
+         byte NOTE_C_H, NOTE_D_H, NOTE_A_H, NOTE_D_H, NOTE_F_H, NOTE_A_H, NOTE_D_H, NOTE_F_H
+         byte NOTE_C_H, NOTE_D_H, NOTE_A_H, NOTE_D_H, NOTE_F_H, NOTE_A_H, NOTE_D_H, NOTE_F_H
+songWait1 byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
+          byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
+          byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
+          byte $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
+songWait2 byte $64, $64, $64, $64, $64, $64, $64, $64
+          byte $64, $64, $64, $64, $64, $64, $64, $64
+          byte $64, $64, $64, $64, $64, $64, $64, $64
+          byte $64, $64, $64, $64, $64, $64, $64, $64

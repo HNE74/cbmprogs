@@ -64,12 +64,15 @@ fireMaxCnt byte $04                 ; max fire count starting with $00
 fireCheckCnt byte $00               ; fire check counter
 fireMoveCnt byte $00                ; fire move counter
 fireLaunched byte $00               ; flag is fire launched -> one per stop
+fireNewType byte $00                ; type of launched draong fire
 fireActive
         BYTE $00, $00, $00, $00       ; indicates if fire is activated
 fireXpos
         BYTE $00, $00, $00, $00       ; fire x position
 fireYpos
         BYTE $00, $00, $00, $00       ; fire y position
+fireType
+        BYTE $00, $00, $00, $00       ; fire type
 fireSpritePage
         BYTE $86, $86, $86, $86       ; fire sprite page
 fireColor
