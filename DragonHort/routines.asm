@@ -40,6 +40,8 @@ SpawnPlayer
 
 #region Init game
 InitGameData
+        lda #01
+        sta gameLevel
         lda #PLAYER_STATE_ALIVE
         sta playerState
         lda #00
@@ -649,10 +651,18 @@ InitDragonFire
         rts
 
 DecideDragonFireType
+        lda gameLevel           ; bumpy fire starts level 3   
+        cmp #03
+        bcs @randomtype
+        lda #00
+        sta fireNewType
+        jmp @decided
+@randomtype
         RndTimer
         cmp #03
         bcs DecideDragonFireType
         sta fireNewType
+@decided
         rts
 
 MoveDragonFire
