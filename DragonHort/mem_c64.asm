@@ -2,7 +2,7 @@
 ;*** Memory locations defined C64 (kernal, CIA etc.)
 ;***
 ;*** by Noltisoft in 2021 
-;*** The code is unlicensed and might be used and/or
+;*** The code is GNU General Public License v3.0 and might be used and/or
 ;*** modified by any interested parties.*
 ;*****************************************************
 
