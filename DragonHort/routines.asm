@@ -611,7 +611,7 @@ InitDragonFire
         inx
         txa
         sta fireYpos,y
-
+        ldy fireCheckCnt
         jsr DecideDragonFireType      ; select dragon fire type
         lda fireNewType
         sta fireType,y
@@ -636,6 +636,13 @@ InitDragonFire
         sta VIC_SPRITE_ENABLE
         rts
 
+DecideDragonFireType
+        RndTimer
+        cmp #03
+        bcs DecideDragonFireType
+        sta fireNewType
+        rts
+
 MoveDragonFire
         ldy #0
 @firemove
@@ -651,6 +658,7 @@ MoveDragonFire
         bne @nextfire
 
         jsr MoveDragonFireLeft  ; horizontal move
+        jsr MoveDragonFireVertical ; vertical move
 
         ldy fireMoveCnt         ; delay animation
         lda fireAnimWaitCnt,y
@@ -671,8 +679,32 @@ MoveDragonFire
 @maxcnt
         rts
 
+MoveDragonFireVertical
+        ldy fireMoveCnt
+        lda fireType,y
+        cmp #FIRE_TYPE_NORMAL
+        beq @endvert
+        cmp #FIRE_TYPE_MOVEUP
+        beq @moveup
+        ldx fireYpos,y          ; move fire down
+        inx
+        inx 
+        txa
+        sta fireYpos,y
+        jmp @endvert
+@moveup
+        ldx fireYpos,y          ; move fire up
+        dex
+        dex 
+        txa
+        sta fireYpos,y
+@endvert
+        ldy fireMoveCnt
+        VectorCopyIndexedData fireYpos, #$D0, fireSpriteYpos, fireMoveCnt
+        rts
+
 MoveDragonFireLeft
-        ; decrease fire x position
+        ldy fireMoveCnt
         ldx fireXpos,y
         dex
         dex
@@ -710,13 +742,6 @@ AnimateDragonFire
         txa
         sta fireSpritePage,y
         VectorCopyIndexedData fireSpritePage, #$07, fireSpritePtr, fireMoveCnt
-        rts
-
-DecideDragonFireType
-        RndTimer
-        cmp #02
-        bcs DecideDragonFireType
-        sta fireNewType
         rts
 
 ResetDragonFire
