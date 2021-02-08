@@ -622,6 +622,8 @@ InitDragonFire
         lda fireType,y
         cmp #FIRE_TYPE_NORMAL         
         beq @normalfire
+        cmp #FIRE_TYPE_FAST        
+        beq @fastfire
         cmp #FIRE_TYPE_FOLLOW
         beq @followfire
         lda #COLOR_LIGHT_RED
@@ -631,10 +633,13 @@ InitDragonFire
         lda #COLOR_LIGHT_GREEN
         sta fireColor,Y
         jmp @firesprite
+@fastfire
+        lda #COLOR_LIGHT_BLUE
+        sta fireColor,Y
+        jmp @firesprite
 @normalfire
         lda #COLOR_YELLOW
         sta fireColor,y
-
 @firesprite
         lda VIC_SPRITE_X255     ; set sprite xpos extension
         ora fireX255Mask,y
@@ -658,22 +663,30 @@ InitDragonFire
 
 DecideDragonFireType
         lda gameLevel             
-        cmp #05
-        bcs @randomtype2          ; follwing fire starts level 5
-        cmp #03
-        bcs @randomtype1          ; bumpy fire starts level 3 
+        cmp #06
+        bcs @randomtype2          ; follwing fire starts level 6
+        cmp #04
+        bcs @randomtype1          ; bumpy fire starts level 4 
+        cmp #02
+        bcs @randomtype0          ; fast fire starts level 2 
         lda #00
         sta fireNewType
         jmp @decided
+@randomtype0
+        RndTimer
+        cmp #02
+        bcs @randomtype0
+        sta fireNewType
+        rts
 @randomtype1
         RndTimer
-        cmp #03
+        cmp #04
         bcs @randomtype1
         sta fireNewType
         rts
 @randomtype2
         RndTimer
-        cmp #04
+        cmp #05
         bcs @randomtype2
         sta fireNewType 
         rts
@@ -720,6 +733,8 @@ MoveDragonFireVertical
         ldy fireMoveCnt
         lda fireType,y
         cmp #FIRE_TYPE_NORMAL
+        beq @endvert
+        cmp #FIRE_TYPE_FAST
         beq @endvert
         cmp #FIRE_TYPE_MOVEUP
         beq @moveup
@@ -781,8 +796,10 @@ MoveDragonFireLeft
         dex
         dex
         lda fireType,y
-        cmp #FIRE_TYPE_NORMAL
-        bne @moveleft
+        cmp #FIRE_TYPE_FAST
+        beq @fastleft
+        jmp @moveleft
+@fastleft
         dex
 @moveleft
         txa
