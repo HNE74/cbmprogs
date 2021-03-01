@@ -1,0 +1,16 @@
+parsing
+flex pass 1
+flex pass 2
+flex pass 3
+Output pass
+Writing prg file: rasterBorderMulti.prg
+
+Memory Map
+----------
+Default-segment:
+  $0801-$080d Basic
+  $080e-$080d Basic End
+  $1000-$1e51 Music
+  $3000-$3092 Unnamed
+
+Writing Vice symbol file: rasterBorderMulti.vs

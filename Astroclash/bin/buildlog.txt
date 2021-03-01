@@ -1,0 +1,18 @@
+parsing
+Got 1957 errors while executing:
+  (/home/nolti/github/cbmprogs/Astroclash/aclash8.asm 3:18) Syntax error
+  (/home/nolti/github/cbmprogs/Astroclash/aclash8.asm 4:17) Syntax error
+  (/home/nolti/github/cbmprogs/Astroclash/aclash8.asm 5:17) Syntax error
+  (/home/nolti/github/cbmprogs/Astroclash/aclash8.asm 6:17) Syntax error
+  (/home/nolti/github/cbmprogs/Astroclash/aclash8.asm 7:17) Syntax error
+  ...
+
+*=$C000
+
+; VARIABLES USED BY JOYSTK ROUTINE
+                 ^
+
+Error: Syntax error
+at line 3, column 18 in aclash8.asm
+
+
