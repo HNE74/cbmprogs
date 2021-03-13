@@ -5,6 +5,7 @@
 *.prg
 *.dup
 
+vc20stuff/bak/*
 VampireDungeon/bak/*
 BookGame/bak/*
 Mazegen/bak/*
