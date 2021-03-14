@@ -4,7 +4,7 @@
 <!-- Project Target : VIC 20 -->
 <Project>
     <Target>1</Target>
-    <Executable>vc20stuff.prg</Executable>
+    <Executable>vc20graphics.prg</Executable>
     <StartAddress>4097</StartAddress>
     <FilesGlobal>False</FilesGlobal>
     <BatchMode>False</BatchMode>
@@ -15,10 +15,10 @@
     <Comments />
     <Author />
     <Email />
-    <AutoLaunchName>vc20stuff.prg</AutoLaunchName>
+    <AutoLaunchName>vc20graphics.prg</AutoLaunchName>
     <NoSingleFileBuild>False</NoSingleFileBuild>
     <CreatedWithVersion>CBM prg Studio 3.14.0</CreatedWithVersion>
-    <HasGitRepo>True</HasGitRepo>
+    <HasGitRepo>False</HasGitRepo>
     <GitIgnoreList />
     <Cartridge>
         <CrtBuildingCartridge>False</CrtBuildingCartridge>
@@ -40,9 +40,7 @@
         <PreBuildCommands />
         <PostBuildCommands />
     </BuildEvents>
-    <BuildList>
-        <FileName>graphics.bas</FileName>
-    </BuildList>
+    <BuildList />
     <DetermineBuildOrder>0</DetermineBuildOrder>
     <PaddingByte>0</PaddingByte>
     <!--Screen designer settings-->
@@ -51,7 +49,7 @@
     <!--End of screen designer settings-->
     <SourceFiles>
         <SourceFile>
-            <Name>graphics.bas</Name>
+            <Name>vc20graphics.bas</Name>
             <PrgName />
             <FileType>1</FileType>
             <IncludeInBuild>True</IncludeInBuild>
