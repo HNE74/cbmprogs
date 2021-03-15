@@ -1,0 +1,264 @@
+00001  0000             ;*** PLOT VALUES TO VC20 SCREEN RAM
+00002  0001             ;*****************************************
+00003  0001             
+00004  0001             ;*****************************************
+00005  0001             ;*** CONSTANTS USED FOR VIC20 PROGRAMMING
+00006  0001             ;*****************************************
+00007  0001             
+00008  0001             ZERO_PAGE_PTR1 = $FB ; ZERO PAGE POINTER ADDRESS
+00009  0001             ZERO_PAGE_PTR2 = $FD ; ZERO PAGE POINTER ADDRESS
+00010  0001             
+00011  0001             VIC_COLOR=$900F ; VIC COLOR REGISTER
+00012  0001             
+00013  0001             ; BACKGROUND COLORS
+00014  0001             BGCOL_BLACK=0*16 
+00015  0001             BGCOL_WHITE=1*16 
+00016  0001             BGCOL_RED=2*16 
+00017  0001             BGCOL_CYAN=3*16 
+00018  0001             BGCOL_PURPLE=4*16 
+00019  0001             BGCOL_GREEN=5*16 
+00020  0001             BGCOL_BLUE=6*16 
+00021  0001             BGCOL_YELLOW=7*16 
+00022  0001             BGCOL_ORANGE=8*16 
+00023  0001             BGCOL_LIGHT_ORANGE=9*16 
+00024  0001             BGCOL_PINK=10*16 
+00025  0001             BGCOL_LIGHT_CYAN=11*16 
+00026  0001             BGCOL_LIGHT_PURPLE=12*16 
+00027  0001             BGCOL_LIGHT_GREEN=13*16 
+00028  0001             BGCOL_LIGHT_BLUE=14*16 
+00029  0001             BGCOL_LIGHT_YELLOW=15*16 
+00030  0001             
+00031  0001             ; BORDER COLORS
+00032  0001             BDCOL_BLACK=0 AND 7
+00033  0001             BDCOL_WHITE=1 AND 7
+00034  0001             BDCOL_RED=2 AND 7
+00035  0001             BDCOL_CYAN=3 AND 7
+00036  0001             BDCOL_PURPLE=4 AND 7
+00037  0001             BDCOL_GREEN=5 AND 7
+00038  0001             BDCOL_BLUE=6 AND 7
+00039  0001             BDCOL_YELLOW=7 AND 7
+00040  0001             
+00041  0001             ; CHAR COLORS
+00042  0001             COL_BLACK=0 
+00043  0001             COL_WHITE=1 
+00044  0001             COL_RED=2
+00045  0001             COL_CYAN=3 
+00046  0001             COL_PURPLE=4 
+00047  0001             COL_GREEN=5 
+00048  0001             COL_BLUE=6 
+00049  0001             COL_YELLOW=7 
+00050  0001             
+00051  0001             SCR_ROWS=23 
+00052  0001             SCR_COLS=22 
+00053  0001             
+00054  0001                        
+00055  0001             ;*****************************************
+00056  0001             ;*** MACROS USED FOR VIC20 PROGRAMMING
+00057  0001             ;*****************************************
+00058  0001             
+00059  0001             ; *** SET BACKGROUND COLOR OF SCREEN
+00060  0001             DEFM       SETBGCOLOR
+00061  0001                        LDA VIC_COLOR
+00062  0001                        AND #$8
+00063  0001                        ORA #/1
+00064  0001                        STA VIC_COLOR
+00065  0001             ENDM
+00066  0001             
+00067  0001             ; *** SET BORDER COLOR OF SCREEN
+00068  0001             DEFM       SETBDCOLOR
+00069  0001                        LDA VIC_COLOR
+00070  0001                        AND #$F8
+00071  0001                        ORA #/1
+00072  0001                        STA VIC_COLOR
+00073  0001             ENDM
+00074  0001             
+00075  0001             *=$1D00    ; 7424
+00076  1D00  20 04 1D              JSR SCRPLOT
+00077  1D03  60                    RTS
+00078  1D04             
+00079  1D04             SCRPLOT
+00080  1D04  AD 93 1D              LDA SCREEN_MEM
+00081  1D07  8D 97 1D              STA PLOT_SCREEN_MEM
+00082  1D0A  AD 94 1D              LDA SCREEN_MEM+1
+00083  1D0D  8D 98 1D              STA PLOT_SCREEN_MEM+1
+00084  1D10             
+00085  1D10  AD 95 1D              LDA COLOR_MEM
+00086  1D13  8D 99 1D              STA PLOT_COLOR_MEM
+00087  1D16  AD 96 1D              LDA COLOR_MEM+1
+00088  1D19  8D 9A 1D              STA PLOT_COLOR_MEM+1
+00089  1D1C             
+00090  1D1C             @YOFFSET
+00091  1D1C  AE 9C 1D              LDX YPLOT
+00092  1D1F  E0 00                 CPX #00
+00093  1D21  F0 29                 BEQ @ADDX
+00094  1D23  CA                    DEX
+00095  1D24  8E 9C 1D              STX YPLOT
+00096  1D27             
+00097  1D27  AD 97 1D              LDA PLOT_SCREEN_MEM     ; CALC SCREEN OFFSET FROM Y
+00098  1D2A  18                    CLC
+00099  1D2B  69 16                 ADC #SCR_COLS
+00100  1D2D  8D 97 1D              STA PLOT_SCREEN_MEM
+00101  1D30  AD 98 1D              LDA PLOT_SCREEN_MEM+1
+00102  1D33  69 00                 ADC #00
+00103  1D35  8D 98 1D              STA PLOT_SCREEN_MEM+1
+00104  1D38             
+00105  1D38  AD 99 1D              LDA PLOT_COLOR_MEM     ; CALC COLOR OFFSET FROM Y
+00106  1D3B  18                    CLC
+00107  1D3C  69 16                 ADC #SCR_COLS
+00108  1D3E  8D 99 1D              STA PLOT_COLOR_MEM
+00109  1D41  AD 9A 1D              LDA PLOT_COLOR_MEM+1
+00110  1D44  69 00                 ADC #00
+00111  1D46  8D 9A 1D              STA PLOT_COLOR_MEM+1
+00112  1D49             
+00113  1D49  4C 1C 1D              JMP @YOFFSET
+00114  1D4C             @ADDX
+00115  1D4C  AD 97 1D              LDA PLOT_SCREEN_MEM     ; ADD SCREEN X POSITION
+00116  1D4F  18                    CLC
+00117  1D50  6D 9B 1D              ADC XPLOT
+00118  1D53  8D 97 1D              STA PLOT_SCREEN_MEM
+00119  1D56  AD 98 1D              LDA PLOT_SCREEN_MEM+1
+00120  1D59  69 00                 ADC #00
+00121  1D5B  8D 98 1D              STA PLOT_SCREEN_MEM+1
+00122  1D5E             
+00123  1D5E  AD 99 1D              LDA PLOT_COLOR_MEM     ; ADD COLOR X POSITION
+00124  1D61  18                    CLC
+00125  1D62  6D 9B 1D              ADC XPLOT
+00126  1D65  8D 99 1D              STA PLOT_COLOR_MEM
+00127  1D68  AD 9A 1D              LDA PLOT_COLOR_MEM+1
+00128  1D6B  69 00                 ADC #00
+00129  1D6D  8D 9A 1D              STA PLOT_COLOR_MEM+1
+00130  1D70             
+00131  1D70             @PLOT
+00132  1D70  AD 97 1D              LDA PLOT_SCREEN_MEM
+00133  1D73  85 FB                 STA ZERO_PAGE_PTR1
+00134  1D75  AD 98 1D              LDA PLOT_SCREEN_MEM+1
+00135  1D78  85 FC                 STA ZERO_PAGE_PTR1+1
+00136  1D7A  AD 9D 1D              LDA CHRPLOT
+00137  1D7D  A0 00                 LDY #00
+00138  1D7F  91 FB                 STA (ZERO_PAGE_PTR1),Y
+00139  1D81             
+00140  1D81  AD 99 1D              LDA PLOT_COLOR_MEM
+00141  1D84  85 FB                 STA ZERO_PAGE_PTR1
+00142  1D86  AD 9A 1D              LDA PLOT_COLOR_MEM+1
+00143  1D89  85 FC                 STA ZERO_PAGE_PTR1+1
+00144  1D8B  AD 9E 1D              LDA CHRCOL
+00145  1D8E  A0 00                 LDY #00
+00146  1D90  91 FB                 STA (ZERO_PAGE_PTR1),Y
+00147  1D92             
+00148  1D92  60                    RTS
+00149  1D93             
+00150  1D93             ;*****************************************
+00151  1D93             ;*** DECLARATION OF VARIABLES USED BY PLOT
+00152  1D93             ;*****************************************
+00153  1D93             
+00154  1D93  00 1E      SCREEN_MEM BYTE $00, $1E        ; SCREEN MEMORY LOCATION: 7680 (UNEXPANDED VIC)
+00155  1D95  00 96      COLOR_MEM  BYTE $00, $96         ; COLOR MEMORY LOCATION: 38400 (UNEXPANDED VIC)
+00156  1D97             
+00157  1D97  00 1E      PLOT_SCREEN_MEM BYTE  $00, $1E  ; PLOT SCREEN MEMORY LOCATION
+00158  1D99  00 96      PLOT_COLOR_MEM BYTE $00, $96    ; PLOT COLOR MEMORY LOCATION
+00159  1D9B  15         XPLOT      BYTE 21                   ; X PLOT POSITION
+00160  1D9C  0A         YPLOT      BYTE 10                   ; Y PLOT POSITION
+00161  1D9D  51         CHRPLOT    BYTE $51                ; CHARACTER TO PLOT
+00162  1D9E  02         CHRCOL     BYTE $2                  ; COLOR TO PLOT
+00163  1D9F             
+00164  1D9F             
+00165  1D9F             
+00166  1D9F             
+00167  1D9F             
+00168  1D9F             
+00169  1D9F             
+
+******* 9 Label(s) *******
+chrcol = $1D9E 
+chrplot = $1D9D 
+color_mem = $1D95 
+plot_color_mem = $1D99 
+plot_screen_mem = $1D97 
+screen_mem = $1D93 
+scrplot = $1D04 
+xplot = $1D9B 
+yplot = $1D9C 
+
+******* 1 Unused label(s) *******
+@addx
+@plot
+@yoffset
+scrplot
+
+******* 38 Variable(s) *******
+BDCOL_BLACK  = $0000
+BDCOL_BLUE  = $0006
+BDCOL_CYAN  = $0003
+BDCOL_GREEN  = $0005
+BDCOL_PURPLE  = $0004
+BDCOL_RED  = $0002
+BDCOL_WHITE  = $0001
+BDCOL_YELLOW  = $0007
+BGCOL_BLACK  = $0000
+BGCOL_BLUE  = $0060
+BGCOL_CYAN  = $0030
+BGCOL_GREEN  = $0050
+BGCOL_LIGHT_BLUE  = $00E0
+BGCOL_LIGHT_CYAN  = $00B0
+BGCOL_LIGHT_GREEN  = $00D0
+BGCOL_LIGHT_ORANGE  = $0090
+BGCOL_LIGHT_PURPLE  = $00C0
+BGCOL_LIGHT_YELLOW  = $00F0
+BGCOL_ORANGE  = $0080
+BGCOL_PINK  = $00A0
+BGCOL_PURPLE  = $0040
+BGCOL_RED  = $0020
+BGCOL_WHITE  = $0010
+BGCOL_YELLOW  = $0070
+COL_BLACK  = $0000
+COL_BLUE  = $0006
+COL_CYAN  = $0003
+COL_GREEN  = $0005
+COL_PURPLE  = $0004
+COL_RED  = $0002
+COL_WHITE  = $0001
+COL_YELLOW  = $0007
+SCR_COLS  = $0016
+SCR_ROWS  = $0017
+tgt_vic20  = $0001
+VIC_COLOR  = $900F
+ZERO_PAGE_PTR1  = $00FB
+ZERO_PAGE_PTR2  = $00FD
+******* 33 Unused variables(s) *******
+BDCOL_BLACK
+BDCOL_BLUE
+BDCOL_CYAN
+BDCOL_GREEN
+BDCOL_PURPLE
+BDCOL_RED
+BDCOL_WHITE
+BDCOL_YELLOW
+BGCOL_BLACK
+BGCOL_BLUE
+BGCOL_CYAN
+BGCOL_GREEN
+BGCOL_LIGHT_BLUE
+BGCOL_LIGHT_CYAN
+BGCOL_LIGHT_GREEN
+BGCOL_LIGHT_ORANGE
+BGCOL_LIGHT_PURPLE
+BGCOL_LIGHT_YELLOW
+BGCOL_ORANGE
+BGCOL_PINK
+BGCOL_PURPLE
+BGCOL_RED
+BGCOL_WHITE
+BGCOL_YELLOW
+COL_BLACK
+COL_BLUE
+COL_CYAN
+COL_GREEN
+COL_PURPLE
+COL_RED
+COL_WHITE
+COL_YELLOW
+SCR_ROWS
+tgt_vic20
+VIC_COLOR
+ZERO_PAGE_PTR2
+

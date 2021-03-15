@@ -2,8 +2,8 @@
 ;*** Declaration of variables used by plot
 ;*****************************************
 
-screen_mem byte $00, $1E        ; screen memory location
-color_mem byte $00, $96         ; color memory location
+screen_mem byte $00, $1E        ; screen memory location: 7680 (unexpanded vic)
+color_mem byte $00, $96         ; color memory location: 38400 (unexpanded vic)
 
 plot_screen_mem byte  $00, $1E  ; plot screen memory location
 plot_color_mem byte $00, $96    ; plot color memory location
