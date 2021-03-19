@@ -72,112 +72,112 @@
 00072  0001                        STA VIC_COLOR
 00073  0001             ENDM
 00074  0001             
-00075  0001             *=$1D00    ; 7424
-00076  1D00  20 04 1D              JSR SCRPLOT
-00077  1D03  60                    RTS
-00078  1D04             
-00079  1D04             SCRPLOT
-00080  1D04  AD 93 1D              LDA SCREEN_MEM
-00081  1D07  8D 97 1D              STA PLOT_SCREEN_MEM
-00082  1D0A  AD 94 1D              LDA SCREEN_MEM+1
-00083  1D0D  8D 98 1D              STA PLOT_SCREEN_MEM+1
-00084  1D10             
-00085  1D10  AD 95 1D              LDA COLOR_MEM
-00086  1D13  8D 99 1D              STA PLOT_COLOR_MEM
-00087  1D16  AD 96 1D              LDA COLOR_MEM+1
-00088  1D19  8D 9A 1D              STA PLOT_COLOR_MEM+1
-00089  1D1C             
-00090  1D1C             @YOFFSET
-00091  1D1C  AE 9C 1D              LDX YPLOT
-00092  1D1F  E0 00                 CPX #00
-00093  1D21  F0 29                 BEQ @ADDX
-00094  1D23  CA                    DEX
-00095  1D24  8E 9C 1D              STX YPLOT
-00096  1D27             
-00097  1D27  AD 97 1D              LDA PLOT_SCREEN_MEM     ; CALC SCREEN OFFSET FROM Y
-00098  1D2A  18                    CLC
-00099  1D2B  69 16                 ADC #SCR_COLS
-00100  1D2D  8D 97 1D              STA PLOT_SCREEN_MEM
-00101  1D30  AD 98 1D              LDA PLOT_SCREEN_MEM+1
-00102  1D33  69 00                 ADC #00
-00103  1D35  8D 98 1D              STA PLOT_SCREEN_MEM+1
-00104  1D38             
-00105  1D38  AD 99 1D              LDA PLOT_COLOR_MEM     ; CALC COLOR OFFSET FROM Y
-00106  1D3B  18                    CLC
-00107  1D3C  69 16                 ADC #SCR_COLS
-00108  1D3E  8D 99 1D              STA PLOT_COLOR_MEM
-00109  1D41  AD 9A 1D              LDA PLOT_COLOR_MEM+1
-00110  1D44  69 00                 ADC #00
-00111  1D46  8D 9A 1D              STA PLOT_COLOR_MEM+1
-00112  1D49             
-00113  1D49  4C 1C 1D              JMP @YOFFSET
-00114  1D4C             @ADDX
-00115  1D4C  AD 97 1D              LDA PLOT_SCREEN_MEM     ; ADD SCREEN X POSITION
-00116  1D4F  18                    CLC
-00117  1D50  6D 9B 1D              ADC XPLOT
-00118  1D53  8D 97 1D              STA PLOT_SCREEN_MEM
-00119  1D56  AD 98 1D              LDA PLOT_SCREEN_MEM+1
-00120  1D59  69 00                 ADC #00
-00121  1D5B  8D 98 1D              STA PLOT_SCREEN_MEM+1
-00122  1D5E             
-00123  1D5E  AD 99 1D              LDA PLOT_COLOR_MEM     ; ADD COLOR X POSITION
-00124  1D61  18                    CLC
-00125  1D62  6D 9B 1D              ADC XPLOT
-00126  1D65  8D 99 1D              STA PLOT_COLOR_MEM
-00127  1D68  AD 9A 1D              LDA PLOT_COLOR_MEM+1
-00128  1D6B  69 00                 ADC #00
-00129  1D6D  8D 9A 1D              STA PLOT_COLOR_MEM+1
-00130  1D70             
-00131  1D70             @PLOT
-00132  1D70  AD 97 1D              LDA PLOT_SCREEN_MEM
-00133  1D73  85 FB                 STA ZERO_PAGE_PTR1
-00134  1D75  AD 98 1D              LDA PLOT_SCREEN_MEM+1
-00135  1D78  85 FC                 STA ZERO_PAGE_PTR1+1
-00136  1D7A  AD 9D 1D              LDA CHRPLOT
-00137  1D7D  A0 00                 LDY #00
-00138  1D7F  91 FB                 STA (ZERO_PAGE_PTR1),Y
-00139  1D81             
-00140  1D81  AD 99 1D              LDA PLOT_COLOR_MEM
-00141  1D84  85 FB                 STA ZERO_PAGE_PTR1
-00142  1D86  AD 9A 1D              LDA PLOT_COLOR_MEM+1
-00143  1D89  85 FC                 STA ZERO_PAGE_PTR1+1
-00144  1D8B  AD 9E 1D              LDA CHRCOL
-00145  1D8E  A0 00                 LDY #00
-00146  1D90  91 FB                 STA (ZERO_PAGE_PTR1),Y
-00147  1D92             
-00148  1D92  60                    RTS
-00149  1D93             
-00150  1D93             ;*****************************************
-00151  1D93             ;*** DECLARATION OF VARIABLES USED BY PLOT
-00152  1D93             ;*****************************************
-00153  1D93             
-00154  1D93  00 1E      SCREEN_MEM BYTE $00, $1E        ; SCREEN MEMORY LOCATION: 7680 (UNEXPANDED VIC)
-00155  1D95  00 96      COLOR_MEM  BYTE $00, $96         ; COLOR MEMORY LOCATION: 38400 (UNEXPANDED VIC)
-00156  1D97             
-00157  1D97  00 1E      PLOT_SCREEN_MEM BYTE  $00, $1E  ; PLOT SCREEN MEMORY LOCATION
-00158  1D99  00 96      PLOT_COLOR_MEM BYTE $00, $96    ; PLOT COLOR MEMORY LOCATION
-00159  1D9B  15         XPLOT      BYTE 21                   ; X PLOT POSITION
-00160  1D9C  0A         YPLOT      BYTE 10                   ; Y PLOT POSITION
-00161  1D9D  51         CHRPLOT    BYTE $51                ; CHARACTER TO PLOT
-00162  1D9E  02         CHRCOL     BYTE $2                  ; COLOR TO PLOT
-00163  1D9F             
-00164  1D9F             
-00165  1D9F             
-00166  1D9F             
-00167  1D9F             
-00168  1D9F             
-00169  1D9F             
+00075  0001             *=$1500    ; 7424
+00076  1500  20 04 15              JSR SCRPLOT
+00077  1503  60                    RTS
+00078  1504             
+00079  1504             SCRPLOT
+00080  1504  AD 93 15              LDA SCREEN_MEM
+00081  1507  8D 97 15              STA PLOT_SCREEN_MEM
+00082  150A  AD 94 15              LDA SCREEN_MEM+1
+00083  150D  8D 98 15              STA PLOT_SCREEN_MEM+1
+00084  1510             
+00085  1510  AD 95 15              LDA COLOR_MEM
+00086  1513  8D 99 15              STA PLOT_COLOR_MEM
+00087  1516  AD 96 15              LDA COLOR_MEM+1
+00088  1519  8D 9A 15              STA PLOT_COLOR_MEM+1
+00089  151C             
+00090  151C             @YOFFSET
+00091  151C  AE 9C 15              LDX YPLOT
+00092  151F  E0 00                 CPX #00
+00093  1521  F0 29                 BEQ @ADDX
+00094  1523  CA                    DEX
+00095  1524  8E 9C 15              STX YPLOT
+00096  1527             
+00097  1527  AD 97 15              LDA PLOT_SCREEN_MEM     ; CALC SCREEN OFFSET FROM Y
+00098  152A  18                    CLC
+00099  152B  69 16                 ADC #SCR_COLS
+00100  152D  8D 97 15              STA PLOT_SCREEN_MEM
+00101  1530  AD 98 15              LDA PLOT_SCREEN_MEM+1
+00102  1533  69 00                 ADC #00
+00103  1535  8D 98 15              STA PLOT_SCREEN_MEM+1
+00104  1538             
+00105  1538  AD 99 15              LDA PLOT_COLOR_MEM     ; CALC COLOR OFFSET FROM Y
+00106  153B  18                    CLC
+00107  153C  69 16                 ADC #SCR_COLS
+00108  153E  8D 99 15              STA PLOT_COLOR_MEM
+00109  1541  AD 9A 15              LDA PLOT_COLOR_MEM+1
+00110  1544  69 00                 ADC #00
+00111  1546  8D 9A 15              STA PLOT_COLOR_MEM+1
+00112  1549             
+00113  1549  4C 1C 15              JMP @YOFFSET
+00114  154C             @ADDX
+00115  154C  AD 97 15              LDA PLOT_SCREEN_MEM     ; ADD SCREEN X POSITION
+00116  154F  18                    CLC
+00117  1550  6D 9B 15              ADC XPLOT
+00118  1553  8D 97 15              STA PLOT_SCREEN_MEM
+00119  1556  AD 98 15              LDA PLOT_SCREEN_MEM+1
+00120  1559  69 00                 ADC #00
+00121  155B  8D 98 15              STA PLOT_SCREEN_MEM+1
+00122  155E             
+00123  155E  AD 99 15              LDA PLOT_COLOR_MEM     ; ADD COLOR X POSITION
+00124  1561  18                    CLC
+00125  1562  6D 9B 15              ADC XPLOT
+00126  1565  8D 99 15              STA PLOT_COLOR_MEM
+00127  1568  AD 9A 15              LDA PLOT_COLOR_MEM+1
+00128  156B  69 00                 ADC #00
+00129  156D  8D 9A 15              STA PLOT_COLOR_MEM+1
+00130  1570             
+00131  1570             @PLOT
+00132  1570  AD 97 15              LDA PLOT_SCREEN_MEM
+00133  1573  85 FB                 STA ZERO_PAGE_PTR1
+00134  1575  AD 98 15              LDA PLOT_SCREEN_MEM+1
+00135  1578  85 FC                 STA ZERO_PAGE_PTR1+1
+00136  157A  AD 9D 15              LDA CHRPLOT
+00137  157D  A0 00                 LDY #00
+00138  157F  91 FB                 STA (ZERO_PAGE_PTR1),Y
+00139  1581             
+00140  1581  AD 99 15              LDA PLOT_COLOR_MEM
+00141  1584  85 FB                 STA ZERO_PAGE_PTR1
+00142  1586  AD 9A 15              LDA PLOT_COLOR_MEM+1
+00143  1589  85 FC                 STA ZERO_PAGE_PTR1+1
+00144  158B  AD 9E 15              LDA CHRCOL
+00145  158E  A0 00                 LDY #00
+00146  1590  91 FB                 STA (ZERO_PAGE_PTR1),Y
+00147  1592             
+00148  1592  60                    RTS
+00149  1593             
+00150  1593             ;*****************************************
+00151  1593             ;*** DECLARATION OF VARIABLES USED BY PLOT
+00152  1593             ;*****************************************
+00153  1593             
+00154  1593  00 1E      SCREEN_MEM BYTE $00, $1E        ; SCREEN MEMORY LOCATION: 7680 (UNEXPANDED VIC)
+00155  1595  00 96      COLOR_MEM  BYTE $00, $96         ; COLOR MEMORY LOCATION: 38400 (UNEXPANDED VIC)
+00156  1597             
+00157  1597  00 1E      PLOT_SCREEN_MEM BYTE  $00, $1E  ; PLOT SCREEN MEMORY LOCATION
+00158  1599  00 96      PLOT_COLOR_MEM BYTE $00, $96    ; PLOT COLOR MEMORY LOCATION
+00159  159B  15         XPLOT      BYTE 21                   ; X PLOT POSITION
+00160  159C  0A         YPLOT      BYTE 10                   ; Y PLOT POSITION
+00161  159D  51         CHRPLOT    BYTE $51                ; CHARACTER TO PLOT
+00162  159E  02         CHRCOL     BYTE $2                  ; COLOR TO PLOT
+00163  159F             
+00164  159F             
+00165  159F             
+00166  159F             
+00167  159F             
+00168  159F             
+00169  159F             
 
 ******* 9 Label(s) *******
-chrcol = $1D9E 
-chrplot = $1D9D 
-color_mem = $1D95 
-plot_color_mem = $1D99 
-plot_screen_mem = $1D97 
-screen_mem = $1D93 
-scrplot = $1D04 
-xplot = $1D9B 
-yplot = $1D9C 
+chrcol = $159E 
+chrplot = $159D 
+color_mem = $1595 
+plot_color_mem = $1599 
+plot_screen_mem = $1597 
+screen_mem = $1593 
+scrplot = $1504 
+xplot = $159B 
+yplot = $159C 
 
 ******* 1 Unused label(s) *******
 @addx

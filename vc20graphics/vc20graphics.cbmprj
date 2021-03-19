@@ -46,6 +46,7 @@
         <FileName>macros.asm</FileName>
         <FileName>variables.asm</FileName>
         <FileName>plottest.bas</FileName>
+        <FileName>cave.asm</FileName>
     </BuildList>
     <DetermineBuildOrder>0</DetermineBuildOrder>
     <PaddingByte>234</PaddingByte>
@@ -54,6 +55,17 @@
     <AssyExportList />
     <!--End of screen designer settings-->
     <SourceFiles>
+        <SourceFile>
+            <Name>cave.asm</Name>
+            <PrgName />
+            <FileType>2</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>True</Topmost>
+            <FileOpen>True</FileOpen>
+        </SourceFile>
         <SourceFile>
             <Name>constants.asm</Name>
             <PrgName />
@@ -84,7 +96,7 @@
             <Regions />
             <Breakpoints />
             <Bookmarks />
-            <Topmost>True</Topmost>
+            <Topmost>False</Topmost>
             <FileOpen>True</FileOpen>
         </SourceFile>
         <SourceFile>
@@ -113,7 +125,7 @@
             <Name>vc20graphics.bas</Name>
             <PrgName />
             <FileType>1</FileType>
-            <IncludeInBuild>False</IncludeInBuild>
+            <IncludeInBuild>True</IncludeInBuild>
             <Regions />
             <Breakpoints />
             <Bookmarks />

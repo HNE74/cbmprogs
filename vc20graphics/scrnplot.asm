@@ -5,7 +5,8 @@
 incasm "constants.asm"
 incasm "macros.asm"
 
-*=$1D00 ; 7424
+;*=$1D00 ; 7424
+*=$1100; 4352
         jsr scrplot
         rts
 
