@@ -7,12 +7,7 @@ incasm "macros.asm"
 
 ;*=$1D00 ; 7424
 *=$1100; 4352
-        jsr scrollleft
-        jsr scrollleft
-        jsr scrollleft
-        jsr scrollleft
-        jsr scrollleft
-        jsr scrollleft
+        jsr fillscreen
         jsr scrollleft
         jsr scrollleft
         jsr scrollleft
@@ -35,8 +30,77 @@ rndnum
         sta rndseed
         rts
 
-; scroll screen from left to right
+; *** fills the screen
+fillscreen
+        ldy #00
+        sty scry
+@nextrow
+        ldx #21
+        stx xplot
+        ldx #22
+        stx chrplot
+        ldx #COL_RED
+        stx chrcol
+
+@nextchr
+        lda scry
+        sta yplot
+        jsr scrplot
+        dec xplot
+        dec chrplot
+        lda xplot
+        cmp #255
+        bne @nextchr
+ 
+        inc scry
+        lda scry
+        cmp #23
+        bne @nextrow
+
+        rts
+
+
+; *** scroll screen from left to right
 scrollleft
+        ldx #00                 ; init counter
+        stx rowsscrolled
+        stx charsscrolled
+
+        lda #$01                ; init screenram pointer
+        sta ZERO_PAGE_PTR1
+        lda #$1E
+        sta ZERO_PAGE_PTR1+1
+@nextchr
+        ldy #$00                ; shift char right to left
+        lda (ZERO_PAGE_PTR1),y        
+        dec ZERO_PAGE_PTR1
+        sta (ZERO_PAGE_PTR1),y
+
+        inc ZERO_PAGE_PTR1      ; next char
+    ;    bne @inccnt
+      ;  inc ZERO_PAGE_PTR1+1    ; next screenram page 
+;@inccnt    
+        inc ZERO_PAGE_PTR1
+        bne @inccnt2
+        inc ZERO_PAGE_PTR1+1    ; next screenram page 
+@inccnt2
+        inc charsscrolled
+        lda charsscrolled
+        cmp #21
+        bne @nextchr
+
+        inc ZERO_PAGE_PTR1      ; next row
+@incrow
+        lda #00
+        sta charsscrolled
+        inc rowsscrolled
+        lda rowsscrolled
+        cmp #23
+        bne @nextchr
+        rts
+
+; scroll screen from left to right
+scrollleft2
         lda #0
         sta scry
 @scrcol
