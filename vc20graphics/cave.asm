@@ -34,15 +34,26 @@ rndnum
 fillscreen
         ldy #00
         sty scry
+        sty scrx
 @nextrow
         ldx #21
         stx xplot
         ldx #22
         stx chrplot
-        ldx #COL_RED
-        stx chrcol
-
 @nextchr
+        ldx scrx
+        stx chrcol
+        inc scrx
+        lda scrx
+        cmp #01
+        bne @nextcolor
+        inc scrx
+@nextcolor
+        cmp #07
+        bne @nextchr2
+        ldx #00
+        stx scrx
+@nextchr2
         lda scry
         sta yplot
         jsr scrplot
