@@ -12,6 +12,10 @@ incasm "macros.asm"
         jsr scrollleft
         jsr scrollleft
         jsr scrollleft
+        jsr scrollleft
+        jsr scrollleft
+        jsr scrollleft
+        jsr scrollleft
         rts
 
 ; *** Generate a random number from rndseed that is stored
@@ -70,7 +74,6 @@ fillscreen
 
         rts
 
-
 ; *** scroll screen from left to right
 scrollleft
         ldx #00                 ; init counter
@@ -81,29 +84,46 @@ scrollleft
         sta ZERO_PAGE_PTR1
         lda #$1E
         sta ZERO_PAGE_PTR1+1
+        lda #$01
+        sta ZERO_PAGE_PTR2      ; init colorram pointer
+        lda #$96
+        sta ZERO_PAGE_PTR2+1
+
 @nextchr
         ldy #$00                ; shift char right to left
-        lda (ZERO_PAGE_PTR1),y        
+        lda (ZERO_PAGE_PTR1),y 
+        sta scrolledchar
+        lda (ZERO_PAGE_PTR2),y 
+        sta scrolledcolor
         dec ZERO_PAGE_PTR1
+        dec ZERO_PAGE_PTR2
 
-        ldx ZERO_PAGE_PTR1      ; handle screenram page underflow
+        ldx ZERO_PAGE_PTR1      ; handle ram page underflow
         cpx #255
         bne @inccnt
         dec ZERO_PAGE_PTR1+1
+        dec ZERO_PAGE_PTR2+1
 @inccnt
+        lda scrolledchar
         sta (ZERO_PAGE_PTR1),y
+        lda scrolledcolor
+        sta (ZERO_PAGE_PTR2),y        
 
         inc ZERO_PAGE_PTR1      ; next char
+        inc ZERO_PAGE_PTR2
         lda ZERO_PAGE_PTR1
         cmp #0
         bne @inccnt1
-        inc ZERO_PAGE_PTR1+1    ; next screenram page 
+        inc ZERO_PAGE_PTR1+1    ; next ram page 
+        inc ZERO_PAGE_PTR2+1
 @inccnt1    
         inc ZERO_PAGE_PTR1
+        inc ZERO_PAGE_PTR2
         lda ZERO_PAGE_PTR1
         cmp #0
         bne @inccnt2
-        inc ZERO_PAGE_PTR1+1    ; next screenram page 
+        inc ZERO_PAGE_PTR1+1    ; next ram page 
+        inc ZERO_PAGE_PTR2+1
 @inccnt2
         inc charsscrolled
         lda charsscrolled
@@ -111,6 +131,7 @@ scrollleft
         bne @nextchr
 
         inc ZERO_PAGE_PTR1      ; next row
+        inc ZERO_PAGE_PTR2
         lda #00
         sta charsscrolled
         inc rowsscrolled

@@ -19,5 +19,7 @@ rndmax byte $10                 ; max random value
 scrx byte $00                   ; scroll x position
 scry byte $00                   ; scroll y position
 
+scrolledchar byte $00           ; scrolled character
+scrolledcolor byte $00          ; scrolled color
 charsscrolled byte $00          ; charsscrolled counter
 rowsscrolled byte $00           ; rowscrolled counter                 
