@@ -74,13 +74,23 @@ scrollleft
         ldy #$00                ; shift char right to left
         lda (ZERO_PAGE_PTR1),y        
         dec ZERO_PAGE_PTR1
+
+        ldx ZERO_PAGE_PTR1      ; handle screenram page underflow
+        cpx #255
+        bne @inccnt
+        dec ZERO_PAGE_PTR1+1
+@inccnt
         sta (ZERO_PAGE_PTR1),y
 
         inc ZERO_PAGE_PTR1      ; next char
-    ;    bne @inccnt
-      ;  inc ZERO_PAGE_PTR1+1    ; next screenram page 
-;@inccnt    
+        lda ZERO_PAGE_PTR1
+        cmp #0
+        bne @inccnt1
+        inc ZERO_PAGE_PTR1+1    ; next screenram page 
+@inccnt1    
         inc ZERO_PAGE_PTR1
+        lda ZERO_PAGE_PTR1
+        cmp #0
         bne @inccnt2
         inc ZERO_PAGE_PTR1+1    ; next screenram page 
 @inccnt2
@@ -90,7 +100,6 @@ scrollleft
         bne @nextchr
 
         inc ZERO_PAGE_PTR1      ; next row
-@incrow
         lda #00
         sta charsscrolled
         inc rowsscrolled
