@@ -8,17 +8,19 @@ incasm "macros.asm"
 ;*=$1D00 ; 7424
 *=$1100; 4352
         jsr fillscreen
+
+@caveloop
         jsr scrollleft
         jsr drawcave
-        jsr scrollleft
-        jsr drawcave
-        jsr scrollleft
-        jsr drawcave
+        jsr adjustcave
+        jmp @caveloop
+
         rts
 
 ; *** Generate a random number from rndseed that is stored
 ; *** in rndsee. The generated value will be < rndmax.
 rndnum
+        inc rndseed
         lda rndseed
         beq @doEor
         asl
@@ -30,6 +32,28 @@ rndnum
         cmp rndmax
         bcs rndnum
         sta rndseed
+        rts
+
+; *** randomly adjust cave
+adjustcave      
+        jsr rndnum
+        lda rndseed
+        cmp #$80
+        bcc @caveup
+@cavedown
+        lda caveend
+        cmp #$16
+        beq @caveup
+        inc cavestart
+        inc caveend
+        jmp @cavedone
+@caveup
+        lda cavestart
+        cmp #$01
+        beq @cavedown
+        dec cavestart
+        dec caveend
+@cavedone
         rts
 
 ; *** fills the screen
