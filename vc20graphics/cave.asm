@@ -9,13 +9,11 @@ incasm "macros.asm"
 *=$1100; 4352
         jsr fillscreen
         jsr scrollleft
+        jsr drawcave
         jsr scrollleft
+        jsr drawcave
         jsr scrollleft
-        jsr scrollleft
-        jsr scrollleft
-        jsr scrollleft
-        jsr scrollleft
-        jsr scrollleft
+        jsr drawcave
         rts
 
 ; *** Generate a random number from rndseed that is stored
@@ -71,6 +69,60 @@ fillscreen
         lda scry
         cmp #23
         bne @nextrow
+
+        rts
+
+; *** draw the cave at rigth of screen
+drawcave
+        lda #00                 ; init values
+        sta cavecnt
+
+        lda cave_mem            ; set screenram address
+        sta ZERO_PAGE_PTR1
+        lda cave_mem+1
+        sta ZERO_PAGE_PTR1+1        
+        lda cave_color          ; set color address
+        sta ZERO_PAGE_PTR2
+        lda cave_color+1
+        sta ZERO_PAGE_PTR2+1    
+
+@cavechar
+        lda #$66
+        sta cavechr
+        lda cavecnt
+        cmp cavestart
+        bcc @plotcavechr
+        cmp caveend
+        bcs @plotcavechr
+        lda #$20
+        sta cavechr
+@plotcavechr
+        ldy #00                 ; draw cave char
+        lda cavechr
+        sta (ZERO_PAGE_PTR1),y
+        lda #$03
+        sta (ZERO_PAGE_PTR2),y
+
+        clc                     ; next screen row
+        lda ZERO_PAGE_PTR1
+        adc #$16
+        sta ZERO_PAGE_PTR1
+        lda ZERO_PAGE_PTR1+1
+        adc #00
+        sta ZERO_PAGE_PTR1+1
+
+        clc                     ; next color row
+        lda ZERO_PAGE_PTR2
+        adc #$16
+        sta ZERO_PAGE_PTR2
+        lda ZERO_PAGE_PTR2+1
+        adc #00
+        sta ZERO_PAGE_PTR2+1
+
+        inc cavecnt
+        lda cavecnt
+        cmp #$17
+        bne @cavechar
 
         rts
 
