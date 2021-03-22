@@ -158,11 +158,11 @@ scrollleft
         stx rowsscrolled
         stx charsscrolled
 
-        lda #$01                ; init screenram pointer
+        lda #$17                ; init screenram pointer
         sta ZERO_PAGE_PTR1
         lda #$1E
         sta ZERO_PAGE_PTR1+1
-        lda #$01
+        lda #$17
         sta ZERO_PAGE_PTR2      ; init colorram pointer
         lda #$96
         sta ZERO_PAGE_PTR2+1
@@ -214,7 +214,7 @@ scrollleft
         sta charsscrolled
         inc rowsscrolled
         lda rowsscrolled
-        cmp #23
+        cmp #22
         bne @nextchr
         rts
 
