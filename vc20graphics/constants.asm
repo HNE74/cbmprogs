@@ -6,6 +6,7 @@ ZERO_PAGE_PTR1 = $FB ; zero page pointer address
 ZERO_PAGE_PTR2 = $FD ; zero page pointer address
 
 VIC_COLOR=$900F         ; vic color register
+VIC_RASTER=$9004        ; vic raster register
 
 ; background colors
 BGCOL_BLACK=0*16

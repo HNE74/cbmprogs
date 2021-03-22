@@ -13,9 +13,15 @@ incasm "macros.asm"
         jsr scrollleft
         jsr drawcave
         jsr adjustcave
+        jsr waitraster
         jmp @caveloop
 
         rts
+
+waitraster        
+        LDA #150
+        CMP VIC_RASTER
+        bne waitraster
 
 ; *** Generate a random number from rndseed that is stored
 ; *** in rndsee. The generated value will be < rndmax.
