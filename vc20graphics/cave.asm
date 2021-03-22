@@ -123,7 +123,7 @@ drawcave
 
         inc cavecnt
         lda cavecnt
-        cmp #$17
+        cmp #$16
         bne @cavechar
 
         rts
@@ -133,19 +133,19 @@ adjustcave
         jsr rndnum
         lda rndseed
         cmp #$55
-        bcc @cavedone
+        bcc @cavedone           ; draw cave straight
         cmp #$AA
         bcc @caveup
 @cavedown
-        lda caveend
-        cmp #$16
+        lda caveend             ; draw cave downwards
+        cmp #$15
         beq @caveup
         inc cavestart
         inc caveend
         jmp @cavedone
 @caveup
-        lda cavestart
-        cmp #$01
+        lda cavestart           ; draw cave upwards
+        cmp #$02
         beq @cavedown
         dec cavestart
         dec caveend

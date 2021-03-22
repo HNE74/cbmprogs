@@ -24,8 +24,8 @@ scrolledcolor byte $00          ; scrolled color
 charsscrolled byte $00          ; charsscrolled counter
 rowsscrolled byte $00           ; rowscrolled counter 
 
-cave_mem byte $15, $1E          ; cave screen memory start location
-cave_color byte $15, $96        ; cave screen memory start location
+cave_mem byte $2B, $1E          ; cave screen memory start location
+cave_color byte $2B, $96        ; cave screen memory start location
 cavestart byte $05              ; start row of cave
 caveend byte $13                ; end row of cave  
 cavecnt byte $00                ; cave counter  
