@@ -34,28 +34,6 @@ rndnum
         sta rndseed
         rts
 
-; *** randomly adjust cave
-adjustcave      
-        jsr rndnum
-        lda rndseed
-        cmp #$80
-        bcc @caveup
-@cavedown
-        lda caveend
-        cmp #$16
-        beq @caveup
-        inc cavestart
-        inc caveend
-        jmp @cavedone
-@caveup
-        lda cavestart
-        cmp #$01
-        beq @cavedown
-        dec cavestart
-        dec caveend
-@cavedone
-        rts
-
 ; *** fills the screen
 fillscreen
         ldy #00
@@ -148,6 +126,30 @@ drawcave
         cmp #$17
         bne @cavechar
 
+        rts
+
+; *** randomly adjust cave
+adjustcave      
+        jsr rndnum
+        lda rndseed
+        cmp #$55
+        bcc @cavedone
+        cmp #$AA
+        bcc @caveup
+@cavedown
+        lda caveend
+        cmp #$16
+        beq @caveup
+        inc cavestart
+        inc caveend
+        jmp @cavedone
+@caveup
+        lda cavestart
+        cmp #$01
+        beq @cavedown
+        dec cavestart
+        dec caveend
+@cavedone
         rts
 
 ; *** scroll screen from left to right
