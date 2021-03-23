@@ -7,21 +7,66 @@ incasm "macros.asm"
 
 ;*=$1D00 ; 7424
 *=$1100; 4352
-        jsr fillscreen
-
+        jsr clearscreen
+        jsr printheader
 @caveloop
         jsr scrollleft
         jsr drawcave
         jsr adjustcave
-        jsr waitraster
+       ; jsr waitraster
         jmp @caveloop
 
         rts
 
+; *** wait for raster scan
 waitraster        
         LDA #150
         CMP VIC_RASTER
         bne waitraster
+        rts
+
+; *** clear the screen
+clearscreen
+        lda #147
+        jsr CHR_OUT
+        rts
+
+; *** print header
+printheader
+        printstring 6,0,header_txt,2
+        rts
+
+header_txt text 'cave demo'
+           byte $00   
+
+; *** print string
+plotstring
+        lda #00         ; init text offset to start
+        sta text_offset
+@nextchar
+        lda text_mem    ; set character
+        sta ZERO_PAGE_PTR1
+        lda text_mem+1
+        sta ZERO_PAGE_PTR1+1
+        ldy text_offset
+        lda (ZERO_PAGE_PTR1),y
+        cmp #00         ; check string end
+        beq @stringend
+        sta chrplot
+        
+        lda text_xpos   ; set screen position and color
+        sta xplot
+        lda text_ypos
+        sta yplot
+        lda text_color
+        sta chrcol
+        jsr scrplot
+        
+        inc text_offset ; increase char offset
+        inc text_xpos
+        jmp @nextchar
+@stringend
+        rts
 
 ; *** Generate a random number from rndseed that is stored
 ; *** in rndsee. The generated value will be < rndmax.
@@ -108,7 +153,7 @@ drawcave
         ldy #00                 ; draw cave char
         lda cavechr
         sta (ZERO_PAGE_PTR1),y
-        lda #$03
+        lda #$04
         sta (ZERO_PAGE_PTR2),y
 
         clc                     ; next screen row
@@ -151,7 +196,7 @@ adjustcave
         jmp @cavedone
 @caveup
         lda cavestart           ; draw cave upwards
-        cmp #$02
+        cmp #$01
         beq @cavedown
         dec cavestart
         dec caveend

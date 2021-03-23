@@ -2,8 +2,8 @@
 ;*** Declaration of variables used by plot
 ;*****************************************
 
-screen_mem byte $16, $1E        ; screen memory location: 7680 (unexpanded vic)
-color_mem byte $16, $96         ; color memory location: 38400 (unexpanded vic)
+screen_mem byte $00, $1E        ; screen memory location: 7680 (unexpanded vic)
+color_mem byte $00, $96         ; color memory location: 38400 (unexpanded vic)
 
 plot_screen_mem byte  $00, $1E  ; plot screen memory location
 plot_color_mem byte $00, $96    ; plot color memory location
@@ -27,6 +27,14 @@ rowsscrolled byte $00           ; rowscrolled counter
 cave_mem byte $2B, $1E          ; cave screen memory start location
 cave_color byte $2B, $96        ; cave screen memory start location
 cavestart byte $05              ; start row of cave
-caveend byte $0B                ; end row of cave  
+caveend byte $12                ; end row of cave  
 cavecnt byte $00                ; cave counter  
-cavechr byte $00                ; cave character            
+cavechr byte $00                ; cave character 
+
+text_mem byte $00, $00          ; memory pointer to text
+text_offset byte $00            ; text offset
+text_color byte $00             ; text color
+text_xpos byte $00              ; text column
+text_ypos byte $00              ; text row
+
+

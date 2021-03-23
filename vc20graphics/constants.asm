@@ -8,6 +8,9 @@ ZERO_PAGE_PTR2 = $FD ; zero page pointer address
 VIC_COLOR=$900F         ; vic color register
 VIC_RASTER=$9004        ; vic raster register
 
+CHR_OUT=$F27A            ; char out
+POSITION_CURSOR=$E50A    ; position cursor
+
 ; background colors
 BGCOL_BLACK=0*16
 BGCOL_WHITE=1*16
