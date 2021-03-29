@@ -5,6 +5,7 @@
 *.prg
 *.dup
 
+CaveCommand/bak/*
 vc20graphics/bak/*
 VampireDungeon/bak/*
 BookGame/bak/*

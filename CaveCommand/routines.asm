@@ -1,23 +1,3 @@
-;*****************************************
-;*** Cave generation routine
-;*****************************************
-
-incasm "constants.asm"
-incasm "macros.asm"
-
-;*=$1D00 ; 7424
-*=$1100; 4352
-        jsr clearscreen
-        jsr printheader
-@caveloop
-        jsr scrollleft
-        jsr drawcave
-        jsr adjustcave
-        jsr waitraster
-        jmp @caveloop
-
-        rts
-
 ; *** wait for raster scan
 waitraster        
         LDA #150
@@ -83,46 +63,6 @@ rndnum
         cmp rndmax
         bcs rndnum
         sta rndseed
-        rts
-
-; *** fills the screen
-fillscreen
-        ldy #00
-        sty scry
-        sty scrx
-@nextrow
-        ldx #21
-        stx xplot
-        ldx #22
-        stx chrplot
-@nextchr
-        ldx scrx
-        stx chrcol
-        inc scrx
-        lda scrx
-        cmp #01
-        bne @nextcolor
-        inc scrx
-@nextcolor
-        cmp #07
-        bne @nextchr2
-        ldx #00
-        stx scrx
-@nextchr2
-        lda scry
-        sta yplot
-        jsr scrplot
-        dec xplot
-        dec chrplot
-        lda xplot
-        cmp #255
-        bne @nextchr
- 
-        inc scry
-        lda scry
-        cmp #23
-        bne @nextrow
-
         rts
 
 ; *** draw the cave at rigth of screen
@@ -416,11 +356,3 @@ scrplot
         sta (ZERO_PAGE_PTR1),y
 
         rts
-
-incasm "variables.asm"
-
-
-
-
-        
-
