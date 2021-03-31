@@ -10,18 +10,17 @@ VIC_RASTER=$9004        ; vic raster register
 
 JOY_REGISTER1=$9111     ; joystick register 1
 JOY_REGISTER2=$9120     ; joystick register 2
-CTRL_REGISTER=$9113     ; Control register
-DDR_REGISTER=$9122      ; DDR register
+DDR_REGISTER1=$9113     ; DDR register for $9113
+DDR_REGISTER2=$9122      ; DDR register for $9120
 
 ; joystick masks
-JOY_UP=%11111011
-JOY_UP_TEST=%00000100
-JOY_DOWN=%11110111
-JOY_DOWN_TEST=%00001000
-JOY_LEFT=%11101111
-JOY_FIRE=%11011111
-JOY_RIGHT=%01111111
+JOY_UP=%00000100
+JOY_DOWN=%00001000
+JOY_LEFT=%00010000
+JOY_FIRE=%00100000
+JOY_RIGHT=%10000000
 
+; inbuilt routines
 CHR_OUT=$F27A           ; char out
 POSITION_CURSOR=$E50A   ; position cursor
 
@@ -62,8 +61,5 @@ COL_PURPLE=4
 COL_GREEN=5
 COL_BLUE=6
 COL_YELLOW=7
-
-SCR_ROWS=23
-SCR_COLS=22
 
  

@@ -36,6 +36,10 @@ text_ypos byte $00              ; text row
 
 player_xpos byte $0A            ; player x position
 player_ypos byte $0A            ; player y position
+player_minx byte $00            ; player min y position
+player_maxx byte $15            ; player max x position
+player_miny byte $00            ; player min y position
+player_maxy byte $16            ; player max y position
 player_chr0 byte $3D            ; player char 0
 player_chr1 byte $3E            ; player char 1
 player_color byte $06           ; player color 

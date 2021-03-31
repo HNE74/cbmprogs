@@ -95,33 +95,41 @@ moveplayerdown
 
 ; *** handler joystick input for player
 handlejoystick
-        lda #00                 ; set register input mode       
-        sta CTRL_REGISTER
+        lda #00                 ; set input mode       
+        sta DDR_REGISTER1
         lda #127                
-        sta DDR_REGISTER
+        sta DDR_REGISTER2
         
         lda JOY_REGISTER2       ; joy up -> player up
         sta chrplot
         jsr scrplot
 
         lda JOY_REGISTER1
-        cmp #251
+        eor #$FF
+        and #JOY_UP
+        cmp #JOY_UP
         beq moveplayerup
 
         lda JOY_REGISTER1
-        cmp #247
+        eor #$FF
+        and #JOY_DOWN
+        cmp #JOY_DOWN
         beq moveplayerdown
 
         lda JOY_REGISTER1
-        cmp #239
+        eor #$FF
+        and #JOY_LEFT
+        cmp #JOY_LEFT
         beq moveplayerleft
 
         lda JOY_REGISTER2
-        cmp #128
+        eor #$FF
+        and #JOY_RIGHT
+        cmp #JOY_RIGHT
         beq moveplayerright
-
-        lda #255          ; set register output mode
-        sta DDR_REGISTER
+ 
+        lda #255          ; set output mode
+        sta DDR_REGISTER2
 
         rts
 
