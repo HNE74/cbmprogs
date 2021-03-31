@@ -8,8 +8,22 @@ ZERO_PAGE_PTR2 = $FD ; zero page pointer address
 VIC_COLOR=$900F         ; vic color register
 VIC_RASTER=$9004        ; vic raster register
 
-CHR_OUT=$F27A            ; char out
-POSITION_CURSOR=$E50A    ; position cursor
+JOY_REGISTER1=$9111     ; joystick register 1
+JOY_REGISTER2=$9120     ; joystick register 2
+CTRL_REGISTER=$9113     ; Control register
+DDR_REGISTER=$9122      ; DDR register
+
+; joystick masks
+JOY_UP=%11111011
+JOY_UP_TEST=%00000100
+JOY_DOWN=%11110111
+JOY_DOWN_TEST=%00001000
+JOY_LEFT=%11101111
+JOY_FIRE=%11011111
+JOY_RIGHT=%01111111
+
+CHR_OUT=$F27A           ; char out
+POSITION_CURSOR=$E50A   ; position cursor
 
 ; background colors
 BGCOL_BLACK=0*16

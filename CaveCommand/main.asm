@@ -5,16 +5,19 @@
 incasm "constants.asm"
 incasm "macros.asm"
 
-;*=$1D00 ; 7424
+; 10 SYS (4352)
+
+*=$1001
+        BYTE    $0E, $10, $0A, $00, $9E, $20, $28,  $34, $33, $35, $32, $29, $00, $00, $00
+
+
 *=$1100; 4352
         jsr clearscreen
-        jsr printheader
-@caveloop
-        jsr scrollleft
-        jsr drawcave
-        jsr adjustcave
-        jsr waitraster
-        jmp @caveloop
+       
+@gameloop
+        jsr handlejoystick
+        jsr drawplayer
+        jmp @gameloop
 
         rts
 

@@ -48,6 +48,84 @@ plotstring
 @stringend
         rts
 
+; *** draws the player on to its current screen position
+drawplayer
+        lda player_xpos         ; draw rear ship
+        sta xplot
+        lda player_ypos
+        sta yplot
+        lda player_chr0
+        sta chrplot
+        lda player_color
+        sta chrcol
+        jsr scrplot
+
+        ldx player_xpos         ; draw front ship
+        inx
+        stx xplot
+        lda player_ypos
+        sta yplot
+        lda player_chr1
+        sta chrplot
+        lda player_color
+        sta chrcol
+        jsr scrplot
+
+        rts
+
+; *** move player to the right
+moveplayerright
+        inc player_xpos
+        rts
+
+; *** move player to the left
+moveplayerleft
+        dec player_xpos
+        rts
+
+; *** move player up
+moveplayerup
+        dec player_ypos
+        rts
+
+; *** move player down
+moveplayerdown 
+        inc player_ypos
+        rts
+
+; *** handler joystick input for player
+handlejoystick
+        lda #00                 ; set register input mode       
+        sta CTRL_REGISTER
+        lda #127                
+        sta DDR_REGISTER
+        
+        lda JOY_REGISTER2       ; joy up -> player up
+        sta chrplot
+        jsr scrplot
+
+        lda JOY_REGISTER1
+        cmp #251
+        beq moveplayerup
+
+        lda JOY_REGISTER1
+        cmp #247
+        beq moveplayerdown
+
+        lda JOY_REGISTER1
+        cmp #239
+        beq moveplayerleft
+
+        lda JOY_REGISTER2
+        cmp #128
+        beq moveplayerright
+
+        lda #255          ; set register output mode
+        sta DDR_REGISTER
+
+        rts
+
+   
 ; *** Generate a random number from rndseed that is stored
 ; *** in rndsee. The generated value will be < rndmax.
 rndnum
@@ -207,41 +285,6 @@ scrollleft
         lda rowsscrolled
         cmp #22
         bne @nextchr
-        rts
-
-; scroll screen from left to right
-scrollleft2
-        lda #0
-        sta scry
-@scrcol
-        lda #1
-        sta scrx
-@scrrow
-        lda scrx        ; char in row to peek
-        sta xplot
-        lda scry
-        sta yplot
-        jsr scrpeek
-        
-        ldy scrx        ; plot char to previous x pos
-        dey
-        sty xplot
-        lda scry
-        sta yplot
-        lda chrpeek
-        sta chrplot
-        jsr scrplot
-
-        inc scrx        ; next char in row
-        ldx scrx
-        cpx #22
-        bcc @scrrow 
-        
-        inc scry        ; next column
-        ldx scry
-        cpx #23
-        bcc @scrcol
-@scrend
         rts
 
 ; *** Peek value from screen to chrpeek. Write coordinates

@@ -14,10 +14,7 @@ chrpeek byte $00                ; peeked character
 chrcol byte $2                  ; color to plot
 
 rndseed byte $10                ; random seed
-rndmax byte $FF                ; max random value
-
-scrx byte $00                   ; scroll x position
-scry byte $00                   ; scroll y position
+rndmax byte $FF                 ; max random value
 
 scrolledchar byte $00           ; scrolled character
 scrolledcolor byte $00          ; scrolled color
@@ -36,5 +33,11 @@ text_offset byte $00            ; text offset
 text_color byte $00             ; text color
 text_xpos byte $00              ; text column
 text_ypos byte $00              ; text row
+
+player_xpos byte $0A            ; player x position
+player_ypos byte $0A            ; player y position
+player_chr0 byte $3D            ; player char 0
+player_chr1 byte $3E            ; player char 1
+player_color byte $06           ; player color 
 
 
