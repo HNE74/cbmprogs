@@ -75,22 +75,46 @@ drawplayer
 
 ; *** move player to the right
 moveplayerright
+        lda player_xpos
+        cmp player_maxx
+        beq @nomove
         inc player_xpos
+        lda #PLAYER_DO_REDRAW
+        sta player_redraw
+@nomove
         rts
 
 ; *** move player to the left
 moveplayerleft
+        lda player_xpos
+        cmp player_minx
+        beq @nomove
         dec player_xpos
+        lda #PLAYER_DO_REDRAW
+        sta player_redraw
+@nomove
         rts
 
 ; *** move player up
 moveplayerup
+        lda player_ypos
+        cmp player_miny
+        beq @nomove
         dec player_ypos
+        lda #PLAYER_DO_REDRAW
+        sta player_redraw
+@nomove
         rts
 
 ; *** move player down
 moveplayerdown 
+        lda player_ypos
+        cmp player_maxy
+        beq @nomove
         inc player_ypos
+        lda #PLAYER_DO_REDRAW
+        sta player_redraw
+@nomove
         rts
 
 ; *** handler joystick input for player
@@ -100,34 +124,46 @@ handlejoystick
         lda #127                
         sta DDR_REGISTER2
         
-        lda JOY_REGISTER2       ; joy up -> player up
-        sta chrplot
-        jsr scrplot
+        lda JOY_REGISTER2
+        and #JOY_RIGHT
+        sta joystick_input
+        clc
+        adc JOY_REGISTER1
+        sta joystick_input
+ 
 
-        lda JOY_REGISTER1
+        lda JOY_REGISTER1       ; check joy up
         eor #$FF
         and #JOY_UP
         cmp #JOY_UP
-        beq moveplayerup
+        bne @checkdown
+        jsr moveplayerup
 
-        lda JOY_REGISTER1
+@checkdown
+        lda JOY_REGISTER1       ; check joy down
         eor #$FF
         and #JOY_DOWN
         cmp #JOY_DOWN
-        beq moveplayerdown
-
-        lda JOY_REGISTER1
+        bne @checkleft
+        jsr moveplayerdown
+        
+@checkleft
+        lda JOY_REGISTER1       ; check joy left
         eor #$FF
         and #JOY_LEFT
         cmp #JOY_LEFT
-        beq moveplayerleft
+        bne @checkright
+        jsr moveplayerleft
 
-        lda JOY_REGISTER2
+@checkright
+        lda JOY_REGISTER2       ; check joy right
         eor #$FF
         and #JOY_RIGHT
         cmp #JOY_RIGHT
-        beq moveplayerright
- 
+        bne @endcheck
+        jsr moveplayerright
+
+@endcheck
         lda #255          ; set output mode
         sta DDR_REGISTER2
 

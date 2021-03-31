@@ -62,4 +62,12 @@ COL_GREEN=5
 COL_BLUE=6
 COL_YELLOW=7
 
+; screen dimension
+SCR_ROWS=23
+SCR_COLS=22
+
+; player redraw states
+PLAYER_NO_REDRAW=0
+PLAYER_DO_REDRAW=1
+
  
