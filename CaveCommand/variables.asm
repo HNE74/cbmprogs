@@ -34,6 +34,7 @@ text_color byte $00             ; text color
 text_xpos byte $00              ; text column
 text_ypos byte $00              ; text row
 
+joystick_input_ddr1 byte $00    ; joystick input of DDR1
 joystick_input byte $00         ; joystick input
 
 player_xpos byte $0A            ; player x position

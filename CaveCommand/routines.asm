@@ -124,15 +124,17 @@ handlejoystick
         lda #127                
         sta DDR_REGISTER2
         
-        lda JOY_REGISTER2
+        lda JOY_REGISTER1       ; prepare joy input ddr1
+        and #JOY_REG1_MASK
+        sta joystick_input_ddr1
+        
+        lda JOY_REGISTER2       ; create combined joy input
         and #JOY_RIGHT
-        sta joystick_input
         clc
-        adc JOY_REGISTER1
-        sta joystick_input
- 
+        adc joystick_input_ddr1
+        sta joystick_input 
 
-        lda JOY_REGISTER1       ; check joy up
+        lda joystick_input      ; check joy up
         eor #$FF
         and #JOY_UP
         cmp #JOY_UP
@@ -140,7 +142,7 @@ handlejoystick
         jsr moveplayerup
 
 @checkdown
-        lda JOY_REGISTER1       ; check joy down
+        lda joystick_input      ; check joy down
         eor #$FF
         and #JOY_DOWN
         cmp #JOY_DOWN
@@ -148,7 +150,7 @@ handlejoystick
         jsr moveplayerdown
         
 @checkleft
-        lda JOY_REGISTER1       ; check joy left
+        lda joystick_input      ; check joy left
         eor #$FF
         and #JOY_LEFT
         cmp #JOY_LEFT
@@ -156,7 +158,7 @@ handlejoystick
         jsr moveplayerleft
 
 @checkright
-        lda JOY_REGISTER2       ; check joy right
+        lda joystick_input      ; check joy right
         eor #$FF
         and #JOY_RIGHT
         cmp #JOY_RIGHT
@@ -164,7 +166,7 @@ handlejoystick
         jsr moveplayerright
 
 @endcheck
-        lda #255          ; set output mode
+        lda #255                ; set output mode
         sta DDR_REGISTER2
 
         rts
