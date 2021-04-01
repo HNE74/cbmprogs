@@ -17,6 +17,7 @@ incasm "macros.asm"
 @gameloop
         jsr handlejoystick
         jsr drawplayer
+        jsr waitraster
         jmp @gameloop
 
         rts

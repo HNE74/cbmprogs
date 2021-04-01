@@ -63,6 +63,9 @@ COL_GREEN=5
 COL_BLUE=6
 COL_YELLOW=7
 
+; blank screen code
+CHR_BLANK=$20
+
 ; screen dimension
 SCR_ROWS=23
 SCR_COLS=22

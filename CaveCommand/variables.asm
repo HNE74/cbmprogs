@@ -39,7 +39,9 @@ joystick_input byte $00         ; joystick input
 
 player_xpos byte $0A            ; player x position
 player_ypos byte $0A            ; player y position
-player_redraw byte $00          ; player redraw flag
+player_xpos_old byte $0A        ; old player x position
+player_ypos_old byte $0A        ; old player y position
+player_redraw byte $01          ; player redraw flag
 player_minx byte $00            ; player min y position
 player_maxx byte $14            ; player max x position
 player_miny byte $01            ; player min y position

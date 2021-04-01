@@ -50,7 +50,32 @@ plotstring
 
 ; *** draws the player on to its current screen position
 drawplayer
-        lda player_xpos         ; draw rear ship
+        lda player_redraw      ; check player redraw
+        cmp #PLAYER_DO_REDRAW
+        bne @nodraw
+
+        lda player_xpos_old     ; remove rear ship
+        sta xplot
+        lda player_ypos_old
+        sta yplot
+        lda #CHR_BLANK
+        sta chrplot
+        lda player_color
+        sta chrcol
+        jsr scrplot
+
+        ldx player_xpos_old    ; remove front ship
+        inx
+        stx xplot
+        lda player_ypos_old
+        sta yplot
+        lda #CHR_BLANK
+        sta chrplot
+        lda player_color
+        sta chrcol
+        jsr scrplot
+
+        lda player_xpos        ; draw rear ship
         sta xplot
         lda player_ypos
         sta yplot
@@ -60,7 +85,7 @@ drawplayer
         sta chrcol
         jsr scrplot
 
-        ldx player_xpos         ; draw front ship
+        ldx player_xpos        ; draw front ship
         inx
         stx xplot
         lda player_ypos
@@ -69,8 +94,11 @@ drawplayer
         sta chrplot
         lda player_color
         sta chrcol
-        jsr scrplot
+        jsr scrplot     
 
+        lda #PLAYER_NO_REDRAW  ; avoid continueus redraw 
+        sta player_redraw
+@nodraw
         rts
 
 ; *** move player to the right
@@ -78,6 +106,10 @@ moveplayerright
         lda player_xpos
         cmp player_maxx
         beq @nomove
+        lda player_xpos
+        sta player_xpos_old
+        lda player_ypos
+        sta player_ypos_old
         inc player_xpos
         lda #PLAYER_DO_REDRAW
         sta player_redraw
@@ -89,6 +121,10 @@ moveplayerleft
         lda player_xpos
         cmp player_minx
         beq @nomove
+        lda player_xpos
+        sta player_xpos_old
+        lda player_ypos
+        sta player_ypos_old
         dec player_xpos
         lda #PLAYER_DO_REDRAW
         sta player_redraw
@@ -100,6 +136,10 @@ moveplayerup
         lda player_ypos
         cmp player_miny
         beq @nomove
+        lda player_ypos
+        sta player_ypos_old
+        lda player_xpos
+        sta player_xpos_old
         dec player_ypos
         lda #PLAYER_DO_REDRAW
         sta player_redraw
@@ -111,6 +151,10 @@ moveplayerdown
         lda player_ypos
         cmp player_maxy
         beq @nomove
+        lda player_ypos
+        sta player_ypos_old
+        lda player_xpos
+        sta player_xpos_old
         inc player_ypos
         lda #PLAYER_DO_REDRAW
         sta player_redraw
@@ -168,9 +212,7 @@ handlejoystick
 @endcheck
         lda #255                ; set output mode
         sta DDR_REGISTER2
-
         rts
-
    
 ; *** Generate a random number from rndseed that is stored
 ; *** in rndsee. The generated value will be < rndmax.
