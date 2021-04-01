@@ -106,10 +106,6 @@ moveplayerright
         lda player_xpos
         cmp player_maxx
         beq @nomove
-        lda player_xpos
-        sta player_xpos_old
-        lda player_ypos
-        sta player_ypos_old
         inc player_xpos
         lda #PLAYER_DO_REDRAW
         sta player_redraw
@@ -121,10 +117,6 @@ moveplayerleft
         lda player_xpos
         cmp player_minx
         beq @nomove
-        lda player_xpos
-        sta player_xpos_old
-        lda player_ypos
-        sta player_ypos_old
         dec player_xpos
         lda #PLAYER_DO_REDRAW
         sta player_redraw
@@ -136,10 +128,6 @@ moveplayerup
         lda player_ypos
         cmp player_miny
         beq @nomove
-        lda player_ypos
-        sta player_ypos_old
-        lda player_xpos
-        sta player_xpos_old
         dec player_ypos
         lda #PLAYER_DO_REDRAW
         sta player_redraw
@@ -151,10 +139,6 @@ moveplayerdown
         lda player_ypos
         cmp player_maxy
         beq @nomove
-        lda player_ypos
-        sta player_ypos_old
-        lda player_xpos
-        sta player_xpos_old
         inc player_ypos
         lda #PLAYER_DO_REDRAW
         sta player_redraw
@@ -177,6 +161,11 @@ handlejoystick
         clc
         adc joystick_input_ddr1
         sta joystick_input 
+
+        lda player_xpos         ; rescue old player position
+        sta player_xpos_old
+        lda player_ypos
+        sta player_ypos_old
 
         lda joystick_input      ; check joy up
         eor #$FF
