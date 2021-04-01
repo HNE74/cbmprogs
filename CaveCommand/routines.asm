@@ -315,7 +315,7 @@ scrollleft
 
 @nextchr
         ldy #$00                ; shift char right to left
-        lda (ZERO_PAGE_PTR1),y 
+        lda (ZERO_PAGE_PTR1),y
         sta scrolledchar
         lda (ZERO_PAGE_PTR2),y 
         sta scrolledcolor
@@ -326,13 +326,22 @@ scrollleft
         cpx #255
         bne @inccnt
         dec ZERO_PAGE_PTR1+1
-        dec ZERO_PAGE_PTR2+1
+        dec ZERO_PAGE_PTR2+1       
 @inccnt
+        lda (ZERO_PAGE_PTR1),y
+        cmp player_chr0
+        beq @ignore
+        cmp player_chr1
+        beq @ignore
         lda scrolledchar
+        cmp player_chr0
+        beq @ignore
+        cmp player_chr1
+        beq @ignore
         sta (ZERO_PAGE_PTR1),y
         lda scrolledcolor
         sta (ZERO_PAGE_PTR2),y        
-
+@ignore
         inc ZERO_PAGE_PTR1      ; next char
         inc ZERO_PAGE_PTR2
         lda ZERO_PAGE_PTR1
@@ -363,6 +372,24 @@ scrollleft
         cmp #22
         bne @nextchr
         rts
+
+; *** checks if the char stored in the accumulator should be
+; *** ignored
+checkignorescroll
+        cmp player_chr0
+        beq @ignore
+        cmp player_chr1
+        beq @ignore
+        lda SCROLL_NOT_IGNORE
+        sta ignorecharscroll
+        rts
+@ignore
+        lda SCROLL_DO_IGNORE
+        sta ignorecharscroll
+        rts        
+        
+
+
 
 ; *** Peek value from screen to chrpeek. Write coordinates
 ; *** for peek to xplot/yplot.

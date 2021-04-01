@@ -20,6 +20,7 @@ scrolledchar byte $00           ; scrolled character
 scrolledcolor byte $00          ; scrolled color
 charsscrolled byte $00          ; charsscrolled counter
 rowsscrolled byte $00           ; rowscrolled counter 
+ignorecharscroll byte $00       ; flag if char will be ignored by scroll
 
 cave_mem byte $2B, $1E          ; cave screen memory start location
 cave_color byte $2B, $96        ; cave screen memory start location

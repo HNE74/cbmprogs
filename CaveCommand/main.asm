@@ -15,9 +15,14 @@ incasm "macros.asm"
         jsr clearscreen
        
 @gameloop
+        jsr drawcave
+        jsr adjustcave
+
         jsr handlejoystick
         jsr drawplayer
         jsr waitraster
+
+        jsr scrollleft
         jmp @gameloop
 
         rts
