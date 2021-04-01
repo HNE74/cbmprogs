@@ -20,7 +20,6 @@ incasm "macros.asm"
 
         jsr handlejoystick
         jsr drawplayer
-        jsr waitraster
 
         jsr scrollleft
         jmp @gameloop

@@ -328,16 +328,21 @@ scrollleft
         dec ZERO_PAGE_PTR1+1
         dec ZERO_PAGE_PTR2+1       
 @inccnt
-        lda (ZERO_PAGE_PTR1),y
-        cmp player_chr0
+        lda (ZERO_PAGE_PTR1),y  ; check char to be overwritten by subsequent char
+        sta ignorecharscroll
+        jsr checkignorescroll
+        lda ignorecharscroll
+        cmp #SCROLL_DO_IGNORE
         beq @ignore
-        cmp player_chr1
+
+        lda scrolledchar        ; check char to be scrolled right to left
+        sta ignorecharscroll
+        jsr checkignorescroll
+        lda ignorecharscroll
+        cmp #SCROLL_DO_IGNORE
         beq @ignore
-        lda scrolledchar
-        cmp player_chr0
-        beq @ignore
-        cmp player_chr1
-        beq @ignore
+
+        lda scrolledchar        ; scroll char right to left
         sta (ZERO_PAGE_PTR1),y
         lda scrolledcolor
         sta (ZERO_PAGE_PTR2),y        
@@ -376,15 +381,16 @@ scrollleft
 ; *** checks if the char stored in the accumulator should be
 ; *** ignored
 checkignorescroll
+        lda ignorecharscroll
         cmp player_chr0
         beq @ignore
         cmp player_chr1
         beq @ignore
-        lda SCROLL_NOT_IGNORE
+        lda #SCROLL_NOT_IGNORE
         sta ignorecharscroll
         rts
 @ignore
-        lda SCROLL_DO_IGNORE
+        lda #SCROLL_DO_IGNORE
         sta ignorecharscroll
         rts        
         
