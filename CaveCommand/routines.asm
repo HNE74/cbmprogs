@@ -57,8 +57,9 @@ plotstring
 drawplayer
         lda player_redraw      ; check player redraw
         cmp #PLAYER_DO_REDRAW
-        bne @nodraw
-
+        beq @dodraw
+        jmp @nodraw
+@dodraw
         lda player_xpos_old     ; remove rear ship
         sta xplot
         lda player_ypos_old
@@ -79,6 +80,22 @@ drawplayer
         lda player_color
         sta chrcol
         jsr scrplot
+
+        lda player_xpos        ; fetch rear char overwritten
+        sta xplot
+        lda player_ypos
+        sta yplot
+        jsr scrpeek
+        lda chrpeek
+        sta player_coll_chr0
+
+        ldx player_xpos        ; draw front char overwritten
+        inx
+        stx xplot
+        lda player_ypos
+        sta yplot
+        jsr scrpeek
+        sta player_coll_chr1
 
         lda player_xpos        ; draw rear ship
         sta xplot
@@ -305,9 +322,6 @@ adjustcave
 
 ; *** scroll screen from left to right
 scrollleft
-        lda #OBJECT_BLANK       ; init player collison character
-        sta player_coll_chr
-
         ldx #00                 ; init counter
         stx rowsscrolled
         stx charsscrolled
@@ -389,8 +403,7 @@ scrollleft
 @endscroll
         rts
 
-; *** checks if the char stored in the accumulator should be
-; *** ignored
+; *** checks char should be ignored in scroll
 checkignorescroll
         lda ignorecharscroll
         cmp player_chr0
@@ -416,6 +429,20 @@ checkplayerfrontcol
         jsr scrpeek
 
         lda chrpeek             ; check object in front of player
+        cmp #OBJECT_BLANK
+        bne @collision
+        rts
+@collision
+        lda #GAME_STATE_OVER
+        sta game_state
+        rts
+
+; checks if the player has collided with object due to movement
+checkplayermovecol
+        lda player_coll_chr0
+        cmp #OBJECT_BLANK
+        bne @collision
+        lda player_coll_chr1
         cmp #OBJECT_BLANK
         bne @collision
         rts

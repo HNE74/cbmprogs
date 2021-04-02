@@ -52,6 +52,7 @@ player_maxy byte $15            ; player max y position
 player_chr0 byte $3D            ; player char 0
 player_chr1 byte $3E            ; player char 1
 player_color byte $06           ; player color 
-player_coll_chr byte $20        ; chr player collided with
+player_coll_chr0 byte $20       ; player movement collision char 0
+player_coll_chr1 byte $20       ; player movement collision char 1
 
 

@@ -22,6 +22,7 @@ incasm "macros.asm"
         jsr handlejoystick      ; manage player
         jsr drawplayer
 
+        jsr checkplayermovecol  ; check player collided with object by movement
         jsr checkplayerfrontcol ; check player will collide with object in front
 
         lda game_state          ; check game state
@@ -33,7 +34,13 @@ incasm "macros.asm"
         jsr waitraster
         jsr waitraster
         jsr waitraster
-
+        jsr waitraster
+        jsr waitraster
+        jsr waitraster       
+        jsr waitraster
+        jsr waitraster      
+        jsr waitraster
+        jsr waitraster
         jmp @gameloop
 
 @gameover
