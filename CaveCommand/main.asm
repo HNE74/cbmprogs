@@ -14,7 +14,12 @@ incasm "macros.asm"
 *=$1100; 4352
         jsr clearscreen
         jsr initgame
+        jsr printscoretext
+        jsr printfueltext
 @gameloop
+        jsr increasescorebyone  ; show new score
+        jsr printscore
+
         jsr incdifficulty       ; create new cave column
         jsr drawcave            
         jsr adjustcave
@@ -25,12 +30,13 @@ incasm "macros.asm"
         jsr checkplayermovecol  ; check player collided with object by movement
         jsr checkplayerfrontcol ; check player will collide with object in front
 
+
         lda game_state          ; check game state
         cmp #GAME_STATE_OVER
         beq @gameover
+        jsr subfuel             ; subtract value from fuel
 
         jsr scrollleft          ; scroll screen left to right
-
         jsr waitraster
         jmp @gameloop
 

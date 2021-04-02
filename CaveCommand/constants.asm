@@ -5,6 +5,7 @@
 ZERO_PAGE_PTR1 = $FB ; zero page pointer address
 ZERO_PAGE_PTR2 = $FD ; zero page pointer address
 
+VIC_CHR_COLOR=$0286     ; vic current char color
 VIC_COLOR=$900F         ; vic color register
 VIC_RASTER=$9004        ; vic raster register
 
@@ -24,6 +25,7 @@ JOY_RIGHT=%10000000
 ; inbuilt routines
 CHR_OUT=$F27A           ; char out
 POSITION_CURSOR=$E50A   ; position cursor
+PRINT_STRING=$CB1E      ; print string
 
 ; background colors
 BGCOL_BLACK=0*16
@@ -54,14 +56,14 @@ BDCOL_BLUE=6 AND 7
 BDCOL_YELLOW=7 AND 7
 
 ; char colors
-COL_BLACK=0 
-COL_WHITE=1
-COL_RED=2
-COL_CYAN=3
-COL_PURPLE=4
-COL_GREEN=5
-COL_BLUE=6
-COL_YELLOW=7
+COLOR_BLACK=0 
+COLOR_WHITE=1
+COLOR_RED=2
+COLOR_CYAN=3
+COLOR_PURPLE=4
+COLOR_GREEN=5
+COLOR_BLUE=6
+COLOR_YELLOW=7
 
 ; screen dimension
 SCR_ROWS=23

@@ -43,6 +43,9 @@ joystick_input byte $00         ; joystick input
 
 game_state byte $00             ; game state
 game_diff_cnt byte $00          ; game difficulty counter
+game_score byte $00, $00, $00     ; game score in bcd format starting with low values
+game_highscore byte $00, $00, $00 ; game highscore in bcd format starting with low values
+game_score_add byte $00, $00, $00 ; game score addition in bcd format starting with low values
 
 player_xpos byte $0A            ; player x position
 player_ypos byte $0A            ; player y position
@@ -58,5 +61,12 @@ player_chr1 byte $3E            ; player char 1
 player_color byte $06           ; player color 
 player_coll_chr0 byte $20       ; player movement collision char 0
 player_coll_chr1 byte $20       ; player movement collision char 1
+player_fuel byte 00, 16         ; player fuel in bcd format starting with low values 00 16
+player_fuel_sub byte 01, 00     ; player fuel substraction in bcd format starting with low value
 
+; game screen strings
+TXT_SCORE text "score:"
+          byte $00
+TXT_FUEL text "fuel:"
+          byte $00
 

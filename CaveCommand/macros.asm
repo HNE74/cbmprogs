@@ -18,19 +18,44 @@ defm setbdcolor
         sta VIC_COLOR
 endm
 
-; *** print string using the plot routine
-defm printstring
-        lda #</3          ; set pointer to string mem
-        sta text_mem
-        lda #>/3
-        sta text_mem+1 
+; *** print string
+defm PrintString
+        ldx #/2    ; Select row
+        ldy #/1    ; Select column
+        jsr POSITION_CURSOR
+ 
+        lda #/3
+        sta VIC_CHR_COLOR
 
-        lda #/2           ; set text position and color
-        sta text_ypos
-        lda #/1
-        sta text_xpos
-        lda #/4
-        sta text_color
+        lda #</4
+        ldy #>/4
+        jsr PRINT_STRING
+endm
 
-        jsr plotstring  ; print string
+
+; *** print bcd figure
+defm PrintBCD
+        lda #/3
+        sta VIC_CHR_COLOR
+        clc
+        ldy #/1
+        ldx #/2
+        jsr POSITION_CURSOR
+        ldx #/4
+@ps1    lda /5,x
+        pha
+        lsr
+        lsr
+        lsr
+        lsr
+        clc
+        adc #$30
+        jsr CHR_OUT
+        pla
+        and #%00001111
+        clc 
+        adc #$30
+        jsr CHR_OUT
+        dex
+        bpl @ps1
 endm

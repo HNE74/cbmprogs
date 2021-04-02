@@ -11,19 +11,20 @@ clearscreen
         jsr CHR_OUT
         rts
 
-; *** print header
-printheader
-        printstring 6,0,header_txt,2
-        rts
-
-header_txt text 'cave demo'
-           byte $00 
-
 ; *** init game
 initgame
         lda #GAME_STATE_RUNNING ; set game state to running
         sta game_state
         
+        lda #00                 ; init score
+        sta game_score
+        sta game_score+1
+        sta game_score+2
+
+        sta player_fuel         ; init player fuel
+        lda #16
+        sta player_fuel+1
+
         lda #$00                ; init difficulty 
         sta game_diff_cnt
         lda #MINE_START_PROB
@@ -35,33 +36,17 @@ initgame
         sta caveend
         rts
 
-; *** print string
-plotstring
-        lda #00         ; init text offset to start
-        sta text_offset
-@nextchar
-        lda text_mem    ; set character
-        sta ZERO_PAGE_PTR1
-        lda text_mem+1
-        sta ZERO_PAGE_PTR1+1
-        ldy text_offset
-        lda (ZERO_PAGE_PTR1),y
-        cmp #00         ; check string end
-        beq @stringend
-        sta chrplot
-        
-        lda text_xpos   ; set screen position and color
-        sta xplot
-        lda text_ypos
-        sta yplot
-        lda text_color
-        sta chrcol
-        jsr scrplot
-        
-        inc text_offset ; increase char offset
-        inc text_xpos
-        jmp @nextchar
-@stringend
+; *** print game header
+printscoretext
+        PrintString 0,0,COLOR_GREEN,TXT_SCORE
+
+printfueltext
+        PrintString 13,0,COLOR_YELLOW,TXT_FUEL
+
+; *** print score
+printscore
+        PrintBCD 6,0,COLOR_GREEN,2,game_score
+        PrintBCD 18,0,COLOR_YELLOW,1,player_fuel
         rts
 
 ; *** draws the player on to its current screen position
@@ -632,4 +617,54 @@ scrplot
         ldy #00
         sta (ZERO_PAGE_PTR1),y
 
+        rts
+
+; *** increase score by one
+increasescorebyone
+        lda #01
+        sta game_score_add
+        jsr addscore
+        rts
+
+; *** add value to score
+addscore
+        sed
+        clc
+        lda game_score+0
+        adc game_score_add+0
+        sta game_score+0
+        lda game_score+1
+        adc game_score_add+1
+        sta game_score+1
+        lda game_score+2
+        adc game_score_add+2
+        sta game_score+2
+        cld
+        lda #$00
+        sta game_score_add
+        lda #$00
+        sta game_score_add+1
+        lda #$00
+        sta game_score_add+2
+        rts
+
+; *** subtract fuel
+subfuel                    
+        sed                     ; subtract 1 from fuel
+        sec
+        lda player_fuel+0
+        sbc player_fuel_sub+0
+        sta player_fuel+0
+        lda player_fuel+1
+        sbc player_fuel_sub+1
+        sta player_fuel+1
+        cld
+
+        lda player_fuel         ; game over is there no fuel left
+        ora player_fuel+1
+        cmp #00
+        bne @continue
+        lda #GAME_STATE_OVER
+        sta game_state
+@continue
         rts
