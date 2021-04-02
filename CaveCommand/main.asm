@@ -15,7 +15,7 @@ incasm "macros.asm"
         jsr clearscreen
         jsr initgame
 @gameloop
-        jsr shrinkcave          ; draw new cave column
+        jsr incdifficulty       ; create new cave column
         jsr drawcave            
         jsr adjustcave
 

@@ -24,8 +24,10 @@ initgame
         lda #GAME_STATE_RUNNING ; set game state to running
         sta game_state
         
-        lda #$00                ; init difficulty counter
+        lda #$00                ; init difficulty 
         sta game_diff_cnt
+        lda #MINE_START_PROB
+        sta mineprob
 
         lda #CAVE_START_ROW     ; init cave start and end row
         sta cavestart
@@ -251,25 +253,32 @@ rndnum
         sta rndseed
         rts
 
-; shrinks the cave 
-shrinkcave
+; increase game difficulty
+incdifficulty
         dec game_diff_cnt
         lda game_diff_cnt
         cmp #00
-        bne @noshrink
-        sec
+        bne @noinc
+        
+        inc mineprob            ; mine probability
+        
+        sec                     ; shrink cave
         lda caveend
         sbc cavestart
         cmp #CAVE_MIN_WIDTH
-        beq @noshrink
+        beq @noinc
         dec caveend
-@noshrink        
 
+@noinc
+        
+        rts
 
 ; *** draw the cave at rigth of screen
 drawcave
         lda #00                 ; init values
         sta cavecnt
+        lda #MINE_NOT_DRAWN
+        sta minedrawn
 
         lda cave_mem            ; set screenram address
         sta ZERO_PAGE_PTR1
@@ -279,10 +288,11 @@ drawcave
         sta ZERO_PAGE_PTR2
         lda cave_color+1
         sta ZERO_PAGE_PTR2+1    
-
 @cavechar
-        lda #OBJECT_CAVE
+        lda #OBJECT_CAVE        ; determine cave or empty space
         sta cavechr
+        lda #OBJECT_CAVE_COLOR
+        sta cavechr_color
         lda cavecnt
         cmp cavestart
         bcc @plotcavechr
@@ -290,11 +300,25 @@ drawcave
         bcs @plotcavechr
         lda #OBJECT_BLANK
         sta cavechr
+        
+        jsr rndnum              ; draw mine
+        lda minedrawn           
+        cmp #MINE_WAS_DRAWN
+        beq @plotcavechr
+        lda rndseed
+        cmp mineprob
+        bcs @plotcavechr
+        lda #OBJECT_MINE
+        sta cavechr
+        lda #OBJECT_MINE_COLOR
+        sta cavechr_color
+        lda #MINE_WAS_DRAWN
+        sta minedrawn
 @plotcavechr
         ldy #00                 ; draw cave char
         lda cavechr
         sta (ZERO_PAGE_PTR1),y
-        lda #$04
+        lda cavechr_color
         sta (ZERO_PAGE_PTR2),y
 
         clc                     ; next screen row
