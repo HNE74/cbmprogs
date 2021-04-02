@@ -13,6 +13,7 @@ incasm "macros.asm"
 
 *=$1100; 4352
         jsr clearscreen
+        jsr setbgcolor
         jsr initgame
         jsr printheadertext
 @gameloop

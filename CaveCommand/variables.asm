@@ -58,7 +58,7 @@ player_miny byte $01            ; player min y position
 player_maxy byte $15            ; player max y position
 player_chr0 byte $3D            ; player char 0
 player_chr1 byte $3E            ; player char 1
-player_color byte $06           ; player color 
+player_color byte $01           ; player color 
 player_coll_chr0 byte $20       ; player movement collision char 0
 player_coll_chr1 byte $20       ; player movement collision char 1
 player_fuel byte 00, 16         ; player fuel in bcd format starting with low values 00 16

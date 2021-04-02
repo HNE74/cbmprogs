@@ -5,6 +5,12 @@ waitraster
         bne waitraster
         rts
 
+; *** set bg color
+setbgcolor
+        lda #08
+        sta VIC_COLOR
+        rts
+
 ; *** clear the screen
 clearscreen
         lda #147
@@ -39,13 +45,13 @@ initgame
 ; *** print game header
 printheadertext
         PrintString 0,0,COLOR_GREEN,TXT_SCORE
-        PrintString 13,0,COLOR_YELLOW,TXT_FUEL
+        PrintString 13,0,COLOR_WHITE,TXT_FUEL
         rts
 
 ; *** print score
 printscore
         PrintBCD 6,0,COLOR_GREEN,2,game_score
-        PrintBCD 18,0,COLOR_YELLOW,1,player_fuel
+        PrintBCD 18,0,COLOR_WHITE,1,player_fuel
         rts
 
 ; *** draws the player on to its current screen position
