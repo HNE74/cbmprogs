@@ -14,8 +14,7 @@ incasm "macros.asm"
 *=$1100; 4352
         jsr clearscreen
         jsr initgame
-        jsr printscoretext
-        jsr printfueltext
+        jsr printheadertext
 @gameloop
         jsr increasescorebyone  ; show new score
         jsr printscore

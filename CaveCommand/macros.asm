@@ -20,6 +20,7 @@ endm
 
 ; *** print string
 defm PrintString
+        clc
         ldx #/2    ; Select row
         ldy #/1    ; Select column
         jsr POSITION_CURSOR

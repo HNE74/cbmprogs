@@ -37,11 +37,10 @@ initgame
         rts
 
 ; *** print game header
-printscoretext
+printheadertext
         PrintString 0,0,COLOR_GREEN,TXT_SCORE
-
-printfueltext
         PrintString 13,0,COLOR_YELLOW,TXT_FUEL
+        rts
 
 ; *** print score
 printscore
