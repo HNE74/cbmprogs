@@ -24,8 +24,8 @@ ignorecharscroll byte $00       ; flag if char will be ignored by scroll
 
 cave_mem byte $2B, $1E          ; cave screen memory start location
 cave_color byte $2B, $96        ; cave screen memory start location
-cavestart byte $05              ; start row of cave
-caveend byte $12                ; end row of cave  
+cavestart byte $00              ; start row of cave
+caveend byte $00                ; end row of cave  
 cavecnt byte $00                ; cave counter  
 cavechr byte $00                ; cave character 
 
@@ -39,6 +39,7 @@ joystick_input_ddr1 byte $00    ; joystick input of DDR1
 joystick_input byte $00         ; joystick input
 
 game_state byte $00             ; game state
+game_diff_cnt byte $00          ; game difficulty counter
 
 player_xpos byte $0A            ; player x position
 player_ypos byte $0A            ; player y position

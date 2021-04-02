@@ -13,10 +13,10 @@ incasm "macros.asm"
 
 *=$1100; 4352
         jsr clearscreen
-       
+        jsr initgame
 @gameloop
-
-        jsr drawcave            ; draw new cave column
+        jsr shrinkcave          ; draw new cave column
+        jsr drawcave            
         jsr adjustcave
 
         jsr handlejoystick      ; manage player

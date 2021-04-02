@@ -21,8 +21,17 @@ header_txt text 'cave demo'
 
 ; *** init game
 initgame
-        lda #GAME_STATE_RUNNING
+        lda #GAME_STATE_RUNNING ; set game state to running
         sta game_state
+        
+        lda #$00                ; init difficulty counter
+        sta game_diff_cnt
+
+        lda #CAVE_START_ROW     ; init cave start and end row
+        sta cavestart
+        lda #CAVE_END_ROW
+        sta caveend
+        rts
 
 ; *** print string
 plotstring
@@ -241,6 +250,21 @@ rndnum
         bcs rndnum
         sta rndseed
         rts
+
+; shrinks the cave 
+shrinkcave
+        dec game_diff_cnt
+        lda game_diff_cnt
+        cmp #00
+        bne @noshrink
+        sec
+        lda caveend
+        sbc cavestart
+        cmp #CAVE_MIN_WIDTH
+        beq @noshrink
+        dec caveend
+@noshrink        
+
 
 ; *** draw the cave at rigth of screen
 drawcave
