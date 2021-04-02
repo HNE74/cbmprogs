@@ -17,7 +17,12 @@ printheader
         rts
 
 header_txt text 'cave demo'
-           byte $00   
+           byte $00 
+
+; *** init game
+initgame
+        lda #GAME_STATE_RUNNING
+        sta game_state
 
 ; *** print string
 plotstring
@@ -58,7 +63,7 @@ drawplayer
         sta xplot
         lda player_ypos_old
         sta yplot
-        lda #CHR_BLANK
+        lda #OBJECT_BLANK
         sta chrplot
         lda player_color
         sta chrcol
@@ -69,7 +74,7 @@ drawplayer
         stx xplot
         lda player_ypos_old
         sta yplot
-        lda #CHR_BLANK
+        lda #OBJECT_BLANK
         sta chrplot
         lda player_color
         sta chrcol
@@ -235,14 +240,14 @@ drawcave
         sta ZERO_PAGE_PTR2+1    
 
 @cavechar
-        lda #$66
+        lda #OBJECT_CAVE
         sta cavechr
         lda cavecnt
         cmp cavestart
         bcc @plotcavechr
         cmp caveend
         bcs @plotcavechr
-        lda #$20
+        lda #OBJECT_BLANK
         sta cavechr
 @plotcavechr
         ldy #00                 ; draw cave char
@@ -300,6 +305,9 @@ adjustcave
 
 ; *** scroll screen from left to right
 scrollleft
+        lda #OBJECT_BLANK       ; init player collison character
+        sta player_coll_chr
+
         ldx #00                 ; init counter
         stx rowsscrolled
         stx charsscrolled
@@ -326,7 +334,8 @@ scrollleft
         cpx #255
         bne @inccnt
         dec ZERO_PAGE_PTR1+1
-        dec ZERO_PAGE_PTR2+1       
+        dec ZERO_PAGE_PTR2+1 
+      
 @inccnt
         lda (ZERO_PAGE_PTR1),y  ; check char to be overwritten by subsequent char
         sta ignorecharscroll
@@ -375,7 +384,9 @@ scrollleft
         inc rowsscrolled
         lda rowsscrolled
         cmp #22
-        bne @nextchr
+        beq @endscroll
+        jmp @nextchr
+@endscroll
         rts
 
 ; *** checks if the char stored in the accumulator should be
@@ -393,9 +404,25 @@ checkignorescroll
         lda #SCROLL_DO_IGNORE
         sta ignorecharscroll
         rts        
-        
 
+; checks if the player has collided with object in front of it
+checkplayerfrontcol
+        ldx player_xpos       ; fetch object in front of player
+        inx
+        inx
+        stx xplot
+        lda player_ypos
+        sta yplot
+        jsr scrpeek
 
+        lda chrpeek             ; check object in front of player
+        cmp #OBJECT_BLANK
+        bne @collision
+        rts
+@collision
+        lda #GAME_STATE_OVER
+        sta game_state
+        rts        
 
 ; *** Peek value from screen to chrpeek. Write coordinates
 ; *** for peek to xplot/yplot.

@@ -38,6 +38,8 @@ text_ypos byte $00              ; text row
 joystick_input_ddr1 byte $00    ; joystick input of DDR1
 joystick_input byte $00         ; joystick input
 
+game_state byte $00             ; game state
+
 player_xpos byte $0A            ; player x position
 player_ypos byte $0A            ; player y position
 player_xpos_old byte $0A        ; old player x position
@@ -50,5 +52,6 @@ player_maxy byte $15            ; player max y position
 player_chr0 byte $3D            ; player char 0
 player_chr1 byte $3E            ; player char 1
 player_color byte $06           ; player color 
+player_coll_chr byte $20        ; chr player collided with
 
 

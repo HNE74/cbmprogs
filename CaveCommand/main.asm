@@ -15,15 +15,28 @@ incasm "macros.asm"
         jsr clearscreen
        
 @gameloop
-        jsr drawcave
+
+        jsr drawcave            ; draw new cave column
         jsr adjustcave
 
-        jsr handlejoystick
+        jsr handlejoystick      ; manage player
         jsr drawplayer
 
-        jsr scrollleft
+        jsr checkplayerfrontcol ; check player will collide with object in front
+
+        lda game_state          ; check game state
+        cmp #GAME_STATE_OVER
+        beq @gameover
+
+        jsr scrollleft          ; scroll screen left to right
+
+        jsr waitraster
+        jsr waitraster
+        jsr waitraster
+
         jmp @gameloop
 
+@gameover
         rts
 
 incasm "routines.asm"

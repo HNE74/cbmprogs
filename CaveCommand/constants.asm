@@ -63,9 +63,6 @@ COL_GREEN=5
 COL_BLUE=6
 COL_YELLOW=7
 
-; blank screen code
-CHR_BLANK=$20
-
 ; screen dimension
 SCR_ROWS=23
 SCR_COLS=22
@@ -77,5 +74,13 @@ SCROLL_DO_IGNORE=1
 ; player redraw states
 PLAYER_NO_REDRAW=0
 PLAYER_DO_REDRAW=1
+
+; object chars
+OBJECT_BLANK=$20
+OBJECT_CAVE=$66
+
+; game states
+GAME_STATE_RUNNING=$00
+GAME_STATE_OVER=$01
 
  
