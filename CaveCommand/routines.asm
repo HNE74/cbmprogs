@@ -353,18 +353,23 @@ scrollleft
 @inccnt
         lda (ZERO_PAGE_PTR1),y  ; check char to be overwritten by subsequent char
         sta ignorecharscroll
-        jsr checkignorescroll
+        jsr checkignorescrollfront
         lda ignorecharscroll
         cmp #SCROLL_DO_IGNORE
         beq @ignore
 
         lda scrolledchar        ; check char to be scrolled right to left
         sta ignorecharscroll
-        jsr checkignorescroll
+        jsr checkignorescrollplayer
         lda ignorecharscroll
-        cmp #SCROLL_DO_IGNORE
+        cmp #SCROLL_DO_IGNORE   ; ignore and do nothing
         beq @ignore
+        cmp #SCROLL_DO_IGNORE_SPACE ; ignore but clean rear of player
+        bne @leftright
+        lda #OBJECT_BLANK
+        sta scrolledchar
 
+@leftright
         lda scrolledchar        ; scroll char right to left
         sta (ZERO_PAGE_PTR1),y
         lda scrolledcolor
@@ -403,11 +408,9 @@ scrollleft
 @endscroll
         rts
 
-; *** checks char should be ignored in scroll
-checkignorescroll
+; *** checks char in front of player should be ignored in scroll
+checkignorescrollfront
         lda ignorecharscroll
-        cmp player_chr0
-        beq @ignore
         cmp player_chr1
         beq @ignore
         lda #SCROLL_NOT_IGNORE
@@ -416,7 +419,26 @@ checkignorescroll
 @ignore
         lda #SCROLL_DO_IGNORE
         sta ignorecharscroll
-        rts        
+        rts  
+
+; *** checks char of pleyer should be ignored in scroll
+checkignorescrollplayer
+        lda ignorecharscroll
+        cmp player_chr0
+        beq @ignorespace
+        cmp player_chr1
+        beq @ignore
+        lda #SCROLL_NOT_IGNORE
+        sta ignorecharscroll
+        rts
+@ignore
+        lda #SCROLL_DO_IGNORE
+        sta ignorecharscroll
+        rts 
+@ignorespace
+        lda #SCROLL_DO_IGNORE_SPACE
+        sta ignorecharscroll
+        rts
 
 ; checks if the player has collided with object in front of it
 checkplayerfrontcol

@@ -32,15 +32,6 @@ incasm "macros.asm"
         jsr scrollleft          ; scroll screen left to right
 
         jsr waitraster
-        jsr waitraster
-        jsr waitraster
-        jsr waitraster
-        jsr waitraster
-        jsr waitraster       
-        jsr waitraster
-        jsr waitraster      
-        jsr waitraster
-        jsr waitraster
         jmp @gameloop
 
 @gameover
