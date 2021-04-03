@@ -35,6 +35,8 @@ initgame
         sta game_diff_cnt
         lda #MINE_START_PROB
         sta mineprob
+        lda #FUEL_START_PROB
+        sta fuelprob
 
         lda #CAVE_START_ROW     ; init cave start and end row
         sta cavestart
@@ -269,6 +271,8 @@ drawcave
         sta cavecnt
         lda #MINE_NOT_DRAWN
         sta minedrawn
+        lda #FUEL_NOT_DRAWN
+        sta fueldrawn
 
         lda cave_mem            ; set screenram address
         sta ZERO_PAGE_PTR1
@@ -294,16 +298,31 @@ drawcave
         jsr rndnum              ; draw mine
         lda minedrawn           
         cmp #MINE_WAS_DRAWN
-        beq @plotcavechr
+        beq @fuel
         lda rndseed
         cmp mineprob
-        bcs @plotcavechr
+        bcs @fuel
         lda #OBJECT_MINE
         sta cavechr
         lda #OBJECT_MINE_COLOR
         sta cavechr_color
         lda #MINE_WAS_DRAWN
         sta minedrawn
+        jmp @plotcavechr
+@fuel
+        jsr rndnum              ; draw fuel
+        lda fueldrawn           
+        cmp #FUEL_WAS_DRAWN
+        beq @plotcavechr
+        lda rndseed
+        cmp fuelprob
+        bcs @plotcavechr
+        lda #OBJECT_FUEL
+        sta cavechr
+        lda #OBJECT_FUEL_COLOR
+        sta cavechr_color
+        lda #FUEL_WAS_DRAWN
+        sta fueldrawn
 @plotcavechr
         ldy #00                 ; draw cave char
         lda cavechr
@@ -330,8 +349,9 @@ drawcave
         inc cavecnt
         lda cavecnt
         cmp #$16
-        bne @cavechar
-
+        beq @enddraw
+        jmp @cavechar
+@enddraw
         rts
 
 ; *** randomly adjust cave

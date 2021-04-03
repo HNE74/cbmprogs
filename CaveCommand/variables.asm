@@ -31,6 +31,8 @@ cavechr byte $00                ; cave character
 cavechr_color byte $00          ; cave color
 minedrawn byte $00              ; flag if mine was drawn
 mineprob byte $00               ; mine draw probabilty
+fueldrawn byte $00              ; flag if fuel was drawn
+fuelprob byte $00               ; fuel draw probabilty
 
 text_mem byte $00, $00          ; memory pointer to text
 text_offset byte $00            ; text offset
