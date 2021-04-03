@@ -27,9 +27,8 @@ incasm "macros.asm"
         jsr handlejoystick      ; manage player
         jsr drawplayer
 
-        jsr checkplayermovecol  ; check player collided with object by movement
-        jsr checkplayerfrontcol ; check player will collide with object in front
-
+        jsr checkplayermovecollision  ; check player collided with object by movement
+        jsr checkplayerfrontcollision ; check player will collide with object in front
 
         lda game_state          ; check game state
         cmp #GAME_STATE_OVER
@@ -37,7 +36,9 @@ incasm "macros.asm"
         jsr subfuel             ; subtract value from fuel
 
         jsr scrollleft          ; scroll screen left to right
+
         jsr waitraster
+
         jmp @gameloop
 
 @gameover

@@ -35,8 +35,10 @@ initgame
         sta game_diff_cnt
         lda #MINE_START_PROB
         sta mineprob
-        lda #FUEL_START_PROB
-        sta fuelprob
+        lda #FUEL_START_PROB1
+        sta fuelprob1
+        lda #FUEL_START_PROB2
+        sta fuelprob2
 
         lda #CAVE_START_ROW     ; init cave start and end row
         sta cavestart
@@ -245,6 +247,20 @@ rndnum
         sta rndseed
         rts
 
+; *** Generate a random number from rndseed that is stored
+; *** in rndsee. The generated value will be < rndmax.
+rndnum2
+        lda rndseed2
+        asl
+        bcc @rnd
+        eor #$4d
+@rnd
+        eor $9124
+        sta rndseed2
+        cmp rndmax2
+        bcs rndnum2      
+        rts
+
 ; increase game difficulty
 incdifficulty
         dec game_diff_cnt
@@ -260,7 +276,6 @@ incdifficulty
         cmp #CAVE_MIN_WIDTH
         beq @noinc
         dec caveend
-
 @noinc
         
         rts
@@ -310,13 +325,17 @@ drawcave
         sta minedrawn
         jmp @plotcavechr
 @fuel
-        jsr rndnum              ; draw fuel
-        lda fueldrawn           
+        lda fueldrawn           ; draw fuel           
         cmp #FUEL_WAS_DRAWN
         beq @plotcavechr
-        lda rndseed
-        cmp fuelprob
+        jsr rndnum2              
+        lda rndseed2
+        cmp fuelprob1
         bcs @plotcavechr
+        jsr rndnum2
+        lda rndseed2
+        cmp fuelprob2
+        bcs @plotcavechr        
         lda #OBJECT_FUEL
         sta cavechr
         lda #OBJECT_FUEL_COLOR
@@ -499,7 +518,7 @@ checkignorescrollplayer
         rts
 
 ; checks if the player has collided with object in front of it
-checkplayerfrontcol
+checkplayerfrontcollision
         ldx player_xpos       ; fetch object in front of player
         inx
         inx
@@ -510,7 +529,13 @@ checkplayerfrontcol
 
         lda chrpeek             ; check object in front of player
         cmp #OBJECT_BLANK
+        bne @fuel
+        rts
+@fuel
+        lda chrpeek
+        cmp #OBJECT_FUEL
         bne @collision
+        jsr addfuel
         rts
 @collision
         lda #GAME_STATE_OVER
@@ -518,13 +543,27 @@ checkplayerfrontcol
         rts
 
 ; checks if the player has collided with object due to movement
-checkplayermovecol
+checkplayermovecollision
         lda player_coll_chr0
         cmp #OBJECT_BLANK
-        bne @collision
+        bne @fuel
         lda player_coll_chr1
         cmp #OBJECT_BLANK
-        bne @collision
+        bne @fuel
+        rts
+@fuel
+        lda player_coll_chr0
+        cmp #OBJECT_FUEL
+        beq @addfuel
+        lda player_coll_chr1
+        cmp #OBJECT_FUEL
+        beq @addfuel
+        jmp @collision
+@addfuel
+        jsr addfuel
+        lda #OBJECT_BLANK
+        sta player_coll_chr0
+        sta player_coll_chr1
         rts
 @collision
         lda #GAME_STATE_OVER
@@ -671,6 +710,19 @@ addscore
         sta game_score_add+1
         lda #$00
         sta game_score_add+2
+        rts
+
+; *** add value to fuel
+addfuel
+        sed
+        clc
+        lda player_fuel+0
+        adc player_fuel_add+0
+        sta player_fuel+0
+        lda player_fuel+1
+        adc player_fuel_add+1
+        sta player_fuel+1
+        cld
         rts
 
 ; *** subtract fuel

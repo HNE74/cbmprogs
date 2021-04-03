@@ -15,6 +15,8 @@ chrcol byte $2                  ; color to plot
 
 rndseed byte $10                ; random seed
 rndmax byte $FF                 ; max random value
+rndseed2 byte $10               ; random seed
+rndmax2 byte $FF                ; max random value
 
 scrolledchar byte $00           ; scrolled character
 scrolledcolor byte $00          ; scrolled color
@@ -32,7 +34,8 @@ cavechr_color byte $00          ; cave color
 minedrawn byte $00              ; flag if mine was drawn
 mineprob byte $00               ; mine draw probabilty
 fueldrawn byte $00              ; flag if fuel was drawn
-fuelprob byte $00               ; fuel draw probabilty
+fuelprob1 byte $00              ; fuel draw probabilty
+fuelprob2 byte $00
 
 text_mem byte $00, $00          ; memory pointer to text
 text_offset byte $00            ; text offset
@@ -65,6 +68,7 @@ player_coll_chr0 byte $20       ; player movement collision char 0
 player_coll_chr1 byte $20       ; player movement collision char 1
 player_fuel byte 00, 16         ; player fuel in bcd format starting with low values 00 16
 player_fuel_sub byte 01, 00     ; player fuel substraction in bcd format starting with low value
+player_fuel_add byte 50, 00     ; player fuel addition in bcd format starting with low value
 
 ; game screen strings
 TXT_SCORE text "score:"
