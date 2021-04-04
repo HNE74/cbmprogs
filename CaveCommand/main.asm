@@ -15,6 +15,10 @@ incasm "macros.asm"
         jsr adjustchars
         jsr clearscreen
         jsr setbgcolor
+@startscreen
+        jsr showstartscreen
+@startgame
+        jsr clearscreen
         jsr initgame
         jsr printheadertext
 @gameloop
@@ -45,6 +49,7 @@ incasm "macros.asm"
         jmp @gameloop
 
 @gameover
+        jsr playerexplosion
         rts
 
 incasm "routines.asm"

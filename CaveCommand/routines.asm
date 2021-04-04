@@ -27,6 +27,47 @@ adjustchars
         sta $38
         rts
 
+; *** start screen
+showstartscreen
+        jsr clearscreen
+        PrintString 3,3,COLOR_YELLOW,TXT_FRAME0        
+        PrintString 3,4,COLOR_YELLOW,TXT_FRAME1        
+        PrintString 3,5,COLOR_YELLOW,TXT_FRAME1        
+        PrintString 3,6,COLOR_YELLOW,TXT_FRAME1        
+        PrintString 3,7,COLOR_YELLOW,TXT_FRAME1        
+        PrintString 3,8,COLOR_YELLOW,TXT_FRAME1        
+        PrintString 3,9,COLOR_YELLOW,TXT_FRAME1
+        PrintString 3,10,COLOR_YELLOW,TXT_FRAME1        
+        PrintString 3,11,COLOR_YELLOW,TXT_FRAME1 
+        PrintString 3,12,COLOR_YELLOW,TXT_FRAME1 
+        PrintString 3,13,COLOR_YELLOW,TXT_FRAME0
+
+        PrintString 5,5,COLOR_WHITE,TXT_NAME0  
+        PrintString 5,7,COLOR_GREEN,TXT_NAME1 
+        PrintString 5,8,COLOR_GREEN,TXT_NAME2 
+        PrintString 5,10,COLOR_CYAN,TXT_NAME3 
+        PrintBCD 11,11,COLOR_CYAN,2,game_highscore
+
+        PrintString 2,15,COLOR_PURPLE,TXT_INFO0
+        PrintString 2,16,COLOR_PURPLE,TXT_INFO1
+        PrintString 2,17,COLOR_PURPLE,TXT_INFO2
+        PrintString 1,21,COLOR_RED,TXT_INFO3
+
+        jsr waitfirepressed
+        rts
+
+; *** wait until joy firebutton pressed
+waitfirepressed
+        lda #00                 ; set input mode       
+        sta DDR_REGISTER1       
+@checkfire
+        lda JOY_REGISTER1      ; check joy up
+        eor #$FF
+        and #JOY_FIRE
+        cmp #JOY_FIRE
+        bne @checkfire 
+        rts
+
 ; *** init game
 initgame
         lda #GAME_STATE_RUNNING ; set game state to running
@@ -755,3 +796,52 @@ subfuel
         sta game_state
 @continue
         rts
+
+; *** player explosion
+playerexplosion
+        lda #128
+        sta player_explosion_cnt
+        
+@exploop
+        dec player_explosion_cnt
+        lda player_explosion_cnt
+        cmp #$00
+        bne @explosion
+        rts
+@explosion
+        clc
+        ldx player_ypos   
+        ldy player_xpos 
+        dey
+        jsr POSITION_CURSOR
+        lda player_explosion_cnt
+        sta VIC_CHR_COLOR
+        lda #<TXT_BAM
+        ldy #>TXT_BAM
+        jsr PRINT_STRING
+
+        clc
+        ldx player_ypos
+        dex
+        ldy player_xpos 
+        dey
+        jsr POSITION_CURSOR
+        lda player_explosion_cnt
+        sta VIC_CHR_COLOR
+        lda #<TXT_BAM
+        ldy #>TXT_BAM
+        jsr PRINT_STRING
+
+        clc
+        ldx player_ypos
+        inx
+        ldy player_xpos 
+        dey
+        jsr POSITION_CURSOR
+        lda player_explosion_cnt
+        sta VIC_CHR_COLOR
+        lda #<TXT_BAM
+        ldy #>TXT_BAM
+        jsr PRINT_STRING
+        jsr waitraster
+        jmp @exploop

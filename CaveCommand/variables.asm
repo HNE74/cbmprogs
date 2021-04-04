@@ -68,11 +68,36 @@ player_coll_chr0 byte $20       ; player movement collision char 0
 player_coll_chr1 byte $20       ; player movement collision char 1
 player_fuel byte 00, 16         ; player fuel in bcd format starting with low values 00 16
 player_fuel_sub byte 01, 00     ; player fuel substraction in bcd format starting with low value
-player_fuel_add byte 100, 00     ; player fuel addition in bcd format starting with low value
+player_fuel_add byte 100, 00    ; player fuel addition in bcd format starting with low value
+player_explosion_cnt byte 64    ; player explosion counter
 
 ; game screen strings
 TXT_SCORE text "score:"
           byte $00
 TXT_FUEL text "fuel:"
+          byte $00
+TXT_BAM text "****"
+          byte $00
+
+; start screen strings
+TXT_FRAME0 text "################"
+           byte $00
+TXT_FRAME1 text "#              #"
+           byte $00
+TXT_NAME0 text "cave command"
+          byte $00
+TXT_NAME1 text "by noltisoft"
+          byte $00
+TXT_NAME2 text "created 2021"
+          byte $00
+TXT_NAME3 text "highscore:"
+          byte $00
+TXT_INFO0 text "intrude the enemy"
+          byte $00
+TXT_INFO1 text "cave,avoid mines,"
+          byte $00
+TXT_INFO2 text "collect fuel."
+          byte $00
+TXT_INFO3 text "press fire to start!"
           byte $00
 
