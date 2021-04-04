@@ -56,6 +56,9 @@ showstartscreen
         jsr waitfirepressed
         rts
 
+showgameover
+        
+
 ; *** wait until joy firebutton pressed
 waitfirepressed
         lda #00                 ; set input mode       
@@ -73,10 +76,18 @@ initgame
         lda #GAME_STATE_RUNNING ; set game state to running
         sta game_state
         
+        lda #05                 ; init player position
+        sta player_xpos
+        lda #10
+        sta player_ypos 
+
         lda #00                 ; init score
         sta game_score
         sta game_score+1
         sta game_score+2
+
+        lda #PLAYER_DO_REDRAW   ; initial player draw
+        sta player_redraw
 
         sta player_fuel         ; init player fuel
         lda #16
@@ -797,6 +808,34 @@ subfuel
 @continue
         rts
 
+; *** update highscore
+updatehighscore
+        lda game_score+2
+        cmp game_highscore+2
+        bcc @nohigh
+        beq @test1
+        bcs @high
+@test1
+        lda game_score+1
+        cmp game_highscore+1
+        bcc @nohigh
+        beq @test2
+        bcs @high
+@test2
+        lda game_score
+        cmp game_highscore
+        bcc @nohigh
+        beq @nohigh
+@high
+        lda game_score
+        sta game_highscore
+        lda game_score+1
+        sta game_highscore+1
+        lda game_score+2
+        sta game_highscore+2
+@nohigh
+        rts
+
 ; *** player explosion
 playerexplosion
         lda #128
@@ -805,8 +844,11 @@ playerexplosion
 @exploop
         dec player_explosion_cnt
         lda player_explosion_cnt
-        cmp #$00
+        cmp #$FF
         bne @explosion
+        PrintString 0,0,COLOR_WHITE,TXT_GAMEOVER
+        PrintString 0,1,COLOR_YELLOW,TXT_GAMEOVER1
+        jsr waitfirepressed
         rts
 @explosion
         clc
@@ -845,3 +887,4 @@ playerexplosion
         jsr PRINT_STRING
         jsr waitraster
         jmp @exploop
+@clearexp

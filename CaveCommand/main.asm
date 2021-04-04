@@ -13,9 +13,9 @@ incasm "macros.asm"
 
 *=$1100; 4352
         jsr adjustchars
-        jsr clearscreen
         jsr setbgcolor
 @startscreen
+        jsr clearscreen
         jsr showstartscreen
 @startgame
         jsr clearscreen
@@ -28,7 +28,6 @@ incasm "macros.asm"
         jsr incdifficulty       ; create new cave column
         jsr drawcave            
         jsr adjustcave
-
         jsr waitraster
 
         jsr handlejoystick      ; manage player
@@ -43,13 +42,14 @@ incasm "macros.asm"
         jsr subfuel             ; subtract value from fuel
 
         jsr scrollleft          ; scroll screen left to right
-
         jsr waitraster
 
         jmp @gameloop
 
 @gameover
         jsr playerexplosion
+        jsr updatehighscore
+        jmp @startscreen
         rts
 
 incasm "routines.asm"

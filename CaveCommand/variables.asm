@@ -57,8 +57,8 @@ player_ypos byte $0A            ; player y position
 player_xpos_old byte $0A        ; old player x position
 player_ypos_old byte $0A        ; old player y position
 player_redraw byte $01          ; player redraw flag
-player_minx byte $00            ; player min y position
-player_maxx byte $13            ; player max x position
+player_minx byte $01            ; player min y position
+player_maxx byte $12            ; player max x position
 player_miny byte $01            ; player min y position
 player_maxy byte $15            ; player max y position
 player_chr0 byte $3D            ; player char 0
@@ -78,6 +78,11 @@ TXT_FUEL text "fuel:"
           byte $00
 TXT_BAM text "****"
           byte $00
+TXT_GAMEOVER text "      game over!       "
+          byte $00
+TXT_GAMEOVER1 text "#"
+          byte $00
+
 
 ; start screen strings
 TXT_FRAME0 text "################"
