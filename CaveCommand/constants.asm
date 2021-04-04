@@ -5,10 +5,19 @@
 ZERO_PAGE_PTR1 = $FB ; zero page pointer address
 ZERO_PAGE_PTR2 = $FD ; zero page pointer address
 
+; video registers
 VIC_CHR_COLOR=$0286     ; vic current char color
 VIC_COLOR=$900F         ; vic color register
 VIC_RASTER=$9004        ; vic raster register
 
+; sound registers
+SOUND_LOW=$900C
+SOUND_MID=$900B
+SOUND_HIGH=$900C
+SOUND_NOISE=$900D
+SOUND_VOLUME=$900E
+
+; joy registers
 JOY_REGISTER1=$9111     ; joystick register 1
 JOY_REGISTER2=$9120     ; joystick register 2
 DDR_REGISTER1=$9113     ; DDR register for $9113

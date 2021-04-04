@@ -785,6 +785,27 @@ addfuel
         adc player_fuel_add+1
         sta player_fuel+1
         cld
+
+        ldx #12
+        stx SOUND_VOLUME
+        ldx #200
+        stx SOUND_LOW
+        stx SOUND_MID
+
+        ldx #128
+@beep
+        stx SOUND_HIGH
+        inx
+        ldy #200
+@wait
+        iny
+        cpy #00
+        bne @wait
+        cpx #00
+        bne @beep
+        ldx #00
+        stx SOUND_VOLUME
+
         rts
 
 ; *** subtract fuel
@@ -841,16 +862,24 @@ playerexplosion
         lda #128
         sta player_explosion_cnt
         
+        lda #1
+        sta SOUND_VOLUME
+        
 @exploop
         dec player_explosion_cnt
         lda player_explosion_cnt
         cmp #$FF
         bne @explosion
+        lda #00
+        sta SOUND_VOLUME
         PrintString 0,0,COLOR_WHITE,TXT_GAMEOVER
         PrintString 0,1,COLOR_YELLOW,TXT_GAMEOVER1
         jsr waitfirepressed
         rts
 @explosion
+        lda player_explosion_cnt
+        eor #128
+        sta SOUND_NOISE
         clc
         ldx player_ypos   
         ldy player_xpos 
