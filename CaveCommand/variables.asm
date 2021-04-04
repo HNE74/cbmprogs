@@ -68,7 +68,7 @@ player_coll_chr0 byte $20       ; player movement collision char 0
 player_coll_chr1 byte $20       ; player movement collision char 1
 player_fuel byte 00, 16         ; player fuel in bcd format starting with low values 00 16
 player_fuel_sub byte 01, 00     ; player fuel substraction in bcd format starting with low value
-player_fuel_add byte 50, 00     ; player fuel addition in bcd format starting with low value
+player_fuel_add byte 100, 00     ; player fuel addition in bcd format starting with low value
 
 ; game screen strings
 TXT_SCORE text "score:"

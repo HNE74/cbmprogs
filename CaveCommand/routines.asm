@@ -7,7 +7,7 @@ waitraster
 
 ; *** set bg color
 setbgcolor
-        lda #08
+        lda #15
         sta VIC_COLOR
         rts
 
@@ -15,6 +15,16 @@ setbgcolor
 clearscreen
         lda #147
         jsr CHR_OUT
+        rts
+
+; *** adjust characters
+adjustchars
+        lda #$FF                ; charset to $1C00 (7168)
+        sta $9005
+        
+        lda #$11                ; protect chars and prorgram from basic access
+        sta $34
+        sta $38
         rts
 
 ; *** init game

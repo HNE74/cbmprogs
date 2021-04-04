@@ -55,6 +55,17 @@
     <!--End of screen designer settings-->
     <SourceFiles>
         <SourceFile>
+            <Name>chars.cst</Name>
+            <PrgName />
+            <FileType>6</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>False</Topmost>
+            <FileOpen>False</FileOpen>
+        </SourceFile>
+        <SourceFile>
             <Name>constants.asm</Name>
             <PrgName />
             <FileType>2</FileType>
@@ -74,7 +85,7 @@
             <Breakpoints />
             <Bookmarks />
             <Topmost>False</Topmost>
-            <FileOpen>True</FileOpen>
+            <FileOpen>False</FileOpen>
         </SourceFile>
         <SourceFile>
             <Name>main.asm</Name>
