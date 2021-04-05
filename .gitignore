@@ -2,7 +2,7 @@
 *.dmp
 *.dbg
 *.tmp
-*.prg
+#*.prg
 *.dup
 
 CaveCommand/bak/*
