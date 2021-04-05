@@ -71,6 +71,10 @@ player_fuel_sub byte 01, 00     ; player fuel substraction in bcd format startin
 player_fuel_add byte 100, 00    ; player fuel addition in bcd format starting with low value
 player_explosion_cnt byte 64    ; player explosion counter
 
+missle_activation byte $00      ; missle active flag
+missle_xpos byte $00            ; missle x position
+missle_ypos byte $00            ; missle y position
+
 ; game screen strings
 TXT_SCORE text "score:"
           byte $00
@@ -82,7 +86,6 @@ TXT_GAMEOVER text "      game over!       "
           byte $00
 TXT_GAMEOVER1 text "#"
           byte $00
-
 
 ; start screen strings
 TXT_FRAME0 text "################"

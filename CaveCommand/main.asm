@@ -35,17 +35,20 @@ incasm "macros.asm"
 
         jsr checkplayermovecollision  ; check player collided with object by movement
         jsr checkplayerfrontcollision ; check player will collide with object in front
+        jsr checkmisslecollision ; check missle has collided with someting
 
         lda game_state          ; check game state
         cmp #GAME_STATE_OVER
         beq @gameover
         jsr subfuel             ; subtract value from fuel
 
+        jsr startmissle         ; missle persuing player
+        jsr controlmissle
+ 
         jsr scrollleft          ; scroll screen left to right
-        jsr waitraster
 
+        jsr waitraster          ; wait and loop
         jmp @gameloop
-
 @gameover
         jsr playerexplosion
         jsr updatehighscore

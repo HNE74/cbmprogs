@@ -81,6 +81,12 @@ initgame
         lda #10
         sta player_ypos 
 
+        lda #MISSLE_ACTIVE      ; init missle
+        sta missle_active
+        lda #00
+        sta missle_xpos
+        sta missle_ypos
+
         lda #00                 ; init score
         sta game_score
         sta game_score+1
@@ -855,7 +861,74 @@ updatehighscore
         lda game_score+2
         sta game_highscore+2
 @nohigh
+        rts    
+    
+; *** start missle
+startmissle
+        lda missle_activation   ; check missle already active
+        cmp #MISSLE_ACTIVE
+        bne @start
         rts
+@start
+        lda #00                 ; start missle
+        sta missle_xpos
+        lda player_ypos
+        sta missle_ypos
+        lda #MISSLE_ACTIVE
+        sta missle_activation
+        jsr drawmissle
+        rts
+
+; *** draw missle to screenram
+drawmissle
+        lda missle_xpos
+        sta xplot
+        lda missle_ypos
+        sta yplot
+        lda #OBJECT_MISSLE
+        sta chrplot
+        lda #OBJECT_MISSLE_COLOR
+        sta chrcol
+        jsr scrplot
+        rts
+
+; *** control missle
+controlmissle
+        lda missle_activation   ; check missle active
+        cmp #MISSLE_ACTIVE
+        beq @control
+        rts
+@control 
+        lda player_ypos
+        sta missle_ypos
+        lda missle_xpos
+        cmp #MISSLE_MAX_XPOS
+        beq @endcontrol
+        jsr drawmissle
+        inc missle_xpos
+@endcontrol
+        jsr drawmissle
+        rts
+
+; *** check missle collision
+checkmisslecollision
+        lda missle_xpos
+        cmp player_xpos
+        bne @checkfront
+        lda #GAME_STATE_OVER
+        sta game_state
+        rts
+@checkfront
+        ldx player_xpos
+        inx
+        cpx missle_xpos
+        bne @endcheck
+        lda #GAME_STATE_OVER
+        sta game_state
+        rts
+@endcheck
+        rts
+        
 
 ; *** player explosion
 playerexplosion
