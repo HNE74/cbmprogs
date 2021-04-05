@@ -32,9 +32,9 @@ showstartscreen
         jsr clearscreen
 
         PrintString 2,2,COLOR_WHITE,TXT_NAME0  
-        PrintString 2,4,COLOR_GREEN,TXT_NAME1 
-        PrintString 2,6,COLOR_PURPLE,TXT_NAME2 
-        PrintBCD 12,6,COLOR_PURPLE,2,game_highscore
+        PrintString 2,4,COLOR_WHITE,TXT_NAME1 
+        PrintString 2,6,COLOR_WHITE,TXT_NAME2 
+        PrintBCD 12,6,COLOR_WHITE,2,game_highscore
 
         PrintString 2,9,COLOR_YELLOW,TXT_INFO0
         PrintString 2,11,COLOR_CYAN,TXT_INFO1
