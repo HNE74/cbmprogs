@@ -33,6 +33,9 @@ incasm "macros.asm"
         jsr handlejoystick      ; manage player
         jsr drawplayer
 
+        jsr startmissle         ; missle pursuing player
+        jsr controlmissle
+
         jsr checkplayermovecollision  ; check player collided with object by movement
         jsr checkplayerfrontcollision ; check player will collide with object in front
         jsr checkmissleplayercollision ; check missle has collided with player
@@ -41,9 +44,6 @@ incasm "macros.asm"
         cmp #GAME_STATE_OVER
         beq @gameover
         jsr subfuel             ; subtract value from fuel
-
-        jsr startmissle         ; missle persuing player
-        jsr controlmissle
  
         jsr scrollleft          ; scroll screen left to right
 

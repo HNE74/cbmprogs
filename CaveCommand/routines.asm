@@ -928,6 +928,8 @@ controlmissle
         lda chrpeek
         cmp #OBJECT_BLANK
         beq @drawmissle
+        cmp player_chr0
+        beq @drawmissle
         lda #MISSLE_INACTIVE    ; inactivate missle if collision happend
         sta missle_activation
 @drawmissle
