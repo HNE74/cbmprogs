@@ -35,7 +35,7 @@ incasm "macros.asm"
 
         jsr checkplayermovecollision  ; check player collided with object by movement
         jsr checkplayerfrontcollision ; check player will collide with object in front
-        jsr checkmisslecollision ; check missle has collided with someting
+        jsr checkmissleplayercollision ; check missle has collided with player
 
         lda game_state          ; check game state
         cmp #GAME_STATE_OVER

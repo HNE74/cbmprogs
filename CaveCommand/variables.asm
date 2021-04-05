@@ -74,6 +74,9 @@ player_explosion_cnt byte 64    ; player explosion counter
 missle_activation byte $00      ; missle active flag
 missle_xpos byte $00            ; missle x position
 missle_ypos byte $00            ; missle y position
+missle_prob1 byte $5            ; missle activatoion probability1
+missle_prob2 byte $200           ; missle activatoion probability2
+
 
 ; game screen strings
 TXT_SCORE text "score:"

@@ -867,7 +867,13 @@ updatehighscore
 startmissle
         lda missle_activation   ; check missle already active
         cmp #MISSLE_ACTIVE
-        bne @start
+        bne @checkdostart
+        rts
+@checkdostart
+        jsr rndnum
+        lda rndseed
+        cmp missle_prob1
+        bcc @start
         rts
 @start
         lda #00                 ; start missle
@@ -899,7 +905,7 @@ controlmissle
         beq @control
         rts
 @control 
-        lda player_ypos
+        lda player_ypos         ; control missle
         sta missle_ypos
         lda missle_xpos
         cmp #MISSLE_MAX_XPOS
@@ -907,11 +913,22 @@ controlmissle
         jsr drawmissle
         inc missle_xpos
 @endcontrol
+        lda missle_xpos         ; check missle object collision
+        sta xplot
+        lda missle_ypos
+        sta yplot
+        jsr scrpeek
+        lda chrpeek
+        cmp #OBJECT_BLANK
+        beq @drawmissle
+        lda #MISSLE_INACTIVE    ; inactivate missle if collision happend
+        sta missle_activation
+@drawmissle
         jsr drawmissle
         rts
 
 ; *** check missle collision
-checkmisslecollision
+checkmissleplayercollision
         lda missle_xpos
         cmp player_xpos
         bne @checkfront
@@ -925,7 +942,7 @@ checkmisslecollision
         bne @endcheck
         lda #GAME_STATE_OVER
         sta game_state
-        rts
+        rts        
 @endcheck
         rts
         
