@@ -75,6 +75,7 @@ missle_activation byte $00      ; missle active flag
 missle_xpos byte $00            ; missle x position
 missle_ypos byte $00            ; missle y position
 missle_xpos_max byte $00        ; missle max x position
+missle_xpos_maxinc_cnt byte $00 ; missle max x increase counter
 missle_prob1 byte $5            ; missle activatoion probability1
 
 ; game screen strings
@@ -90,24 +91,20 @@ TXT_GAMEOVER1 text "#"
           byte $00
 
 ; start screen strings
-TXT_FRAME0 text "################"
-           byte $00
-TXT_FRAME1 text "#              #"
-           byte $00
-TXT_NAME0 text "cave command"
+TXT_NAME0 text "cave command  {61}{62}"
           byte $00
-TXT_NAME1 text "by noltisoft"
+TXT_NAME1 text "by noltisoft 2021"
           byte $00
-TXT_NAME2 text "created 2021"
-          byte $00
-TXT_NAME3 text "highscore:"
+TXT_NAME2 text "highscore:"
           byte $00
 TXT_INFO0 text "intrude the enemy"
           byte $00
-TXT_INFO1 text "cave,avoid mines,"
+TXT_INFO1 text "cave, avoid mines,"
           byte $00
-TXT_INFO2 text "collect fuel."
+TXT_INFO2 text "escape missles,"
           byte $00
-TXT_INFO3 text "press fire to start!"
+TXT_INFO3 text "collect fuel."
+          byte $00
+TXT_INFO4 text "press fire to start!"
           byte $00
 

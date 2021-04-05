@@ -30,34 +30,20 @@ adjustchars
 ; *** start screen
 showstartscreen
         jsr clearscreen
-        PrintString 3,3,COLOR_YELLOW,TXT_FRAME0        
-        PrintString 3,4,COLOR_YELLOW,TXT_FRAME1        
-        PrintString 3,5,COLOR_YELLOW,TXT_FRAME1        
-        PrintString 3,6,COLOR_YELLOW,TXT_FRAME1        
-        PrintString 3,7,COLOR_YELLOW,TXT_FRAME1        
-        PrintString 3,8,COLOR_YELLOW,TXT_FRAME1        
-        PrintString 3,9,COLOR_YELLOW,TXT_FRAME1
-        PrintString 3,10,COLOR_YELLOW,TXT_FRAME1        
-        PrintString 3,11,COLOR_YELLOW,TXT_FRAME1 
-        PrintString 3,12,COLOR_YELLOW,TXT_FRAME1 
-        PrintString 3,13,COLOR_YELLOW,TXT_FRAME0
 
-        PrintString 5,5,COLOR_WHITE,TXT_NAME0  
-        PrintString 5,7,COLOR_GREEN,TXT_NAME1 
-        PrintString 5,8,COLOR_GREEN,TXT_NAME2 
-        PrintString 5,10,COLOR_CYAN,TXT_NAME3 
-        PrintBCD 11,11,COLOR_CYAN,2,game_highscore
+        PrintString 2,2,COLOR_WHITE,TXT_NAME0  
+        PrintString 2,4,COLOR_GREEN,TXT_NAME1 
+        PrintString 2,6,COLOR_CYAN,TXT_NAME2 
+        PrintBCD 12,6,COLOR_CYAN,2,game_highscore
 
-        PrintString 2,15,COLOR_PURPLE,TXT_INFO0
-        PrintString 2,16,COLOR_PURPLE,TXT_INFO1
-        PrintString 2,17,COLOR_PURPLE,TXT_INFO2
-        PrintString 1,21,COLOR_RED,TXT_INFO3
+        PrintString 2,9,COLOR_PURPLE,TXT_INFO0
+        PrintString 2,11,COLOR_PURPLE,TXT_INFO1
+        PrintString 2,13,COLOR_PURPLE,TXT_INFO2
+        PrintString 2,15,COLOR_PURPLE,TXT_INFO3
+        PrintString 1,19,COLOR_RED,TXT_INFO4
 
         jsr waitfirepressed
         rts
-
-showgameover
-        
 
 ; *** wait until joy firebutton pressed
 waitfirepressed
@@ -76,7 +62,7 @@ initgame
         lda #GAME_STATE_RUNNING ; set game state to running
         sta game_state
         
-        lda #05                 ; init player position
+        lda #08                 ; init player position
         sta player_xpos
         lda #10
         sta player_ypos 
@@ -86,6 +72,7 @@ initgame
         lda #00
         sta missle_xpos
         sta missle_ypos
+        sta missle_xpos_maxinc_cnt
 
         lda #00                 ; init score
         sta game_score
@@ -333,16 +320,26 @@ rndnum2
 
 ; increase game difficulty
 incdifficulty
+        lda missle_activation   ; check missle active
+        cmp #MISSLE_ACTIVE
+        bne @checkdiff
+
+        inc missle_xpos_maxinc_cnt      ; increase missle range
+        lda missle_xpos_maxinc_cnt
+        cmp #20
+        bne @checkdiff
+        lda #00
+        sta missle_xpos_maxinc_cnt
+        lda missle_xpos_max
+        cmp #18
+        beq @checkdiff
+        inc missle_xpos_max              
+@checkdiff
         dec game_diff_cnt       ; check max difficulty
         lda game_diff_cnt
         cmp #00
-        bne @noinc
-        
-        lda missle_xpos_max     ; max x position of missle
-        cmp #15
-        beq @incmine
-        inc missle_xpos_max
-@incmine
+        bne @noinc        
+
         inc mineprob            ; mine probability
         
         sec                     ; shrink cave
@@ -932,6 +929,8 @@ controlmissle
         beq @drawmissle
         lda #MISSLE_INACTIVE    ; inactivate missle if collision happend
         sta missle_activation
+        lda #05
+        sta missle_xpos_max
 @drawmissle
         jsr drawmissle
         rts
@@ -943,19 +942,23 @@ checkmissleplayercollision
         beq @check
         rts
 @check
-        lda missle_xpos
+        lda missle_xpos         ; check player rear colllision
         cmp player_xpos
         bne @checkfront
         lda #GAME_STATE_OVER
         sta game_state
+        lda #MISSLE_INACTIVE
+        sta missle_activation
         rts
 @checkfront
-        ldx player_xpos
+        ldx player_xpos         ; check player front collision
         inx
         cpx missle_xpos
         bne @endcheck
         lda #GAME_STATE_OVER
         sta game_state
+        lda #MISSLE_INACTIVE
+        sta missle_activation
         rts        
 @endcheck
         rts
