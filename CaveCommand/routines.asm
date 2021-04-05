@@ -34,12 +34,12 @@ showstartscreen
         PrintString 2,2,COLOR_WHITE,TXT_NAME0  
         PrintString 2,4,COLOR_GREEN,TXT_NAME1 
         PrintString 2,6,COLOR_CYAN,TXT_NAME2 
-        PrintBCD 12,6,COLOR_CYAN,2,game_highscore
+        PrintBCD 12,6,COLOR_PURPLE,2,game_highscore
 
-        PrintString 2,9,COLOR_PURPLE,TXT_INFO0
-        PrintString 2,11,COLOR_PURPLE,TXT_INFO1
-        PrintString 2,13,COLOR_PURPLE,TXT_INFO2
-        PrintString 2,15,COLOR_PURPLE,TXT_INFO3
+        PrintString 2,9,COLOR_YELLOW,TXT_INFO0
+        PrintString 2,11,COLOR_CYAN,TXT_INFO1
+        PrintString 2,13,COLOR_RED,TXT_INFO2
+        PrintString 2,15,COLOR_GREEN,TXT_INFO3
 
         ldx #00
 @wait
@@ -48,7 +48,7 @@ showstartscreen
         cpx #100
         bne @wait
 
-        PrintString 1,19,COLOR_RED,TXT_INFO4
+        PrintString 1,19,COLOR_PURPLE,TXT_INFO4
         jsr waitfirepressed
         rts
 

@@ -96,19 +96,19 @@ TXT_GAMEOVER1 text "#"
           byte $00
 
 ; start screen strings
-TXT_NAME0 text "cave command  {61}{62}"
+TXT_NAME0 text "{61}{62} cave command {61}{62}"
           byte $00
 TXT_NAME1 text "by noltisoft 2021"
           byte $00
 TXT_NAME2 text "highscore:"
           byte $00
-TXT_INFO0 text "intrude the enemy"
+TXT_INFO0 text "intrude the cave."
           byte $00
-TXT_INFO1 text "cave, avoid mines,"
+TXT_INFO1 text "avoid mines:    {60}"
           byte $00
-TXT_INFO2 text "escape missles,"
+TXT_INFO2 text "escape missles: *"
           byte $00
-TXT_INFO3 text "collect fuel."
+TXT_INFO3 text "collect fuel:   {43}"
           byte $00
 TXT_INFO4 text "press fire to start!"
           byte $00

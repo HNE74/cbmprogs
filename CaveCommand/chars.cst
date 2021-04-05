@@ -21,6 +21,19 @@
     </chardata>
   </character>
   <character>
+    <charcode>42</charcode>
+    <chardata>
+      <data>128</data>
+      <data>208</data>
+      <data>218</data>
+      <data>219</data>
+      <data>219</data>
+      <data>218</data>
+      <data>208</data>
+      <data>128</data>
+    </chardata>
+  </character>
+  <character>
     <charcode>43</charcode>
     <chardata>
       <data>60</data>
