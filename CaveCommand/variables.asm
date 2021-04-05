@@ -51,6 +51,11 @@ game_diff_cnt byte $00          ; game difficulty counter
 game_score byte $00, $00, $00     ; game score in bcd format starting with low values
 game_highscore byte $00, $00, $00 ; game highscore in bcd format starting with low values
 game_score_add byte $00, $00, $00 ; game score addition in bcd format starting with low values
+game_sound_low byte $128         ; game sound
+game_sound_mid byte 4128        ; game sound
+game_sound_high byte $128        ; game sound
+game_sound_cnt byte $00         ; game sound counter
+
 
 player_xpos byte $0A            ; player x position
 player_ypos byte $0A            ; player y position
@@ -68,7 +73,7 @@ player_coll_chr0 byte $20       ; player movement collision char 0
 player_coll_chr1 byte $20       ; player movement collision char 1
 player_fuel byte 00, 16         ; player fuel in bcd format starting with low values 00 16
 player_fuel_sub byte 01, 00     ; player fuel substraction in bcd format starting with low value
-player_fuel_add byte 100, 00    ; player fuel addition in bcd format starting with low value
+player_fuel_add byte 50, 00    ; player fuel addition in bcd format starting with low value
 player_explosion_cnt byte 64    ; player explosion counter
 
 missle_activation byte $00      ; missle active flag
@@ -76,7 +81,7 @@ missle_xpos byte $00            ; missle x position
 missle_ypos byte $00            ; missle y position
 missle_xpos_max byte $00        ; missle max x position
 missle_xpos_maxinc_cnt byte $00 ; missle max x increase counter
-missle_prob1 byte $5            ; missle activatoion probability1
+missle_prob1 byte $2            ; missle activatoion probability1
 
 ; game screen strings
 TXT_SCORE text "score:"

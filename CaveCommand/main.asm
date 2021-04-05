@@ -22,6 +22,7 @@ incasm "macros.asm"
         jsr initgame
         jsr printheadertext
 @gameloop
+        jsr misslesound
         jsr increasescorebyone  ; show new score
         jsr printscore
 

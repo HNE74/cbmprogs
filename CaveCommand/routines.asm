@@ -40,8 +40,15 @@ showstartscreen
         PrintString 2,11,COLOR_PURPLE,TXT_INFO1
         PrintString 2,13,COLOR_PURPLE,TXT_INFO2
         PrintString 2,15,COLOR_PURPLE,TXT_INFO3
-        PrintString 1,19,COLOR_RED,TXT_INFO4
 
+        ldx #00
+@wait
+        jsr waitraster
+        inx
+        cpx #100
+        bne @wait
+
+        PrintString 1,19,COLOR_RED,TXT_INFO4
         jsr waitfirepressed
         rts
 
@@ -50,7 +57,7 @@ waitfirepressed
         lda #00                 ; set input mode       
         sta DDR_REGISTER1       
 @checkfire
-        lda JOY_REGISTER1      ; check joy up
+        lda JOY_REGISTER1      ; check joy pressed
         eor #$FF
         and #JOY_FIRE
         cmp #JOY_FIRE
@@ -113,6 +120,44 @@ printheadertext
 printscore
         PrintBCD 6,0,COLOR_GREEN,2,game_score
         PrintBCD 18,0,COLOR_WHITE,1,player_fuel
+        rts
+
+; *** make missle sound
+misslesound
+        lda missle_activation 
+        cmp #MISSLE_ACTIVE
+        beq @dosound
+        lda #00
+        sta SOUND_LOW
+        sta SOUND_MID
+        sta SOUND_HIGH
+        rts
+@dosound
+        inc game_sound_cnt
+        lda game_sound_cnt
+        cmp #05
+        bne @incsound
+        lda #128
+        sta game_sound_low
+        sta game_sound_mid
+        sta game_sound_high
+        lda #00
+        sta game_sound_cnt
+@incsound
+        lda #01
+        sta SOUND_VOLUME
+        ldx game_sound_low
+        inx
+        inx
+        inx
+        inx
+        stx game_sound_low
+        stx game_sound_mid
+        stx game_sound_high
+        lda game_sound_low
+        sta SOUND_LOW
+        sta SOUND_MID
+        sta SOUND_HIGH
         rts
 
 ; *** draws the player on to its current screen position
@@ -969,6 +1014,11 @@ playerexplosion
         lda #128
         sta player_explosion_cnt
         
+        lda #00
+        sta SOUND_LOW
+        sta SOUND_MID
+        sta SOUND_HIGH
+
         lda #1
         sta SOUND_VOLUME
         
@@ -979,6 +1029,8 @@ playerexplosion
         bne @explosion
         lda #00
         sta SOUND_VOLUME
+        lda #00
+        sta SOUND_NOISE
         PrintString 0,0,COLOR_WHITE,TXT_GAMEOVER
         PrintString 0,1,COLOR_YELLOW,TXT_GAMEOVER1
         jsr waitfirepressed
