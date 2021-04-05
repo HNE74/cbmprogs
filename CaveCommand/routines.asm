@@ -112,14 +112,14 @@ initgame
 
 ; *** print game header
 printheadertext
-        PrintString 0,0,COLOR_GREEN,TXT_SCORE
-        PrintString 13,0,COLOR_WHITE,TXT_FUEL
+        PrintString 0,0,COLOR_WHITE,TXT_SCORE
+        PrintString 13,0,COLOR_GREEN,TXT_FUEL
         rts
 
 ; *** print score
 printscore
-        PrintBCD 6,0,COLOR_GREEN,2,game_score
-        PrintBCD 18,0,COLOR_WHITE,1,player_fuel
+        PrintBCD 6,0,COLOR_WHITE,2,game_score
+        PrintBCD 18,0,COLOR_GREEN,1,player_fuel
         rts
 
 ; *** make missle sound

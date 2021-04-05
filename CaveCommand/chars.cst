@@ -8,6 +8,19 @@
   <Multicolour>False</Multicolour>
   <Uppercase>True</Uppercase>
   <character>
+    <charcode>0</charcode>
+    <chardata>
+      <data>64</data>
+      <data>18</data>
+      <data>64</data>
+      <data>5</data>
+      <data>80</data>
+      <data>4</data>
+      <data>128</data>
+      <data>17</data>
+    </chardata>
+  </character>
+  <character>
     <charcode>35</charcode>
     <chardata>
       <data>91</data>

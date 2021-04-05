@@ -88,7 +88,7 @@ TXT_SCORE text "score:"
           byte $00
 TXT_FUEL text "fuel:"
           byte $00
-TXT_BAM text "****"
+TXT_BAM text "@@@@"
           byte $00
 TXT_GAMEOVER text "      game over!       "
           byte $00
