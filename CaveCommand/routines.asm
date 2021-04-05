@@ -936,6 +936,11 @@ controlmissle
 
 ; *** check missle collision
 checkmissleplayercollision
+        lda missle_activation   ; check missle active
+        cmp #MISSLE_ACTIVE
+        beq @check
+        rts
+@check
         lda missle_xpos
         cmp player_xpos
         bne @checkfront
