@@ -107,6 +107,8 @@ initgame
         sta fuelprob1
         lda #FUEL_START_PROB2
         sta fuelprob2
+        lda #MISSLE_MAX_XPOS
+        sta missle_xpos_max
 
         lda #CAVE_START_ROW     ; init cave start and end row
         sta cavestart
@@ -331,11 +333,16 @@ rndnum2
 
 ; increase game difficulty
 incdifficulty
-        dec game_diff_cnt
+        dec game_diff_cnt       ; check max difficulty
         lda game_diff_cnt
         cmp #00
         bne @noinc
         
+        lda missle_xpos_max     ; max x position of missle
+        cmp #15
+        beq @incmine
+        inc missle_xpos_max
+@incmine
         inc mineprob            ; mine probability
         
         sec                     ; shrink cave
@@ -908,7 +915,7 @@ controlmissle
         lda player_ypos         ; control missle
         sta missle_ypos
         lda missle_xpos
-        cmp #MISSLE_MAX_XPOS
+        cmp missle_xpos_max
         beq @endcontrol
         jsr drawmissle
         inc missle_xpos
