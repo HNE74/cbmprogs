@@ -8,7 +8,7 @@
 40 goto 200
 100 poke sc+yp*rl+xp,ch
 110 return
-200 print "{clear}"
+200 print "{clear}":print "bresenham line algorithm demo":print "*****************************"
 205 input "x start";xs:input "y start";ys:input "x end";xt:input "y end";yt
 210 dx=abs(xt-xs):dy=abs(yt-ys)
 220 if xt>=xs and ys=>yt then gosub 300:goto 250
