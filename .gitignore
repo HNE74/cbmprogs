@@ -5,6 +5,7 @@
 #*.prg
 *.dup
 
+Bresenham/bak/*
 CaveCommand/bak/*
 vc20graphics/bak/*
 VampireDungeon/bak/*
