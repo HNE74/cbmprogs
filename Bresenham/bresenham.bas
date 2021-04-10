@@ -19,7 +19,7 @@
 310 if dy>dx then gosub 400:return
 320 fe=dx/2
 330 xp=xs:yp=ys:gosub100
-340 for xp=xs+1 to xt-1
+340 for xp=xs+1 to xt
 350 fe=fe-dy
 360 if fe<0 then yp=yp-1:fe=fe+dx
 370 gosub 100
