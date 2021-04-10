@@ -9,12 +9,13 @@
 100 poke sc+yp*rl+xp,ch
 110 return
 200 print "{clear}"
+205 input "x start";xs:input "y start";ys:input "x end";xt:input "y end";yt
 210 dx=abs(xt-xs):dy=abs(yt-ys)
 220 if xt>=xs and ys=>yt then gosub 300:goto 250
 230 if xt>=xs and ys<yt then gosub 700:goto 250
 235 if xt<xs and ys<yt then gosub 900:goto 250
 240 gosub 500
-250 end
+250 poke 198,0:wait 198,1:goto 200
 300 rem *** sector 1
 310 if dy>dx then gosub 400:return
 320 fe=dx/2
@@ -37,7 +38,7 @@
 510 if dy>dx then gosub 600:return
 520 fe=dx/2
 530 xp=xs:yp=ys:gosub100
-540 for xp=xs+1 to xt step-1
+540 for xp=xs-1 to xt step-1
 550 fe=fe-dy
 560 if fe<0 then yp=yp-1:fe=fe+dx
 570 gosub 100
