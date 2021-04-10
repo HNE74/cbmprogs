@@ -2,14 +2,14 @@
 2 rem *** bresenham line algorithm
 3 rem ********************************
 10 sc=1024:ch=81
-20 xs=10:ys=1:xt=5:yt=1
+20 xs=10:ys=10:xt=15:yt=3
 25 xp=0:yp=0:rl=40
 30 dx=0:dy=0:fe=0
 40 goto 200
 100 poke sc+yp*rl+xp,ch
 110 return
 200 print "{clear}"
-210 dx=abs(xt-xs):dy=abs(yt-ys):print dx;" ";dy
+210 dx=abs(xt-xs):dy=abs(yt-ys)
 220 if xt>=xs and ys=>yt then gosub 300:goto 250
 230 if xt>=xs and ys<yt then gosub 700:goto 250
 235 if xt<xs and ys<yt then gosub 900:goto 250
