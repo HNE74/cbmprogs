@@ -18,7 +18,7 @@
 250 poke 198,0:wait 198,1:goto 200
 300 rem *** sector 1
 310 if dy>dx then gosub 400:return
-320 fe=-dx
+320 fe=dx/2
 330 xp=xs:yp=ys:gosub100
 340 for xp=xs+1 to xt
 350 fe=fe-dy
@@ -26,7 +26,7 @@
 370 gosub 100
 380 next
 390 return
-400 fe=-dy
+400 fe=dy/2
 410 xp=xs:yp=ys:gosub 100
 420 for yp=ys-1 to yt step-1
 430 fe=fe-dx
@@ -36,7 +36,7 @@
 470 return
 500 rem *** sector 4
 510 if dy>dx then gosub 600:return
-520 fe=-dx
+520 fe=dx/2
 530 xp=xs:yp=ys:gosub100
 540 for xp=xs-1 to xt step-1
 550 fe=fe-dy
@@ -44,7 +44,7 @@
 570 gosub 100
 580 next
 590 return
-600 fe=-dy
+600 fe=dy/2
 610 xp=xs:yp=ys:gosub 100
 620 for yp=ys-1 to yt step-1
 630 fe=fe-dx
@@ -54,7 +54,7 @@
 670 return
 700 rem *** sector 2
 710 if dy>dx then gosub 800:return
-720 fe=-dx
+720 fe=dx/2
 730 xp=xs:yp=ys:gosub100
 740 for xp=xs+1 to xt
 750 fe=fe-dy
@@ -62,7 +62,7 @@
 770 gosub 100
 780 next 
 790 return
-800 fe=-dy
+800 fe=dy/2
 810 xp=xs:yp=ys:gosub 100
 820 for yp=ys+1 to yt
 830 fe=fe-dx
@@ -72,7 +72,7 @@
 870 return
 900 rem *** sector 3
 910 if dy>dx then gosub 1000:return
-920 fe=-dx
+920 fe=dx/2
 930 xp=xs:yp=ys:gosub100
 940 for xp=xs-1 to xt step-1
 950 fe=fe-dy
