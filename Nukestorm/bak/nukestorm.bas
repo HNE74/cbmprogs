@@ -3,9 +3,9 @@
 !- Commodore 64
 !--------------------------------------------------
 10 DIM XP(13):DIM YP(13):DIM XT(13):DIM YT(13):DIM FE(13):DIM DX(13):DIM DY(13)
-20 OB=2:OC=0:OP=0:MS=10:MX=12
+20 OB=9:OC=0:OP=0:MS=10:MX=12
 30 SC=1024:CL=55296:RL=40
-40 SZ=832:SA=53269:SX=53248:SY=53249:SE=53264
+40 SZ=832:SA=53269:SX=53248:SY=53249:SE=53264:CS=65520
 50 CX=20:CY=10
 60 JO=56320:JI=0:J1=126:J2=118:J3=119:J4=117:J5=125:J6=121:J7=123:J8=122:J9=111:JN=127
 100 poke 53280,12:poke53281,0:gosub 20000
@@ -52,13 +52,13 @@
 520 poke sy,cy*8+50
 530 return
 600 rem *** fire missle
-605 print "fire"
 610 for i=ms to mx
 615 if xp(i)>-1 then 640
 620 xp(i)=19:yp(i)=22:xt(i)=cx:yt(i)=cy
 625 DX(I)=ABS(XT(I)-XP(I)):DY(I)=ABS(YT(I)-YP(I))
 630 IF DX(I)>=DY(I) THEN FE(I)=DY(I)/2
-635 IF DX(I)<DY(I) THEN FE(I)=DX(I)/2:i=mx
+635 IF DX(I)<DY(I) THEN FE(I)=DX(I)/2
+637 i=mx
 640 next
 645 return
 800 REM *** MOVE CROSSHAIR
@@ -89,18 +89,17 @@
 1000 rem *** detonate missle
 1010 for i=ms to mx:if xt(i)=xp(i) then if yt(i)=yp(i) then 1015
 1012 goto 1050
-1015 for j=yp(i)-2 to yp(i)+2
-1020 for k=xp(i)-2 to xp(i)+2:POKE CL+j*RL+k,7:POKE SC+j*RL+k,42
+1015 POKE 781,yt(i)-2:POKE 782,SP:POKE 783,0:SYS 65520
+1018 for j=0 to 4:print spc(xt(i)-2);"{yellow}*****":next
+1020 for j=yp(i)-2 to yp(i)+2:for k=xp(i)-2 to xp(i)+2
 1025 for m=0 to ob:if xp(m)=k then if yp(m)=j then xp(m)=-1:oc=oc+1
-1030 next m
-1040 next k:next j
-1041 for j=yp(i)-2 to yp(i)+2
-1042 for k=xp(i)-2 to xp(i)+2:POKE SC+j*RL+k,32
-1044 next k:next j
+1030 next m:next k:next j
+1035 POKE 781,yt(i)-2:POKE 782,SP:POKE 783,0:SYS 65520
+1040 for j=0 to 4:print spc(xp(i)-2);"     ":next
 1045 xp(i)=-1:xt(i)=-2
 1050 next i:return
 1200 REM *** print nukes
-1210 FOR I=0 TO OB:POKE SC+YP(I)*RL+XP(I),81:NEXT
+1210 FOR I=0 TO OB:POKE CL+YP(I)*RL+XP(I),13:POKE SC+YP(I)*RL+XP(I),81:NEXT
 1220 RETURN
 5000 REM *** init nukes and missles
 5005 OP=0:OC=0

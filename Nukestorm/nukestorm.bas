@@ -91,9 +91,8 @@
 1012 goto 1050
 1015 POKE 781,yt(i)-2:POKE 782,SP:POKE 783,0:SYS 65520
 1018 for j=0 to 4:print spc(xt(i)-2);"{yellow}*****":next
-1020 for j=yp(i)-2 to yp(i)+2:for k=xp(i)-2 to xp(i)+2
-1025 for m=0 to ob:if xp(m)=k then if yp(m)=j then xp(m)=-1:oc=oc+1
-1030 next m:next k:next j
+1020 for m=0 to ob:ifxp(m)>=xp(i)-2thenifxp(m)<=xp(i)+2thenifyp(m)>=yp(i)-2thenifyp(m)<=yp(i)+2thenxp(m)=-1:oc=oc+1
+1030 next m
 1035 POKE 781,yt(i)-2:POKE 782,SP:POKE 783,0:SYS 65520
 1040 for j=0 to 4:print spc(xp(i)-2);"     ":next
 1045 xp(i)=-1:xt(i)=-2
