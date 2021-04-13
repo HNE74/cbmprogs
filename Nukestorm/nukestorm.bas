@@ -52,13 +52,13 @@
 520 poke sy,cy*8+50
 530 return
 600 rem *** fire missle
-605 print "fire"
 610 for i=ms to mx
 615 if xp(i)>-1 then 640
 620 xp(i)=19:yp(i)=22:xt(i)=cx:yt(i)=cy
 625 DX(I)=ABS(XT(I)-XP(I)):DY(I)=ABS(YT(I)-YP(I))
 630 IF DX(I)>=DY(I) THEN FE(I)=DY(I)/2
-635 IF DX(I)<DY(I) THEN FE(I)=DX(I)/2:i=mx
+635 IF DX(I)<DY(I) THEN FE(I)=DX(I)/2
+637 i=mx
 640 next
 645 return
 800 REM *** MOVE CROSSHAIR
@@ -89,7 +89,7 @@
 1000 rem *** detonate missle
 1010 for i=ms to mx:if xt(i)=xp(i) then if yt(i)=yp(i) then 1015
 1012 goto 1050
-1015 for j=yp(i)-2 to yp(i)+2
+1015 print xt(i);xp(i);"-";yt(i);yp(i):for j=yp(i)-2 to yp(i)+2
 1020 for k=xp(i)-2 to xp(i)+2:POKE CL+j*RL+k,7:POKE SC+j*RL+k,42
 1025 for m=0 to ob:if xp(m)=k then if yp(m)=j then xp(m)=-1:oc=oc+1
 1030 next m

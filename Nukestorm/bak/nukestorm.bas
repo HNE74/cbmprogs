@@ -1,16 +1,14 @@
 !--------------------------------------------------
-!- Sonntag, 11. April 2021 20:12:51
-!- Import of : OBJECTS7.PRG
-!- From Disk : c:\temp\c64progs.d64
+!- Nukestorm
 !- Commodore 64
 !--------------------------------------------------
 10 DIM XP(13):DIM YP(13):DIM XT(13):DIM YT(13):DIM FE(13):DIM DX(13):DIM DY(13)
-20 OB=9:OC=0:OP=0:MS=10:MX=12
-30 SC=1024:RL=40
+20 OB=2:OC=0:OP=0:MS=10:MX=12
+30 SC=1024:CL=55296:RL=40
 40 SZ=832:SA=53269:SX=53248:SY=53249:SE=53264
 50 CX=20:CY=10
 60 JO=56320:JI=0:J1=126:J2=118:J3=119:J4=117:J5=125:J6=121:J7=123:J8=122:J9=111:JN=127
-100 gosub 20000
+100 poke 53280,12:poke53281,0:gosub 20000
 110 GOTO 10000
 200 rem *** missle sector 1 move
 205 IF DY(I)>DX(I) THEN 225
@@ -76,26 +74,36 @@
 890 if JI=J9 then gosub 600
 895 return
 900 REM *** move nukes
-910 I=OP:IF YT(I)=YP(I) THEN OC=OC-1:RETURN
-915 POKE SC+YP(I)*RL+XP(I),46
-920 IF XT(I)>=XP(I)THENGOSUB300:POKE SC+YP(I)*RL+XP(I),81:RETURN
-930 GOSUB350:POKE SC+YP(I)*RL+XP(I),81:RETURN
+910 I=OP:if xp(i)=-1 then return
+912 IF YT(I)=YP(I) THEN xp(i)=-1:OC=OC+1:RETURN
+915 POKE CL+YP(I)*RL+XP(I),8:POKE SC+YP(I)*RL+XP(I),46
+920 IF XT(I)>=XP(I)THENGOSUB300:POKE CL+YP(I)*RL+XP(I),13:POKE SC+YP(I)*RL+XP(I),81:RETURN
+930 GOSUB350:POKE CL+YP(I)*RL+XP(I),13:POKE SC+YP(I)*RL+XP(I),81:RETURN
 950 rem *** move missles
 960 for i=ms to mx:if xp(i)=-1 then 990
-970 POKE SC+YP(I)*RL+XP(I),32
-975 IF XT(I)>=XP(I)THENGOSUB200:POKE SC+YP(I)*RL+XP(I),30:goto990
-980 GOSUB250:POKE SC+YP(I)*RL+XP(I),30
+970 poke SC+YP(I)*RL+XP(I),32
+975 IF XT(I)>=XP(I)THENGOSUB200:POKE CL+YP(I)*RL+XP(I),10:POKE SC+YP(I)*RL+XP(I),30:goto990
+980 GOSUB250:POKE CL+YP(I)*RL+XP(I),10:POKE SC+YP(I)*RL+XP(I),30
 990 next
 995 return 
 1000 rem *** detonate missle
-1010 for i=ms to mx:if xp(i)<>xt(i)oryt(i)<>yp(i) then 1030
-1020 print "detonated:";i:xp(i)=-1
-1030 next:return
+1010 for i=ms to mx:if xt(i)=xp(i) then if yt(i)=yp(i) then 1015
+1012 goto 1050
+1015 for j=yp(i)-2 to yp(i)+2
+1020 for k=xp(i)-2 to xp(i)+2:POKE CL+j*RL+k,7:POKE SC+j*RL+k,42
+1025 for m=0 to ob:if xp(m)=k then if yp(m)=j then xp(m)=-1:oc=oc+1
+1030 next m
+1040 next k:next j
+1041 for j=yp(i)-2 to yp(i)+2
+1042 for k=xp(i)-2 to xp(i)+2:POKE SC+j*RL+k,32
+1044 next k:next j
+1045 xp(i)=-1:xt(i)=-2
+1050 next i:return
 1200 REM *** print nukes
 1210 FOR I=0 TO OB:POKE SC+YP(I)*RL+XP(I),81:NEXT
 1220 RETURN
 5000 REM *** init nukes and missles
-5005 OP=0:OC=OB
+5005 OP=0:OC=0
 5010 FOR I=0 TO OB
 5020 XP(I)=INT(RND(0)*40):YP(I)=INT(RND(0)*5)
 5030 XT(I)=INT(RND(0)*40):YT(I)=23
@@ -111,9 +119,9 @@
 10020 PRINT "{clear}"
 10030 GOSUB 1200
 10040 gosub 800
-10043 OP=OP+1:IF OP>OB THEN OP=0:OC=OB
+10043 OP=OP+1:IF OP>OB THEN OP=0
 10045 GOSUB 900:gosub 950:gosub 1000
-10047 IF OC<0 THEN 10060
+10047 IF OC=OB+1 THEN 10060
 10050 GOTO 10040
 10060 PRINT "press any key for new run":POKE 198,0:WAIT198,1:GOTO 10000
 20000 REM *** crosshair sprite
