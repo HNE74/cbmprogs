@@ -43,10 +43,10 @@
 380 IF FE(I)<0 THEN XP(I)=XP(I)-1:FE(I)=FE(I)+DY(I)
 385 YP(I)=YP(I)+1:RETURN
 500 rem *** UPDATE CROSSHAIR
-505 if cx<0 then cx=0
-508 if cx>39 then cx=39
-509 if cy<0 then cy=0
-510 if cy>22 then cy=22
+505 if cx<1 then cx=1
+508 if cx>38 then cx=38
+509 if cy<1 then cy=1
+510 if cy>21 then cy=21
 515 if cx>28 then poke se,1:poke sx,(cx-29)*8
 518 if cx<=28 then poke se,0:poke sx,cx*8+24
 520 poke sy,cy*8+50
@@ -62,7 +62,7 @@
 640 next
 645 return
 800 REM *** MOVE CROSSHAIR
-810 JI=PEEK(JO):if JI=JN then return
+810 if JI=JN then JI=PEEK(JO):if JI=JN then return
 815 IF JI=J1 THEN cy=cy-1:gosub 500
 820 IF JI=J2 THEN cx=cx+1:cy=cy-1:gosub 500
 830 IF JI=J3 THEN cx=cx+1:gosub 500
@@ -72,6 +72,7 @@
 870 IF JI=J7 THEN cx=cx-1:gosub 500
 880 IF JI=J8 THEN cx=cx-1:cy=cy-1:gosub 500
 890 if JI=J9 then gosub 600
+892 JI=JN
 895 return
 900 REM *** move nukes
 910 I=OP:if xp(i)=-1 then return
@@ -89,12 +90,13 @@
 1000 rem *** detonate missle
 1010 for i=ms to mx:if xt(i)=xp(i) then if yt(i)=yp(i) then 1015
 1012 goto 1050
-1015 POKE 781,yt(i)-2:POKE 782,SP:POKE 783,0:SYS 65520
-1018 for j=0 to 4:print spc(xt(i)-2);"{yellow}*****":next
-1020 for m=0 to ob:ifxp(m)>=xp(i)-2thenifxp(m)<=xp(i)+2thenifyp(m)>=yp(i)-2thenifyp(m)<=yp(i)+2thenxp(m)=-1:oc=oc+1
+1015 POKE 781,yt(i)-1:POKE 782,SP:POKE 783,0:SYS 65520
+1018 for j=0 to 2:print spc(xt(i)-1);"{yellow}***":next
+1020 for m=0 to ob
+1025 ifxp(m)>=xt(i)-1thenifxp(m)<=xt(i)+1thenifyp(m)>=yt(i)-1thenifyp(m)<=yt(i)+1then:print"c";m:xp(m)=-1:oc=oc+1
 1030 next m
-1035 POKE 781,yt(i)-2:POKE 782,SP:POKE 783,0:SYS 65520
-1040 for j=0 to 4:print spc(xp(i)-2);"     ":next
+1035 POKE 781,yt(i)-1:POKE 782,SP:POKE 783,0:SYS 65520
+1040 for j=0 to 2:print spc(xp(i)-1);"   ":next
 1045 xp(i)=-1:xt(i)=-2
 1050 next i:return
 1200 REM *** print nukes
@@ -117,8 +119,10 @@
 10020 PRINT "{clear}"
 10030 GOSUB 1200
 10040 gosub 800
-10043 OP=OP+1:IF OP>OB THEN OP=0
-10045 GOSUB 900:gosub 950:gosub 1000
+10042 OP=OP+1:IF OP>OB THEN OP=0
+10043 GOSUB 900:if JI=JN then JI=PEEK(JO)
+10044 gosub 950:if JI=JN then JI=PEEK(JO)
+10045 gosub 1000:if JI=JN then JI=PEEK(JO)
 10047 IF OC=OB+1 THEN 10060
 10050 GOTO 10040
 10060 PRINT "press any key for new run":POKE 198,0:WAIT198,1:GOTO 10000
