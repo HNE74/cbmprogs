@@ -3,13 +3,16 @@
 !- Commodore 64
 !--------------------------------------------------
 10 DIM XP(18):DIM YP(18):DIM XT(18):DIM YT(18):DIM FE(18):DIM DX(18):DIM DY(18)
-20 OB=15:OC=0:OP=0:MS=16:MX=18
+15 DIM CX(4):DIM CY(4):DIM CA(4)
+20 OB=15:OC=0:OP=0:MS=16:MX=18:mc=5
 30 SC=1024:CL=55296:RL=40
 40 SZ=832:SA=53269:SX=53248:SY=53249:SE=53264:CS=65520
 50 CX=20:CY=10
 60 JO=56320:JI=0:J1=126:J2=118:J3=119:J4=117:J5=125:J6=121:J7=123:J8=122:J9=111:JN=127
+70 PT=0:PH=0
 100 poke 53280,12:poke53281,0:gosub 20000
-110 GOTO 10000
+110 gosub 11000
+120 GOTO 10000
 200 rem *** missle sector 1 move
 205 IF DY(I)>DX(I) THEN 225
 210 FE(I)=FE(I)-DY(I)
@@ -52,9 +55,10 @@
 520 poke sy,cy*8+50
 530 return
 600 rem *** fire missle
+605 if mc<=0 then return
 610 for i=ms to mx
 615 if xp(i)>-1 then 640
-620 xp(i)=19:yp(i)=22:xt(i)=cx:yt(i)=cy
+620 xp(i)=19:yp(i)=22:xt(i)=cx:yt(i)=cy:mc=mc-1
 625 DX(I)=ABS(XT(I)-XP(I)):DY(I)=ABS(YT(I)-YP(I))
 630 IF DX(I)>=DY(I) THEN FE(I)=DY(I)/2
 635 IF DX(I)<DY(I) THEN FE(I)=DX(I)/2
@@ -106,8 +110,9 @@
 5005 OP=0:OC=0
 5010 FOR I=0 TO ob
 5015 if i>ob then xp(i)=-1:goto5070
-5020 XP(I)=INT(RND(0)*40):YP(I)=INT(RND(0)*5)
-5030 XT(I)=INT(RND(0)*40):YT(I)=23
+5020 XP(I)=INT(RND(0)*40):YP(I)=INT(RND(0)*4)+1
+5025 id=INT(RND(0)*5):print id
+5030 XT(I)=cx(id):YT(I)=23
 5040 DX(I)=ABS(XT(I)-XP(I)):DY(I)=ABS(YT(I)-YP(I))
 5050 IF DX(I)>=DY(I) THEN FE(I)=DY(I)/2
 5060 IF DX(I)<DY(I) THEN FE(I)=DX(I)/2
@@ -117,7 +122,7 @@
 10000 REM *** MAIN LOOP
 10005 POKE 214,1:POKE211,1:SYS58640
 10010 GOSUB 5000
-10020 PRINT "{clear}"
+10020 PRINT "{clear}":gosub 12000
 10030 GOSUB 1200
 10040 gosub 800
 10042 OP=OP+1:IF OP>ob THEN OP=0
@@ -127,6 +132,24 @@
 10047 IF OC=OB+1 THEN 10060
 10050 GOTO 10040
 10060 PRINT "press any key for new run":POKE 198,0:WAIT198,1:GOTO 10000
+11000 rem *** init game start state
+11010 pt=0:mc=5
+11020 cx(0)=1:cx(1)=9:cx(2)=19:cx(3)=29:cx(4)=38
+11025 cy(0)=23:cy(1)=23:cy(2)=23:cy(3)=23:cy(4)=23
+11030 ca(0)=1:ca(1)=1:ca(2)=1:ca(3)=1:ca(4)=1
+11040 return
+12000 rem *** print cities
+12010 for i=0 to 4
+12020 if ca(i)<>1 then 12050
+12030 poke CL+cy(I)*RL+cx(I)-1,1:POKE SC+cy(I)*RL+cx(I)-1,121
+12035 poke CL+cy(I)*RL+cx(I),1:POKE SC+cy(I)*RL+cx(I),160
+12040 poke CL+cy(I)*RL+cx(I)+1,1:POKE SC+cy(I)*RL+cx(I)+1,121
+12045 goto 12065
+12050 poke CL+cy(I)*RL+cx(I)-1,1:POKE SC+cy(I)*RL+cx(I)-1,104
+12055 poke CL+cy(I)*RL+cx(I),1:POKE SC+cy(I)*RL+cx(I),104
+12060 poke CL+cy(I)*RL+cx(I)+1,1:POKE SC+cy(I)*RL+cx(I)+1,104
+12065 next
+12075 return
 20000 REM *** crosshair sprite
 20010 SZ=832
 20020 FOR X=0 TO 62: READ Y: POKE SZ+X,Y: NEXT X
