@@ -5,6 +5,7 @@
 #*.prg
 *.dup
 
+Nukestorm/bak/*
 Bresenham/bak/*
 CaveCommand/bak/*
 vc20graphics/bak/*
