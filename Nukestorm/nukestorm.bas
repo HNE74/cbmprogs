@@ -181,7 +181,7 @@
 15030 JI=PEEK(JO):if ji<>j9 then 15030
 15035 ji=0:return
 16000 rem *** start screen
-16010 
+16010 return
 20000 REM *** crosshair sprite
 20010 SZ=832
 20020 FOR X=0 TO 62: READ Y: POKE SZ+X,Y: NEXT X
