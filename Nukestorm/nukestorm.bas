@@ -12,8 +12,9 @@
 60 JO=56320:JI=0:J1=126:J2=118:J3=119:J4=117:J5=125:J6=121:J7=123:J8=122:J9=111:JN=127
 70 PT=0:PH=0:WV=0
 100 poke 53280,12:poke53281,0:gosub 20000
-110 gosub 11000
-120 GOTO 10000
+110 gosub 16000
+120 gosub 11000
+130 goto 10000
 200 rem *** missle sector 1 move
 205 IF DY(I)>DX(I) THEN 225
 210 FE(I)=FE(I)-DY(I)
@@ -125,6 +126,7 @@
 5080 for i=ms to mx:xp(i)=-1:next
 5090 return
 10000 REM *** MAIN LOOP
+10005 poke sa,1
 10010 GOSUB 5000
 10015 wv=wv+1:rs=1
 10020 PRINT "{clear}":gosub 12000
@@ -139,11 +141,11 @@
 10047 IF OC=OB+1 THEN gosub12000:goto10055
 10050 GOTO 10040
 10055 cc=0:for i=0to4:ifca(i)=1thencc=cc+1
-10060 next:if cc=0 then gosub 14000:end
-10062 if cc>0 then gosub 15000
+10060 next:if cc=0 then gosub 14000:poke sa,0:goto110
+10062 if cc>0 then poke sa,0:gosub 15000
 10065 GOTO 10000
 11000 rem *** init game start state
-11010 pt=0:mc=5
+11010 pt=0:mc=5:wv=0:cy=20:cy=10:ob=2
 11020 cx(0)=1:cx(1)=9:cx(2)=19:cx(3)=29:cx(4)=38
 11025 cy(0)=23:cy(1)=23:cy(2)=23:cy(3)=23:cy(4)=23
 11030 ca(0)=1:ca(1)=1:ca(2)=1:ca(3)=1:ca(4)=1
@@ -161,8 +163,8 @@
 12065 next
 12075 return
 13000 rem *** print game state
-13005 rs=0:POKE 781,0:POKE 782,4:POKE 783,0:SYS 65520:print"{yellow}score {left}";pt
-13020 POKE 781,0:POKE 782,16:POKE 783,0:SYS 65520:print"{red}missles    {left}{left}{left}{left}";mc
+13005 rs=0:POKE 781,0:POKE 782,3:POKE 783,0:SYS 65520:print"{yellow}score {left}";pt
+13020 POKE 781,0:POKE 782,16:POKE 783,0:SYS 65520:print"{pink}missles    {left}{left}{left}{left}";mc
 13025 POKE 781,0:POKE 782,30:POKE 783,0:SYS 65520:print"{green}wave {left}";wv
 13035 return
 14000 rem *** game over
@@ -180,12 +182,36 @@
 15028 if ob<ms then ob=ob+1
 15030 JI=PEEK(JO):if ji<>j9 then 15030
 15035 ji=0:return
-16000 rem *** start screen
-16010 return
+16000 rem start screen
+16005 PRINT "{clear}{down}{down}"
+16010 PRINT "  {light green}Q   Q Q   Q Q  Q QQQQQ  {pink}created 2021"
+16015 PRINT "  {light green}QQ  Q Q   Q Q Q  Q"
+16020 PRINT "  Q Q Q Q   Q QQ   QQQ    {pink}by noltisoft"
+16025 PRINT "  {light green}Q  QQ Q   Q Q Q  Q"
+16030 PRINT "  Q   Q QQQQQ Q  Q QQQQQ"
+16035 PRINT ""
+16040 PRINT "        QQQQ QQQQQ QQQQQ QQQQQ Q   Q"
+16045 PRINT "        Q      Q   Q   Q Q   Q QQ QQ"
+16050 PRINT "        QQQQ   Q   Q   Q QQQQQ Q Q Q"
+16055 PRINT "           Q   Q   Q   Q Q Q   Q   Q"
+16060 PRINT "        QQQQ   Q   QQQQQ Q  QQ Q   Q"
+16065 PRINT ""
+16070 PRINT "                     {yellow}highscore"
+16075 PRINT ""
+16080 PRINT "  {cyan}the enemy has launched a nuklear"
+16085 PRINT ""
+16090 PRINT "  strike on your cities. protect them"
+16095 PRINT ""
+16100 PRINT "  with your anti nuke missles."
+16105 PRINT ""
+16110 PRINT "  {reverse on}{white}press fire button on joy 2 to start!{down}"
+16120 POKE 781,14:POKE 782,30:POKE 783,0:SYS 65520:print "{yellow}";ph
+16130 JI=PEEK(JO):if ji<>j9 then 16130
+16140 ji=0:return
 20000 REM *** crosshair sprite
 20010 SZ=832
 20020 FOR X=0 TO 62: READ Y: POKE SZ+X,Y: NEXT X
-20030 poke 2040,13:poke sa,1:poke sx,cx*8+24:poke sy,cy*8+50
+20030 poke 2040,13:poke sa,0:poke sx,cx*8+24:poke sy,cy*8+50
 20040 return
 20100 DATA 24,0,0,24,0,0,24,0,0,231,0,0,231,0,0,24,0,0,24,0,0,24,0,0
 20110 DATA 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
