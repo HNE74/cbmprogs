@@ -4,13 +4,14 @@
 !--------------------------------------------------
 10 DIM XP(18):DIM YP(18):DIM XT(18):DIM YT(18):DIM FE(18):DIM DX(18):DIM DY(18)
 15 DIM CX(4):DIM CY(4):DIM CA(4)
-20 OB=2:OC=0:OP=0:MS=16:MX=18:mc=10:cc=0
+20 OB=0:OC=0:OP=0:MS=16:MX=18:mc=10:cc=0
 30 SC=1024:CL=55296:RL=40
 40 SZ=832:SA=53269:SX=53248:SY=53249:SE=53264:CS=65520
 50 CX=20:CY=10
 55 RC=1:RS=1
 60 JO=56320:JI=0:J1=126:J2=118:J3=119:J4=117:J5=125:J6=121:J7=123:J8=122:J9=111:JN=127
 70 PT=0:PH=0:WV=0
+80 si=54272:fl=si:fh=si+1:wm=si+4:a=si+5:h=si+6:l=si+24:tl=si+2:th=si+3
 100 poke 53280,12:poke53281,0:gosub 20000
 110 gosub 16000
 120 gosub 11000
@@ -66,6 +67,8 @@
 635 IF DX(I)<DY(I) THEN FE(I)=DX(I)/2
 637 i=mx
 640 next
+642 poke l,15:pokea,10:pokeh,20:pokefh,40:pokefl,50:poketl,30:poketh,20:pokewm,129
+643 for i=0to20:pokefh,40+i:nexti:pokewm,0:pokea,0:pokeh,0:return
 645 return
 700 rem *** check city hit
 705 for j=0 to 4:if xt(i)=cx(j) then ca(j)=0:rc=1:j=4
@@ -99,7 +102,8 @@
 1000 rem *** detonate missle
 1010 for i=ms to mx:if xt(i)=xp(i) then if yt(i)=yp(i) then 1015
 1012 goto 1050
-1015 POKE 781,yt(i)-1:POKE 782,SP:POKE 783,0:SYS 65520
+1015 poke l,15:pokea,10:pokeh,20:pokefh,10:pokefl,10:poketl,30:poketh,20:pokewm,129
+1017 POKE 781,yt(i)-1:POKE 782,SP:POKE 783,0:SYS 65520
 1018 for j=0 to 2:print spc(xt(i)-1);"{yellow}***":next
 1020 for m=0 to ob
 1025 ifxp(m)>=xt(i)-1thenifxp(m)<=xt(i)+1thenifyp(m)>=yt(i)-1thenifyp(m)<=yt(i)+1then:xp(m)=-1:oc=oc+1:pt=pt+10:rs=1
@@ -107,11 +111,13 @@
 1035 POKE 781,yt(i)-1:POKE 782,SP:POKE 783,0:SYS 65520
 1040 for j=0 to 2:print spc(xp(i)-1);"   ":next
 1045 xp(i)=-1:xt(i)=-2
-1050 next i:return
+1050 next i:pokewm,0:pokea,0:pokeh,0:return
 1200 REM *** print nukes
 1205 for i=0to39:POKE CL+24*RL+i,3:POKE SC+24*RL+i,160:next
 1210 FOR I=0 TO OB:POKE CL+YP(I)*RL+XP(I),13:POKE SC+YP(I)*RL+XP(I),81:NEXT
 1220 RETURN
+3000 rem *** Sound off
+3010 pokewm,0:pokea,0:pokeh,0:return 
 5000 REM *** init nukes and missles
 5005 OP=0:OC=0
 5010 FOR I=0 TO ob
@@ -145,11 +151,11 @@
 10062 if cc>0 then poke sa,0:gosub 15000
 10065 GOTO 10000
 11000 rem *** init game start state
-11010 pt=0:mc=5:wv=0:cy=20:cy=10:ob=2
+11010 pt=0:mc=5:wv=0:cx=20:cy=10:ob=2
 11020 cx(0)=1:cx(1)=9:cx(2)=19:cx(3)=29:cx(4)=38
 11025 cy(0)=23:cy(1)=23:cy(2)=23:cy(3)=23:cy(4)=23
 11030 ca(0)=1:ca(1)=1:ca(2)=1:ca(3)=1:ca(4)=1
-11040 return
+11040 gosub500:return
 12000 rem *** print cities
 12010 rc=0:for i=0 to 4
 12020 if ca(i)<>1 then 12050
@@ -166,18 +172,22 @@
 13005 rs=0:POKE 781,0:POKE 782,3:POKE 783,0:SYS 65520:print"{yellow}score {left}";pt
 13020 POKE 781,0:POKE 782,16:POKE 783,0:SYS 65520:print"{pink}missles    {left}{left}{left}{left}";mc
 13025 POKE 781,0:POKE 782,30:POKE 783,0:SYS 65520:print"{green}wave {left}";wv
-13035 return
+13040 return
 14000 rem *** game over
 14005 POKE 781,9:POKE 782,5:POKE 783,0:SYS 65520:print"{white}all your cities are destroyed."
 14010 if pt>ph then POKE 781,11:POKE 782,14:POKE 783,0:SYS 65520:print"{yellow}new highscore":ph=pt:goto14015
 14012 POKE 781,11:POKE 782,12:POKE 783,0:SYS 65520:print"{yellow}no new highscore"
 14015 POKE 781,13:POKE 782,15:POKE 783,0:SYS 65520:print"{cyan}game over!"
+14018 poke l,15:pokea,10:pokeh,20:pokefh,40:pokefl,50:poketl,10:poketh,40:pokewm,17
+14019 for i=100to0step-1:pokefh,i:pokefl,50:nexti:gosub3000
 14020 JI=PEEK(JO):if ji<>j9 then 14020
 14025 return
 15000 rem *** wave complete
 15005 POKE 781,9:POKE 782,13:POKE 783,0:SYS 65520:print"{white}wave complete."
 15010 POKE 781,11:POKE 782,14:POKE 783,0:SYS 65520:print"{yellow}cities left";cc
 15020 POKE 781,13:POKE 782,16:POKE 783,0:SYS 65520:print"{cyan}bonus";cc*100
+15022 poke l,15:pokea,10:pokeh,20:pokefh,40:pokefl,50:poketl,10:poketh,40:pokewm,17
+15023 for j=0to3:for i=0to50+j*20:pokefh,i:pokefl,30:nexti:nextj:gosub3000
 15025 pt=pt+cc*100:mc=mc+5
 15028 if ob<ms then ob=ob+1
 15030 JI=PEEK(JO):if ji<>j9 then 15030
