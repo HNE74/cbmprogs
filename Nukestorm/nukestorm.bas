@@ -104,12 +104,20 @@
 1012 goto 1050
 1015 poke l,15:pokea,10:pokeh,20:pokefh,10:pokefl,10:poketl,30:poketh,20:pokewm,129
 1017 POKE 781,yt(i)-1:POKE 782,SP:POKE 783,0:SYS 65520
-1018 for j=0 to 2:print spc(xt(i)-1);"{yellow}***":next
-1020 for m=0 to ob
+1018 POKE cl+yt(I)*rl+xt(i)-1,10:POKE sc+yt(i)*rl+xt(i)-1,42:POKE cl+yt(I)*rl+xt(i),10:POKE sc+yt(i)*rl+xt(i),42
+1019 POKE cl+yt(I)*rl+xt(i)+1,10:POKE sc+yt(i)*rl+xt(i)+1,42:POKE cl+(yt(I)-1)*rl+xt(i)-1,10:POKE sc+(yt(i)-1)*rl+xt(i)-1,42
+1020 POKE cl+(yt(I)-1)*rl+xt(i),10:POKE sc+(yt(i)-1)*rl+xt(i),42:POKE cl+(yt(I)-1)*rl+xt(i)+1,10:POKE sc+(yt(i)-1)*rl+xt(i)+1,42
+1021 POKE cl+(yt(I)+1)*rl+xt(i)-1,10:POKE sc+(yt(i)+1)*rl+xt(i)-1,42
+1022 POKE cl+(yt(I)+1)*rl+xt(i),10:POKE sc+(yt(i)+1)*rl+xt(i),42:POKE cl+(yt(I)+1)*rl+xt(i)+1,10:POKE sc+(yt(i)+1)*rl+xt(i)+1,42
+1024 for m=0 to ob
 1025 ifxp(m)>=xt(i)-1thenifxp(m)<=xt(i)+1thenifyp(m)>=yt(i)-1thenifyp(m)<=yt(i)+1then:xp(m)=-1:oc=oc+1:pt=pt+10:rs=1
 1030 next m
 1035 POKE 781,yt(i)-1:POKE 782,SP:POKE 783,0:SYS 65520
-1040 for j=0 to 2:print spc(xp(i)-1);"   ":next
+1040 POKE sc+yt(i)*rl+xt(i)-1,32:POKE sc+yt(i)*rl+xt(i),32
+1041 POKE sc+yt(i)*rl+xt(i)+1,32:POKE sc+(yt(i)-1)*rl+xt(i)-1,32
+1042 POKE sc+(yt(i)-1)*rl+xt(i),32:POKE sc+(yt(i)-1)*rl+xt(i)+1,32
+1043 POKE sc+(yt(i)+1)*rl+xt(i)-1,32
+1044 POKE sc+(yt(i)+1)*rl+xt(i),32:POKE sc+(yt(i)+1)*rl+xt(i)+1,32
 1045 xp(i)=-1:xt(i)=-2
 1050 next i:pokewm,0:pokea,0:pokeh,0:return
 1200 REM *** print nukes
