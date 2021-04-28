@@ -10,6 +10,7 @@
 110 return
 200 print "{clear}":print "bresenham line algorithm demo":print "*****************************"
 205 input "x start";xs:input "y start";ys:input "x end";xt:input "y end";yt
+208 print "{clear}"
 210 dx=abs(xt-xs):dy=abs(yt-ys)
 220 if xt>=xs and ys=>yt then gosub 300:goto 250
 230 if xt>=xs and ys<yt then gosub 700:goto 250
@@ -17,6 +18,7 @@
 240 gosub 500
 250 poke 198,0:wait 198,1:goto 200
 300 rem *** sector 1
+305 print "sector 1"
 310 if dy>dx then gosub 400:return
 320 fe=dx/2
 330 xp=xs:yp=ys:gosub100
@@ -35,6 +37,7 @@
 460 next
 470 return
 500 rem *** sector 4
+505 print "sector 4"
 510 if dy>dx then gosub 600:return
 520 fe=dx/2
 530 xp=xs:yp=ys:gosub100
@@ -53,6 +56,7 @@
 660 next
 670 return
 700 rem *** sector 2
+705 print "sector 2"
 710 if dy>dx then gosub 800:return
 720 fe=dx/2
 730 xp=xs:yp=ys:gosub100
@@ -71,6 +75,7 @@
 860 next
 870 return
 900 rem *** sector 3
+905 print "sector 3"
 910 if dy>dx then gosub 1000:return
 920 fe=dx/2
 930 xp=xs:yp=ys:gosub100
