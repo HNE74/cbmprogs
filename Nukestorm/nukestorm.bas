@@ -3,8 +3,8 @@
 !- Commodore 64
 !--------------------------------------------------
 10 DIM XP(18):DIM YP(18):DIM XT(18):DIM YT(18):DIM FE(18):DIM DX(18):DIM DY(18)
-15 DIM CX(4):DIM CY(4):DIM CA(4)
-20 OB=0:OC=0:OP=0:MS=16:MX=18:mc=10:cc=0
+15 DIM CX(4):DIM CY(4):DIM CA(4):DIM CO(4)
+20 OB=0:OC=0:OP=0:MS=16:MX=18:mc=10:cc=0:co=0
 30 SC=1024:CL=55296:RL=40
 40 SZ=832:SA=53269:SX=53248:SY=53249:SE=53264:CS=65520
 50 CX=20:CY=10
@@ -71,8 +71,12 @@
 643 for i=0to20:pokefh,40+i:nexti:pokewm,0:pokea,0:pokeh,0:return
 645 return
 700 rem *** check city hit
-705 for j=0 to 4:if xt(i)=cx(j) then ca(j)=0:rc=1:j=4
-715 next j:return
+705 for j=0 to 4:co(j)=ca(j):if xt(i)=cx(j) then ca(j)=0:rc=1:j=4:gosub 720
+710 next
+715 poke l,15:pokea,10:pokeh,20:pokefh,100:pokefl,100:poketl,30:poketh,20:pokewm,129
+720 for k=0 to 50:poke 53280,k:nextk
+745 poke 53280,12:gosub3000:return
+750 next j:return
 800 REM *** MOVE CROSSHAIR
 810 if JI=JN then JI=PEEK(JO):if JI=JN then return
 815 IF JI=J1 THEN cy=cy-1:gosub 500
@@ -195,7 +199,7 @@
 15010 POKE 781,11:POKE 782,14:POKE 783,0:SYS 65520:print"{yellow}cities left";cc
 15020 POKE 781,13:POKE 782,16:POKE 783,0:SYS 65520:print"{cyan}bonus";cc*100
 15022 poke l,15:pokea,10:pokeh,20:pokefh,40:pokefl,50:poketl,10:poketh,40:pokewm,17
-15023 for j=0to3:for i=0to50+j*20:pokefh,i:pokefl,30:nexti:nextj:gosub3000
+15023 for j=0to5:for i=0to20+j*10:pokefh,i:pokefl,30:nexti:nextj:gosub3000
 15025 pt=pt+cc*100:mc=mc+5
 15028 if ob<ms then ob=ob+1
 15030 JI=PEEK(JO):if ji<>j9 then 15030
