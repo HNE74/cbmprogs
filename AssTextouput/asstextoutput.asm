@@ -21,14 +21,13 @@ OUTPUT
         iny
         jmp OUTPUT
 END
-        sty $FB
-        lda $7A
+        tya
         clc
-        adc $FB
+        adc $7A
         sta $7A
-        lda $7B
-        adc #$00
-        sta $7B
+        bcc NOHIGH
+        inc $7B
+NOHIGH
         rts
 
 CONVERT
