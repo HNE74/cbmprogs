@@ -1,26 +1,31 @@
 ; sys 49152,"hello world"
-; see youtube video nerdroom: 
+; see youtube videos nerdroom: 
 ; https://www.youtube.com/watch?v=c043uy-_RRU&t=1943s
+; https://www.youtube.com/watch?v=olqjsi6U-mw
 *=$C000
 
-CHKCOM = $AEFD
-SCREEN = $0400
+CHKCOM = $AEFD          ; puts basic pointer to char after first comma
+SCREEN = $0400          ; screenram 
 
         lda #$00
         ldy #$00
 
-        jsr CHKCOM
-        jsr OUTPUT
+        jsr CHKCOM      
+        cmp #$22        ; ignore first quote
+        beq INIT
         rts
-
+INIT
+        iny
 OUTPUT
         lda ($7A),y
+        cmp #$22
         beq END
         jsr CONVERT
         sta SCREEN,y
         iny
         jmp OUTPUT
 END
+        inc $7A
         tya
         clc
         adc $7A
