@@ -3,13 +3,18 @@
 #include <peekpoke.h>
 #include <time.h>
 
-#define BALL_COUNT 5
-#define OBSTACLE_COUNT 10
+#define BALL_COUNT 20
+#define OBSTACLE_COUNT 20
+#define DELAY 10
 
 const int VIC = 0xD000; // VIC start address
 const int SCREEN = 0X400; // Screen ram address
+int ballCount = -1; // Number of balls
+int obstCount = -1; // Number of obstacles;
+int delay = -1; // Raster wait loop
 int x[BALL_COUNT], y[BALL_COUNT]; // Ball coordinates
 int dx[BALL_COUNT], dy[BALL_COUNT]; // Ball movement vectors
+
 
 // Wait for raster line
 void rasterWait(int cnt) {
@@ -55,12 +60,8 @@ void drawChar(int x, int y, char c) {
 void prepareScreen() {
     int l;
 
-    POKE(VIC+24, 21);
-    POKE(VIC+32, 3);
-    POKE(VIC+33, 0);
-
     printf("%c", 147);
-    for(l=0; l<OBSTACLE_COUNT; l++) {
+    for(l=0; l<obstCount; l++) {
         POKE(SCREEN+rand() % 1000, 166);
     }
 }
@@ -80,7 +81,7 @@ void checkBgColl(int ballNo) {
 // Initialize ball data 
 void initBalls() {
     int ballNo;
-    for (ballNo=0; ballNo<BALL_COUNT; ballNo++) {
+    for (ballNo=0; ballNo<ballCount; ballNo++) {
         x[ballNo] = rand() % 40;
         if (x[ballNo] < 20) {
             dx[ballNo] = 1;
@@ -99,21 +100,21 @@ void initBalls() {
     }
 }
 
-// Main routine
-int main() {
+// Makes the balls bounce
+void bounceBalls() {
     int oldx, oldy, i;
 
     srand(time(NULL));
     initBalls();
     prepareScreen();
 
-    for(i=0; i<BALL_COUNT; i++) {    
+    for(i=0; i<ballCount; i++) {    
         drawChar(x[i],y[i],81);
     }
 
     do {
-        rasterWait(2);
-        for(i=0; i<BALL_COUNT; i++) {
+        rasterWait(delay);
+        for(i=0; i<ballCount; i++) {
             oldx=x[i]; oldy=y[i];
             checkBgColl(i);   
             addX(i);
@@ -123,6 +124,35 @@ int main() {
         }
     }
     while(1);
+}
 
+// Enter program parameters: 
+// number of balls
+// number of obstacles
+void enterParams() {
+    printf("%c", 147);
+    printf("bouncing balls cc65 c demo\n");
+    printf("**************************\n\n");
+    while(ballCount<=0 || ballCount > BALL_COUNT) {
+        printf("number of balls?");scanf("%d", &ballCount);
+    }
+
+    while(obstCount<=0 || obstCount > OBSTACLE_COUNT) {
+        printf("number of obstacles?");scanf("%d", &obstCount);
+    }
+
+    while(delay<=0 || delay > DELAY) {
+        printf("delay?");scanf("%d", &delay);
+    }    
+}
+
+// Main routine
+int main() {
+    POKE(VIC+24, 21);
+    POKE(VIC+32, 3);
+    POKE(VIC+33, 0);
+
+    enterParams();
+    bounceBalls();
     return EXIT_SUCCESS;
 }
