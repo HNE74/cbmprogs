@@ -1,0 +1,12 @@
+parsing
+flex pass 1
+flex pass 2
+Output pass
+Writing prg file: vardump.prg
+
+Memory Map
+----------
+Default-segment:
+  $033c-$03fb Unnamed
+
+Writing Vice symbol file: vardump.vs
