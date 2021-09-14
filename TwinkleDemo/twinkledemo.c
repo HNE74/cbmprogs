@@ -64,7 +64,8 @@ void defStars() {
 	}
 }
 
-void rotateStars() {
+// Rotate star definitions
+void rotateStarDefs() {
 	int i;
 	int startChr = starChars[0].chrcode;
 	for(i=0; i<3; i++) {
@@ -99,19 +100,53 @@ void prepareScreen() {
 	clrscr();
 }
 
+void printStars() {
+	int i;
+	int offset;
+
+	for(i=0; i<10; i++) {
+		offset = rand() % 1000;
+		POKE(SCREEN_RAM+offset, 81);
+		POKE(COLOR_RAM+offset, rand() % 14+1);
+		offset = rand() % 1000;
+		POKE(SCREEN_RAM+offset, 82);
+		POKE(COLOR_RAM+offset, rand() % 14+1);
+		offset = rand() % 1000;
+		POKE(SCREEN_RAM+offset, 83);
+		POKE(COLOR_RAM+offset, rand() % 14+1);
+		offset = rand() % 1000;
+		POKE(SCREEN_RAM+offset, 84);
+		POKE(COLOR_RAM+offset, rand() % 14+1);		
+	}
+}
+
+// Wait for raster line
+void rasterWait(int cnt) {
+    int i;
+
+    for(i=0; i<cnt; i++) {
+        while (VIC.rasterline < 250 || VIC.rasterline > 252);
+    }
+}
+
 // Main method
 int main(void) {
+	char key;
 
 	createUserFont();
 	prepareScreen();
 	defStars();
+	printStars();
 
-	POKE(SCREEN_RAM, 81);
-	POKE(SCREEN_RAM+1, 82);
-	POKE(SCREEN_RAM+2, 83);
-	POKE(SCREEN_RAM+3, 84);
 	while(1) {
-		rotateStars();
+		rotateStarDefs();
+		rasterWait(10);
+
+		key = 0x1;
+        if(kbhit())	key = cgetc() ;    
+        if(key == ' ') {
+			break;
+        }
 	}
 
     return EXIT_SUCCESS;
