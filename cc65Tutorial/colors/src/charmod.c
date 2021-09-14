@@ -41,8 +41,8 @@ void modchar(CharDef *chrdef) {
 
 void defchars(void) {
 	CharDef rocket;
-	rocket.chrcode = 81;
-	rocket.lines[0] = 20;
+	rocket.chrcode = 81; 
+	rocket.lines[0] = 
 	rocket.lines[1] = 25;
 	rocket.lines[2] = 20;
 	rocket.lines[3] = 25;
