@@ -100,6 +100,7 @@ void prepareScreen() {
 	clrscr();
 }
 
+// Print stars to screen
 void printStars() {
 	int i;
 	int offset;
