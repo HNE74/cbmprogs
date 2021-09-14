@@ -3,12 +3,14 @@
 //*** https://github.com/StewBC/cc65-Chess
 //***********************************************
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <conio.h>
 #include <cc65.h>
 #include <c64.h>
 #include <string.h>
+#include <peekpoke.h>
 
 /*-----------------------------------------------------------------------*/
 // System locations
@@ -20,9 +22,39 @@
 
 static char sc_txt;
 
-int main(void) {
-    int i;
+struct charDef {
+    int chrcode;
+	char lines[8];
+};
 
+typedef struct charDef CharDef;
+
+void modchar(CharDef *chrdef) {
+	int offset;
+	int i;
+
+	offset = chrdef->chrcode * 8;
+	for (i=0; i<8; i++) {
+    	CHARMAP_RAM[offset+i] = ((CharDef)*chrdef).lines[i];
+	}
+}
+
+void defchars(void) {
+	CharDef rocket;
+	rocket.chrcode = 81;
+	rocket.lines[0] = 20;
+	rocket.lines[1] = 25;
+	rocket.lines[2] = 20;
+	rocket.lines[3] = 25;
+	rocket.lines[4] = 20;
+	rocket.lines[5] = 25;
+	rocket.lines[6] = 20;
+	rocket.lines[7] = 25;
+
+	modchar(&rocket);
+}
+
+int main(void) {
     // Set up a user defined font, and move the screen to the appropriate position
 	CIA2.ddra |= 0x03;
 	CIA2.pra = (CIA2.pra & 0xfc) | (3-(VIC_BASE_RAM / 0x4000));
@@ -45,9 +77,10 @@ int main(void) {
 	*(char*)0x01 = *(char*)0x01 | 0x04;
 	CIA1.cra = (CIA1.cra | 0x01);
 
-    for(i=0; i<256*8; i++) {
-        CHARMAP_RAM[i] = 128;
-    }
+	defchars();
+	
+	POKE(SCREEN_RAM, 81);
+	while(1);
 
     return EXIT_SUCCESS;
 }
