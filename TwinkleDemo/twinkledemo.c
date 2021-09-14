@@ -20,15 +20,28 @@
 #define COLOUR_RAM				((char*)0xd800)
 #define MEM_KRNL_PRNT			((char*)0x288)
 
-static char sc_txt;
-
+/*-----------------------------------------------------------------------*/
+// Structure for character definition
 struct charDef {
     int chrcode;
 	char lines[8];
 };
-
 typedef struct charDef CharDef;
 
+// Star characters defintion array
+CharDef starChars[4];
+
+// Star character values
+int star[4][8] = {
+ { 0,0,0,24,24,0,0,0 },
+ { 0,0,36,24,24,36,0,0 },
+ { 0,24,36,90,90,36,24,0 },
+ { 0,90,36,90,90,36,90,0 }
+};
+
+/*-----------------------------------------------------------------------*/
+
+// Modify character
 void modchar(CharDef *chrdef) {
 	int offset;
 	int i;
@@ -39,36 +52,26 @@ void modchar(CharDef *chrdef) {
 	}
 }
 
-void defchars(void) {
-	CharDef rocket;
-	rocket.chrcode = 81; 
-	rocket.lines[0] = 
-	rocket.lines[1] = 25;
-	rocket.lines[2] = 20;
-	rocket.lines[3] = 25;
-	rocket.lines[4] = 20;
-	rocket.lines[5] = 25;
-	rocket.lines[6] = 20;
-	rocket.lines[7] = 25;
-
-	modchar(&rocket);
+// Define star characters
+void defstars() {
+	int i, j;
+	for(i=0; i<4; i++) {
+		starChars[i].chrcode = 81+i;
+		for(j=0; j<8; j++) {
+			starChars[i].lines[j] = star[i][j];
+		}
+		modchar(&starChars[i]);
+	}
 }
 
-int main(void) {
+// Move user definable font to ram
+void createUserFont(void) {
     // Set up a user defined font, and move the screen to the appropriate position
 	CIA2.ddra |= 0x03;
 	CIA2.pra = (CIA2.pra & 0xfc) | (3-(VIC_BASE_RAM / 0x4000));
 	VIC.addr = ((((int)(SCREEN_RAM - VIC_BASE_RAM) / 0x0400) << 4) + (((int)(CHARMAP_RAM - VIC_BASE_RAM) / 0x0800) << 1));
-	VIC.ctrl2 |= 16;
-	VIC.bordercolor = VIC.bgcolor0 = COLOR_LIGHTBLUE;
-	VIC.bgcolor1 = COLOR_RED;
-	VIC.bgcolor2 = COLOR_GRAY3;
-
+	//VIC.ctrl2 |= 16; multicolor chars disabled
 	*MEM_KRNL_PRNT = (int)SCREEN_RAM / 256;
-
-	// Save and set the text color
-	sc_txt = textcolor(COLOR_BLUE);
-	clrscr();
 
 	// Copy the standard font to where the redefined char font will live
 	CIA1.cra = (CIA1.cra & 0xfe);
@@ -76,10 +79,26 @@ int main(void) {
 	memcpy(CHARMAP_RAM,COLOUR_RAM,256*8);
 	*(char*)0x01 = *(char*)0x01 | 0x04;
 	CIA1.cra = (CIA1.cra | 0x01);
+}
 
-	defchars();
-	
+// Prepares the screen
+void prepareScreen() {
+	VIC.bordercolor = COLOR_GRAY1;
+	VIC.bgcolor0 = COLOR_BLACK;
+	clrscr();
+}
+
+// Main method
+int main(void) {
+
+	createUserFont();
+	prepareScreen();
+	defstars();
+
 	POKE(SCREEN_RAM, 81);
+	POKE(SCREEN_RAM+1, 82);
+	POKE(SCREEN_RAM+2, 83);
+	POKE(SCREEN_RAM+3, 84);
 	while(1);
 
     return EXIT_SUCCESS;
