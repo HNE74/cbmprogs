@@ -53,7 +53,7 @@ void modchar(CharDef *chrdef) {
 }
 
 // Define star characters
-void defstars() {
+void defStars() {
 	int i, j;
 	for(i=0; i<4; i++) {
 		starChars[i].chrcode = 81+i;
@@ -62,6 +62,17 @@ void defstars() {
 		}
 		modchar(&starChars[i]);
 	}
+}
+
+void rotateStars() {
+	int i;
+	int startChr = starChars[0].chrcode;
+	for(i=0; i<3; i++) {
+		starChars[i].chrcode = starChars[i+1].chrcode;
+		modchar(&starChars[i]);
+	}
+	starChars[3].chrcode = startChr;
+	modchar(&starChars[3]);
 }
 
 // Move user definable font to ram
@@ -93,13 +104,15 @@ int main(void) {
 
 	createUserFont();
 	prepareScreen();
-	defstars();
+	defStars();
 
 	POKE(SCREEN_RAM, 81);
 	POKE(SCREEN_RAM+1, 82);
 	POKE(SCREEN_RAM+2, 83);
 	POKE(SCREEN_RAM+3, 84);
-	while(1);
+	while(1) {
+		rotateStars();
+	}
 
     return EXIT_SUCCESS;
 }
