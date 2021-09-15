@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
 #include <peekpoke.h>
@@ -80,6 +81,13 @@ void rasterWait(int cnt) {
     }
 }
 
+// Write textbox
+void writeTextBox(void) {
+	gotoxy(10, 10);
+	textcolor(COLOR_LIGHTBLUE);
+	cputs("star twinkle demo");
+}
+
 // Main method
 int main(void) {
 	char key;
@@ -88,10 +96,12 @@ int main(void) {
 	prepareScreen();
 	defStars();
 	printStars();
-	startSound(music_v1, music_v2, music_v3);
+	writeTextBox();	
 
+	startSound(music_v1, music_v2, music_v3);
 	while(1) {
 		rotateStarDefs();
+	
 		rasterWait(10);
 
 		key = 0x1;

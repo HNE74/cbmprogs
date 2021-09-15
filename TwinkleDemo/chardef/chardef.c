@@ -10,7 +10,7 @@
 #define VIC_BASE_RAM			(0x8000)
 #define SCREEN_RAM				((char*)VIC_BASE_RAM+0x0400)
 #define CHARMAP_RAM				((char*)VIC_BASE_RAM+0x0800)
-#define COLOUR_RAM				((char*)0xd800)
+#define CHARMAP_ROM				((char*)0xd000)
 #define MEM_KRNL_PRNT			((char*)0x288)
 
 /*-----------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ void createUserFont(void) {
 	// Copy the standard font to where the redefined char font will live
 	CIA1.cra = (CIA1.cra & 0xfe);
 	*(char*)0x01 = *(char*)0x01 & 0xfb;
-	memcpy(CHARMAP_RAM,COLOUR_RAM,256*8);
+	memcpy(CHARMAP_RAM, CHARMAP_ROM,256*8);
 	*(char*)0x01 = *(char*)0x01 | 0x04;
 	CIA1.cra = (CIA1.cra | 0x01);
 }
