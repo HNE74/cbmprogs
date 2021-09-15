@@ -10,6 +10,8 @@ else
     echo "Abort due to compile errors."
 fi
 
+rm -f ./chardef/*.o
+rm -f ./sound/*.o
 rm -f *.o
 rm -f *.prg
 rm -f vardump*
