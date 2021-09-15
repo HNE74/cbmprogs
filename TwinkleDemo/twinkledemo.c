@@ -83,9 +83,17 @@ void rasterWait(int cnt) {
 
 // Write textbox
 void writeTextBox(void) {
-	gotoxy(10, 10);
 	textcolor(COLOR_LIGHTBLUE);
+	gotoxy(11, 10);	
 	cputs("star twinkle demo");
+
+	textcolor(COLOR_YELLOW);
+	gotoxy(10, 12);	
+	cputs("by noltisoft in 2021");
+
+	textcolor(COLOR_LIGHTRED);
+	gotoxy(11, 14);	
+	cputs("created using cc65");
 }
 
 // Main method
