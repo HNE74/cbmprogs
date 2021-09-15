@@ -48,7 +48,7 @@ void modchar(CharDef *chrdef) {
 
 	offset = chrdef->chrcode * 8;
 	for (i=0; i<8; i++) {
-    	CHARMAP_RAM[offset+i] = ((CharDef)*chrdef).lines[i];
+		CHARMAP_RAM[offset+i] = chrdef->lines[i];
 	}
 }
 

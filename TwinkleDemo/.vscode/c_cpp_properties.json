@@ -4,7 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${default}",
-                "/usr/share/cc65/include/**"               
+                "/usr/share/cc65/include/**",
+                "C:/MyProgs/CC65/cc65/include"               
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
