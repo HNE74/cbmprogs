@@ -1,9 +1,9 @@
 #!/bin/sh
 
-errormessage=`cl65 -o prog.prg $1 -C comp.cfg -t c64 2>&1`
+rm -f prog.prg
+errormessage=`cl65 -O -t c64 -C comp.cfg -o prog.prg twinkledemo.c chardef/chardef.c sound/sound.c 2>&1`
 
-if [ -z "$errormessage" ]
-then
+if test -f "prog.prg"; then
     x64 prog.prg 
 else
     echo "$errormessage"
@@ -12,7 +12,7 @@ fi
 
 rm -f *.o
 rm -f *.prg
-rm vardump*
+rm -f vardump*
 
 
 
