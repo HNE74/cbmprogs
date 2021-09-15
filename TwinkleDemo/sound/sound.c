@@ -66,25 +66,17 @@ static void processVoice(unsigned char **ptr, unsigned char *sid_pointer,
 
 unsigned char soundIrq(void)
 {
-    if(ptr1!=NULL) {
+    if(ptr1!=NULL && sizeof(*ptr1) > 0) {
         processVoice(&ptr1, (unsigned char*)0xD400U, &wsh1);
-    }
-    if(ptr2!=NULL) {
-        processVoice(&ptr2, (unsigned char*)0xD407U, &wsh2);
-    }
-    if(ptr3!=NULL) {
-        processVoice(&ptr3, (unsigned char*)0xD40EU, &wsh3);
     }
     ++cnt;
     return (IRQ_NOT_HANDLED);
 }
 
-void startSound(unsigned char *l1, unsigned char *l2, unsigned char *l3)
+void startSound(unsigned char *l1)
 {
     POKE(0xD418,15);
     ptr1=list1=l1;
-    ptr2=list2=l2;
-    ptr3=list3=l3;
     cnt=0;
 
     SEI();

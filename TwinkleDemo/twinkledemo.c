@@ -104,7 +104,7 @@ int main(void) {
 	printStars();
 	writeTextBox();	
 
-	startSound(music_v1, music_v2, music_v3);
+	startSound(music_v1);
 	while(1) {
 		rotateStarDefs();
 		rasterWait(10);
