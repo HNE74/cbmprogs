@@ -1,3 +1,7 @@
+// ***********************************************
+// *** Custom charset defintion
+// ***********************************************
+
 #define VIC_BASE_RAM			(0x8000)
 #define SCREEN_RAM				((char*)VIC_BASE_RAM+0x0400)
 #define CHARMAP_RAM				((char*)VIC_BASE_RAM+0x0800)

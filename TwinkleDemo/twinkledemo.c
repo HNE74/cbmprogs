@@ -2,6 +2,8 @@
 #include <conio.h>
 #include <peekpoke.h>
 #include "chardef/chardef.h"
+#include "sound/sound.h"
+#include "sound/tune.h"
 
 // Star characters defintion array
 CharDef starChars[4];
@@ -86,6 +88,7 @@ int main(void) {
 	prepareScreen();
 	defStars();
 	printStars();
+	startSound(music_v1, music_v2, music_v3);
 
 	while(1) {
 		rotateStarDefs();
@@ -98,5 +101,6 @@ int main(void) {
         }
 	}
 
+	musicOff();
     return EXIT_SUCCESS;
 }
