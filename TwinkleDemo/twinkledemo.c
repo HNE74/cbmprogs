@@ -83,17 +83,15 @@ void rasterWait(int cnt) {
 
 // Write textbox
 void writeTextBox(void) {
+	gotoxy(11, 10);
 	textcolor(COLOR_LIGHTBLUE);
-	gotoxy(11, 10);	
 	cputs("star twinkle demo");
-
-	textcolor(COLOR_YELLOW);
-	gotoxy(10, 12);	
-	cputs("by noltisoft in 2021");
-
-	textcolor(COLOR_LIGHTRED);
-	gotoxy(11, 14);	
-	cputs("created using cc65");
+	gotoxy(11, 12);
+	textcolor(COLOR_CYAN);
+	cputs("by noltisoft 2021");
+	gotoxy(11, 14);
+	textcolor(COLOR_RED);
+	cputs("created with cc65");
 }
 
 // Main method
@@ -106,10 +104,9 @@ int main(void) {
 	printStars();
 	writeTextBox();	
 
-	startSound(music_v1, music_v2, music_v3);
+	startSound(music_v1);
 	while(1) {
 		rotateStarDefs();
-	
 		rasterWait(10);
 
 		key = 0x1;
