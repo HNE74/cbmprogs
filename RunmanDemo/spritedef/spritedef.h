@@ -13,6 +13,7 @@ typedef struct SpriteDef {
 	char color;
     unsigned int xpos;
     unsigned int ypos;
+    unsigned int framendx;
     unsigned int frames;
     SpriteData *data;
 } SpriteDef;

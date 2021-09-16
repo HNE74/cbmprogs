@@ -268,10 +268,11 @@ SpriteData runnerData[] =
 };
 
 SpriteDef runnerDef = {
-    0,
+    1,
     7,
     100,
     100,
+    0,
     10,
     runnerData
 };
