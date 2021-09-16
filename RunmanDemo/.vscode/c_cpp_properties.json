@@ -4,7 +4,8 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/MyProgs/CC65/cc65/include"                    
+                "C:/MyProgs/CC65/cc65/include",
+                "/usr/share/cc65/include/**"                    
             ],
             "defines": [
                 "_DEBUG",

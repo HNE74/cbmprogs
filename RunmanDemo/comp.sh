@@ -1,7 +1,7 @@
 #!/bin/sh
 
 rm -f prog.prg
-errormessage=`cl65 -O -t c64 -C comp.cfg -o prog.prg twinkledemo.c chardef/chardef.c sound/sound.c 2>&1`
+errormessage=`cl65 -O -t c64 -C comp.cfg -o prog.prg runman.c chardef/chardef.c 2>&1`
 
 if test -f "prog.prg"; then
     x64 prog.prg 
