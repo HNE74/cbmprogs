@@ -3,8 +3,7 @@
 // *************************************
 
 typedef struct SpriteData {
-    unsigned int frame;
-    char data[63];
+    char data[64];
 } SpriteData;
 
 
