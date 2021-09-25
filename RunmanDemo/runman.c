@@ -3,17 +3,17 @@
 #include <conio.h>
 #include <c64.h>
 #include <peekpoke.h>
+#include <string.h>
 #include "chardef/chardef.h"
 #include "spritedef/runnerdef.h"
 
-// Create sprite data from the provided 
-void createSpriteData(int blockstart, SpriteDef *spriteDef) {
-    int i;
-    char *data = spriteDef->data->data;
 
-    for(i=0; i<sizeof(spriteDef->data->data); i++) {
-        POKE(blockstart+i, *data);
-        data++;
+// Create sprite data from the provided 
+void createSpriteData(SpriteDef *spriteDef) {
+    int i;
+    for(i=0; i<spriteDef->minBlock+spriteDef->numBlocks; i++) {
+        SpriteData *sprData = spriteDef->data+i;
+        memcpy(spriteDef->memAddress+i*64, sprData->data, 63);
     }
 }
 
@@ -32,18 +32,24 @@ void activateSprite(SpriteDef *spriteDef) {
     VIC.spr_ena = VIC.spr_ena | spriteDef->ndx; 
 }
 
+void runMan(SpriteDef *spriteDef) {
+    int i,j;
+    for(i=spriteDef->minBlock; i<spriteDef->minBlock+spriteDef->numBlocks; i++) {
+        POKE(SCREEN_RAM+1024-8, i);
+        for(j=0; j<1000; j++) {}
+    }
+}
+
 int main(void) {
     int i,j;
 
 	createUserFont();
     clrscr();
-    createSpriteData(40960, &runnerDef);
+    createSpriteData(&runnerDef);
     activateSprite(&runnerDef);
-  
-    for(i=128;i<129;i++) {
-        printf("%d-", i);
-        POKE(SCREEN_RAM+1024-8, i);
-        for(j=0;j<5000;j++) {}
+
+    while(1==1) {
+        runMan(&runnerDef);
     }
 
     return EXIT_SUCCESS;

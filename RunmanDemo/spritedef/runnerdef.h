@@ -272,7 +272,9 @@ SpriteDef runnerDef = {
     7,
     100,
     100,
-    0,
+    40960,
+    128,
+    128,
     10,
     runnerData
 };
