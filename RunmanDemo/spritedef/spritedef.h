@@ -12,6 +12,8 @@ typedef struct SpriteDef {
 	char color;
     unsigned int xpos;
     unsigned int ypos;
+    int dx;
+    int dy;
     unsigned long memAddress;
     unsigned int currentBlock;
     unsigned int minBlock;

@@ -1,6 +1,6 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include <conio.h>
+#include <stdio.h>
 #include <c64.h>
 #include <peekpoke.h>
 #include <string.h>
@@ -17,27 +17,61 @@ void createSpriteData(SpriteDef *spriteDef) {
     }
 }
 
+
 // Activate sprite
-void activateSprite(SpriteDef *spriteDef) {
+void applySpriteDef(SpriteDef *spriteDef) {
     switch(spriteDef->ndx) {
         case 1:
             VIC.spr0_color = spriteDef->color;
             VIC.spr0_x = spriteDef->xpos;
             VIC.spr0_y = spriteDef->ypos;
+            POKE(SCREEN_RAM+1024-8, spriteDef->currentBlock);
             break;
         default:
             break;
     };
+}
 
-    VIC.spr_ena = VIC.spr_ena | spriteDef->ndx; 
+// Enables the related sprite and applies its defintion
+void enableSprite(SpriteDef *spriteDef) {   
+    VIC.spr_ena = VIC.spr_ena | runnerDef.ndx;
+    applySpriteDef(spriteDef);
+}
+
+// Wait for raster line
+void rasterWait(int cnt) {
+    int i;
+
+    for(i=0; i<cnt; i++) {
+        while (VIC.rasterline < 250 || VIC.rasterline > 252);
+    }
 }
 
 void runMan(SpriteDef *spriteDef) {
-    int i,j;
-    for(i=spriteDef->minBlock; i<spriteDef->minBlock+spriteDef->numBlocks; i++) {
-        POKE(SCREEN_RAM+1024-8, i);
-        for(j=0; j<1000; j++) {}
+    int j;
+ 
+    if(spriteDef->xpos<25 || spriteDef->xpos >= 140) {
+        spriteDef->dx=-spriteDef->dx;
+        if(spriteDef->dx>0) {
+            spriteDef->currentBlock=spriteDef->minBlock+6;
+        }
+        else {
+            spriteDef->currentBlock=spriteDef->minBlock;
+        }
     }
+    spriteDef->xpos=spriteDef->xpos+spriteDef->dx;
+
+    spriteDef->currentBlock+=1;
+    if(spriteDef->dx>0 && 
+       spriteDef->currentBlock==spriteDef->minBlock+spriteDef->numBlocks) {
+           spriteDef->currentBlock=spriteDef->minBlock+5;
+    }
+    else if(spriteDef->dx<0 &&
+            spriteDef->currentBlock==spriteDef->minBlock+5) {
+           spriteDef->currentBlock=spriteDef->minBlock;
+    }
+
+    applySpriteDef(spriteDef);
 }
 
 int main(void) {
@@ -46,10 +80,12 @@ int main(void) {
 	createUserFont();
     clrscr();
     createSpriteData(&runnerDef);
-    activateSprite(&runnerDef);
+    enableSprite(&runnerDef);
 
+    runnerDef.currentBlock=runnerDef.minBlock+6;
     while(1==1) {
-        runMan(&runnerDef);
+      runMan(&runnerDef);
+      rasterWait(10);
     }
 
     return EXIT_SUCCESS;
