@@ -143,8 +143,15 @@ int main(void) {
 
 	createUserFont();
     clrscr();
-    createSpriteData(&runnerDef[0]);
+	gotoxy(7, 1);
+	textcolor(COLOR_LIGHTBLUE);
+	cputs("runman by noltisoft 2021");
+	gotoxy(7, 2);
+	textcolor(COLOR_LIGHTBLUE);
+	cputs("created in c using cc65");
+    printf("");
 
+    createSpriteData(&runnerDef[0]);
     for(i=0; i<8; i++) {
         initSprite(&runnerDef[i]);
     }
