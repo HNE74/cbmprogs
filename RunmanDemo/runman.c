@@ -25,6 +25,12 @@ void applySpriteDef(SpriteDef *spriteDef) {
             VIC.spr0_color = spriteDef->color;
             VIC.spr0_x = spriteDef->xpos;
             VIC.spr0_y = spriteDef->ypos;
+            if(spriteDef->xpos>255) {
+                VIC.spr_hi_x = VIC.spr_hi_x | runnerDef.ndx;
+            }
+            else {
+                VIC.spr_hi_x = VIC.spr_hi_x & ~runnerDef.ndx;
+            }
             POKE(SCREEN_RAM+1024-8, spriteDef->currentBlock);
             break;
         default:
@@ -50,7 +56,7 @@ void rasterWait(int cnt) {
 void runMan(SpriteDef *spriteDef) {
     int j;
  
-    if(spriteDef->xpos<25 || spriteDef->xpos >= 140) {
+    if(spriteDef->xpos<25 || spriteDef->xpos >= 320) {
         spriteDef->dx=-spriteDef->dx;
         if(spriteDef->dx>0) {
             spriteDef->currentBlock=spriteDef->minBlock+6;
