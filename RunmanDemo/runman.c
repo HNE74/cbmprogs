@@ -17,7 +17,6 @@ void createSpriteData(SpriteDef *spriteDef) {
     }
 }
 
-
 // Activate sprite
 void applySpriteDef(SpriteDef *spriteDef) {
     switch(spriteDef->ndx) {
@@ -25,22 +24,65 @@ void applySpriteDef(SpriteDef *spriteDef) {
             VIC.spr0_color = spriteDef->color;
             VIC.spr0_x = spriteDef->xpos;
             VIC.spr0_y = spriteDef->ypos;
-            if(spriteDef->xpos>255) {
-                VIC.spr_hi_x = VIC.spr_hi_x | runnerDef.ndx;
-            }
-            else {
-                VIC.spr_hi_x = VIC.spr_hi_x & ~runnerDef.ndx;
-            }
             POKE(SCREEN_RAM+1024-8, spriteDef->currentBlock);
+            break;
+        case 2:
+            VIC.spr1_color = spriteDef->color;
+            VIC.spr1_x = spriteDef->xpos;
+            VIC.spr1_y = spriteDef->ypos;
+            POKE(SCREEN_RAM+1024-7, spriteDef->currentBlock);
+            break;
+        case 4:
+            VIC.spr2_color = spriteDef->color;
+            VIC.spr2_x = spriteDef->xpos;
+            VIC.spr2_y = spriteDef->ypos;
+            POKE(SCREEN_RAM+1024-6, spriteDef->currentBlock);
+            break;
+        case 8:
+            VIC.spr3_color = spriteDef->color;
+            VIC.spr3_x = spriteDef->xpos;
+            VIC.spr3_y = spriteDef->ypos;
+            POKE(SCREEN_RAM+1024-5, spriteDef->currentBlock);
+            break;
+        case 16:
+            VIC.spr4_color = spriteDef->color;
+            VIC.spr4_x = spriteDef->xpos;
+            VIC.spr4_y = spriteDef->ypos;
+            POKE(SCREEN_RAM+1024-4, spriteDef->currentBlock);
+            break;
+        case 32:
+            VIC.spr5_color = spriteDef->color;
+            VIC.spr5_x = spriteDef->xpos;
+            VIC.spr5_y = spriteDef->ypos;
+            POKE(SCREEN_RAM+1024-3, spriteDef->currentBlock);
+            break;
+        case 64:
+            VIC.spr6_color = spriteDef->color;
+            VIC.spr6_x = spriteDef->xpos;
+            VIC.spr6_y = spriteDef->ypos;
+            POKE(SCREEN_RAM+1024-2, spriteDef->currentBlock);
+            break;
+        case 128:
+            VIC.spr7_color = spriteDef->color;
+            VIC.spr7_x = spriteDef->xpos;
+            VIC.spr7_y = spriteDef->ypos;
+            POKE(SCREEN_RAM+1024-1, spriteDef->currentBlock);
             break;
         default:
             break;
     };
+
+    if(spriteDef->xpos>255) {
+        VIC.spr_hi_x = VIC.spr_hi_x | spriteDef->ndx;
+    }
+    else {
+        VIC.spr_hi_x = VIC.spr_hi_x & ~spriteDef->ndx;
+    }
 }
 
 // Enables the related sprite and applies its defintion
 void enableSprite(SpriteDef *spriteDef) {   
-    VIC.spr_ena = VIC.spr_ena | runnerDef.ndx;
+    VIC.spr_ena = VIC.spr_ena | spriteDef->ndx;
     applySpriteDef(spriteDef);
 }
 
@@ -80,18 +122,38 @@ void runMan(SpriteDef *spriteDef) {
     applySpriteDef(spriteDef);
 }
 
+// Initializes the sprite related to the passed sprite definition
+void initSprite(SpriteDef *spriteDef) {
+    int i;
+    spriteDef->xpos=rand() % 280 + 50;
+    if(rand() % 2 == 1) {
+        spriteDef->dx=1;
+        spriteDef->currentBlock=spriteDef->minBlock+6;
+    }
+    else {
+        spriteDef->dx=-1;            
+        spriteDef->currentBlock=spriteDef->minBlock;
+    }
+
+    enableSprite(spriteDef);
+}
+
 int main(void) {
-    int i,j;
+    int i;
 
 	createUserFont();
     clrscr();
-    createSpriteData(&runnerDef);
-    enableSprite(&runnerDef);
+    createSpriteData(&runnerDef[0]);
 
-    runnerDef.currentBlock=runnerDef.minBlock+6;
+    for(i=0; i<8; i++) {
+        initSprite(&runnerDef[i]);
+    }
+
     while(1==1) {
-      runMan(&runnerDef);
-      rasterWait(10);
+        for(i=0; i<8; i++) {
+            runMan(&runnerDef[i]);
+        }
+        rasterWait(3);
     }
 
     return EXIT_SUCCESS;
