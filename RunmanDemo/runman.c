@@ -96,8 +96,6 @@ void rasterWait(int cnt) {
 }
 
 void runMan(SpriteDef *spriteDef) {
-    int j;
- 
     if(spriteDef->xpos<25 || spriteDef->xpos >= 320) {
         spriteDef->dx=-spriteDef->dx;
         if(spriteDef->dx>0) {
@@ -124,8 +122,7 @@ void runMan(SpriteDef *spriteDef) {
 
 // Initializes the sprite related to the passed sprite definition
 void initSprite(SpriteDef *spriteDef) {
-    int i;
-    spriteDef->xpos=rand() % 280 + 50;
+     spriteDef->xpos=rand() % 280 + 50;
     if(rand() % 2 == 1) {
         spriteDef->dx=1;
         spriteDef->currentBlock=spriteDef->minBlock+6;
