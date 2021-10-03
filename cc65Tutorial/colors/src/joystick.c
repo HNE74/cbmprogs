@@ -3,6 +3,7 @@
 #include <conio.h>
 #include <peekpoke.h>
 #include <c64.h>
+#include <joystick.h>
 
 const int SCREENRAM = 0X400; // Screen ram address
 const int COLORRAM  = 0XD800; // Color ram address
@@ -66,6 +67,8 @@ void drawChar(int x, int y, char ch, char cl) {
 
 int main(void) {
     char key;
+    char joydir;
+    joy_install (joy_static_stddrv);
 
     prepareScreen();
     initPlayer();
@@ -81,17 +84,19 @@ int main(void) {
         }
 
 		key = 0x20;
+        joydir = joy_read(JOY_2);
+
         if(kbhit())	key = cgetc() ;    
-        if(key == 'w' || CIA1.pra & up) {
+        if(key == 'w' || JOY_BTN_UP(joydir)) {
             player.ypos-=1;
         }
-        if(key == 's' || CIA1.pra & down) {
+        if(key == 's' || JOY_BTN_DOWN(joydir)) {
             player.ypos+=1;
         }
-        if(key == 'a' || CIA1.pra & left) {
+        if(key == 'a' || JOY_BTN_LEFT(joydir)) {
             player.xpos-=1;
         }
-        if(key == 'd' || CIA1.pra & right) {
+        if(key == 'd' || JOY_BTN_RIGHT(joydir)) {
             player.xpos+=1;
         }
 
