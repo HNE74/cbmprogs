@@ -5,9 +5,13 @@
 #include <c64.h>
 #include <joystick.h>
 
+//#define UBUNTU
+
 const int SCREENRAM = 0X400; // Screen ram address
 const int COLORRAM  = 0XD800; // Color ram address
 const int VIC2 = 0XD000; // VIC start address
+
+
 
 enum Joystick
 { 
@@ -86,7 +90,8 @@ int main(void) {
 		key = 0x20;
         joydir = joy_read(JOY_2);
 
-        if(kbhit())	key = cgetc() ;    
+        if(kbhit())	key = cgetc() ; 
+        #ifdef UBUNTU   
         if(key == 'w' || JOY_BTN_UP(joydir)) {
             player.ypos-=1;
         }
@@ -99,6 +104,20 @@ int main(void) {
         if(key == 'd' || JOY_BTN_RIGHT(joydir)) {
             player.xpos+=1;
         }
+        #else
+        if(key == 'w' || JOY_UP(joydir)) {
+            player.ypos-=1;
+        }
+        if(key == 's' || JOY_DOWN(joydir)) {
+            player.ypos+=1;
+        }
+        if(key == 'a' || JOY_LEFT(joydir)) {
+            player.xpos-=1;
+        }
+        if(key == 'd' || JOY_RIGHT(joydir)) {
+            player.xpos+=1;
+        }        
+        #endif
 
         rasterWait(5);
     } while(1);
