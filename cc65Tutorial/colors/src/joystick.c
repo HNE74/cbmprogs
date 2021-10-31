@@ -11,8 +11,6 @@ const int SCREENRAM = 0X400; // Screen ram address
 const int COLORRAM  = 0XD800; // Color ram address
 const int VIC2 = 0XD000; // VIC start address
 
-
-
 enum Joystick
 { 
   up = 1,
