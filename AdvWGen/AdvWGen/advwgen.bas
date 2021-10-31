@@ -9,7 +9,7 @@
  
 500 rem *** main ***
 510 gosub 1000
-515 gosub 2000
+515 gosub 3000
 520 end
 
 1000 rem *** Initialize world ***
@@ -28,3 +28,10 @@
 2030 print ;ra(rp,4);"*";ra(rp,5);ra(rp,6);"*";ra(rp,7)
 2035 next rp
 2040 return
+3000 rem *** print world
+3005 xp=0:yp=0 
+3010 for y=0towh:for x=0toww
+3015 poke214,yp:poke211,xp:sys58640
+3025 print "#"
+3030 xp=xp+3:nextx:xp=0:yp=yp+3:nexty
+3040 return
