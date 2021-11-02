@@ -5,6 +5,7 @@
 #*.prg
 *.dup
 
+AdvWGen/bak/*
 Nukestorm/bak/*
 Bresenham/bak/*
 CaveCommand/bak/*
