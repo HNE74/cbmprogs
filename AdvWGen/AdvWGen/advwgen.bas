@@ -4,7 +4,8 @@
 40 rem open wall=0, wall=1, not accessable room=-1
 100 ww=4:wh=4:rem *** world dimensions
 110 dim ra(((ww+1)*(wh+1)-1),8):rem *** room adjacent matrix
-115 rp=0:rc=((ww+1)*(wh+1)-1):rem *** room pointer, room count 
+115 rp=0:rc=((ww+1)*(wh+1)-1):rem *** room pointer, room count
+117 dim op(7):rem *** opposite room slot
 120 bp=0:dim br((ww+1)*(wh+1)-1):dim bd((ww+1)*(wh+1)-1): rem *** stack
 125 xp=0:yp=0:x=0:y=0:rem *** coordinate counter
 130 dr=0:ar=0:rem *** direction index, adjacent room index
@@ -25,16 +26,17 @@
 1035 for rp=wh*(ww+1) to (ww+1)*(wh+1)-1:ra(rp,2)=-1:nextrp
 1040 for rp=0 to rc step (ww+1):ra(rp,4)=-1:nextrp
 1045 for rp=ww to rc step (ww+1):ra(rp,6)=-1:nextrp
-1055 rem *** for rp=0torc:ra(rp,1)=0:ra(rp,3)=0:ra(rp,5)=0:ra(rp,7)=0:next
+1050 op(0)=3:op(2)=1:op(4)=7:op(6)=5
 1110 return
 
 1200 rem *** Generade adjacent transition path
-1205 bp=0:rp=0
+1205 bp=0:rp=6
 1210 ra(rp,8)=1:dr=-2
 1215 dr=dr+2:if dr>6then1230
 1220 if ra(rp,dr)=-1then1215
 1222 if ra(ra(rp,dr),8)=1then 1215
-1225 ra(rp,dr+1)=0:br(bp)=rp:bd(bp)=dr:bp=bp+1:rp=ra(rp,dr):goto1210
+1225 ra(rp,dr+1)=0:ra(ra(rp,dr),op(dr))=0
+1227 br(bp)=rp:bd(bp)=dr:bp=bp+1:rp=ra(rp,dr):goto1210
 1230 if bp=0then1240
 1235 rp=br(bp):dr=bd(bp):bp=bp-1:goto1215
 1240 return
