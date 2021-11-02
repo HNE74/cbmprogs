@@ -33,13 +33,14 @@
 1205 bp=0:rp=0
 1210 dr=int(rnd(1)*4)*2 
 1215 if ra(rp,dr)=-1then1210
-1220 ra(rp,dr+1)=0:ar=ra(rp,dr)
-1221 for i=0tobp:print br(i);"#";:nexti:print
-1222 for i=0tobp
-1223 ifbr(i)=artheni=bp:nexti:goto1210
-1224 nexti
-1225 bp=bp+1:br(bp)=ar
-1250 if bp<rc-1thenrp=ar:goto1210
+1220 ar=ra(rp,dr)
+1225 for i=0tobp:print br(i);"#";:nexti:print
+1230 for i=0tobp
+1235 if br(i)=artheni=bp:nexti:goto1210
+1240 nexti
+1245 ra(rp,dr+1)=0
+1250 bp=bp+1:br(bp)=ar
+1255 if bp<rcthenrp=ar:goto1210
 1260 return
 
 2000 rem *** print adjacent matrix
