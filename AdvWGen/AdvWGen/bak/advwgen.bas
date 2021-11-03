@@ -2,7 +2,7 @@
 15 rem *** Adventure World Generator ***
 20 rem *********************************
 25 rem open wall=0, wall=1, not accessable room=-1
-30 ww=11:wh=6:rem *** world dimensions (11/6)
+30 ww=11:wh=6:rem *** world dimensions
 35 dim ra(((ww+1)*(wh+1)-1),8):rem *** room adjacent matrix
 40 rp=0:rc=((ww+1)*(wh+1)-1):rem *** room pointer, room count
 45 dim op(7):rem *** opposite room slot
@@ -22,7 +22,7 @@
 130 print tab(1);"where each room is accessable."
 135 print"{down}  initializing...":gosub200
 140 print"{clear}initial adjacency array:":gosub400:print"press any key":gosub170
-145 print"{clear}connecting rooms...":gosub300:print" press any key":gosub170
+145 print"{clear}connecting rooms...":gosub1200:print" press any key":gosub170
 150 print"{clear}adjacency array:":gosub400:print"press any key":gosub170
 155 print"{clear}room map:":gosub600
 160 poke214,23:poke211,2:sys58640:print"press any key":gosub170
