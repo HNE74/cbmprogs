@@ -18,7 +18,7 @@
 110 print tab(1);"adventure world generator"
 115 print tab(1);"by noltisoft in 2021{down}{down}"
 120 print tab(1);"creates a world, represented by"
-125 print tab(1);"an adjacency matrix like array,"
+125 print tab(1);"an adjacency like array,"
 130 print tab(1);"where each room is accessable."
 135 print"{down}  initializing...":gosub200
 140 print"{clear}initial adjacency array:":gosub400:print"press any key":gosub170
