@@ -4,7 +4,7 @@
 <!-- Project Target : C64 -->
 <Project>
     <Target>2</Target>
-    <Executable>advwgen.prg</Executable>
+    <Executable>vampirespell.prg</Executable>
     <StartAddress>2049</StartAddress>
     <FilesGlobal>False</FilesGlobal>
     <BatchMode>False</BatchMode>
@@ -15,7 +15,7 @@
     <Comments />
     <Author />
     <Email />
-    <AutoLaunchName>advwgen.prg</AutoLaunchName>
+    <AutoLaunchName>vampirespell.prg</AutoLaunchName>
     <NoSingleFileBuild>False</NoSingleFileBuild>
     <CreatedWithVersion>CBM prg Studio 3.14.0</CreatedWithVersion>
     <HasGitRepo>False</HasGitRepo>
@@ -41,7 +41,7 @@
         <PostBuildCommands />
     </BuildEvents>
     <BuildList>
-        <FileName>advwgen.bas</FileName>
+        <FileName>vampirespell.bas</FileName>
     </BuildList>
     <DetermineBuildOrder>0</DetermineBuildOrder>
     <PaddingByte>0</PaddingByte>
@@ -51,14 +51,14 @@
     <!--End of screen designer settings-->
     <SourceFiles>
         <SourceFile>
-            <Name>advwgen.bas</Name>
+            <Name>vampirespell.bas</Name>
             <PrgName />
             <FileType>1</FileType>
             <IncludeInBuild>True</IncludeInBuild>
             <Regions />
             <Breakpoints />
             <Bookmarks />
-            <Topmost>False</Topmost>
+            <Topmost>True</Topmost>
             <FileOpen>True</FileOpen>
         </SourceFile>
     </SourceFiles>
