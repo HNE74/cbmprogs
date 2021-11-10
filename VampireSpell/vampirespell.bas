@@ -17,7 +17,7 @@
 545 end 
 
 2000 rem *** input parser
-2005 wi=0:for i=0tows:w$(i)="":nexti
+2005 wi=0:for i=0tows-1:w$(i)="":nexti
 2010 for i=1tolen(es$)
 2015 wc$=mid$(es$,i,1) 
 2020 if i=1 and wc$=" " then 2035
