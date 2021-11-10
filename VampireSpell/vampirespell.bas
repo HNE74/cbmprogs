@@ -5,16 +5,16 @@
 35 wp=0:wf=0:wn=0:rem *** input check vars: pointer, word found, word igored
 40 wu$="":rem *** unknown word
 
-100 rem *** evaluation loop
-105 gosub 10000
-110 input "enter command ";es$
-115 gosub 2000
-118 gosub 2100
-119 if wu$<>""then print "i don't understand the word ";wu$
-120 print "words recognized:";wp
-122 if wp>-1then for i=0towp:print ww$(i):nexti
-125 goto 110
-130 end 
+500 rem *** evaluation loop
+505 gosub 10000
+510 input "enter command ";es$
+515 gosub 2000
+520 gosub 2100
+525 if wu$<>""then print "i don't understand the word: ";wu$
+530 print "words recognized: ";wp+1
+535 if wp>-1then for i=0towp:print ww$(i):nexti
+540 goto 510
+545 end 
 
 2000 rem *** input parser
 2005 wi=0:for i=0tows:w$(i)="":nexti
@@ -26,23 +26,23 @@
 2035 next i
 2040 return
 
-2100 rem *** check input
+2100 rem *** word recognition
 2105 wp=-1:wu$=""
 2110 for i=0towi:wf=0:wn=0
 2115 for j=0tovc-1:if wv$(j)=w$(i)then wf=1:j=vc-1
-2118 next j
-2119 if wf=1then 2135
-2120 for j=0tovo-1:if wo$(j)=w$(i)then wf=1:j=vo-1
-2122 next j
-2124 if wf=1then 2135
-2125 for j=0tovn-1:if wn$(j)=w$(i)then wn=1:j=vn-1
-2130 next j
-2132 if wf=0andwn=0then wu$=w$(i):i=wi:goto 2140
-2135 if wf=1 then wp=wp+1:ww$(wp)=w$(i)
-2140 next i
-2145 return
+2120 next j
+2125 if wf=1then 2160
+2130 for j=0tovo-1:if wo$(j)=w$(i)then wf=1:j=vo-1
+2135 next j
+2140 if wf=1then 2160
+2145 for j=0tovn-1:if wn$(j)=w$(i)then wn=1:j=vn-1
+2150 next j
+2155 if wf=0andwn=0then wu$=w$(i):i=wi:goto 2165
+2160 if wf=1 then wp=wp+1:ww$(wp)=w$(i)
+2165 next i
+2170 return
 
-10000 rem *** parser vocabulary
+10000 rem *** vocabulary
 10005 for i=0tovc-1:read wv$(i):next:goto 10020
 10010 data "go", "take", "attack", "inventory", "look" 
 10015 data "sharpen", "help", "open"
