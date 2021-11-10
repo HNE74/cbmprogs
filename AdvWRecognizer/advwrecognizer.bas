@@ -6,22 +6,22 @@
 40 wu$="":rem *** unknown word
 
 100 print "{clear}adventure word recognizer"
-105 print "{down}by noltisoft in 2021{down}"
+105 print "by noltisoft in 2021{down}"
 
 
 500 rem *** evaluation loop
-505 print "vocabulary:":gosub 10000:print:print
-510 input "enter command ";es$
+505 print "vocabulary{down}":gosub 10000:print:print
+510 print:input "enter command ";es$
 515 gosub 2000
 520 gosub 2100
 525 if wu$<>""then print "i don't understand the word: ";wu$
-530 print "words recognized:";wp+1
+530 print:print "words recognized:";wp+1
 535 if wp>-1then for i=0towp:print ww$(i):nexti
 540 goto 510
 545 end 
 
 2000 rem *** input parser
-2005 wi=0:for i=0tows:w$(i)="":nexti
+2005 wi=0:for i=0tows-1:w$(i)="":nexti
 2010 for i=1tolen(es$)
 2015 wc$=mid$(es$,i,1) 
 2020 if i=1 and wc$=" " then 2035
@@ -47,11 +47,11 @@
 2170 return
 
 10000 rem *** vocabulary
-10005 for i=0tovc-1:read wv$(i):print wv$(i);",";:next:goto 10020
+10005 print"verbs:":for i=0tovc-1:read wv$(i):print wv$(i);",";:next:goto 10020
 10010 data "go", "take", "attack", "inventory", "look" 
 10015 data "sharpen", "help", "open"
-10020 for i=0tovo-1:read wo$(i):print wo$(i);",";:next:goto 10035
+10020 print:print"objects:":for i=0tovo-1:read wo$(i):print wo$(i);",";:next:goto 10035
 10025 data "knife", "gun", "amunition", "crucifix", "pole", "coffin"
 10030 data "chest","rat","spider","wolf","vampire"
-10035 for i=0tovn-1:read wn$(i):print wn$(i);",";:next:return
+10035 print:print"ignored:":for i=0tovn-1:read wn$(i):print wn$(i);",";:next:return
 10040 data "the", "with", "to"
