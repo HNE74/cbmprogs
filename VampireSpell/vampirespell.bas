@@ -2,8 +2,10 @@
 15 es$="":wc$="":ws=10:dim w$(ws):dim ww$(ws):rem *** input parser vars
 20 vc=8:oc=7:dc=8:cc=4:nc=3:rem *** verbs, objects, direction, character, ignored
 25 dim wv$(vc):dim wo$(oc):dim wd$(dc):dim wc$(cc):dim wn$(nc)
+30 v1=-1:o1=-1:d1=-1:c1=-1
+
 35 wp=0:wf=0:wn=0:rem *** input check vars: pointer, word found, word igored
-40 wu$="":rem *** unknown word
+40 wu$="":wp$="":rem *** unknown word, word recognition pattern
 
 500 rem *** evaluation loop
 505 gosub 10000
@@ -13,8 +15,10 @@
 525 if wu$<>""then print "i don't understand the word: ";wu$
 530 print "words recognized: ";wp+1
 535 if wp>-1then for i=0towp:print ww$(i):nexti
-540 goto 510
-545 end 
+540 if wp$="vd"orwp$="vo"orwp$="vco"then 555 
+550 print "this doesn't make sense: "; wp$:goto 510
+555 print "this makes sense: ";wp$:goto 510
+565 end 
 
 2000 rem *** input parser
 2005 wi=0:for i=0tows-1:w$(i)="":nexti
@@ -27,18 +31,18 @@
 2040 return
 
 2100 rem *** word recognition
-2105 wp=-1:wu$=""
+2105 wp=-1:wu$="":wp$=""
 2110 for i=0towi:wf=0:wn=0
-2115 for j=0tovc-1:if wv$(j)=w$(i)then wf=1:j=vc-1
+2115 for j=0tovc-1:if wv$(j)=w$(i)then wf=1:j=vc-1:wp$=wp$+"v"
 2120 next j
 2125 if wf=1then 2190
-2130 for j=0tooc-1:if wo$(j)=w$(i)then wf=1:j=oc-1
+2130 for j=0tooc-1:if wo$(j)=w$(i)then wf=1:j=oc-1:wp$=wp$+"o"
 2135 next j
 2140 if wf=1then 2190
-2145 for j=0todc-1:if wd$(j)=w$(i)then wf=1:j=dc-1
+2145 for j=0todc-1:if wd$(j)=w$(i)then wf=1:j=dc-1:wp$=wp$+"d"
 2150 next j
 2155 if wf=1then 2190
-2160 for j=0tocc-1:if wc$(j)=w$(i)then wf=1:j=cc-1
+2160 for j=0tocc-1:if wc$(j)=w$(i)then wf=1:j=cc-1:wp$=wp$+"c"
 2165 next j
 2170 if wf=1then 2190
 2175 for j=0tonc-1:if wn$(j)=w$(i)then wn=1:j=nc-1
