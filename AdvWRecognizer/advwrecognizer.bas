@@ -47,18 +47,18 @@
 2100 rem *** word recognition
 2105 wp=-1:wu$="":wp$="":v1=-1:o1=-1:d1=-1:c1=-1:i1=-1
 2110 for i=0towi:wf=0:wn=0
-2115 for j=0tovc-1:if wv$(j)=w$(i)then wf=1:j=vc-1:wp$=wp$+"v":v1=j
+2115 for j=0tovc-1:if wv$(j)=w$(i)then v1=j:wf=1:j=vc-1:wp$=wp$+"v"
 2120 next j
 2125 if wf=1then 2200
-2130 for j=0tooc-1:if wo$(j)=w$(i)then wf=1:j=oc-1:wp$=wp$+"o":o1=j
+2130 for j=0tooc-1:if wo$(j)=w$(i)then o1=j:wf=1:j=oc-1:wp$=wp$+"o"
 2135 next j
 2140 if wf=1then 2200
-2145 for j=0todc-1:if wd$(j)=w$(i)then wf=1:j=dc-1:wp$=wp$+"d":d1=j
+2145 for j=0todc-1:if wd$(j)=w$(i)then d1=j:wf=1:j=dc-1:wp$=wp$+"d"
 2150 next j
 2155 if wf=1then 2200
-2160 for j=0tocc-1:if wc$(j)=w$(i)then wf=1:j=cc-1:wp$=wp$+"c":c1=j
+2160 for j=0tocc-1:if wc$(j)=w$(i)then c1=j:wf=1:j=cc-1:wp$=wp$+"c"
 2165 next j
-2170 for j=0toic-1:if wi$(j)=w$(i)then wf=1:j=ic-1:wp$=wp$+"i":i1=j
+2170 for j=0toic-1:if wi$(j)=w$(i)then i1=j:wf=1:j=ic-1:wp$=wp$+"i"
 2175 next j
 2180 if wf=1then 2200
 2185 for j=0tonc-1:if wn$(j)=w$(i)then wn=1:j=nc-1
