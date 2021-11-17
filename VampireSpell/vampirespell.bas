@@ -1,16 +1,17 @@
-10 rem *** word recognition routine variables
+10 rem *** word recognition routine variables ***
 15 es$="":wc$="":ws=10:dim w$(ws):dim ww$(ws):rem *** input parser vars
 20 rem *** vocabulary: verbs, objects, direction, character, info, ignored
 25 vc=5:oc=7:dc=8:cc=4:ic=4:nc=3
-30 dim wv$(vc):dim wo$(oc):dim wd$(dc):dim wc$(cc):dim wn$(nc)
+30 dim wv$(vc):dim wo$(oc):dim wo(oc):dim wd$(dc):dim wc$(cc):dim wn$(nc)
 35 v1=-1:o1=-1:d1=-1:c1=-1:i1=-1
 40 wp=0:wf=0:wn=0:rem *** input check vars: pointer, word found, word igored
 45 wu$="":wp$="":rem *** unknown word, word recognition pattern
 
-100 rem *** world variables
+100 rem *** world variables ***
 105 rem open wall=0, wall=1, not accessable room=-1
-110 ww=1:wh=1:rem *** world dimensions (11/6)
-115 dim ra(((ww+1)*(wh+1)-1),8):rem *** room adjacent matrix
+110 ww=2:wh=2:rem *** world dimensions (11/6)
+112 rem *** 0-7 room and wall, 8 visited, 9 object, 10 character
+115 dim ra(((ww+1)*(wh+1)-1),10):rem *** room adjacent matrix
 120 rp=0:rc=((ww+1)*(wh+1)-1):rem *** room pointer, room count
 125 dim op(7):rem *** opposite room slot
 130 bp=0: rem stack pointer
@@ -19,24 +20,32 @@
 145 dim bc((ww+1)*(wh+1)): rem *** counter stack
 150 xp=0:yp=0:x=0:y=0:rem *** coordinate counter
 155 dr=0:ar=0:rem *** direction index, adjacent room index 
+160 rem *** knife, gun, amunition, crucifix, pole, coffin, chest
 
-200 rem *** game variables
+200 rem *** game variables ***
 205 pr=0:pd$="":rem player room, player directions, player command
 210 pm=0:rem player movement ndx
+215 op=-1:rem object room
 
-400 rem *** main routine
+400 rem *** init routines ***
 405 gosub 30000:rem init vocabulary
-408 gosub 1000:rem init world
-410 gosub 1100:rem connect rooms
-415 gosub 3000:rem player world output 
-420 gosub 3200:rem player input
-440 gosub 1800:rem recognize player input
-450 goto 415
+ 
+500 rem *** world creation ***
+505 gosub 1000:rem init world
+510 gosub 1100:rem connect rooms
+515 gosub 1200:rem place objects
+
+600 rem *** game loop ***
+605 gosub 3000:rem player world output 
+610 gosub 3200:rem player input
+615 gosub 1800:rem recognize player input
+620 goto 600
 
 1000 rem *** initialize world ***
 1010 for rp=0torc
 1015 ra(rp,0)=rp-ww-1:ra(rp,1)=1:ra(rp,2)=rp+ww+1:ra(rp,3)=1
 1020 ra(rp,4)=rp-1:ra(rp,5)=1:ra(rp,6)=rp+1:ra(rp,7)=1:ra(rp,8)=0
+1022 ra(rp,9)=-1:ra(rp,10)=-1
 1025 nextrp
 1030 for rp=0 to ww:ra(rp,0)=-1:nextrp
 1035 for rp=wh*(ww+1) to (ww+1)*(wh+1)-1:ra(rp,2)=-1:nextrp
@@ -45,7 +54,7 @@
 1050 op(0)=3:op(2)=1:op(4)=7:op(6)=5
 1055 return
 
-1100 rem *** connect all rooms
+1100 rem *** connect all rooms ***
 1105 bp=0:rp=0:dr=rnd(-ti)
 1110 ra(rp,8)=1:dr=int(rnd(1)*4)*2-2:df=-1
 1115 df=df+1:dr=dr+2:ifdr>6thendr=0
@@ -64,7 +73,20 @@
 1180 rp=br(bp):dr=bd(bp):dc=bc(bp):bp=bp-1:goto1115
 1185 return
 
-1800 rem *** evaluation loop
+1200 rem *** put objects ***
+1205 for i=0tooc-1
+1210 op=int(rnd(1)*(ww+1)*(wh+1))
+1215 ifra(op,9)>-1then1210
+1220 ra(op,9)=i
+1225 next
+1230 for i=0tocc-1
+1235 op=int(rnd(1)*(ww+1)*(wh+1))
+1240 ifra(op,10)>-1then1210
+1245 ra(op,10)=i
+1250 next
+1255 return
+
+1800 rem *** evaluation loop ***
 1805 gosub 2000
 1810 gosub 2100
 1815 if wu$<>""then print "i don't understand the word: ";wu$:return
@@ -75,7 +97,7 @@
 1845 if wp$="vd"then gosub 3300:rem player move
 1850 return
 
-2000 rem *** input parser
+2000 rem *** input parser ***
 2005 wi=0:for i=0tows-1:w$(i)="":nexti
 2010 for i=1tolen(es$)
 2015 wc$=mid$(es$,i,1) 
@@ -85,7 +107,7 @@
 2035 next i
 2040 return
 
-2100 rem *** word recognition
+2100 rem *** word recognition ***
 2105 wp=-1:wu$="":wp$="":v1=-1:o1=-1:d1=-1:c1=-1:i1=-1
 2110 for i=0towi:wf=0:wn=0
 2115 for j=0tovc-1:if wv$(j)=w$(i)then v1=j:wf=1:j=vc-1:wp$=wp$+"v"
@@ -109,22 +131,32 @@
 2205 next i
 2210 return
 
-3000 rem *** player world output
-3005 print "you are in room";pr
-3010 pd$="":for i=1to7step2:print ra(pr,i)
+3000 rem *** player world output ***
+3005 print:print "you are in room";pr
+3010 pd$="":for i=1to7step2
 3015 if ra(pr,i)<1andi=1thenpd$=pd$+"north,"
 3020 if ra(pr,i)<1andi=3thenpd$=pd$+"south,"
 3025 if ra(pr,i)<1andi=5thenpd$=pd$+"west,"
 3030 if ra(pr,i)<1andi=7thenpd$=pd$+"east,"
 3035 next
-3040 print "you can go ";pd$
+3036 rem *** objects: knife, gun, amunition, crucifix, pole, coffin, chest
+3038 if ra(pr,9)=-1then3095
+3040 on ra(pr,9)+1 goto 3045,3050,3055,3060,3065,3070,3075
+3045 print "yo see a knife lying on the ground.":goto3095
+3050 print "you recognize a gun that someone lost.":goto3095
+3055 print "you see ammo scattered on the ground.":goto3095
+3060 print "there is dusty altar with a crucifix.":goto3095
+3065 print "you stumbled over apole of wood.":goto3095
+3070 print "a scary old coffin is in the room.":goto3095
+3075 print "there is a chest in the corner"
+3095 print "you can go ";pd$
 3100 return
 
-3200 rem *** player input
+3200 rem *** player input ***
 3205 input "command";es$
 3210 return
 
-3300 rem *** player move
+3300 rem *** player move ***
 3305 if d1=0ord1=1then pm=0
 3310 if d1=2ord1=3then pm=2
 3315 if d1=4ord1=5then pm=4
@@ -133,11 +165,11 @@
 3330 pr=ra(pr,pm)
 3335 return
 
-30000 rem *** vocabulary
+30000 rem *** vocabulary ***
 30005 for i=0tovc-1:read wv$(i):next:goto 30020
 30010 data "go","take","attack","sharpen","open"
-30020 for i=0tooc-1:read wo$(i):next:goto 30030
-30025 data "knife","gun","amunition", "crucifix","pole","coffin","chest"
+30020 for i=0tooc-1:read wo$(i):wo(i)=i:next:goto 30030
+30025 data "knife","gun","amunition","crucifix","pole","coffin","chest"
 30030 for i=0todc-1:read wd$(i):next:goto 30040
 30035 data "north","n","south","s","west","w","east", "e"
 30040 for i=0tocc-1:read wc$(i):next:goto 30050
