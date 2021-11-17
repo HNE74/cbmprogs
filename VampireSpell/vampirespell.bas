@@ -1,8 +1,8 @@
 10 rem *** word recognition routine variables ***
 15 es$="":wc$="":ws=10:dim w$(ws):dim ww$(ws):rem *** input parser vars
 20 rem *** vocabulary: verbs, objects, direction, character, info, ignored
-25 vc=5:oc=7:dc=8:cc=4:ic=4:nc=3
-30 dim wv$(vc):dim wo$(oc):dim wo(oc):dim wd$(dc):dim wc$(cc):dim wn$(nc)
+25 vc=5:oc=8:dc=8:cc=4:ic=4:nc=3
+30 dim wv$(vc):dim wo$(oc):dim wd$(dc):dim wc$(cc):dim wn$(nc)
 35 v1=-1:o1=-1:d1=-1:c1=-1:i1=-1
 40 wp=0:wf=0:wn=0:rem *** input check vars: pointer, word found, word igored
 45 wu$="":wp$="":rem *** unknown word, word recognition pattern
@@ -37,7 +37,7 @@
 
 600 rem *** game loop ***
 605 gosub 3000:rem player world output 
-610 gosub 3200:rem player input
+610 gosub 2300:rem player input
 615 gosub 1800:rem recognize player input
 620 goto 600
 
@@ -65,16 +65,16 @@
 1140 rem *** connect adjacent room
 1145 ra(rp,dr+1)=0:ra(ra(rp,dr),op(dr))=0
 1150 rem *** current room on stack
-1155 br(bp)=rp:bd(bp)=dr:bc(bp)=dc:bp=bp+1
+1155 br(bp)=rp:bd(bp)=dr:bc(bp)=df:bp=bp+1
 1160 rem *** adjacent room becomes current
 1165 rp=ra(rp,dr):goto1110
 1170 if bp=0then1185
 1175 rem *** backtrack to previous room
-1180 rp=br(bp):dr=bd(bp):dc=bc(bp):bp=bp-1:goto1115
+1180 rp=br(bp):dr=bd(bp):df=bc(bp):bp=bp-1:goto1115
 1185 return
 
 1200 rem *** put objects ***
-1205 for i=0tooc-1
+1205 for i=0tooc-2
 1210 op=int(rnd(1)*(ww+1)*(wh+1))
 1215 ifra(op,9)>-1then1210
 1220 ra(op,9)=i
@@ -95,7 +95,8 @@
 1835 print "this doesn't make sense: "; wp$:return
 1840 print "this makes sense: ";wp$
 1845 if wp$="vd"then gosub 3300:rem player move
-1850 return
+1850 if wp$="i"then gosub 3400:rem player info
+1855 return
 
 2000 rem *** input parser ***
 2005 wi=0:for i=0tows-1:w$(i)="":nexti
@@ -131,6 +132,10 @@
 2205 next i
 2210 return
 
+2300 rem *** player input ***
+2305 input "command";es$
+2310 return
+
 3000 rem *** player world output ***
 3005 print:print "you are in room";pr
 3010 pd$="":for i=1to7step2
@@ -139,22 +144,25 @@
 3025 if ra(pr,i)<1andi=5thenpd$=pd$+"west,"
 3030 if ra(pr,i)<1andi=7thenpd$=pd$+"east,"
 3035 next
-3036 rem *** objects: knife, gun, amunition, crucifix, pole, coffin, chest
+3036 rem *** objects: knife, gun, amunition, crucifix, pole, coffin, chest, altar
 3038 if ra(pr,9)=-1then3095
-3040 on ra(pr,9)+1 goto 3045,3050,3055,3060,3065,3070,3075
-3045 print "yo see a knife lying on the ground.":goto3095
+3040 on ra(pr,9)+1 goto 3045,3050,3055,3060,3065,3070,3075,3080
+3045 print "you see a knife lying on the ground.":goto3095
 3050 print "you recognize a gun that someone lost.":goto3095
 3055 print "you see ammo scattered on the ground.":goto3095
-3060 print "there is dusty altar with a crucifix.":goto3095
-3065 print "you stumbled over apole of wood.":goto3095
+3060 print "there is a dusty altar with a crucifix.":goto3095
+3065 print "you stumbled over a pole of wood.":goto3095
 3070 print "a scary old coffin is in the room.":goto3095
-3075 print "there is a chest in the corner"
+3075 print "there is a chest in the corner.":goto3095
+3080 print "there is an empty dusty altar."
 3095 print "you can go ";pd$
-3100 return
-
-3200 rem *** player input ***
-3205 input "command";es$
-3210 return
+3100 if ra(pr,10)=-1then 3195
+3105 on ra(pr,10)+1 goto 3110,3115,3120,3125
+3110 print "an evil rat attacks you.":goto3195
+3115 print "a giant spider spills it's venom.":goto3195
+3120 print "you are attacked by a strong wolf.":goto3195
+3125 print "the vampire is approaching you."
+3195 return
 
 3300 rem *** player move ***
 3305 if d1=0ord1=1then pm=0
@@ -165,11 +173,33 @@
 3330 pr=ra(pr,pm)
 3335 return
 
+3400 rem *** player info ***
+3405 if i1=3then print"{clear}":gosub 25000
+3410 return
+
+25000 rem *** print world
+25005 xp=1:yp=1:rp=0
+25010 for y=0towh:for x=0toww
+25015 gosub 25100
+25020 rp=rp+1:xp=xp+3:nextx:xp=1:yp=yp+3:nexty
+25025 poke214,yp+3:poke211,0:sys58640
+25030 return
+
+25100 rem *** print room
+25105 poke214,yp:poke211,xp:sys58640:print chr$(111);chr$(247);chr$(112)
+25110 poke214,yp+1:poke211,xp:sys58640:print chr$(165);" ";chr$(167)
+25115 poke214,yp+2:poke211,xp:sys58640:print chr$(108);chr$(175);chr$(186)
+25120 if ra(rp,1)=0 then poke214,yp:poke211,xp+1:sys58640:print" "
+25125 if ra(rp,3)=0 then poke214,yp+2:poke211,xp+1:sys58640:print" "
+25130 if ra(rp,5)=0 then poke214,yp+1:poke211,xp:sys58640:print" "
+25135 if ra(rp,7)=0 then poke214,yp+1:poke211,xp+2:sys58640:print" "
+25140 return
+
 30000 rem *** vocabulary ***
 30005 for i=0tovc-1:read wv$(i):next:goto 30020
 30010 data "go","take","attack","sharpen","open"
-30020 for i=0tooc-1:read wo$(i):wo(i)=i:next:goto 30030
-30025 data "knife","gun","amunition","crucifix","pole","coffin","chest"
+30020 for i=0tooc-1:read wo$(i):next:goto 30030
+30025 data "knife","gun","amunition","crucifix","pole","coffin","chest","altar"
 30030 for i=0todc-1:read wd$(i):next:goto 30040
 30035 data "north","n","south","s","west","w","east", "e"
 30040 for i=0tocc-1:read wc$(i):next:goto 30050
