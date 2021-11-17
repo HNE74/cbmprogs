@@ -22,6 +22,7 @@
 
 200 rem *** game variables
 205 pr=0:pd$="":rem player room, player directions, player command
+210 pm=0:rem player movement ndx
 
 400 rem *** main routine
 405 gosub 30000:rem init vocabulary
@@ -29,21 +30,8 @@
 410 gosub 1100:rem connect rooms
 415 gosub 3000:rem player world output 
 420 gosub 3200:rem player input
-440 gosub 500:rem recognize player input
-450 goto 408
-
-500 rem *** evaluation loop
-515 gosub 2000
-520 gosub 2100
-525 if wu$<>""then print "i don't understand the word: ";wu$
-530 print "words recognized: ";wp+1
-535 if wp>-1then for i=0towp:print ww$(i):nexti
-540 if wp$="vd"orwp$="vo"orwp$="vco"orwp$="i"then 555 
-550 print "this doesn't make sense: "; wp$:goto 560
-555 print "this makes sense: ";wp$
-560 print "verb index: ";v1:print "object index: ";o1:print "dir index: ";d1
-565 print "character index:";c1:print "info index:";i1 
-570 return
+440 gosub 1800:rem recognize player input
+450 goto 415
 
 1000 rem *** initialize world ***
 1010 for rp=0torc
@@ -59,9 +47,9 @@
 
 1100 rem *** connect all rooms
 1105 bp=0:rp=0:dr=rnd(-ti)
-1110 ra(rp,8)=1:dr=int(rnd(1)*4)*2-2:dc=-1
-1115 dc=dc+1:dr=dr+2:ifdr>6thendr=0
-1120 if dc>3then1170
+1110 ra(rp,8)=1:dr=int(rnd(1)*4)*2-2:df=-1
+1115 df=df+1:dr=dr+2:ifdr>6thendr=0
+1120 if df>3then1170
 1125 rem *** check adjacent room connectable
 1130 if ra(rp,dr)=-1then1115
 1135 if ra(ra(rp,dr),8)=1then1115
@@ -76,6 +64,17 @@
 1180 rp=br(bp):dr=bd(bp):dc=bc(bp):bp=bp-1:goto1115
 1185 return
 
+1800 rem *** evaluation loop
+1805 gosub 2000
+1810 gosub 2100
+1815 if wu$<>""then print "i don't understand the word: ";wu$:return
+1825 if wp>-1then for i=0towp:nexti
+1830 if wp$="vd"orwp$="vo"orwp$="vco"orwp$="i"then 1840
+1835 print "this doesn't make sense: "; wp$:return
+1840 print "this makes sense: ";wp$
+1845 if wp$="vd"then gosub 3300:rem player move
+1850 return
+
 2000 rem *** input parser
 2005 wi=0:for i=0tows-1:w$(i)="":nexti
 2010 for i=1tolen(es$)
@@ -89,18 +88,18 @@
 2100 rem *** word recognition
 2105 wp=-1:wu$="":wp$="":v1=-1:o1=-1:d1=-1:c1=-1:i1=-1
 2110 for i=0towi:wf=0:wn=0
-2115 for j=0tovc-1:if wv$(j)=w$(i)then wf=1:j=vc-1:wp$=wp$+"v":v1=j
+2115 for j=0tovc-1:if wv$(j)=w$(i)then v1=j:wf=1:j=vc-1:wp$=wp$+"v"
 2120 next j
 2125 if wf=1then 2200
-2130 for j=0tooc-1:if wo$(j)=w$(i)then wf=1:j=oc-1:wp$=wp$+"o":o1=j
+2130 for j=0tooc-1:if wo$(j)=w$(i)then o1=j:wf=1:j=oc-1:wp$=wp$+"o"
 2135 next j
 2140 if wf=1then 2200
-2145 for j=0todc-1:if wd$(j)=w$(i)then wf=1:j=dc-1:wp$=wp$+"d":d1=j
+2145 for j=0todc-1:if wd$(j)=w$(i)then d1=j:wf=1:j=dc-1:wp$=wp$+"d"
 2150 next j
 2155 if wf=1then 2200
-2160 for j=0tocc-1:if wc$(j)=w$(i)then wf=1:j=cc-1:wp$=wp$+"c":c1=j
+2160 for j=0tocc-1:if wc$(j)=w$(i)then c1=j:wf=1:j=cc-1:wp$=wp$+"c"
 2165 next j
-2170 for j=0toic-1:if wi$(j)=w$(i)then wf=1:j=ic-1:wp$=wp$+"i":i1=j
+2170 for j=0toic-1:if wi$(j)=w$(i)then i1=j:wf=1:j=ic-1:wp$=wp$+"i"
 2175 next j
 2180 if wf=1then 2200
 2185 for j=0tonc-1:if wn$(j)=w$(i)then wn=1:j=nc-1
@@ -125,8 +124,14 @@
 3205 input "command";es$
 3210 return
 
-3300 rem *** react on player input
-3305 if v1=0andd1=
+3300 rem *** player move
+3305 if d1=0ord1=1then pm=0
+3310 if d1=2ord1=3then pm=2
+3315 if d1=4ord1=5then pm=4
+3320 if d1=6ord1=7then pm=6
+3325 if ra(pr,pm+1)=1 then print "you can't go there.":return
+3330 pr=ra(pr,pm)
+3335 return
 
 30000 rem *** vocabulary
 30005 for i=0tovc-1:read wv$(i):next:goto 30020
