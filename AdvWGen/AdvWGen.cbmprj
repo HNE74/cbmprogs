@@ -42,6 +42,7 @@
     </BuildEvents>
     <BuildList>
         <FileName>advwgen.bas</FileName>
+        <FileName>advwgen.bas</FileName>
     </BuildList>
     <DetermineBuildOrder>0</DetermineBuildOrder>
     <PaddingByte>0</PaddingByte>
@@ -58,7 +59,7 @@
             <Regions />
             <Breakpoints />
             <Bookmarks />
-            <Topmost>False</Topmost>
+            <Topmost>True</Topmost>
             <FileOpen>True</FileOpen>
         </SourceFile>
     </SourceFiles>
