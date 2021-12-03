@@ -162,9 +162,9 @@
 3095 print "you can go ";pd$
 3100 if ra(pr,10)=-1then 3195
 3105 on ra(pr,10)+1 goto 3110,3115,3120,3125
-3110 print "an evil rat attacks you.":goto3195
+3110 print "an aggressive rat attacks you.":goto3195
 3115 print "a giant spider spills it's venom.":goto3195
-3120 print "you are attacked by a strong wolf.":goto3195
+3120 print "you are attacked by a red eyed wolf.":goto3195
 3125 print "the vampire is approaching you."
 3195 return
 
@@ -184,22 +184,30 @@
 
 3500 rem *** take object ***
 3510 if o1>=0 then if o1<=4 then 3520
-3515 print "you can't take the ";wo$(o1):return
-3520 if ra(pr,9)<>o1 then print "here is no ";wo$(o1):return 
-3525 print "you have taken the ";wo$(o1)
+3515 print "you can't take the ";wo$(o1);".":return
+3520 if ra(pr,9)<>o1 then print "here is no ";wo$(o1);".":return 
+3525 print "you have taken the ";wo$(o1);"."
 3530 oi(o1)=1
 3535 if o1=3 then ra(pr,9)=7:return
 3540 ra(pr,9)=-1:return
  
 3600 rem *** attack character ***
-3605 if ra(pr,10)<>c1 then print"here is no ";wc$(c1):return
-3610 if o1>-1 then if oi(o1)=-1 then print"you have no";wo$(o1):return
+3605 if ra(pr,10)<>c1 then print"here is no ";wc$(c1);".":return
+3610 if o1>-1 then if oi(o1)=-1 then print"you have no ";wo$(o1);".":return
 3615 if o1=2 then print"use a gun with the ammo.":return
 3620 if o1=1 then if oi(2)=-1 then print "you need ammo for the gun.":return
 3625 if o1=3 then if c1<>3 then print "the crucifix is useless.":return
 3630 if o1<>3 then if c1=3 then print "this is useless.":print "you need a crucifix to ban the vampire.":return 
 3635 if o1=3 then if c1=3 then 3700
-3650 print "attack!!!":return
+3650 af=5:if o1=1 then af=2
+3655 if o1=0 then af=3
+3660 if o1=4 then af=4
+3665 if int(rnd(1)*af)>0 then print "you have missed the ";wc$(c1);".":return
+3670 ra(pr,10)=-1:print "you have hit the ";wc$(c1);"."
+3675 op=int(rnd(1)*(ww+1)*(wh+1))
+3680 ifra(op,10)>-1 or pr=op then 3675
+3685 ra(op,10)=c1
+3690 return
 
 3700 rem *** vampire banned ***
 3705 print "you have banned the vampire."
