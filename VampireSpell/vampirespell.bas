@@ -28,6 +28,7 @@
 210 pm=0:rem player movement ndx
 215 op=-1:rem object room
 220 af=-1:rem attack factor
+225 vb=0:rem vampire banned flag: 1=banned
 
 400 rem *** init routines ***
 405 gosub 30000:rem init vocabulary
@@ -182,18 +183,30 @@
 3415 return
 
 3500 rem *** take object ***
-3505 if o1>=0 then if o1<=4 then 3520
+3510 if o1>=0 then if o1<=4 then 3520
 3515 print "you can't take the ";wo$(o1):return
-3520 print "you have taken the ";wo$(o1)
-3525 oi(o1)=1:ra(pr,9)=-1:return
+3520 if ra(pr,9)<>o1 then print "here is no ";wo$(o1):return 
+3525 print "you have taken the ";wo$(o1)
+3530 oi(o1)=1
+3535 if o1=3 then ra(pr,9)=7:return
+3540 ra(pr,9)=-1:return
  
 3600 rem *** attack character ***
 3605 if ra(pr,10)<>c1 then print"here is no ";wc$(c1):return
 3610 if o1>-1 then if oi(o1)=-1 then print"you have no";wo$(o1):return
 3615 if o1=2 then print"use a gun with the ammo.":return
 3620 if o1=1 then if oi(2)=-1 then print "you need ammo for the gun.":return
-3625 if o1=3 then if c1<>3 then print "the crucifix is useless":return
+3625 if o1=3 then if c1<>3 then print "the crucifix is useless.":return
+3630 if o1<>3 then if c1=3 then print "this is useless.":print "you need a crucifix to ban the vampire.":return 
+3635 if o1=3 then if c1=3 then 3700
 3650 print "attack!!!":return
+
+3700 rem *** vampire banned ***
+3705 print "you have banned the vampire."
+3710 print "now get him sleeping in his coffin"
+3715 print "and kill him with a sharpened pole."
+3720 vb=1:ra(pr,10)=-1
+3725 return
 
 25000 rem *** print world
 25005 xp=1:yp=1:rp=0
