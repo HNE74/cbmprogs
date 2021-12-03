@@ -84,8 +84,8 @@
 1225 next
 1230 for i=0tocc-1
 1235 op=int(rnd(1)*(ww+1)*(wh+1))
-1240 ifra(op,10)>-1then1210
-1245 ra(op,10)=i
+1240 ifra(op,10)>-1then1235
+1245 ra(op,10)=i:print op
 1250 next
 1255 return
 
@@ -202,7 +202,7 @@
 3650 af=5:if o1=1 then af=2
 3655 if o1=0 then af=3
 3660 if o1=4 then af=4
-3665 if int(rnd(1)*af)>0 then print "you have missed the ";wc$(c1);".":return
+3665 if int(rnd(1)*af)>0 then print "you have missed the ";wc$(c1);".":gosub3800:return
 3670 ra(pr,10)=-1:print "you have hit the ";wc$(c1);"."
 3675 op=int(rnd(1)*(ww+1)*(wh+1))
 3680 ifra(op,10)>-1 or pr=op then 3675
@@ -215,6 +215,18 @@
 3715 print "and kill him with a sharpened pole."
 3720 vb=1:ra(pr,10)=-1
 3725 return
+
+3800 rem *** player harm by attack ***
+3810 if c1=3then af=1:goto 3830
+3815 if c1=2then af=2:goto 3830
+3820 if c1=1then af=3:goto 3830
+3825 if c1=0then af=4:goto 3830
+3830 if int(rnd(1)*af)>0 then print "the ";wc$(c1);" has missed you.":return
+3835 print "you have been hit by the ";wc$(c1);"." 
+3840 op=int(rnd(1)*(ww+1)*(wh+1))
+3845 ifra(op,10)>-1 or pr=op then 3840
+3855 ra(op,10)=c1:ra(pr,10)=-1
+3895 return
 
 25000 rem *** print world
 25005 xp=1:yp=1:rp=0
