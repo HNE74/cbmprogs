@@ -162,20 +162,21 @@
 3095 print "you can go ";pd$
 3100 if ra(pr,10)=-1then 3195
 3105 on ra(pr,10)+1 goto 3110,3115,3120,3125
-3110 print "an aggressive rat attacks you.":goto3195
-3115 print "a giant spider spills it's venom.":goto3195
-3120 print "you are attacked by a red eyed wolf.":goto3195
-3125 print "the vampire is approaching you."
+3110 print "an aggressive rat attacks you.":gosub3800:goto3195
+3115 print "a giant spider spills it's venom.":gosub3800:goto3195
+3120 print "you are attacked by a red eyed wolf.":gosub3800:goto3195
+3125 print "the vampire is approaching you.":gosub3800
 3195 return
 
 3300 rem *** player move ***
-3305 if d1=0ord1=1then pm=0
-3310 if d1=2ord1=3then pm=2
-3315 if d1=4ord1=5then pm=4
-3320 if d1=6ord1=7then pm=6
-3325 if ra(pr,pm+1)=1 then print "you can't go there.":return
-3330 pr=ra(pr,pm)
-3335 return
+3305 if ra(pr,10)>-1 then print "the ";wc$(ra(pr,10));" doesn't let you pass.":return
+3310 if d1=0ord1=1then pm=0
+3315 if d1=2ord1=3then pm=2
+3320 if d1=4ord1=5then pm=4
+3325 if d1=6ord1=7then pm=6
+3330 if ra(pr,pm+1)=1 then print "you can't go there.":return
+3335 pr=ra(pr,pm)
+3340 return
 
 3400 rem *** player info ***
 3405 if i1=0then gosub 25500
@@ -202,7 +203,7 @@
 3650 af=5:if o1=1 then af=2
 3655 if o1=0 then af=3
 3660 if o1=4 then af=4
-3665 if int(rnd(1)*af)>0 then print "you have missed the ";wc$(c1);".":gosub3800:return
+3665 if int(rnd(1)*af)>0 then print "you have missed the ";wc$(c1);".":return
 3670 ra(pr,10)=-1:print "you have hit the ";wc$(c1);"."
 3675 op=int(rnd(1)*(ww+1)*(wh+1))
 3680 ifra(op,10)>-1 or pr=op then 3675
@@ -216,13 +217,16 @@
 3720 vb=1:ra(pr,10)=-1
 3725 return
 
-3800 rem *** player harm by attack ***
-3810 if c1=3then af=1:goto 3830
-3815 if c1=2then af=2:goto 3830
-3820 if c1=1then af=3:goto 3830
-3825 if c1=0then af=4:goto 3830
+3800 rem *** player harmed by attack ***
+3805 c1=ra(pr,10)
+3810 if c1=3then af=2:goto 3830
+3815 if c1=2then af=3:goto 3830
+3820 if c1=1then af=4:goto 3830
+3825 if c1=0then af=5:goto 3830
 3830 if int(rnd(1)*af)>0 then print "the ";wc$(c1);" has missed you.":return
-3835 print "you have been hit by the ";wc$(c1);"." 
+3835 print "the ";wc$(c1);" has hit you hard."
+3836 print "you have passed out"; 
+3838 fori=0to2:print".";:forj=0to1000:nextj:nexti:print
 3840 op=int(rnd(1)*(ww+1)*(wh+1))
 3845 ifra(op,10)>-1 or pr=op then 3840
 3855 ra(op,10)=c1:ra(pr,10)=-1
