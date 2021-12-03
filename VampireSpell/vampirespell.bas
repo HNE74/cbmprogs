@@ -20,8 +20,8 @@
 145 dim bc((ww+1)*(wh+1)): rem *** counter stack
 150 xp=0:yp=0:x=0:y=0:rem *** coordinate counter
 155 dr=0:ar=0:rem *** direction index, adjacent room index 
-160 rem *** knife, gun, amunition, crucifix, pole, coffin, chest
-
+160 rem *** inventory: knife, gun, ammo, crucifix, pole
+165 dim oi(5):for i=0to4:oi(i)=-1:next
 200 rem *** game variables ***
 205 pr=0:pd$="":rem player room, player directions, player command
 210 pm=0:rem player movement ndx
@@ -90,13 +90,13 @@
 1805 gosub 2000
 1810 gosub 2100
 1815 if wu$<>""then print "i don't understand the word: ";wu$:return
-1825 if wp>-1then for i=0towp:nexti
 1830 if wp$="vd"orwp$="vo"orwp$="vco"orwp$="i"then 1840
 1835 print "this doesn't make sense: "; wp$:return
 1840 print "this makes sense: ";wp$
-1845 if wp$="vd"then gosub 3300:rem player move
-1850 if wp$="i"then gosub 3400:rem player info
-1855 return
+1845 if wp$="vd"then gosub 3300:goto1900:rem player move
+1850 if wp$="i"then gosub 3400:goto1900:rem player info
+1855 if wp$="vo"then gosub 3500:rem verb object
+1900 return
 
 2000 rem *** input parser ***
 2005 wi=0:for i=0tows-1:w$(i)="":nexti
@@ -174,8 +174,16 @@
 3335 return
 
 3400 rem *** player info ***
-3405 if i1=3then print"{clear}":gosub 25000
-3410 return
+3405 if i1=0then gosub 25500
+3410 if i1=3then print"{clear}":gosub 25000
+3415 return
+
+3500 rem *** take object ***
+3502 print v1;o1
+3505 if v1=1 then if o1>=0 then if o1<=4 then 3520
+3515 print "i can't take the ";wo$(o1):return
+3520 print "i have taken the ";wo$(o1)
+3525 oi(o1)=1:ra(pr,9)=-1:return
 
 25000 rem *** print world
 25005 xp=1:yp=1:rp=0
@@ -194,12 +202,20 @@
 25130 if ra(rp,5)=0 then poke214,yp+1:poke211,xp:sys58640:print" "
 25135 if ra(rp,7)=0 then poke214,yp+1:poke211,xp+2:sys58640:print" "
 25140 return
+ 
+25500 rem *** show inventory
+25505 print "you're carrying the following items:"
+25510 j=0:for i=0to4
+25515 if oi(i)>-1then print wo$(i):j=1
+25520 next
+25525 if j=0 then print "nothing"
+25530 return
 
 30000 rem *** vocabulary ***
 30005 for i=0tovc-1:read wv$(i):next:goto 30020
 30010 data "go","take","attack","sharpen","open"
 30020 for i=0tooc-1:read wo$(i):next:goto 30030
-30025 data "knife","gun","amunition","crucifix","pole","coffin","chest","altar"
+30025 data "knife","gun","ammo","crucifix","pole","coffin","chest","altar"
 30030 for i=0todc-1:read wd$(i):next:goto 30040
 30035 data "north","n","south","s","west","w","east", "e"
 30040 for i=0tocc-1:read wc$(i):next:goto 30050
