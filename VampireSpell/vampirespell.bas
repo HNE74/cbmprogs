@@ -22,10 +22,12 @@
 155 dr=0:ar=0:rem *** direction index, adjacent room index 
 160 rem *** inventory: knife, gun, ammo, crucifix, pole
 165 dim oi(5):for i=0to4:oi(i)=-1:next
+
 200 rem *** game variables ***
 205 pr=0:pd$="":rem player room, player directions, player command
 210 pm=0:rem player movement ndx
 215 op=-1:rem object room
+220 af=-1:rem attack factor
 
 400 rem *** init routines ***
 405 gosub 30000:rem init vocabulary
@@ -90,12 +92,13 @@
 1805 gosub 2000
 1810 gosub 2100
 1815 if wu$<>""then print "i don't understand the word: ";wu$:return
-1830 if wp$="vd"orwp$="vo"orwp$="vco"orwp$="i"then 1840
+1830 if wp$="vd"orwp$="vo"orwp$="vc"orwp$="vco"orwp$="i"then 1840
 1835 print "this doesn't make sense: "; wp$:return
 1840 print "this makes sense: ";wp$
 1845 if wp$="vd"then gosub 3300:goto1900:rem player move
 1850 if wp$="i"then gosub 3400:goto1900:rem player info
-1855 if wp$="vo"then gosub 3500:rem verb object
+1855 if wp$="vo"then if v1=1 then gosub 3500:rem take object
+1860 if wp$="vc"orwp$="vco" then if v1=2 then gosub 3600:rem attack character
 1900 return
 
 2000 rem *** input parser ***
@@ -179,11 +182,18 @@
 3415 return
 
 3500 rem *** take object ***
-3502 print v1;o1
-3505 if v1=1 then if o1>=0 then if o1<=4 then 3520
-3515 print "i can't take the ";wo$(o1):return
-3520 print "i have taken the ";wo$(o1)
+3505 if o1>=0 then if o1<=4 then 3520
+3515 print "you can't take the ";wo$(o1):return
+3520 print "you have taken the ";wo$(o1)
 3525 oi(o1)=1:ra(pr,9)=-1:return
+ 
+3600 rem *** attack character ***
+3605 if ra(pr,10)<>c1 then print"here is no ";wc$(c1):return
+3610 if o1>-1 then if oi(o1)=-1 then print"you have no";wo$(o1):return
+3615 if o1=2 then print"use a gun with the ammo.":return
+3620 if o1=1 then if oi(2)=-1 then print "you need ammo for the gun.":return
+3625 if o1=3 then if c1<>3 then print "the crucifix is useless":return
+3650 print "attack!!!":return
 
 25000 rem *** print world
 25005 xp=1:yp=1:rp=0
