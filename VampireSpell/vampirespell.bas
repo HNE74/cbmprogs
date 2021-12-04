@@ -9,7 +9,7 @@
 
 100 rem *** world variables ***
 105 rem open wall=0, wall=1, not accessable room=-1
-110 ww=2:wh=2:rem *** world dimensions (11/6)
+110 ww=2:wh=2:rem *** world dimensions
 112 rem *** 0-7 room and wall, 8 visited, 9 object, 10 character
 115 dim ra(((ww+1)*(wh+1)-1),10):rem *** room adjacent matrix
 120 rp=0:rc=((ww+1)*(wh+1)-1):rem *** room pointer, room count
@@ -106,7 +106,7 @@
 1860 if wp$="vc"orwp$="vco" then if v1=2 then gosub 3600:goto1900:rem attack character
 1865 if wp$="vo"then if v1=4 then gosub 3900:goto1900:rem open object
 1870 if wp$="vo"orwp$="vob"then if v1=3 then gosub 4000:goto1900:rem sharpen pole
-1875 if wp$="vco"then if v1=5 then gosub 4100:goto1900:rem kill vampire
+1875 if wp$="vco"then if v1=5 then gosub 4100:goto1900:rem stake vampire
 1880 print "are you serious?"
 1900 return
 
@@ -227,7 +227,7 @@
 3700 rem *** vampire banned ***
 3705 print "you have banned the vampire."
 3710 print "now get him sleeping in his coffin"
-3715 print "and kill him with a sharpened pole."
+3715 print "and stake him with a sharpened pole."
 3720 vb(0)=1:ra(pr,10)=-1:sc=sc+20:vb(1)=-1
 3725 return
 
@@ -266,11 +266,11 @@
 4030 vb(2)=1:print "you have sharpened the pole."
 4035 return 
 
-4100 rem *** kill vampire ***
+4100 rem *** stake vampire ***
 4105 ifvb(1)=-1 then print "the coffin is closed.":return
 4110 ifra(pr,9)<>5orvb(0)=-1 then print "there is no sleeping vampire here.":return
-4115 ifvb(2)=-1 then print "you need a sharpened pole.":return
-4120 print "you have killed the vampire":end
+4115 ifvb(2)=-1oro1<>4 then print "you need a sharpened pole.":return
+4120 print "you have staked the vampire":end
 4125 return
 
 25000 rem *** print world ***
