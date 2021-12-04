@@ -266,7 +266,11 @@
 4035 return 
 
 4100 rem *** kill vampire ***
-4105 return
+4105 ifvb(1)=-1 then print "the coffin is closed.":return
+4110 ifra(pr,9)<>5orvb(0)=-1 then print "there is no sleeping vampire here.":return
+4115 ifvb(2)=-1 then print "you need a sharpened pole.":return
+4120 print "you have killed the vampire":end
+4125 return
 
 25000 rem *** print world ***
 25005 xp=1:yp=1:rp=0
