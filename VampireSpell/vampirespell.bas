@@ -1,7 +1,7 @@
 10 rem *** word recognition routine variables ***
 15 es$="":wc$="":ws=10:dim w$(ws):dim ww$(ws):rem *** input parser vars
 20 rem *** vocabulary: verbs, objects, direction, character, info, ignored
-25 vc=5:oc=8:dc=8:cc=4:ic=4:nc=3
+25 vc=5:oc=8:dc=8:cc=4:ic=4:nc=4
 30 dim wv$(vc):dim wo$(oc):dim wd$(dc):dim wc$(cc):dim wn$(nc)
 35 v1=-1:o1=-1:d1=-1:c1=-1:i1=-1
 40 wp=0:wf=0:wn=0:rem *** input check vars: pointer, word found, word igored
@@ -29,9 +29,11 @@
 215 op=-1:rem object room
 220 af=-1:rem attack factor
 225 vb=0:rem vampire banned flag: 1=banned
+230 sc=0:rem 
 
 400 rem *** init routines ***
 405 gosub 30000:rem init vocabulary
+410 sc=0
  
 500 rem *** world creation ***
 505 gosub 1000:rem init world
@@ -81,7 +83,7 @@
 1210 op=int(rnd(1)*(ww+1)*(wh+1))
 1215 ifra(op,9)>-1then1210
 1220 ra(op,9)=i
-1225 next
+1225 next:print "***";op
 1230 for i=0tocc-1
 1235 op=int(rnd(1)*(ww+1)*(wh+1))
 1240 ifra(op,10)>-1then1235
@@ -100,6 +102,7 @@
 1850 if wp$="i"then gosub 3400:goto1900:rem player info
 1855 if wp$="vo"then if v1=1 then gosub 3500:rem take object
 1860 if wp$="vc"orwp$="vco" then if v1=2 then gosub 3600:rem attack character
+1865 if wp$="vo"then if v1=4 then gosub 3900:rem open object
 1900 return
 
 2000 rem *** input parser ***
@@ -141,7 +144,8 @@
 2310 return
 
 3000 rem *** player world output ***
-3005 print:print "you are in room";pr
+3005 print:print "you are in room:";pr
+3008 print "current score:";sc
 3010 pd$="":for i=1to7step2
 3015 if ra(pr,i)<1andi=1thenpd$=pd$+"north,"
 3020 if ra(pr,i)<1andi=3thenpd$=pd$+"south,"
@@ -204,7 +208,7 @@
 3655 if o1=0 then af=3
 3660 if o1=4 then af=4
 3665 if int(rnd(1)*af)>0 then print "you have missed the ";wc$(c1);".":return
-3670 ra(pr,10)=-1:print "you have hit the ";wc$(c1);"."
+3670 ra(pr,10)=-1:print "you have hit the ";wc$(c1);".":sc=sc+10
 3675 op=int(rnd(1)*(ww+1)*(wh+1))
 3680 ifra(op,10)>-1 or pr=op then 3675
 3685 ra(op,10)=c1
@@ -214,7 +218,7 @@
 3705 print "you have banned the vampire."
 3710 print "now get him sleeping in his coffin"
 3715 print "and kill him with a sharpened pole."
-3720 vb=1:ra(pr,10)=-1
+3720 vb=1:ra(pr,10)=-1:sc=sc+20
 3725 return
 
 3800 rem *** player harmed by attack ***
@@ -232,7 +236,17 @@
 3855 ra(op,10)=c1:ra(pr,10)=-1
 3895 return
 
-25000 rem *** print world
+3900 rem *** open object ***
+3905 if o1<5oro1>6 then print "you can't open the ";wo$(o1);".":return
+3910 if o1=5 then if vb=1 then print "in the coffin is the sleeping vampire.":return
+3915 if o1=5 then print "the coffin is empty.":return
+3920 if int(rnd(1)*2)=0 then print "the crumbling chest reveals a treasure.":sc=sc+100:ra(pr,9)=-1:return
+3925 print "the crumbling chest reveals an":ra(pr,9)=-1
+3930 print "insidious trap. you have passed out"; 
+3935 fori=0to2:print".";:forj=0to1000:nextj:nexti:print
+3940 return
+
+25000 rem *** print world ***
 25005 xp=1:yp=1:rp=0
 25010 for y=0towh:for x=0toww
 25015 gosub 25100
@@ -270,4 +284,4 @@
 30050 for i=0toic-1:read wi$(i):next:goto 30060
 30055 data "inventory","look","help","map"
 30060 for i=0tonc-1:read wn$(i):next:return
-30065 data "the", "with", "to"
+30065 data "the", "with", "to", "of"
