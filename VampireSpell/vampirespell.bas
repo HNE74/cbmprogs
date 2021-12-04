@@ -1,9 +1,9 @@
 10 rem *** word recognition routine variables ***
 15 es$="":wc$="":ws=10:dim w$(ws):dim ww$(ws):rem *** input parser vars
-20 rem *** vocabulary: verbs, objects, direction, character, info, ignored
-25 vc=5:oc=8:dc=8:cc=4:ic=4:nc=4
+20 rem *** vocabulary: verbs, objects, object2, direction, character, info, ignored
+25 vc=6:oc=8:dc=8:cc=4:ic=4:nc=4
 30 dim wv$(vc):dim wo$(oc):dim wd$(dc):dim wc$(cc):dim wn$(nc)
-35 v1=-1:o1=-1:d1=-1:c1=-1:i1=-1
+35 v1=-1:o1=-1:b1=-1:d1=-1:c1=-1:i1=-1
 40 wp=0:wf=0:wn=0:rem *** input check vars: pointer, word found, word igored
 45 wu$="":wp$="":rem *** unknown word, word recognition pattern
 
@@ -28,12 +28,13 @@
 210 pm=0:rem player movement ndx
 215 op=-1:rem object room
 220 af=-1:rem attack factor
-225 vb=0:rem vampire banned flag: 1=banned
-230 sc=0:rem 
+225 dim vb(3):rem vampire banned flag, coffin open, pole sharpened
+230 sc=0:rem player score
 
 400 rem *** init routines ***
 405 gosub 30000:rem init vocabulary
 410 sc=0
+415 fori=0to2:vb(i)=-1:next:rem reset vampire ban state
  
 500 rem *** world creation ***
 505 gosub 1000:rem init world
@@ -95,14 +96,17 @@
 1805 gosub 2000
 1810 gosub 2100
 1815 if wu$<>""then print "i don't understand the word: ";wu$:return
-1830 if wp$="vd"orwp$="vo"orwp$="vc"orwp$="vco"orwp$="i"then 1840
+1830 if wp$="vd"orwp$="vo"orwp$="vob"orwp$="vc"orwp$="vco"orwp$="i"then 1840
 1835 print "this doesn't make sense: "; wp$:return
 1840 print "this makes sense: ";wp$
 1845 if wp$="vd"then gosub 3300:goto1900:rem player move
 1850 if wp$="i"then gosub 3400:goto1900:rem player info
-1855 if wp$="vo"then if v1=1 then gosub 3500:rem take object
-1860 if wp$="vc"orwp$="vco" then if v1=2 then gosub 3600:rem attack character
-1865 if wp$="vo"then if v1=4 then gosub 3900:rem open object
+1855 if wp$="vo"then if v1=1 then gosub 3500:goto1900:rem take object
+1860 if wp$="vc"orwp$="vco" then if v1=2 then gosub 3600:goto1900:rem attack character
+1865 if wp$="vo"then if v1=4 then gosub 3900:goto1900:rem open object
+1870 if wp$="vo"orwp$="vob"then if v1=3 then gosub 4000:goto1900:rem sharpen pole
+1875 if wp$="vco"then if v1=5 then gosub 4100:goto1900:rem kill vampire
+1880 print "are you serious?"
 1900 return
 
 2000 rem *** input parser ***
@@ -116,14 +120,18 @@
 2040 return
 
 2100 rem *** word recognition ***
-2105 wp=-1:wu$="":wp$="":v1=-1:o1=-1:d1=-1:c1=-1:i1=-1
+2105 wp=-1:wu$="":wp$="":v1=-1:o1=-1:b1=-1:d1=-1:c1=-1:i1=-1
 2110 for i=0towi:wf=0:wn=0
 2115 for j=0tovc-1:if wv$(j)=w$(i)then v1=j:wf=1:j=vc-1:wp$=wp$+"v"
 2120 next j
 2125 if wf=1then 2200
+2128 if o1<>-1 then goto 2141
 2130 for j=0tooc-1:if wo$(j)=w$(i)then o1=j:wf=1:j=oc-1:wp$=wp$+"o"
 2135 next j
 2140 if wf=1then 2200
+2141 for j=0tooc-1:if wo$(j)=w$(i)then b1=j:wf=1:j=oc-1:wp$=wp$+"b"
+2142 next j
+2143 if wf=1then 2200
 2145 for j=0todc-1:if wd$(j)=w$(i)then d1=j:wf=1:j=dc-1:wp$=wp$+"d"
 2150 next j
 2155 if wf=1then 2200
@@ -173,14 +181,15 @@
 3195 return
 
 3300 rem *** player move ***
-3305 if ra(pr,10)>-1 then print "the ";wc$(ra(pr,10));" doesn't let you pass.":return
-3310 if d1=0ord1=1then pm=0
-3315 if d1=2ord1=3then pm=2
-3320 if d1=4ord1=5then pm=4
-3325 if d1=6ord1=7then pm=6
-3330 if ra(pr,pm+1)=1 then print "you can't go there.":return
-3335 pr=ra(pr,pm)
-3340 return
+3305 if ra(pr,10)=3 then if oi(3)=1 then goto 3315
+3310 if ra(pr,10)>-1 then print "the ";wc$(ra(pr,10));" doesn't let you pass.":return
+3315 if d1=0ord1=1then pm=0:goto3335
+3320 if d1=2ord1=3then pm=2:goto3335
+3325 if d1=4ord1=5then pm=4:goto3335
+3330 if d1=6ord1=7then pm=6
+3335 if ra(pr,pm+1)=1 then print "you can't go there.":return
+3340 pr=ra(pr,pm)
+3345 return
 
 3400 rem *** player info ***
 3405 if i1=0then gosub 25500
@@ -218,7 +227,7 @@
 3705 print "you have banned the vampire."
 3710 print "now get him sleeping in his coffin"
 3715 print "and kill him with a sharpened pole."
-3720 vb=1:ra(pr,10)=-1:sc=sc+20
+3720 vb(0)=1:ra(pr,10)=-1:sc=sc+20
 3725 return
 
 3800 rem *** player harmed by attack ***
@@ -239,13 +248,25 @@
 
 3900 rem *** open object ***
 3905 if o1<5oro1>6 then print "you can't open the ";wo$(o1);".":return
-3910 if o1=5 then if vb=1 then print "in the coffin is the sleeping vampire.":return
+3910 if o1=5 then if vb(0)=1 then vb(1)=1:print "in the coffin is the sleeping vampire.":return
 3915 if o1=5 then print "the coffin is empty.":return
 3920 if int(rnd(1)*2)=0 then print "the crumbling chest reveals a treasure.":sc=sc+100:ra(pr,9)=-1:return
 3925 print "the crumbling chest reveals an":ra(pr,9)=-1
 3930 print "insidious trap. you have passed out"; 
 3935 fori=0to2:print".";:forj=0to1000:nextj:nexti:print
 3940 return
+
+4000 rem *** sharpen pole ***
+4005 if o1<>4 then print "you can't do this.":return
+4010 if oi(4)<>1 then print "you're not carrying any pole.":return
+4015 if oi(0)<>1 then print "you kneed a knife to sharpen the pole.":return
+4020 if oi(4)=1then if b1=-1 then print "sharpen the pole by which?":return
+4025 if oi(4)=1then if b1>0 then print "you can't use the ";wo$(b1);" for this.":return
+4030 vb(2)=1:print "you have sharpened the pole."
+4035 return 
+
+4100 rem *** kill vampire ***
+4105 return
 
 25000 rem *** print world ***
 25005 xp=1:yp=1:rp=0
@@ -275,7 +296,7 @@
 
 30000 rem *** vocabulary ***
 30005 for i=0tovc-1:read wv$(i):next:goto 30020
-30010 data "go","take","attack","sharpen","open"
+30010 data "go","take","attack","sharpen","open","kill"
 30020 for i=0tooc-1:read wo$(i):next:goto 30030
 30025 data "knife","gun","ammo","crucifix","pole","coffin","chest","altar"
 30030 for i=0todc-1:read wd$(i):next:goto 30040
