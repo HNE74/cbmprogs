@@ -21,7 +21,7 @@
 150 xp=0:yp=0:x=0:y=0:rem *** coordinate counter
 155 dr=0:ar=0:rem *** direction index, adjacent room index 
 160 rem *** inventory: knife, gun, ammo, crucifix, pole
-165 dim oi(5):for i=0to4:oi(i)=-1:next
+165 dim oi(5):
 
 200 rem *** game variables ***
 205 pr=0:pd$="":rem player room, player directions, player command
@@ -34,7 +34,8 @@
 400 rem *** init routines ***
 405 gosub 30000:rem init vocabulary
 410 sc=0
-415 fori=0to2:vb(i)=-1:next:rem reset vampire ban state
+415 fori=0to2:vb(i)=-1:next:rem vampire ban state
+420 for i=0to4:oi(i)=-1:next:rem inventory
  
 500 rem *** world creation ***
 505 gosub 1000:rem init world
@@ -227,7 +228,7 @@
 3705 print "you have banned the vampire."
 3710 print "now get him sleeping in his coffin"
 3715 print "and kill him with a sharpened pole."
-3720 vb(0)=1:ra(pr,10)=-1:sc=sc+20
+3720 vb(0)=1:ra(pr,10)=-1:sc=sc+20:vb(1)=-1
 3725 return
 
 3800 rem *** player harmed by attack ***
@@ -249,7 +250,7 @@
 3900 rem *** open object ***
 3905 if o1<5oro1>6 then print "you can't open the ";wo$(o1);".":return
 3910 if o1=5 then if vb(0)=1 then vb(1)=1:print "in the coffin is the sleeping vampire.":return
-3915 if o1=5 then print "the coffin is empty.":return
+3915 if o1=5 then vb(1)=1:print "the coffin is empty.":return
 3920 if int(rnd(1)*2)=0 then print "the crumbling chest reveals a treasure.":sc=sc+100:ra(pr,9)=-1:return
 3925 print "the crumbling chest reveals an":ra(pr,9)=-1
 3930 print "insidious trap. you have passed out"; 
