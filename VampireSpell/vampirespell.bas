@@ -223,7 +223,8 @@
 
 3800 rem *** player harmed by attack ***
 3805 c1=ra(pr,10)
-3810 if c1=3then af=2:goto 3830
+3810 if c1=3then if oi(3)<>1 then af=2:goto 3830
+3812 if c1=3then if oi(3)=1 then print "the crucifix protects you from the vampire.":return
 3815 if c1=2then af=3:goto 3830
 3820 if c1=1then af=4:goto 3830
 3825 if c1=0then af=5:goto 3830
