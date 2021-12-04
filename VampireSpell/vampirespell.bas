@@ -301,7 +301,7 @@
 
 30000 rem *** vocabulary ***
 30005 for i=0tovc-1:read wv$(i):next:goto 30020
-30010 data "go","take","attack","sharpen","open","kill"
+30010 data "go","take","attack","sharpen","open","stake"
 30020 for i=0tooc-1:read wo$(i):next:goto 30030
 30025 data "knife","gun","ammo","crucifix","pole","coffin","chest","altar"
 30030 for i=0todc-1:read wd$(i):next:goto 30040
