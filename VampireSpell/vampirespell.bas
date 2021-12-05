@@ -9,7 +9,7 @@
 
 100 rem *** world variables ***
 105 rem open wall=0, wall=1, not accessable room=-1
-110 ww=2:wh=2:rem *** world dimensions
+110 ww=5:wh=4:rem *** world dimensions
 112 rem *** 0-7 room and wall, 8 visited, 9 object, 10 character
 115 dim ra(((ww+1)*(wh+1)-1),10):rem *** room adjacent matrix
 120 rp=0:rc=((ww+1)*(wh+1)-1):rem *** room pointer, room count
@@ -35,7 +35,7 @@
 300 gosub 30000:rem init vocabulary
 
 400 rem *** init game state ***
-410 sc=0:pd=0
+410 sc=0:pr=0
 415 fori=0to3:vb(i)=-1:next:rem vampire related state
 420 for i=0to4:oi(i)=-1:next:rem inventory
 425 th=22:tm=00
@@ -46,6 +46,7 @@
 515 gosub 1200:rem place objects
 
 600 rem *** game loop ***
+603 print "{clear}{down}"
 605 gosub 3000:rem player world output 
 607 if vb(3)>-1 then 630
 610 gosub 2300:rem player input
@@ -102,9 +103,9 @@
 1800 rem *** evaluation loop ***
 1805 gosub 2000
 1810 gosub 2100
-1815 if wu$<>""then print "i don't understand the word: ";wu$:return
+1815 if wu$<>""then print "i don't understand the word: ";wu$:for i=0to1000:next:return
 1830 if wp$="vd"orwp$="vo"orwp$="vob"orwp$="vc"orwp$="vco"orwp$="i"then 1840
-1835 print "this doesn't make sense: "; wp$:return
+1835 print "this doesn't make sense: "; wp$:for i=0to1000:next:return
 1840 print "this makes sense: ";wp$
 1845 if wp$="vd"then gosub 3300:goto1900:rem player move
 1850 if wp$="i"then gosub 3400:goto1900:rem player info
@@ -114,7 +115,7 @@
 1870 if wp$="vo"orwp$="vob"then if v1=3 then gosub 4000:goto1900:rem sharpen pole
 1875 if wp$="vco"then if v1=5 then gosub 4100:goto1900:rem stake vampire
 1880 print "are you serious?"
-1900 return
+1900 for i=0to1000:next:return
 
 2000 rem *** input parser ***
 2005 wi=0:for i=0tows-1:w$(i)="":nexti
@@ -305,12 +306,15 @@
 25010 for y=0towh:for x=0toww
 25015 gosub 25100
 25020 rp=rp+1:xp=xp+3:nextx:xp=1:yp=yp+3:nexty
-25025 poke214,yp+3:poke211,0:sys58640
-25030 return
+25025 poke214,yp+2:poke211,0:sys58640
+25030 print " <press any key>":poke198,0:wait198,1
+25035 return
 
 25100 rem *** print room
 25105 poke214,yp:poke211,xp:sys58640:print chr$(111);chr$(247);chr$(112)
-25110 poke214,yp+1:poke211,xp:sys58640:print chr$(165);" ";chr$(167)
+25110 poke214,yp+1:poke211,xp:sys58640:print chr$(165);
+25112 if rp=pr then print"*";chr$(167):goto25115
+25114 print" ";chr$(167)
 25115 poke214,yp+2:poke211,xp:sys58640:print chr$(108);chr$(175);chr$(186)
 25120 if ra(rp,1)=0 then poke214,yp:poke211,xp+1:sys58640:print" "
 25125 if ra(rp,3)=0 then poke214,yp+2:poke211,xp+1:sys58640:print" "
