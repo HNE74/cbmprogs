@@ -1,4 +1,4 @@
-10 rem *** word recognition routine variables ****
+10 rem *** word recognition routine variables ***
 15 es$="":wc$="":ws=10:dim w$(ws):dim ww$(ws):rem *** input parser vars
 20 rem *** vocabulary: verbs, objects, object2, direction, character, info, ignored
 25 vc=6:oc=8:dc=8:cc=4:ic=4:nc=4
@@ -28,13 +28,14 @@
 210 pm=0:rem player movement ndx
 215 op=-1:rem object room
 220 af=-1:rem attack factor
-225 dim vb(3):rem vampire banned flag, coffin open, pole sharpened
+225 dim vb(4):rem banned flag, coffin open, pole sharpened, staked flag
 230 sc=0:rem player score
 
-400 rem *** init routines ***
-405 gosub 30000:rem init vocabulary
-410 sc=0
-415 fori=0to2:vb(i)=-1:next:rem vampire ban state
+300 gosub 30000:rem init vocabulary
+
+400 rem *** init game state ***
+410 sc=0:pd=0
+415 fori=0to3:vb(i)=-1:next:rem vampire related state
 420 for i=0to4:oi(i)=-1:next:rem inventory
  
 500 rem *** world creation ***
@@ -46,7 +47,8 @@
 605 gosub 3000:rem player world output 
 610 gosub 2300:rem player input
 615 gosub 1800:rem recognize player input
-620 goto 600
+620 if vb(3)=-1 then 600
+625 gosub 4200:goto 400
 
 1000 rem *** initialize world ***
 1010 for rp=0torc
@@ -270,8 +272,19 @@
 4105 ifvb(1)=-1 then print "the coffin is closed.":return
 4110 ifra(pr,9)<>5orvb(0)=-1 then print "there is no sleeping vampire here.":return
 4115 ifvb(2)=-1oro1<>4 then print "you need a sharpened pole.":return
-4120 print "you have staked the vampire":end
-4125 return
+4120 vb(3)=1:return
+
+4200 rem *** game end ***
+4205 print:if vb(3)=2 then goto 4225
+4210 print "congratulations, you have beaten"
+4215 print "the vampire."
+4220 goto 4250
+4225 print "you have lost, the vampire has"
+4235 print "managed to escape."
+4250 print "your final score is:";sc
+4255 print "press any key to restart."
+4260 poke 198,0:wait 198,1
+4265 return
 
 25000 rem *** print world ***
 25005 xp=1:yp=1:rp=0
