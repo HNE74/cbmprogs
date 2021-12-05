@@ -1,4 +1,4 @@
-10 rem *** word recognition routine variables ***
+10 rem *** word recognition routine variables ****
 15 es$="":wc$="":ws=10:dim w$(ws):dim ww$(ws):rem *** input parser vars
 20 rem *** vocabulary: verbs, objects, object2, direction, character, info, ignored
 25 vc=6:oc=8:dc=8:cc=4:ic=4:nc=4
