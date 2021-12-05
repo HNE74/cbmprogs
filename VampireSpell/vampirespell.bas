@@ -30,6 +30,7 @@
 220 af=-1:rem attack factor
 225 dim vb(4):rem banned flag, coffin open, pole sharpened, staked flag
 230 sc=0:rem player score
+235 th=0:tm=0:rem time hours, minutes
 
 300 gosub 30000:rem init vocabulary
 
@@ -37,6 +38,7 @@
 410 sc=0:pd=0
 415 fori=0to3:vb(i)=-1:next:rem vampire related state
 420 for i=0to4:oi(i)=-1:next:rem inventory
+425 th=22:tm=00
  
 500 rem *** world creation ***
 505 gosub 1000:rem init world
@@ -45,10 +47,12 @@
 
 600 rem *** game loop ***
 605 gosub 3000:rem player world output 
+607 if vb(3)>-1 then 630
 610 gosub 2300:rem player input
 615 gosub 1800:rem recognize player input
-620 if vb(3)=-1 then 600
-625 gosub 4200:goto 400
+620 gosub 4400:rem increase time
+625 if vb(3)=-1 then 600
+630 gosub 4200:goto 400
 
 1000 rem *** initialize world ***
 1010 for rp=0torc
@@ -87,11 +91,11 @@
 1210 op=int(rnd(1)*(ww+1)*(wh+1))
 1215 ifra(op,9)>-1then1210
 1220 ra(op,9)=i
-1225 next:print "***";op
+1225 next
 1230 for i=0tocc-1
 1235 op=int(rnd(1)*(ww+1)*(wh+1))
 1240 ifra(op,10)>-1then1235
-1245 ra(op,10)=i:print op
+1245 ra(op,10)=i
 1250 next
 1255 return
 
@@ -156,6 +160,7 @@
 
 3000 rem *** player world output ***
 3005 print:print "you are in room:";pr
+3006 print "the time is:";th;":";tm
 3008 print "current score:";sc
 3010 pd$="":for i=1to7step2
 3015 if ra(pr,i)<1andi=1thenpd$=pd$+"north,"
@@ -236,17 +241,18 @@
 3800 rem *** player harmed by attack ***
 3805 c1=ra(pr,10)
 3810 if c1=3then if oi(3)<>1 then af=2:goto 3830
-3812 if c1=3then if oi(3)=1 then print "the crucifix protects you from the vampire.":return
+3812 if c1=3then if oi(3)=1 then print "the crucifix protects you from":print"the vampire.":return
 3815 if c1=2then af=3:goto 3830
 3820 if c1=1then af=4:goto 3830
 3825 if c1=0then af=5:goto 3830
 3830 if int(rnd(1)*af)>0 then print "the ";wc$(c1);" has missed you.":return
 3835 print "the ";wc$(c1);" has hit you hard."
-3836 print "you have passed out"; 
+3836 print "you have passed out";
 3838 fori=0to2:print".";:forj=0to1000:nextj:nexti:print
-3840 op=int(rnd(1)*(ww+1)*(wh+1))
-3845 ifra(op,10)>-1 or pr=op then 3840
-3855 ra(op,10)=c1:ra(pr,10)=-1
+3840 tm=tm+10:if tm>=60 then th=th+1:tm=tm-60:if th>23 then vb(3)=2
+3850 op=int(rnd(1)*(ww+1)*(wh+1))
+3855 ifra(op,10)>-1 or pr=op then 3850
+3860 ra(op,10)=c1:ra(pr,10)=-1
 3895 return
 
 3900 rem *** open object ***
@@ -257,6 +263,7 @@
 3925 print "the crumbling chest reveals an":ra(pr,9)=-1
 3930 print "insidious trap. you have passed out"; 
 3935 fori=0to2:print".";:forj=0to1000:nextj:nexti:print
+3937 tm=tm+10:if tm>=60 then th=th+1:tm=tm-60:if th>23 then vb(3)=2
 3940 return
 
 4000 rem *** sharpen pole ***
@@ -277,7 +284,8 @@
 4200 rem *** game end ***
 4205 print:if vb(3)=2 then goto 4225
 4210 print "congratulations, you have beaten"
-4215 print "the vampire."
+4215 print "the vampire.":sc=sc+(23-th)*60+60-tm
+4218 print "remaining time bonus:";(23-th)*60+60-tm
 4220 goto 4250
 4225 print "you have lost, the vampire has"
 4235 print "managed to escape."
@@ -285,6 +293,12 @@
 4255 print "press any key to restart."
 4260 poke 198,0:wait 198,1
 4265 return
+
+4400 rem *** time increase ***
+4405 tm=tm+1
+4410 if tm>=60 then tm=tm-60:th=th+1
+4415 if th>23 then vb(3)=2
+4420 return 
 
 25000 rem *** print world ***
 25005 xp=1:yp=1:rp=0
