@@ -31,6 +31,7 @@
 225 dim vb(4):rem banned flag, coffin open, pole sharpened, staked flag
 230 sc=0:rem player score
 235 th=0:tm=0:rem time hours, minutes
+240 wt=1000:rem wait time
 
 300 gosub 30000:rem init vocabulary
 
@@ -44,6 +45,7 @@
 505 gosub 1000:rem init world
 510 gosub 1100:rem connect rooms
 515 gosub 1200:rem place objects
+520 gosub 1300:rem set rooms unvisited
 
 600 rem *** game loop ***
 603 print "{clear}{down}"
@@ -100,9 +102,13 @@
 1250 next
 1255 return
 
+1300 rem *** set rooms to unvisited ***
+1305 for i=0to(ww+1)*(wh+1)-1:ra(i,8)=-1:next
+1310 return
+
 1800 rem *** evaluation loop ***
 1805 gosub 2000
-1810 gosub 2100
+1810 gosub 2100:wt=2000
 1815 if wu$<>""then print "i don't understand the word: ";wu$:for i=0to1000:next:return
 1830 if wp$="vd"orwp$="vo"orwp$="vob"orwp$="vc"orwp$="vco"orwp$="i"then 1840
 1835 print "this doesn't make sense: "; wp$:for i=0to1000:next:return
@@ -115,7 +121,7 @@
 1870 if wp$="vo"orwp$="vob"then if v1=3 then gosub 4000:goto1900:rem sharpen pole
 1875 if wp$="vco"then if v1=5 then gosub 4100:goto1900:rem stake vampire
 1880 print "are you serious?"
-1900 for i=0to1000:next:return
+1900 for i=0towt:next:return
 
 2000 rem *** input parser ***
 2005 wi=0:for i=0tows-1:w$(i)="":nexti
@@ -162,7 +168,7 @@
 3000 rem *** player world output ***
 3005 print:print "you are in room:";pr
 3006 print "the time is:";th;":";tm
-3008 print "current score:";sc
+3008 print "current score:";sc:ra(pr,8)=1
 3010 pd$="":for i=1to7step2
 3015 if ra(pr,i)<1andi=1thenpd$=pd$+"north,"
 3020 if ra(pr,i)<1andi=3thenpd$=pd$+"south,"
@@ -192,12 +198,12 @@
 3300 rem *** player move ***
 3305 if ra(pr,10)=3 then if oi(3)=1 then goto 3315
 3310 if ra(pr,10)>-1 then print "the ";wc$(ra(pr,10));" doesn't let you pass.":return
-3315 if d1=0ord1=1then pm=0:goto3335
-3320 if d1=2ord1=3then pm=2:goto3335
-3325 if d1=4ord1=5then pm=4:goto3335
-3330 if d1=6ord1=7then pm=6
+3315 if d1=0ord1=1then pm=0:print "going north...":goto3335
+3320 if d1=2ord1=3then pm=2:print "going south...":goto3335
+3325 if d1=4ord1=5then pm=4:print "going west...":goto3335
+3330 if d1=6ord1=7then pm=6:print "going east...":goto3335
 3335 if ra(pr,pm+1)=1 then print "you can't go there.":return
-3340 pr=ra(pr,pm)
+3340 pr=ra(pr,pm):wt=500
 3345 return
 
 3400 rem *** player info ***
@@ -236,7 +242,7 @@
 3705 print "you have banned the vampire."
 3710 print "now get him sleeping in his coffin"
 3715 print "and stake him with a sharpened pole."
-3720 vb(0)=1:ra(pr,10)=-1:sc=sc+20:vb(1)=-1
+3720 vb(0)=1:ra(pr,10)=-1:sc=sc+20:vb(1)=-1:wt=2000
 3725 return
 
 3800 rem *** player harmed by attack ***
@@ -307,10 +313,11 @@
 25015 gosub 25100
 25020 rp=rp+1:xp=xp+3:nextx:xp=1:yp=yp+3:nexty
 25025 poke214,yp+2:poke211,0:sys58640
-25030 print " <press any key>":poke198,0:wait198,1
+25030 print " <press any key>":poke198,0:wait198,1:poke198,0:wt=0
 25035 return
 
 25100 rem *** print room
+25102 if ra(rp,8)=-1 then 25150
 25105 poke214,yp:poke211,xp:sys58640:print chr$(111);chr$(247);chr$(112)
 25110 poke214,yp+1:poke211,xp:sys58640:print chr$(165);
 25112 if rp=pr then print"*";chr$(167):goto25115
@@ -321,9 +328,13 @@
 25130 if ra(rp,5)=0 then poke214,yp+1:poke211,xp:sys58640:print" "
 25135 if ra(rp,7)=0 then poke214,yp+1:poke211,xp+2:sys58640:print" "
 25140 return
+25150 poke214,yp:poke211,xp:sys58640:print chr$(166);chr$(166);chr$(166)
+25155 poke214,yp+1:poke211,xp:sys58640:print chr$(166);chr$(166);chr$(166)
+25160 poke214,yp+2:poke211,xp:sys58640:print chr$(166);chr$(166);chr$(166)
+25165 return
  
 25500 rem *** show inventory
-25505 print "you're carrying the following items:"
+25505 wt=2000:print "you're carrying the following items:"
 25510 j=0:for i=0to4
 25515 if oi(i)>-1then print wo$(i):j=1
 25520 next
