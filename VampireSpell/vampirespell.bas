@@ -46,6 +46,7 @@
 510 gosub 1100:rem connect rooms
 515 gosub 1200:rem place objects
 520 gosub 1300:rem set rooms unvisited
+525 gosub 1400:rem additional room connections
 
 600 rem *** game loop ***
 603 print "{clear}{down}"
@@ -105,6 +106,14 @@
 1300 rem *** set rooms to unvisited ***
 1305 for i=0to(ww+1)*(wh+1)-1:ra(i,8)=-1:next
 1310 return
+
+1400 rem *** create random room connections ***
+1405 for i=0to10
+1410 rp=int(rnd(1)*(ww+1)*(wh+1)):print rp
+1415 dr=int(rnd(1)*4)*2
+1420 if ra(rp,dr)<>-1 then ra(rp,dr+1)=0:ra(ra(rp,dr),op(dr))=0
+1425 next 
+1430 return
 
 1800 rem *** evaluation loop ***
 1805 gosub 2000
