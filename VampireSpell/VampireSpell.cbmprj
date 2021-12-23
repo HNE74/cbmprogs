@@ -51,6 +51,17 @@
     <!--End of screen designer settings-->
     <SourceFiles>
         <SourceFile>
+            <Name>1.sdd</Name>
+            <PrgName />
+            <FileType>9</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>False</Topmost>
+            <FileOpen>False</FileOpen>
+        </SourceFile>
+        <SourceFile>
             <Name>vampirespell.bas</Name>
             <PrgName />
             <FileType>1</FileType>
@@ -58,7 +69,7 @@
             <Regions />
             <Breakpoints />
             <Bookmarks />
-            <Topmost>False</Topmost>
+            <Topmost>True</Topmost>
             <FileOpen>True</FileOpen>
         </SourceFile>
     </SourceFiles>

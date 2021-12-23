@@ -34,6 +34,9 @@
 240 wt=1000:rem wait time
 
 300 gosub 30000:rem init vocabulary
+310 goto 27000:rem show title
+320 if a$=chr$(32) then 400
+325 goto 310
 
 400 rem *** init game state ***
 410 sc=0:pr=0
@@ -42,6 +45,7 @@
 425 th=22:tm=00
  
 500 rem *** world creation ***
+502 print "{clear}descending into the vampire's crypt."
 505 gosub 1000:rem init world
 510 gosub 1100:rem connect rooms
 515 gosub 1200:rem place objects
@@ -56,7 +60,7 @@
 615 gosub 1800:rem recognize player input
 620 gosub 4400:rem increase time
 625 if vb(3)=-1 then 600
-630 gosub 4200:goto 400
+630 gosub 4200:goto 310
 
 1000 rem *** initialize world ***
 1010 for rp=0torc
@@ -174,9 +178,9 @@
 2310 return
 
 3000 rem *** player world output ***
-3005 print:print "you are in room:";pr
+3005 print "{black}you are in room:";pr
 3006 print "the time is:";th;":";tm
-3008 print "current score:";sc:ra(pr,8)=1
+3008 print "current score:";sc:ra(pr,8)=1:print
 3010 pd$="":for i=1to7step2
 3015 if ra(pr,i)<1andi=1thenpd$=pd$+"north,"
 3020 if ra(pr,i)<1andi=3thenpd$=pd$+"south,"
@@ -194,7 +198,7 @@
 3070 print "a scary old coffin is in the room.":goto3095
 3075 print "there is a chest in the corner.":goto3095
 3080 print "there is an empty dusty altar."
-3095 print "you can go ";pd$
+3095 print "you can go ";pd$:print
 3100 if ra(pr,10)=-1then 3195
 3105 on ra(pr,10)+1 goto 3110,3115,3120,3125
 3110 print "an aggressive rat attacks you.":gosub3800:goto3195
@@ -305,9 +309,9 @@
 4220 goto 4250
 4225 print "you have lost, the vampire has"
 4235 print "managed to escape."
-4250 print "your final score is:";sc
-4255 print "press any key to restart."
-4260 poke 198,0:wait 198,1
+4250 print:print "your final score is:";sc
+4255 print:print "[press any key]"
+4260 poke 198,0:wait 198,1:poke 198,0
 4265 return
 
 4400 rem *** time increase ***
@@ -322,7 +326,7 @@
 25015 gosub 25100
 25020 rp=rp+1:xp=xp+3:nextx:xp=1:yp=yp+3:nexty
 25025 poke214,yp+2:poke211,0:sys58640
-25030 print " <press any key>":poke198,0:wait198,1:poke198,0:wt=0
+25030 print " [press any key]":poke198,0:wait198,1:poke198,0:wt=0
 25035 return
 
 25100 rem *** print room
@@ -353,7 +357,7 @@
 26000 rem *** show instructions ***
 26005 print "{clear}{down}if you don't stake the vampire before"
 26010 print "midnight he will escape and you have"
-26015 print "lost. beware of the vampire's creatures"
+26015 print "lost. beware of his evil servants:"
 26020 print "rat, spider and wolf. they might knock"
 26025 print "you out and you'll lose precious time."
 26105 print "{down}to move around type go and quote the"
@@ -364,12 +368,12 @@
 26140 print "{down}for taking an item enter take and then"
 26145 print "the item name."
 26150 print "example: ";chr$(34);"take knife";chr$(34)
-26155 print "{down}you can attack your the vampire's"
+26155 print "{down}you can attack the vampire's"
 26160 print "creatures by entering attack followed"
 26165 print "and it's' name. if you carry a weapon"
 26170 print "quote it at the command's end."
 26175 print "example: ";chr$(34);"attack rat with gun";chr$(34)
-26178 print "{down}<press any key>":poke198,0:wait198,1:poke198,0
+26178 print "{down}[press any key]":poke198,0:wait198,1:poke198,0
 26180 print "{clear}{down}only the crucifix protects you from the"
 26185 print "vampire. for banning the vampire to"
 26190 print "his coffin enter:"
@@ -383,15 +387,45 @@
 26240 print chr$(34);"sharpen pole with knife";chr$(34)  
 26245 print "{down}to open the vampire's coffin or a"
 26250 print "chest enter for example: ";chr$(34);"open coffin";chr$(34)
-26252 print "{down}<press any key>":poke198,0:wait198,1:poke198,0
+26252 print "{down}[press any key]":poke198,0:wait198,1:poke198,0
 26255 print "{clear}{down}use the ";chr$(34);"inventory";chr$(34)" command to"
 26257 print "check which items you're carrying."
 26265 print "{down}the ";chr$(34);"map";chr$(34);" command draws"
 26270 print "a map of the rooms you have explored."
 26275 print "{down}";chr$(34);"help";chr$(34);" prints these instructions"
 26280 print "again."
-26285 print "{down}<press any key>":poke198,0:wait198,1:poke198,0:wt=0
+26285 print "{down}[press any key]":poke198,0:wait198,1:poke198,0:wt=0
 26290 return 
+
+27000 rem *** intro screen ***
+27002 poke 53280,12:poke 53281,15
+27005 PRINT "{clear}                {black}{164}{164}{164}"
+27010 PRINT "           {185}{reverse on}{184}{163}      '{163}{184}{reverse off}{175}"
+27015 PRINT "         {172}{reverse on}K             {188}"
+27020 PRINT "        :{reverse on}                {reverse off}{165}"
+27025 PRINT "        {167}{reverse on}  {reverse off}{red}curse of{reverse on}{black}      "
+27030 PRINT "         {reverse on}{165}              {167}{reverse off},"
+27035 PRINT "         {reverse on}{161}    {reverse off}{red}the vampire{reverse on}{black}'"
+27040 PRINT "         {167}{reverse on}               {167}"
+27045 PRINT "         {182}{reverse on}      {reverse off}{brown}by noltisoft"
+27050 PRINT "          {reverse on}{black}     K         {reverse off}{165}"
+27055 PRINT "         {167}{reverse on}    H  {reverse off}{brown}created in 2021"
+27060 PRINT "         {black}'{reverse on}    G         {185}{reverse off}K"
+27065 PRINT "           {reverse on}M  K    :    {184}{184}{reverse off}{162}{162}{185}"
+27070 PRINT "         {175}{162}{reverse on}{190}M     .{174}        {reverse off}{169}"
+27075 PRINT "       '{reverse on},    l:  ::        {reverse off}{169}"
+27080 PRINT "        '{reverse on}{187}   JN !{pound}        {reverse off}O"
+27085 PRINT "          P{reverse on}   M          {reverse off}O"
+27090 PRINT "           {188}{reverse on}  J{165}        {167}{reverse off},"
+27095 PRINT "         {164}{185}{reverse on}{184}K  k     .    {163}{183}{reverse off}{162}{164}"
+27100 PRINT "       {185}{reverse on}{183}      '{185}  {172}{124}{167}        {188}"
+27105 PRINT "      {reverse on}O       {reverse off}{161}P{185}{reverse on}{123}{reverse off}P{reverse on}{184}{127}{reverse off} {reverse on}:        {127}"
+27110 PRINT "{down}      press [space] to start"
+27115 PRINT "          [i] for instructions"
+27120 get a$:if a$="" then 27120
+27125 if a$="i" then poke198,0:gosub 26000:goto 27000
+27130 if a$=chr$(32) then poke198,0:goto 320
+27135 goto 27120
 
 30000 rem *** vocabulary ***
 30005 for i=0tovc-1:read wv$(i):next:goto 30020
