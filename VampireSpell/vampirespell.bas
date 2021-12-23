@@ -1,7 +1,7 @@
 10 rem *** word recognition routine variables ***
 15 es$="":wc$="":ws=10:dim w$(ws):dim ww$(ws):rem *** input parser vars
 20 rem *** vocabulary: verbs, objects, object2, direction, character, info, ignored
-25 vc=6:oc=8:dc=8:cc=4:ic=4:nc=4
+25 vc=6:oc=8:dc=8:cc=4:ic=3:nc=4
 30 dim wv$(vc):dim wo$(oc):dim wd$(dc):dim wc$(cc):dim wn$(nc)
 35 v1=-1:o1=-1:b1=-1:d1=-1:c1=-1:i1=-1
 40 wp=0:wf=0:wn=0:rem *** input check vars: pointer, word found, word igored
@@ -109,7 +109,7 @@
 
 1400 rem *** create random room connections ***
 1405 for i=0to10
-1410 rp=int(rnd(1)*(ww+1)*(wh+1)):print rp
+1410 rp=int(rnd(1)*(ww+1)*(wh+1))
 1415 dr=int(rnd(1)*4)*2
 1420 if ra(rp,dr)<>-1 then ra(rp,dr+1)=0:ra(ra(rp,dr),op(dr))=0
 1425 next 
@@ -119,9 +119,8 @@
 1805 gosub 2000
 1810 gosub 2100:wt=2000
 1815 if wu$<>""then print "i don't understand the word: ";wu$:for i=0to1000:next:return
-1830 if wp$="vd"orwp$="vo"orwp$="vob"orwp$="vc"orwp$="vco"orwp$="i"then 1840
+1830 if wp$="vd"orwp$="vo"orwp$="vob"orwp$="vc"orwp$="vco"orwp$="i"then 1845
 1835 print "this doesn't make sense: "; wp$:for i=0to1000:next:return
-1840 print "this makes sense: ";wp$
 1845 if wp$="vd"then gosub 3300:goto1900:rem player move
 1850 if wp$="i"then gosub 3400:goto1900:rem player info
 1855 if wp$="vo"then if v1=1 then gosub 3500:goto1900:rem take object
@@ -217,8 +216,9 @@
 
 3400 rem *** player info ***
 3405 if i1=0then gosub 25500
-3410 if i1=3then print"{clear}":gosub 25000
-3415 return
+3410 if i1=1then gosub 26000
+3415 if i1=2then print"{clear}":gosub 25000
+3420 return
 
 3500 rem *** take object ***
 3510 if o1>=0 then if o1<=4 then 3520
@@ -342,13 +342,56 @@
 25160 poke214,yp+2:poke211,xp:sys58640:print chr$(166);chr$(166);chr$(166)
 25165 return
  
-25500 rem *** show inventory
+25500 rem *** show inventory ***
 25505 wt=2000:print "you're carrying the following items:"
 25510 j=0:for i=0to4
 25515 if oi(i)>-1then print wo$(i):j=1
 25520 next
 25525 if j=0 then print "nothing"
 25530 return
+
+26000 rem *** show instructions ***
+26005 print "{clear}{down}if you don't stake the vampire before"
+26010 print "midnight he will escape and you have"
+26015 print "lost. beware of the vampire's creatures"
+26020 print "rat, spider and wolf. they might knock"
+26025 print "you out and you'll lose precious time."
+26105 print "{down}to move around type go and quote the"
+26115 print "direction: north, south, west or east."
+26125 print "the direction can be abbreviated by"
+26130 print "n, s, w or e."
+26135 print "example: ";chr$(34);"go north";chr$(34)
+26140 print "{down}for taking an item enter take and then"
+26145 print "the item name."
+26150 print "example: ";chr$(34);"take knife";chr$(34)
+26155 print "{down}you can attack your the vampire's"
+26160 print "creatures by entering attack followed"
+26165 print "and it's' name. if you carry a weapon"
+26170 print "quote it at the command's end."
+26175 print "example: ";chr$(34);"attack rat with gun";chr$(34)
+26178 print "{down}<press any key>":poke198,0:wait198,1:poke198,0
+26180 print "{clear}{down}only the crucifix protects you from the"
+26185 print "vampire. for banning the vampire to"
+26190 print "his coffin enter:"
+26195 print chr$(34);"attack vampire with crucifix";chr$(34)
+26200 print "{down}the vampire must be staked with a sharp"
+26205 print "pole of wood using the command:"
+26210 print chr$(34);"stake vampire with pole";chr$(34)
+26215 print "{down}prerquisite is that you own the pole"
+26220 print "and have sharpened it using a knife."
+26225 print "for this enter the command:"
+26240 print chr$(34);"sharpen pole with knife";chr$(34)  
+26245 print "{down}to open the vampire's coffin or a"
+26250 print "chest enter for example: ";chr$(34);"open coffin";chr$(34)
+26252 print "{down}<press any key>":poke198,0:wait198,1:poke198,0
+26255 print "{clear}{down}use the ";chr$(34);"inventory";chr$(34)" command to"
+26257 print "check which items you're carrying."
+26265 print "{down}the ";chr$(34);"map";chr$(34);" command draws"
+26270 print "a map of the rooms you have explored."
+26275 print "{down}";chr$(34);"help";chr$(34);" prints these instructions"
+26280 print "again."
+26285 print "{down}<press any key>":poke198,0:wait198,1:poke198,0:wt=0
+26290 return 
 
 30000 rem *** vocabulary ***
 30005 for i=0tovc-1:read wv$(i):next:goto 30020
@@ -360,6 +403,6 @@
 30040 for i=0tocc-1:read wc$(i):next:goto 30050
 30045 data "rat","spider","wolf","vampire"
 30050 for i=0toic-1:read wi$(i):next:goto 30060
-30055 data "inventory","look","help","map"
+30055 data "inventory","help","map"
 30060 for i=0tonc-1:read wn$(i):next:return
 30065 data "the", "with", "to", "of"
