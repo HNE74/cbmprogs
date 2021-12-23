@@ -124,7 +124,7 @@
 1810 gosub 2100:wt=2000
 1815 if wu$<>""then print "i don't understand the word: ";wu$:for i=0to1000:next:return
 1830 if wp$="vd"orwp$="vo"orwp$="vob"orwp$="vc"orwp$="vco"orwp$="i"then 1845
-1835 print "this doesn't make sense: "; wp$:for i=0to1000:next:return
+1835 print "this doesn't make sense.":for i=0to1000:next:return
 1845 if wp$="vd"then gosub 3300:goto1900:rem player move
 1850 if wp$="i"then gosub 3400:goto1900:rem player info
 1855 if wp$="vo"then if v1=1 then gosub 3500:goto1900:rem take object
@@ -132,7 +132,7 @@
 1865 if wp$="vo"then if v1=4 then gosub 3900:goto1900:rem open object
 1870 if wp$="vo"orwp$="vob"then if v1=3 then gosub 4000:goto1900:rem sharpen pole
 1875 if wp$="vco"then if v1=5 then gosub 4100:goto1900:rem stake vampire
-1880 print "are you serious?"
+1880 print "i don't understand anything."
 1900 for i=0towt:next:return
 
 2000 rem *** input parser ***
@@ -255,7 +255,7 @@
 3705 print "you have banned the vampire."
 3710 print "now get him sleeping in his coffin"
 3715 print "and stake him with a sharpened pole."
-3720 vb(0)=1:ra(pr,10)=-1:sc=sc+20:vb(1)=-1:wt=2000
+3720 vb(0)=1:ra(pr,10)=-1:sc=sc+20:vb(1)=-1:wt=4000
 3725 return
 
 3800 rem *** player harmed by attack ***
@@ -347,7 +347,7 @@
 25165 return
  
 25500 rem *** show inventory ***
-25505 wt=2000:print "you're carrying the following items:"
+25505 wt=4000:print "you're carrying the following items:"
 25510 j=0:for i=0to4
 25515 if oi(i)>-1then print wo$(i):j=1
 25520 next
