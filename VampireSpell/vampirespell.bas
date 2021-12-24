@@ -32,6 +32,7 @@
 230 sc=0:rem player score
 235 th=0:tm=0:rem time hours, minutes
 240 wt=2000:rem wait time
+245 a$="":oa$="":cs=166:rem input routine
 
 300 gosub 30000:rem init vocabulary
 310 goto 27000:rem show title
@@ -56,7 +57,7 @@
 603 print "{clear}{down}"
 605 gosub 3000:rem player world output 
 607 if vb(3)>-1 then 630
-610 gosub 2300:rem player input
+610 gosub 4500:rem player input
 615 gosub 1800:rem recognize player input
 620 gosub 4400:rem increase time
 625 if vb(3)=-1 then 600
@@ -121,7 +122,7 @@
 
 1800 rem *** evaluation loop ***
 1805 gosub 2000
-1810 gosub 2100:wt=2000
+1810 gosub 2100:wt=2000:print
 1815 if wu$<>""then print "i don't understand the word: ";wu$:for i=0to1000:next:return
 1830 if wp$="vd"orwp$="vo"orwp$="vob"orwp$="vc"orwp$="vco"orwp$="i"then 1845
 1835 print "this doesn't make sense.":for i=0to1000:next:return
@@ -172,10 +173,6 @@
 2200 if wf=1 then wp=wp+1:ww$(wp)=w$(i)
 2205 next i
 2210 return
-
-2300 rem *** player input ***
-2305 input "command";es$
-2310 return
 
 3000 rem *** player world output ***
 3005 print "{black}you are in room:";pr
@@ -319,6 +316,23 @@
 4410 if tm>=60 then tm=tm-60:th=th+1
 4415 if th>23 then vb(3)=2
 4420 return 
+
+4500 rem *** input routine ***
+4505 es$="":print "enter command> ";chr$(cs);
+4510 get a$:if a$="" then 4510
+4515 i=asc(a$)
+4518 if i=13 then if es$="" then es$=oa$:print "{left}";es$;chr$(cs):return
+4520 if i=13 then oa$=es$:return
+4525 if i=32 then 4545:rem space
+4530 if i=20 then 4560:rem backspace
+4540 if i<65 or i>90 then 4510
+4545 print chr$(20);a$;chr$(cs);
+4550 es$=es$+a$
+4555 goto 4510
+4560 if len(es$)=0 then 4510
+4565 print chr$(20);chr$(20);chr$(cs);
+4570 es$=left$(es$,len(es$)-1)
+4575 goto 4510 
 
 25000 rem *** print world ***
 25005 xp=1:yp=1:rp=0
