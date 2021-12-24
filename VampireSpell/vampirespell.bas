@@ -31,7 +31,7 @@
 225 dim vb(4):rem banned flag, coffin open, pole sharpened, staked flag
 230 sc=0:rem player score
 235 th=0:tm=0:rem time hours, minutes
-240 wt=1000:rem wait time
+240 wt=2000:rem wait time
 
 300 gosub 30000:rem init vocabulary
 310 goto 27000:rem show title
@@ -201,10 +201,10 @@
 3095 print "you can go ";pd$:print
 3100 if ra(pr,10)=-1then 3195
 3105 on ra(pr,10)+1 goto 3110,3115,3120,3125
-3110 print "an aggressive rat attacks you.":gosub3800:goto3195
-3115 print "a giant spider spills it's venom.":gosub3800:goto3195
-3120 print "you are attacked by a red eyed wolf.":gosub3800:goto3195
-3125 print "the vampire is approaching you.":gosub3800
+3110 print "{red}an aggressive rat attacks you.{black}":gosub3800:goto3195
+3115 print "{red}a giant spider spills it's venom.{black}":gosub3800:goto3195
+3120 print "{red}you are attacked by a red eyed wolf.{black}":gosub3800:goto3195
+3125 print "{red}the vampire is approaching you.{black}":gosub3800
 3195 return
 
 3300 rem *** player move ***
@@ -215,7 +215,7 @@
 3325 if d1=4ord1=5then pm=4:print "going west...":goto3335
 3330 if d1=6ord1=7then pm=6:print "going east...":goto3335
 3335 if ra(pr,pm+1)=1 then print "you can't go there.":return
-3340 pr=ra(pr,pm):wt=500
+3340 pr=ra(pr,pm):wt=1000
 3345 return
 
 3400 rem *** player info ***
@@ -268,7 +268,7 @@
 3830 if int(rnd(1)*af)>0 then print "the ";wc$(c1);" has missed you.":return
 3835 print "the ";wc$(c1);" has hit you hard."
 3836 print "you have passed out";
-3838 fori=0to2:print".";:forj=0to1000:nextj:nexti:print
+3838 fori=0to2:print".";:forj=0to500:nextj:nexti:print
 3840 tm=tm+10:if tm>=60 then th=th+1:tm=tm-60:if th>23 then vb(3)=2
 3850 op=int(rnd(1)*(ww+1)*(wh+1))
 3855 ifra(op,10)>-1 or pr=op then 3850
@@ -325,7 +325,7 @@
 25010 for y=0towh:for x=0toww
 25015 gosub 25100
 25020 rp=rp+1:xp=xp+3:nextx:xp=1:yp=yp+3:nexty
-25025 poke214,yp+2:poke211,0:sys58640
+25025 poke214,yp+1:poke211,0:sys58640
 25030 print " [press any key]":poke198,0:wait198,1:poke198,0:wt=0
 25035 return
 
@@ -370,7 +370,7 @@
 26150 print "example: ";chr$(34);"take knife";chr$(34)
 26155 print "{down}you can attack the vampire's"
 26160 print "creatures by entering attack followed"
-26165 print "and it's' name. if you carry a weapon"
+26165 print "and their name. if you carry a weapon"
 26170 print "quote it at the command's end."
 26175 print "example: ";chr$(34);"attack rat with gun";chr$(34)
 26178 print "{down}[press any key]":poke198,0:wait198,1:poke198,0
