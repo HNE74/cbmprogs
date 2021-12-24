@@ -1,7 +1,7 @@
 10 rem *** word recognition routine variables ***
 15 es$="":wc$="":ws=10:dim w$(ws):dim ww$(ws):rem *** input parser vars
 20 rem *** vocabulary: verbs, objects, object2, direction, character, info, ignored
-25 vc=6:oc=8:dc=8:cc=4:ic=3:nc=4
+25 vc=6:oc=8:dc=8:cc=4:ic=4:nc=4
 30 dim wv$(vc):dim wo$(oc):dim wd$(dc):dim wc$(cc):dim wn$(nc)
 35 v1=-1:o1=-1:b1=-1:d1=-1:c1=-1:i1=-1
 40 wp=0:wf=0:wn=0:rem *** input check vars: pointer, word found, word igored
@@ -33,6 +33,7 @@
 235 th=0:tm=0:rem time hours, minutes
 240 wt=2000:rem wait time
 245 a$="":oa$="":cs=166:rem input routine
+250 qt=0:rem player has quit
 
 300 gosub 30000:rem init vocabulary
 310 goto 27000:rem show title
@@ -59,6 +60,7 @@
 607 if vb(3)>-1 then 630
 610 gosub 4500:rem player input
 615 gosub 1800:rem recognize player input
+617 if qt=1 then qt=0:goto 310
 620 gosub 4400:rem increase time
 625 if vb(3)=-1 then 600
 630 gosub 4200:goto 310
@@ -175,15 +177,17 @@
 2210 return
 
 3000 rem *** player world output ***
-3005 print "{black}you are in room:";pr
-3006 print "the time is:";th;":";tm
-3008 print "current score:";sc:ra(pr,8)=1:print
+3001 print "{black}you are in room:";pr
+3002 t$=str$(th)+":":if tm<10 then t$=t$+"0"
+3005 t$=t$+right$(str$(tm),len(str$(tm))-1)
+3008 print "the time is:";t$
+3009 print "current score:";sc:ra(pr,8)=1:print
 3010 pd$="":for i=1to7step2
 3015 if ra(pr,i)<1andi=1thenpd$=pd$+"north,"
 3020 if ra(pr,i)<1andi=3thenpd$=pd$+"south,"
 3025 if ra(pr,i)<1andi=5thenpd$=pd$+"west,"
 3030 if ra(pr,i)<1andi=7thenpd$=pd$+"east,"
-3035 next
+3035 next:pd$=left$(pd$,len(pd$)-1)
 3036 rem *** objects: knife, gun, amunition, crucifix, pole, coffin, chest, altar
 3038 if ra(pr,9)=-1then3095
 3040 on ra(pr,9)+1 goto 3045,3050,3055,3060,3065,3070,3075,3080
@@ -219,7 +223,8 @@
 3405 if i1=0then gosub 25500
 3410 if i1=1then gosub 26000
 3415 if i1=2then print"{clear}":gosub 25000
-3420 return
+3420 if i1=3then qt=1:gosub 24000
+3425 return
 
 3500 rem *** take object ***
 3510 if o1>=0 then if o1<=4 then 3520
@@ -321,7 +326,7 @@
 4505 es$="":print "enter command> ";chr$(cs);
 4510 get a$:if a$="" then 4510
 4515 i=asc(a$)
-4518 if i=13 then if es$="" then es$=oa$:print "{left}";es$;chr$(cs):return
+4518 if i=13 then if es$="" then es$=oa$:print "{left}";es$;chr$(cs);"{up}":return
 4520 if i=13 then oa$=es$:return
 4525 if i=32 then 4545:rem space
 4530 if i=20 then 4560:rem backspace
@@ -333,6 +338,14 @@
 4565 print chr$(20);chr$(20);chr$(cs);
 4570 es$=left$(es$,len(es$)-1)
 4575 goto 4510 
+
+24000 rem *** quit ***
+24005 print "{down}coward! you have quit the game."
+24015 print "now the vampire's curse will prevail."
+24020 print:print "your final score is:";sc
+24025 print:print "[press any key]"
+24030 poke 198,0:wait 198,1:poke 198,0:wt=0
+24035 return
 
 25000 rem *** print world ***
 25005 xp=1:yp=1:rp=0
@@ -359,9 +372,9 @@
 25155 poke214,yp+1:poke211,xp:sys58640:print chr$(166);chr$(166);chr$(166)
 25160 poke214,yp+2:poke211,xp:sys58640:print chr$(166);chr$(166);chr$(166)
 25165 return
- 
+
 25500 rem *** show inventory ***
-25505 wt=4000:print "you're carrying the following items:"
+25505 wt=4000:print "{down}you're carrying the following items:"
 25510 j=0:for i=0to4
 25515 if oi(i)>-1then print wo$(i):j=1
 25520 next
@@ -384,7 +397,7 @@
 26150 print "example: ";chr$(34);"take knife";chr$(34)
 26155 print "{down}you can attack the vampire's"
 26160 print "creatures by entering attack followed"
-26165 print "and their name. if you carry a weapon"
+26165 print "by their name. if you carry a weapon"
 26170 print "quote it at the command's end."
 26175 print "example: ";chr$(34);"attack rat with gun";chr$(34)
 26178 print "{down}[press any key]":poke198,0:wait198,1:poke198,0
@@ -408,8 +421,10 @@
 26270 print "a map of the rooms you have explored."
 26275 print "{down}";chr$(34);"help";chr$(34);" prints these instructions"
 26280 print "again."
-26285 print "{down}[press any key]":poke198,0:wait198,1:poke198,0:wt=0
-26290 return 
+26285 print "{down}if you want to exit the current game"
+26290 print "enter the ";chr$(34);"quit";chr$(34);" command."
+26295 print "{down}[press any key]":poke198,0:wait198,1:poke198,0:wt=0
+26300 return 
 
 27000 rem *** intro screen ***
 27002 poke 53280,12:poke 53281,15
@@ -451,6 +466,6 @@
 30040 for i=0tocc-1:read wc$(i):next:goto 30050
 30045 data "rat","spider","wolf","vampire"
 30050 for i=0toic-1:read wi$(i):next:goto 30060
-30055 data "inventory","help","map"
+30055 data "inventory","help","map","quit"
 30060 for i=0tonc-1:read wn$(i):next:return
 30065 data "the", "with", "to", "of"
