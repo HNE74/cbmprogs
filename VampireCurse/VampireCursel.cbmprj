@@ -9,9 +9,9 @@
     <FilesGlobal>False</FilesGlobal>
     <BatchMode>False</BatchMode>
     <AppendToDisk>False</AppendToDisk>
-    <GenToDisk>False</GenToDisk>
-    <BuildToPrgFile>True</BuildToPrgFile>
-    <d64Name />
+    <GenToDisk>True</GenToDisk>
+    <BuildToPrgFile>False</BuildToPrgFile>
+    <d64Name>vampirecurse.d64</d64Name>
     <Comments />
     <Author />
     <Email />
