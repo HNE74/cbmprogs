@@ -9,9 +9,12 @@ incasm "mem_c64.asm"
 incasm "mem_vic2.asm"
 
 *=$0810
+entry
+        lda #147                           ;Code zum Bildschirmlöschen
+        jsr $ffd2                          ;zur Textausgabe springen (löscht den BS)        
 main
         lda VIC_SCROLL_MCOLOR              ;Register 22 in den Akku
-        and #%11111000                     ;Bits für den Offset vom linken Rand löschen
+        and #%11110000                     ;Bits für den Offset vom linken Rand löschen
         ora scrollpos                      ;neuen Offset setzen
         sta VIC_SCROLL_MCOLOR              ;und zurück ins VIC-II-Register schreiben
 
