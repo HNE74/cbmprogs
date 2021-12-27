@@ -68,6 +68,7 @@ VIC_SPRITE7_PTR = $07FF   ; sprite 7 data pointer
 VIC_SCREEN_RASTER = $D012   ; current screen raster line
 VIC_SCROLL_MCOLOR = $D016  ; softscroll and multicolor register
 VIC_MEMORY_CONTROL = $D018   ; VIC memory control register
+VIC_IRQ_REQUEST = $D019     ; interrupt request register
 
 ;*** screenram memory blocks
 VIC_SCREENRAM_BLOCK1 = $0400
