@@ -21,23 +21,25 @@ main
         cmp VIC_SCREEN_RASTER              ;wieder mit der aktuellen Zeile vergleichen
         bne *-3                            ;solange diese unterschiedlich sind -> warten
          
-        inc scrollpos                      ;Offset um 1 erhöhen
+        dec scrollpos                      ;Offset um 1 verringern
         lda #%00000111                     ;wir brauchen nur die unteren drei BITs
         and scrollpos                      ;also ausmaskieren
         sta scrollpos                      ;und speichern
 
-        bne main                           ;Falls der Offset NICHT 0 ist -> main
+        cmp #07                            ;Check offset 7
+        bne main                           ;Falls der Offset NICHT 7 ist -> main
         jsr moveRow                        ;sonst die Zeile umkopieren
         jmp main                           ;auf ein Neues
 
-moveRow                 
-        ldx #39                            ;40 Zeichen je Zeile
+moveRow
+        ldx #0                             ;Schleifenzähler bei 0 beginnen (1. Zeichen)
 nextChar
-        lda $0400+119,X                    ;'vorheriges' Zeichen holen
-        sta $0400+120,X                    ;ins aktuelle kopieren
-        dex                                ;Schleifenzähler verringern
-        bne nextChar                       ;solange nicht 0 -> nextChar
-        rts
+        lda $0400+121,x                    ;'nächstes' Zeichen holen
+        sta $0400+120,x                    ;ins aktuelle kopieren
+        inx                                ;Schleifenzähler erhöhen
+        cpx #39                            ;wurden alle Zeichen kopiert?
+        bne nextChar                       ;solange nicht -> nextChar
+        rts 
          
 scrollpos
-         byte 0                            ;aktuelle Scrollposition
+         byte 7                            ;aktuelle Scrollposition
