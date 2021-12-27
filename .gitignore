@@ -5,6 +5,7 @@
 #*.prg
 *.dup
 
+Textscroll/bak/*
 VampireCurse/bak/*
 AdvWGen/bak/*
 AdvWRecognition/bak/*
@@ -21,3 +22,4 @@ First/bak/*
 DragonHort/bak/*
 SimpleMusicPlayer/bak/*
 AssTextouput/bak/*
+
