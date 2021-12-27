@@ -11,7 +11,7 @@ incasm "mem_vic2.asm"
 *=$0810
 entry
         lda #147                           ;Code zum Bildschirmlöschen
-        jsr KERNAL_CHROUT                  ;zur Textausgabe springen (löscht den BS)        
+        jsr $ffd2                          ;zur Textausgabe springen (löscht den BS)        
 main
         lda VIC_SCROLL_MCOLOR              ;Register 22 in den Akku
         and #%11110000                     ;Bits für den Offset vom linken Rand löschen
@@ -39,8 +39,8 @@ main
 moveRow
         ldx #0                             ;Schleifenzähler bei 0 beginnen (1. Zeichen)
 nextChar
-        lda VIC_SCREENRAM_BLOCK1+121,x     ;'nächstes' Zeichen holen
-        sta VIC_SCREENRAM_BLOCK1+120,x     ;ins aktuelle kopieren
+        lda $0400+121,x                    ;'nächstes' Zeichen holen
+        sta $0400+120,x                    ;ins aktuelle kopieren
         inx                                ;Schleifenzähler erhöhen
         cpx #39                            ;wurden alle Zeichen kopiert?
         bne nextChar                       ;solange nicht -> nextChar
@@ -50,7 +50,7 @@ fetchChar
         ldx scrollTextPos                  ;Position des nächsten Zeichen 
         lda scrollText,X                   ;Zeichen in den Akku holen
         beq restart                        ;falls $00 -> restart
-        sta VIC_SCREENRAM_BLOCK1+159       ;Zeichen ausgeben
+        sta $0400+159                      ;Zeichen ausgeben
         inx                                ;Position für nächstes Zeichen erhöhen
         stx scrollTextPos                  ;und speichern
         jmp main                           ;auf ein Neues
