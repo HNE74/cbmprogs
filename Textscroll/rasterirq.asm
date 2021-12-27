@@ -1,5 +1,6 @@
 ; Tutorial see: 
-; https://www.retro-programming.de/programming/assembler/demo-effekte/scrolling-laufschrift/
+; https://www.retro-programming.de/programming/nachschlagewerk/interrupts/der-rasterzeileninterrupt/
+; start calling sys 49408
 
 *=$C000
 incasm "mem_c64.asm"
@@ -45,7 +46,7 @@ rasterIrq
 doRasterIrq                         
         sta VIC_IRQ_REQUEST                ;IRQ bestätigen
 
-        lda VIC_SCREEN_RASTER               ;aktuelle Rasterzeile in den Akku
+        lda VIC_SCREEN_RASTER              ;aktuelle Rasterzeile in den Akku
         bne doRed                          ;wenn ungleich 0 'rot' prüfen
         lda #$00                           ;sonst 'schwarz' in den Akku
         sta VIC_SCREEN_BDCOLOR             ;und als Rahmen-
