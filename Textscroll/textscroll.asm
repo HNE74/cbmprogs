@@ -29,6 +29,8 @@ main
         cmp #07                            ;Check offset 7
         bne main                           ;Falls der Offset NICHT 7 ist -> main
         jsr moveRow                        ;sonst die Zeile umkopieren
+        jsr fetchChar                      ;nächstes scrolltext zeichen holen
+
         jmp main                           ;auf ein Neues
 
 moveRow
@@ -40,6 +42,28 @@ nextChar
         cpx #39                            ;wurden alle Zeichen kopiert?
         bne nextChar                       ;solange nicht -> nextChar
         rts 
+
+fetchChar
+        ldx scrollTextPos                  ;Position des nächsten Zeichen 
+        lda scrollText,X                   ;Zeichen in den Akku holen
+        beq restart                        ;falls $00 -> restart
+        sta $0400+159                      ;Zeichen ausgeben
+        inx                                ;Position für nächstes Zeichen erhöhen
+        stx scrollTextPos                  ;und speichern
+        jmp main                           ;auf ein Neues
+restart
+        sta scrollTextPos                  ;Posi. des nächsten Zeichens auf 0 zurücksetzen
+        rts
+
          
 scrollpos
-         byte 7                            ;aktuelle Scrollposition
+        byte 7                             ;aktuelle Scrollposition
+
+scrollTextPos
+        byte 0                             ;nächstes Zeichen aus dem scrolltext
+ 
+scrollText
+        text 'falls alles klappt, scrollt sie von rechts nach links ueber den bildschirm.'
+        text '           *** www.retro-programming.de ***     '
+        text 'wir beginnen von vorne...   '
+        byte $0
