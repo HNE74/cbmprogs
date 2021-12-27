@@ -6,8 +6,8 @@
 incasm "mem_c64.asm"
 incasm "mem_vic2.asm"
 
-DOSCROLL     = $00                ;Wo beginnt scroll
-NOSCROLL     = $70                ;Wo endet scroll
+DOSCROLL     = $48                ;Wo beginnt scroll
+NOSCROLL     = $51                ;Wo endet scroll
 
 *=$C100
 main
@@ -51,7 +51,8 @@ doRasterIrq
         sta VIC_IRQ_REQUEST                ;IRQ bestätigen
 
         lda VIC_SCREEN_RASTER              ;aktuelle Rasterzeile in den Akku
-        bne doNoScroll                       ;wenn ungleich 0 'noscroll' prüfen
+        cmp #DOSCROLL
+        bne doNoScroll                     ;wenn ungleich 0 'noscroll' prüfen
         lda VIC_SCROLL_MCOLOR              ;Register 22 in den Akku
         and #%11110000                     ;Bits für den Offset vom linken Rand löschen
         ora scrollpos                      ;neuen Offset setzen
@@ -72,7 +73,7 @@ doNoScroll
         lda VIC_SCROLL_MCOLOR              ;Register 22 in den Akku
         and #%11110000                     ;Bits für den Offset vom linken Rand löschen
         sta VIC_SCROLL_MCOLOR 
-        lda #DOSCROLL                      ;Bei NOSCROLL soll ein
+        lda #DOSCROLL                      ;Bei DOSCROLL soll ein
         sta $d012                          ;Raster-IRQ ausgelöst werden
 
 rasterIrqExit
