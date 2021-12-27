@@ -64,10 +64,39 @@ doRasterIrq
         and scrollpos                      ;also ausmaskieren
         sta scrollpos                      ;und speichern
 
+        cmp #07                            ;Check offset 7
+        bne scrollExit                      ;Falls der Offset NICHT 7 ist -> main
+        jsr moveRow                        ;sonst die Zeile umkopieren
+        jsr fetchChar                      ;nächstes scrolltext zeichen holen
+
+scrollExit
         lda #NOSCROLL                      ;Bei NOSCROLL soll ein
         sta $d012                          ;Raster-IRQ ausgelöst werden
 
         jmp rasterIrqExit
+
+
+moveRow
+        ldx #0                             ;Schleifenzähler bei 0 beginnen (1. Zeichen)
+nextChar
+        lda VIC_SCREENRAM_BLOCK1+121,x     ;'nächstes' Zeichen holen
+        sta VIC_SCREENRAM_BLOCK1+120,x     ;ins aktuelle kopieren
+        inx                                ;Schleifenzähler erhöhen
+        cpx #39                            ;wurden alle Zeichen kopiert?
+        bne nextChar                       ;solange nicht -> nextChar
+        rts 
+
+fetchChar
+        ldx scrollTextPos                  ;Position des nächsten Zeichen 
+        lda scrollText,X                   ;Zeichen in den Akku holen
+        beq restart                        ;falls $00 -> restart
+        sta VIC_SCREENRAM_BLOCK1+159       ;Zeichen ausgeben
+        inx                                ;Position für nächstes Zeichen erhöhen
+        stx scrollTextPos                  ;und speichern
+        rts                                ;auf ein Neues
+restart
+        sta scrollTextPos                  ;Posi. des nächsten Zeichens auf 0 zurücksetzen
+        rts
 
 doNoScroll
         lda VIC_SCROLL_MCOLOR              ;Register 22 in den Akku
