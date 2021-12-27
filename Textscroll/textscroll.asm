@@ -1,6 +1,5 @@
 ; Tutorial see: 
 ; https://www.retro-programming.de/programming/assembler/demo-effekte/scrolling-laufschrift/
-
 ; 10 SYS (2049)
 
 *=$0801
@@ -26,7 +25,19 @@ main
         lda #%00000111                     ;wir brauchen nur die unteren drei BITs
         and scrollpos                      ;also ausmaskieren
         sta scrollpos                      ;und speichern
+
+        bne main                           ;Falls der Offset NICHT 0 ist -> main
+        jsr moveRow                        ;sonst die Zeile umkopieren
         jmp main                           ;auf ein Neues
+
+moveRow                 
+        ldx #39                            ;40 Zeichen je Zeile
+nextChar
+        lda $0400+119,X                    ;'vorheriges' Zeichen holen
+        sta $0400+120,X                    ;ins aktuelle kopieren
+        dex                                ;Schleifenzähler verringern
+        bne nextChar                       ;solange nicht 0 -> nextChar
+        rts
          
 scrollpos
          byte 0                            ;aktuelle Scrollposition
