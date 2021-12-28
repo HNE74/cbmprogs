@@ -5,6 +5,7 @@
 #*.prg
 *.dup
 
+AsteroRescue/bak/*
 Textscroll/bak/*
 VampireCurse/bak/*
 AdvWGen/bak/*
