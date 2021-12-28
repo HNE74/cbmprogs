@@ -6,11 +6,11 @@
 ;*** modified by any interested parties.
 ;*****************************************************
 
-rndMaxValue
-        byte 50
 
-rndResultValue
-        byte 0
+;*** player variables
+playerSpritePage byte $80           ; page of player sprite
+playerXpos byte $50                 ; x position
+playerYpos byte $70                 ; y position
 
 currentColor
         byte 10                             ;current color

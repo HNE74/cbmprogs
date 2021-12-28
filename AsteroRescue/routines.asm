@@ -100,11 +100,14 @@ DoNoScroll
         bne noscrollExit                   
         jsr moveRow                        
 
-noscrollExit                               ;set doscroll IRQ trigger
+noscrollExit
+        jsr HandleJoystickInput           ;read player input 
+        jsr PositionSprites               ;position sprites on screen
+                                  
         lda COLOR_BLUE
         sta VIC_SCREEN_BDCOLOR 
 
-        lda #DOSCROLL                      
+        lda #DOSCROLL                     ;set doscroll IRQ trigger                     
         sta VIC_SCREEN_RASTER                          
         jmp rasterIrqExit
 
@@ -134,11 +137,11 @@ MoveRow
         MoveRowLeft #281,#280,#319,m8,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
         MoveRowLeft #321,#320,#359,m9,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
         MoveRowLeft #361,#360,#399,m10,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        ;MoveRowLeft #401,#400,#439,m11,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        ;#MoveRowLeft #441,#440,#479,m12,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        ;#MoveRowLeft #481,#480,#519,m13,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        ;MoveRowLeft #521,#520,#559,m14,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        ;MoveRowLeft #561,#560,#599,m15,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #401,#400,#439,m11,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #441,#440,#479,m12,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #481,#480,#519,m13,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #521,#520,#559,m14,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #561,#560,#599,m15,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
         rts                                
 
 ;************************************************
@@ -197,6 +200,109 @@ mainscreenLoop4
         cpx #255
         bne mainscreenLoop4
         ldx #0
+        rts
+
+
+;************************************************
+;*** handle the player joystick input
+;************************************************
+HandleJoystickInput
+        lda CIA_PORT_A
+        and #JOY_UP_LEFT
+        beq @goUpLeft
+        lda CIA_PORT_A
+        and #JOY_UP_RIGHT
+        beq @goUpRight
+        lda CIA_PORT_A
+        and #JOY_DOWN_LEFT
+        beq @goDownLeft
+        lda CIA_PORT_A
+        and #JOY_DOWN_RIGHT
+        beq @goDownRight
+        lda CIA_PORT_A
+        and #JOY_RIGHT
+        beq @goRight
+        lda CIA_PORT_A
+        and #JOY_LEFT
+        beq @goLeft
+        lda CIA_PORT_A
+        and #JOY_UP
+        beq @goUp
+        lda CIA_PORT_A
+        and #JOY_DOWN
+        beq @goDown
+        lda CIA_PORT_A
+        and #JOY_BUTTON
+        beq @goButton
+        rts
+
+@goRight
+        ldy #JOY_RIGHT
+        inc playerXpos
+        rts
+@goLeft
+        ldy #JOY_LEFT
+        dec playerXpos
+        rts
+@goUp
+        ldy #JOY_UP
+        dec playerYpos
+        rts
+@goUpLeft
+        ldy #JOY_UP_LEFT
+        dec playerYpos
+        dec playerXpos
+        rts
+@goUpRight
+        ldy #JOY_UP_RIGHT
+        dec playerYpos
+        inc playerXpos
+        rts
+@goDown
+        ldy #JOY_DOWN
+        inc playerYpos
+        rts
+@goDownLeft
+        ldy #JOY_DOWN_LEFT
+        inc playerYpos
+        dec playerXpos
+        rts
+@goDownRight
+        ldy #JOY_DOWN_RIGHT
+        inc playerYpos
+        inc playerXpos
+        rts
+@goButton
+        ldy #JOY_BUTTON
+        rts
+
+;************************************************
+;*** position sprites
+;************************************************
+PositionSprites
+        lda playerSpritePage     ; set pointer to sprite data
+        sta VIC_SPRITE0_PTR
+        lda COLOR_LIGHT_BLUE     ; set sprite color
+        sta VIC_SPRITE0_COLOR
+        lda playerXpos           ; position sprite on screen
+        sta VIC_SPRITE0_XPOS
+        lda playerYpos
+        sta VIC_SPRITE0_YPOS
+        rts
+
+;************************************************
+;*** initialize sprites
+;************************************************
+InitSprites
+        lda VIC_SPRITE_SPRITE_COLL
+        lda #$00
+        sta VIC_SPRITE_X255
+        lda #%00000001          ; enable sprites
+        sta VIC_SPRITE_ENABLE
+        lda #%00000000          ; sprite height expansion
+        sta VIC_SPRITE_HEIGHT_EXP
+        lda #%00000000          ; sprite width expansion
+        sta VIC_SPRITE_WIDTH_EXP
         rts
 
 

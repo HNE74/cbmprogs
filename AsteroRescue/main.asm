@@ -12,6 +12,9 @@
 
 incasm "constants.asm"
 
+*=SPRITE_DEFINITION
+incbin "asterosprites.bin"
+
 *=MAINSCREEN_MAP_MEM_BLOCK1
 incbin "mainscreen.bin"
 
@@ -24,6 +27,7 @@ incasm "macros.asm"
         jsr initProgram
         jsr setupScrollIRQ
         jsr drawMainscreenMap
+        jsr InitSprites
 looper
         jmp looper
 

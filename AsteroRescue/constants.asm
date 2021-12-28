@@ -6,6 +6,18 @@
 ;*** modified by any interested parties.
 ;*****************************************************
 
+;*** joystick read masks
+JOY_IDLE      = %00000000
+JOY_RIGHT     = %00001000
+JOY_LEFT      = %00000100
+JOY_UP        = %00000001
+JOY_DOWN      = %00000010
+JOY_UP_RIGHT  = %00001001
+JOY_UP_LEFT   = %00000101
+JOY_DOWN_RIGHT= %00001010
+JOY_DOWN_LEFT = %00000110
+JOY_BUTTON    = %00010000
+
 ;*** Color codes
 COLOR_BLACK        = #0
 COLOR_WHITE        = #1
@@ -27,8 +39,8 @@ COLOR_LIGHT_GREY   = #15
 DOSCROLL     = #89                ; start of scroll area
 NOSCROLL     = #210               ; end of scroll area
 
-PROGRAM_START = $0810   ; program start
-SPRITE_DEFINITION = $2000   ; sprite 0 definition
+PROGRAM_START = $0810             ; program start
+SPRITE_DEFINITION = $2000         ; sprite 0 definition
 
 ; *** start of screen scrollram
 SCREEN_SCROLLRAM_START = $04C8

@@ -41,13 +41,13 @@
         <PostBuildCommands />
     </BuildEvents>
     <BuildList>
-        <FileName>main.asm</FileName>
+        <FileName>constants.asm</FileName>
         <FileName>macros.asm</FileName>
         <FileName>mem_c64.asm</FileName>
         <FileName>mem_vic2.asm</FileName>
         <FileName>routines.asm</FileName>
         <FileName>variables.asm</FileName>
-        <FileName>constants.asm</FileName>
+        <FileName>main.asm</FileName>
     </BuildList>
     <DetermineBuildOrder>0</DetermineBuildOrder>
     <PaddingByte>0</PaddingByte>
@@ -56,6 +56,17 @@
     <AssyExportList />
     <!--End of screen designer settings-->
     <SourceFiles>
+        <SourceFile>
+            <Name>asteroSprites.spt</Name>
+            <PrgName />
+            <FileType>7</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>False</Topmost>
+            <FileOpen>False</FileOpen>
+        </SourceFile>
         <SourceFile>
             <Name>constants.asm</Name>
             <PrgName />
