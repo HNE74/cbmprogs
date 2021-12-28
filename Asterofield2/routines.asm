@@ -102,6 +102,7 @@ DoNoScroll
 noscrollExit
         jsr HandleJoystickInput           ;read player input 
         jsr PositionSprites               ;position sprites on screen
+        jsr CheckPlayerBackgroundCollision ; check spaceship collided
                                   
         lda COLOR_BLUE
         sta VIC_SCREEN_BDCOLOR 
@@ -336,6 +337,19 @@ InitSprites
         sta VIC_SPRITE_HEIGHT_EXP
         lda #%00000000          ; sprite width expansion
         sta VIC_SPRITE_WIDTH_EXP
+        rts
+
+;*************************************************
+;*** check player background collision
+;*************************************************
+CheckPlayerBackgroundCollision
+        lda VIC_SPRITE_BACKGR_COLL      ; player sprite register check
+        and #%00000001
+        cmp #%00000001
+        bne noCollision
+        lda #1
+        sta VIC_SCREEN_BGCOLOR
+noCollision
         rts
 
 
