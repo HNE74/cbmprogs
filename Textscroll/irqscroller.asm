@@ -1,13 +1,9 @@
-; 10 SYS (49408)
-
-*=$0801
-
-        BYTE    $0B, $08, $0A, $00, $9E, $34, $39, $34, $30, $38, $00, $00, $00
-
-
 ; https://www.retro-programming.de/programming/nachschlagewerk/interrupts/der-rasterzeileninterrupt/
 ; https://www.retro-programming.de/programming/assembler/demo-effekte/scrolling-laufschrift/
+
 ; start calling "sys 49408"
+*=$0801
+       BYTE    $0B, $08, $0A, $00, $9E, $34, $39, $34, $30, $38, $00, $00, $00
 
 *=$C000
 incasm "mem_c64.asm"
@@ -54,10 +50,17 @@ main
 ;************************************************
 setColorRam
         ldx #38
+        ldy #5
 loopColorRam
-        txa
+        lda currentColor
         sta VIC_COLORRAM_BLOCK1+120,x
-        dex 
+        dey
+        cpy #0
+        bne nextColorChar
+        inc currentColor
+        ldy #5
+nextColorChar
+        dex
         cpx #00
         bne loopColorRam
         rts
@@ -146,17 +149,19 @@ showChar
 ;*** restore registers when leaving IRQ routine
 ;************************************************
 rasterIrqExit
-        pla                                ;Y vom Stack
+        pla
         tay
-        pla                                ;X vom Stack
+        pla
         tax
-        pla                                ;Akku vom Stack
-        rti                                ;Interrupt verlassen
-
+        pla
+        rti
 
 ;************************************************
 ;*** variables
 ;************************************************
+currentColor
+        byte 10                             ;current color
+
 scrollpos
         byte 7                             ;current pixel scroll position
 
