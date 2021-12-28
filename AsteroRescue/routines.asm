@@ -55,7 +55,6 @@ RasterIrq
         bmi doRasterIrq                    ;branch if VIC IRQ
         lda CIA1_IRQ                       ;other IRQ
         cli                                
-        jmp SYSTEM_IRQ_HANDLER             ;jump to system handler
         jmp rasterIrqExit
  
 doRasterIrq                         
@@ -209,70 +208,104 @@ mainscreenLoop4
 HandleJoystickInput
         lda CIA_PORT_A
         and #JOY_UP_LEFT
-        beq @goUpLeft
+        beq goUpLeft
         lda CIA_PORT_A
         and #JOY_UP_RIGHT
-        beq @goUpRight
+        beq goUpRight
         lda CIA_PORT_A
         and #JOY_DOWN_LEFT
-        beq @goDownLeft
+        beq goDownLeft
         lda CIA_PORT_A
         and #JOY_DOWN_RIGHT
-        beq @goDownRight
+        bne noJmp1
+        jmp goDownRight
+noJmp1
         lda CIA_PORT_A
         and #JOY_RIGHT
-        beq @goRight
+        beq goRight
         lda CIA_PORT_A
         and #JOY_LEFT
-        beq @goLeft
+        beq goLeft
         lda CIA_PORT_A
         and #JOY_UP
-        beq @goUp
+        beq goUp
         lda CIA_PORT_A
         and #JOY_DOWN
-        beq @goDown
-        lda CIA_PORT_A
-        and #JOY_BUTTON
-        beq @goButton
+        beq goDown
         rts
-
-@goRight
-        ldy #JOY_RIGHT
+goRight
+        lda playerXpos
+        cmp PLAYER_MAX_X
+        beq noGoRight
         inc playerXpos
+noGoRight
         rts
-@goLeft
-        ldy #JOY_LEFT
+goLeft
+        lda playerXpos
+        cmp PLAYER_MIN_X
+        beq noGoLeft
         dec playerXpos
+noGoLeft
         rts
-@goUp
-        ldy #JOY_UP
+goUp
+        lda playerYpos
+        cmp #PLAYER_MIN_Y
+        beq noGoUp
         dec playerYpos
+noGoUp
         rts
-@goUpLeft
-        ldy #JOY_UP_LEFT
+goUpLeft
+        lda playerYpos
+        cmp #PLAYER_MIN_Y
+        beq noGoUpLeft
+        lda playerXpos
+        cmp #PLAYER_MIN_X
+        beq noGoUpLeft
         dec playerYpos
         dec playerXpos
+noGoUpLeft
         rts
-@goUpRight
-        ldy #JOY_UP_RIGHT
+goUpRight
+        lda playerYpos
+        cmp #PLAYER_MIN_Y
+        beq noGoUpRight
+        lda playerXpos
+        cmp #PLAYER_MAX_X
+        beq noGoUpRight
         dec playerYpos
         inc playerXpos
+noGoUpRight
         rts
-@goDown
-        ldy #JOY_DOWN
+goDown
+        lda playerYpos
+        cmp #PLAYER_MAX_Y
+        beq noGoDown
         inc playerYpos
+noGoDown
         rts
-@goDownLeft
-        ldy #JOY_DOWN_LEFT
+goDownLeft
+        lda playerYpos
+        cmp #PLAYER_MAX_Y
+        beq noGoDownLeft
+        lda playerXpos
+        cmp #PLAYER_MIN_X
+        beq noGoDownLeft
         inc playerYpos
         dec playerXpos
+noGoDownLeft
         rts
-@goDownRight
-        ldy #JOY_DOWN_RIGHT
+goDownRight
+        lda playerYpos
+        cmp #PLAYER_MAX_Y
+        beq noGoDownRight
+        lda playerXpos
+        cmp #PLAYER_MAX_X
+        beq noGoDownRight
         inc playerYpos
         inc playerXpos
+noGoDownRight
         rts
-@goButton
+goButton
         ldy #JOY_BUTTON
         rts
 
