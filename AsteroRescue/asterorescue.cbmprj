@@ -44,7 +44,6 @@
         <FileName>main.asm</FileName>
         <FileName>macros.asm</FileName>
         <FileName>mem_c64.asm</FileName>
-        <FileName>mem_own.asm</FileName>
         <FileName>mem_vic2.asm</FileName>
         <FileName>routines.asm</FileName>
         <FileName>variables.asm</FileName>
@@ -53,7 +52,7 @@
     <DetermineBuildOrder>0</DetermineBuildOrder>
     <PaddingByte>0</PaddingByte>
     <!--Screen designer settings-->
-    <AssyBinaryFileLocation />
+    <AssyBinaryFileLocation>C:\Users\hnema\Documents\github\cbmprogs\AsteroRescue\mainscreen.bin</AssyBinaryFileLocation>
     <AssyExportList />
     <!--End of screen designer settings-->
     <SourceFiles>
@@ -77,7 +76,7 @@
             <Breakpoints />
             <Bookmarks />
             <Topmost>False</Topmost>
-            <FileOpen>True</FileOpen>
+            <FileOpen>False</FileOpen>
         </SourceFile>
         <SourceFile>
             <Name>main.asm</Name>
@@ -86,9 +85,20 @@
             <IncludeInBuild>True</IncludeInBuild>
             <Regions />
             <Breakpoints />
-            <Bookmarks>13,</Bookmarks>
+            <Bookmarks />
             <Topmost>True</Topmost>
             <FileOpen>True</FileOpen>
+        </SourceFile>
+        <SourceFile>
+            <Name>mainScreen.sdd</Name>
+            <PrgName />
+            <FileType>9</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>False</Topmost>
+            <FileOpen>False</FileOpen>
         </SourceFile>
         <SourceFile>
             <Name>mem_c64.asm</Name>
@@ -99,18 +109,7 @@
             <Breakpoints />
             <Bookmarks />
             <Topmost>False</Topmost>
-            <FileOpen>True</FileOpen>
-        </SourceFile>
-        <SourceFile>
-            <Name>mem_own.asm</Name>
-            <PrgName />
-            <FileType>2</FileType>
-            <IncludeInBuild>True</IncludeInBuild>
-            <Regions />
-            <Breakpoints />
-            <Bookmarks />
-            <Topmost>False</Topmost>
-            <FileOpen>True</FileOpen>
+            <FileOpen>False</FileOpen>
         </SourceFile>
         <SourceFile>
             <Name>mem_vic2.asm</Name>

@@ -160,4 +160,52 @@ rasterIrqExit
         rti
 
 
+;************************************************
+;*** draw the mainscreen map to screenram
+;************************************************
+drawMainscreenMap
+        ldx #0
+mainscreenLoop1
+        lda mainScreenChars,x
+        tay
+        sta VIC_SCREENRAM_BLOCK1,x
+        lda mainScreenColors,x
+        sta VIC_COLORRAM_BLOCK1,x
+        inx
+        cpx #255
+        bne mainscreenLoop1
+        ldx #0
+mainscreenLoop2
+        lda mainScreenChars+255,x
+        tay
+        sta VIC_SCREENRAM_BLOCK2,x
+        lda mainScreenColors+255,x
+        sta VIC_COLORRAM_BLOCK2,x
+        inx
+        cpx #255
+        bne mainscreenLoop2
+        ldx #0
+mainscreenLoop3
+        lda mainScreenChars+510,x
+        tay
+        sta VIC_SCREENRAM_BLOCK3,x
+        lda mainScreenColors+510,x
+        sta VIC_COLORRAM_BLOCK3,x
+        inx
+        cpx #255
+        bne mainscreenLoop3
+        ldx #0
+mainscreenLoop4
+        lda mainScreenChars+765,x
+        tay
+        sta VIC_SCREENRAM_BLOCK4,x
+        lda mainScreenColors+765,x
+        sta VIC_COLORRAM_BLOCK4,x
+        inx
+        cpx #255
+        bne mainscreenLoop4
+        ldx #0
+        rts
+
+
 
