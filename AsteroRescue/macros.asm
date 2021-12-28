@@ -12,15 +12,15 @@ defm MoveRowLeft
 nextChar/4
         lda /5+/1,x     ;move chars one left
         sta /5+/2,x  
-        lda /6+/1,x   
-        sta /6+/2,x  
+        ;lda /6+/1,x   
+        ;sta /6+/2,x 
         inx                                
         cpx #39                            
         bne nextChar/4                       
 
 fetchChar/4
         jsr RandomNumber
-        cmp #230
+        cmp #254
         bcs asteroidChar/4
         lda #32
         jmp showChar/4

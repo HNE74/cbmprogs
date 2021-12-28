@@ -10,15 +10,15 @@
 ;*** initializes the program
 ;*****************************************************
 InitProgram
+        lda COLOR_BLACK 
+        sta VIC_SCREEN_BGCOLOR 
+        sta VIC_SCREEN_BDCOLOR 
         rts
 
 ;*****************************************************
 ;*** setup scroll IRQ routines
 ;*****************************************************
 SetupScrollIRQ
-        ; set color ram
-        jsr setColorRam
-
         ; set screen with to 38 columns
         lda VIC_SCROLL_MCOLOR              
         and #%11110000                    
@@ -48,26 +48,6 @@ SetupScrollIRQ
         rts 
 
 ;************************************************
-;*** setup color ram
-;************************************************
-SetColorRam
-        ldx #38
-        ldy #5
-loopColorRam
-        lda currentColor
-        sta VIC_COLORRAM_BLOCK1+120,x
-        dey
-        cpy #0
-        bne nextColorChar
-        inc currentColor
-        ldy #5
-nextColorChar
-        dex
-        cpx #00
-        bne loopColorRam
-        rts
-
-;************************************************
 ;*** scroll interrupt routine
 ;************************************************
 RasterIrq
@@ -80,6 +60,9 @@ RasterIrq
  
 doRasterIrq                         
         sta VIC_IRQ_REQUEST                ;confirm VIC IRQ handled
+
+        lda COLOR_YELLOW 
+        sta VIC_SCREEN_BDCOLOR 
 
         lda VIC_SCREEN_RASTER              ;check scroll
         cmp #DOSCROLL
@@ -105,6 +88,9 @@ doRasterIrq
 ;*** carries out hardscroll of texline
 ;************************************************
 DoNoScroll
+        lda COLOR_GREEN 
+        sta VIC_SCREEN_BDCOLOR 
+
         lda VIC_SCROLL_MCOLOR              ;no scroll
         and #%11110000                   
         sta VIC_SCROLL_MCOLOR 
@@ -115,6 +101,9 @@ DoNoScroll
         jsr moveRow                        
 
 noscrollExit                               ;set doscroll IRQ trigger
+        lda COLOR_BLUE
+        sta VIC_SCREEN_BDCOLOR 
+
         lda #DOSCROLL                      
         sta VIC_SCREEN_RASTER                          
         jmp rasterIrqExit
@@ -145,11 +134,11 @@ MoveRow
         MoveRowLeft #281,#280,#319,m8,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
         MoveRowLeft #321,#320,#359,m9,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
         MoveRowLeft #361,#360,#399,m10,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #401,#400,#439,m11,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #441,#440,#479,m12,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #481,#480,#519,m13,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #521,#520,#559,m14,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #561,#560,#599,m15,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        ;MoveRowLeft #401,#400,#439,m11,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        ;#MoveRowLeft #441,#440,#479,m12,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        ;#MoveRowLeft #481,#480,#519,m13,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        ;MoveRowLeft #521,#520,#559,m14,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        ;MoveRowLeft #561,#560,#599,m15,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
         rts                                
 
 ;************************************************
@@ -162,7 +151,6 @@ RasterIrqExit
         tax
         pla
         rti
-
 
 ;************************************************
 ;*** draw the mainscreen map to screenram
