@@ -6,6 +6,31 @@
 ;*** modified by any interested parties.
 ;*****************************************************
 
+
+defm MoveRowLeftB1
+        ldx #0                             
+nextChar/4
+        lda VIC_SCREENRAM_BLOCK1+/1,x     ;move chars one left
+        sta VIC_SCREENRAM_BLOCK1+/2,x     
+        inx                                
+        cpx #39                            
+        bne nextChar/4                       
+
+fetchChar/4
+        lda $D41B
+        cmp #230
+        bcs asteroidChar/4
+        lda #32
+        jmp showChar/4
+asteroidChar/4
+        lda #81
+showChar/4
+        sta VIC_SCREENRAM_BLOCK1+/3       
+        inx                                
+        stx scrollTextPos  
+endm
+
+
 defm WaitForRaster
 @rasterLoop 
         lda /1

@@ -9,14 +9,18 @@
 ;*****************************************************
 ;*** initializes the program
 ;*****************************************************
-initProgram
-        nop
+InitProgram
+        lda #$FF  ; maximum frequency value
+        sta $D40E ; voice 3 frequency low byte
+        sta $D40F ; voice 3 frequency high byte
+        lda #$80  ; noise waveform, gate bit off
+        sta $D412 ; voice 3 control register
         rts
 
 ;*****************************************************
 ;*** setup scroll IRQ routines
 ;*****************************************************
-setupScrollIRQ
+SetupScrollIRQ
         ; set color ram
         jsr setColorRam
 
@@ -51,7 +55,7 @@ setupScrollIRQ
 ;************************************************
 ;*** setup color ram
 ;************************************************
-setColorRam
+SetColorRam
         ldx #38
         ldy #5
 loopColorRam
@@ -71,7 +75,7 @@ nextColorChar
 ;************************************************
 ;*** scroll interrupt routine
 ;************************************************
-rasterIrq
+RasterIrq
         lda VIC_IRQ_REQUEST
         bmi doRasterIrq                    ;branch if VIC IRQ
         lda CIA1_IRQ                       ;other IRQ
@@ -105,7 +109,7 @@ doRasterIrq
 ;*** noscroll interrupt routine, 
 ;*** carries out hardscroll of texline
 ;************************************************
-doNoScroll
+DoNoScroll
         lda VIC_SCROLL_MCOLOR              ;no scroll
         and #%11110000                   
         sta VIC_SCROLL_MCOLOR 
@@ -114,7 +118,6 @@ doNoScroll
         cmp #07                            ;check hardscroll
         bne noscrollExit                   
         jsr moveRow                        
-        jsr fetchChar                     
 
 noscrollExit                               ;set doscroll IRQ trigger
         lda #DOSCROLL                      
@@ -124,34 +127,15 @@ noscrollExit                               ;set doscroll IRQ trigger
 ;************************************************
 ;*** hardscroll routine 
 ;************************************************
-moveRow
-        ldx #0                             
-nextChar
-        lda VIC_SCREENRAM_BLOCK1+121,x     ;move chars one left
-        sta VIC_SCREENRAM_BLOCK1+120,x     
-        inx                                
-        cpx #39                            
-        bne nextChar                       
-        rts 
-
-fetchChar
-        ldx scrollTextPos                  ;fetch next char to be shown
-        lda scrollText,X                   
-        bne showChar                       ;if message ended show again
-        lda #0
-        sta scrollTextPos                  ;reset to start of scrolltext               
-        ldx scrollTextPos                  
-        lda scrollText,X 
-showChar
-        sta VIC_SCREENRAM_BLOCK1+159       
-        inx                                
-        stx scrollTextPos                  
+MoveRow
+        MoveRowLeftB1 #201,#200,#239,m1
+        MoveRowLeftB1 #241,#240,#279,m2
         rts                                
 
 ;************************************************
 ;*** restore registers when leaving IRQ routine
 ;************************************************
-rasterIrqExit
+RasterIrqExit
         pla
         tay
         pla
@@ -163,7 +147,7 @@ rasterIrqExit
 ;************************************************
 ;*** draw the mainscreen map to screenram
 ;************************************************
-drawMainscreenMap
+DrawMainscreenMap
         ldx #0
 mainscreenLoop1
         lda mainScreenChars,x

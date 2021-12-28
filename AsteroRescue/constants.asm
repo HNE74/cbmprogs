@@ -24,8 +24,8 @@ COLOR_LIGHT_GREEN  = #13
 COLOR_LIGHT_BLUE   = #14
 COLOR_LIGHT_GREY   = #15
 
-DOSCROLL     = $48                ; start of scroll area
-NOSCROLL     = $52                ; end of scroll area
+DOSCROLL     = #89                ; start of scroll area
+NOSCROLL     = #210               ; end of scroll area
 
 PROGRAM_START = $0810   ; program start
 SPRITE_DEFINITION = $2000   ; sprite 0 definition
