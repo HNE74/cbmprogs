@@ -1,6 +1,13 @@
-; Tutorial see: 
+; 10 SYS (49408)
+
+*=$0801
+
+        BYTE    $0B, $08, $0A, $00, $9E, $34, $39, $34, $30, $38, $00, $00, $00
+
+
 ; https://www.retro-programming.de/programming/nachschlagewerk/interrupts/der-rasterzeileninterrupt/
-; start calling sys 49408
+; https://www.retro-programming.de/programming/assembler/demo-effekte/scrolling-laufschrift/
+; start calling "sys 49408"
 
 *=$C000
 incasm "mem_c64.asm"
@@ -11,6 +18,9 @@ NOSCROLL     = $52                ; end of scroll area
 
 *=$C100
 main
+        ; set color ram
+        jsr setColorRam
+
         ; set screen with to 38 columns
         lda VIC_SCROLL_MCOLOR              
         and #%11110000                    
@@ -40,6 +50,19 @@ main
         rts 
 
 ;************************************************
+;*** setup color ram
+;************************************************
+setColorRam
+        ldx #38
+loopColorRam
+        txa
+        sta VIC_COLORRAM_BLOCK1+120,x
+        dex 
+        cpx #00
+        bne loopColorRam
+        rts
+
+;************************************************
 ;*** scroll interrupt routine
 ;************************************************
 rasterIrq
@@ -63,6 +86,7 @@ doRasterIrq
         sta VIC_SCROLL_MCOLOR              
 
         dec scrollpos                      ;decrease scroll position
+
         lda #%00000111                     
         and scrollpos                      
         sta scrollpos                      
@@ -117,7 +141,6 @@ showChar
         inx                                
         stx scrollTextPos                  
         rts                                
-
 
 ;************************************************
 ;*** restore registers when leaving IRQ routine
