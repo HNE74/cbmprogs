@@ -10,11 +10,6 @@
 ;*** initializes the program
 ;*****************************************************
 InitProgram
-        lda #$FF  ; maximum frequency value
-        sta $D40E ; voice 3 frequency low byte
-        sta $D40F ; voice 3 frequency high byte
-        lda #$80  ; noise waveform, gate bit off
-        sta $D412 ; voice 3 control register
         rts
 
 ;*****************************************************
@@ -88,8 +83,8 @@ doRasterIrq
 
         lda VIC_SCREEN_RASTER              ;check scroll
         cmp #DOSCROLL
-        bne doNoScroll                     
-        
+        bne doNoScroll
+
         lda VIC_SCROLL_MCOLOR              ;update screen scroll
         and #%11110000                     
         ora scrollpos                      
@@ -125,11 +120,36 @@ noscrollExit                               ;set doscroll IRQ trigger
         jmp rasterIrqExit
 
 ;************************************************
+;*** generate random number
+;************************************************
+RandomNumber
+        lda $dc04  
+        eor $dc05 
+        eor $dd04  
+        adc $dd05 
+        eor $dd06  
+        eor $dd07 
+        rts
+
+;************************************************
 ;*** hardscroll routine 
 ;************************************************
 MoveRow
-        MoveRowLeftB1 #201,#200,#239,m1
-        MoveRowLeftB1 #241,#240,#279,m2
+        MoveRowLeft #1,#0,#39,m1,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #41,#40,#79,m2,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #81,#80,#119,m3,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #121,#120,#159,m4,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #161,#160,#199,m5,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #201,#200,#239,m6,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #241,#240,#279,m7,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #281,#280,#319,m8,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #321,#320,#359,m9,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #361,#360,#399,m10,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #401,#400,#439,m11,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #441,#440,#479,m12,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #481,#480,#519,m13,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #521,#520,#559,m14,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
+        MoveRowLeft #561,#560,#599,m15,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
         rts                                
 
 ;************************************************

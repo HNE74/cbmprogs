@@ -30,6 +30,10 @@ NOSCROLL     = #210               ; end of scroll area
 PROGRAM_START = $0810   ; program start
 SPRITE_DEFINITION = $2000   ; sprite 0 definition
 
+; *** start of screen scrollram
+SCREEN_SCROLLRAM_START = $04C8
+COLOR_SCROLLRAM_START = $D8C8
+
 ; *** mainscreen map locations
 MAINSCREEN_MAP_MEM_BLOCK1 = $4000
 MAINSCREEN_MAP_MEM_BLOCK2 = $40FF

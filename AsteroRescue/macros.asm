@@ -7,17 +7,19 @@
 ;*****************************************************
 
 
-defm MoveRowLeftB1
+defm MoveRowLeft
         ldx #0                             
 nextChar/4
-        lda VIC_SCREENRAM_BLOCK1+/1,x     ;move chars one left
-        sta VIC_SCREENRAM_BLOCK1+/2,x     
+        lda /5+/1,x     ;move chars one left
+        sta /5+/2,x  
+        lda /6+/1,x   
+        sta /6+/2,x  
         inx                                
         cpx #39                            
         bne nextChar/4                       
 
 fetchChar/4
-        lda $D41B
+        jsr RandomNumber
         cmp #230
         bcs asteroidChar/4
         lda #32
@@ -25,9 +27,9 @@ fetchChar/4
 asteroidChar/4
         lda #81
 showChar/4
-        sta VIC_SCREENRAM_BLOCK1+/3       
-        inx                                
-        stx scrollTextPos  
+        sta /5+/3
+        lda #5
+        sta /6+/3
 endm
 
 

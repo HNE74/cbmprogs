@@ -18,14 +18,8 @@ currentColor
 scrollpos
         byte 7                             ;current scroll position
 
-scrollTextPos
-        byte 0                             ;next char from scrolltext
- 
-scrollText
-        text 'falls alles klappt, scrollt sie von rechts nach links ueber den bildschirm.'
-        text '           *** www.retro-programming.de ***     '
-        text 'wir beginnen von vorne...   '
-        byte $0
+scrollcnt 
+        byte 255
 
 ;*** Screenram tables
 SCREEN_TABLE
