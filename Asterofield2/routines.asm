@@ -37,6 +37,13 @@ InitGame
         lda #$70
         sta playerYpos
 
+        lda #3                  ; init energy state
+        sta msb_energy
+        lda #255
+        sta lsb_energy
+        lda #0
+        sta msb_noenergy
+
         rts
 
 ;*****************************************************
@@ -107,7 +114,8 @@ doRasterIrq
         and scrollpos                      
         sta scrollpos 
     
-        PrintBCD 8,23,#COLOR_GREEN,2,gameScore ; print score                    
+        PrintBCD 8,23,#COLOR_GREEN,2,gameScore ; print score
+        jsr UpdateEnergyState                    
 
         lda #NOSCROLL                      ;set noscroll IRQ trigger
         sta VIC_SCREEN_RASTER                          
@@ -410,7 +418,32 @@ WaitJoyButtonPressed
         bne WaitJoyButtonPressed
         rts
 
+;************************************************
+;*** update energy state
+;************************************************
+UpdateEnergyState
+        lda msb_energy                  ; check energy left
+        cmp #00
+        beq energyUpdated     
 
+        lda lsb_energy
+        sta 1926
+
+        dec lsb_energy
+        lda lsb_energy
+        cmp #00
+        bne energyUpdated
+        
+        dec msb_energy
+        inc msb_noenergy
+
+        lda msb_energy
+        sta 1924
+        lda msb_noenergy
+        sta 1928
+
+energyUpdated
+        rts
 
 
 

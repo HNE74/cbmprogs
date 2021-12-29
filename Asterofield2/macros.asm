@@ -38,7 +38,7 @@ nextChar/4
 
 fetchChar/4
         jsr RandomNumber
-        cmp #248
+        cmp #255
         bcs asteroidChar/4
         lda #32
         jmp showChar/4
