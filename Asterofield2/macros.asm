@@ -11,7 +11,7 @@ defm MoveRowLeft
         ldx #0                             
 nextChar/4
         lda /5+/1,x     ;move chars one left
-        sta /5+/2,x  
+        sta /5+/2,x
         ;lda /6+/1,x   
         ;sta /6+/2,x 
         inx                                

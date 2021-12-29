@@ -65,10 +65,12 @@ VIC_SPRITE6_PTR = $07FE   ; sprite 6 data pointer
 VIC_SPRITE7_PTR = $07FF   ; sprite 7 data pointer
 
 ;*** other VIC2 registers
+VIC_MODE_CONTROL = $D011  ; vic mode control register
 VIC_SCREEN_RASTER = $D012   ; current screen raster line
 VIC_SCROLL_MCOLOR = $D016  ; softscroll and multicolor register
 VIC_MEMORY_CONTROL = $D018   ; VIC memory control register
 VIC_IRQ_REQUEST = $D019     ; interrupt request register
+VIC_IRQ_TYPE = $D01A       ; interrupt request type register
 
 ;*** screenram memory blocks
 VIC_SCREENRAM_BLOCK1 = $0400

@@ -16,6 +16,14 @@ InitProgram
         rts
 
 ;*****************************************************
+;*** initializes the program
+;*****************************************************
+InitGame
+        lda GAME_STATE_RUNNING
+        sta gameState
+        rts
+
+;*****************************************************
 ;*** setup scroll IRQ routines
 ;*****************************************************
 SetupScrollIRQ
@@ -24,26 +32,32 @@ SetupScrollIRQ
         and #%11110000                    
         sta VIC_SCROLL_MCOLOR              
 
+        ; rescue irq vector settings
+        lda IRQ_VECTOR_LSB
+        sta lsb_irq
+        lda IRQ_VECTOR_MSB
+        sta msb_irq
+
         ; change interrupt vector
         sei                                
         lda #<rasterIrq                   
-        sta $0314                          
+        sta IRQ_VECTOR_LSB                          
         lda #>rasterIrq                    
-        sta $0315 
+        sta IRQ_VECTOR_MSB
 
         ; set interrupt trigger rasterline
         lda #DOSCROLL                      
-        sta $d012                          
+        sta VIC_SCREEN_RASTER                          
  
         ; remove high bit of raster irq
-        lda $d011                          
+        lda VIC_MODE_CONTROL                          
         and #%01111111                   
-        sta $d011                        
+        sta VIC_MODE_CONTROL                        
  
         ; activate vic interrupts
-        lda $d01a                          
+        lda VIC_IRQ_TYPE                         
         ora #%00000001                    
-        sta $d01a
+        sta VIC_IRQ_TYPE
         cli                                
         rts 
 
@@ -347,8 +361,22 @@ CheckPlayerBackgroundCollision
         and #%00000001
         cmp #%00000001
         bne noCollision
-        lda #1
+        lda #2
         sta VIC_SCREEN_BGCOLOR
+
+        sei                             ; restore original irq vector settings
+        lda lsb_irq
+        sta IRQ_VECTOR_LSB
+        lda msb_irq
+        sta IRQ_VECTOR_MSB
+
+        lda VIC_IRQ_TYPE                ; deactivate vic interrupts                          
+        and #%11111110                    
+        sta VIC_IRQ_TYPE
+
+        lda GAME_STATE_DEAD             ; update game state from running to dead
+        sta gameState
+        cli
 noCollision
         rts
 

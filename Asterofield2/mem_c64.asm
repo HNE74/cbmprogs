@@ -23,6 +23,10 @@ KERNAL_CHROUT = $FFD2   ; print character to screen
 POSITION_CURSOR = $E50C ; position cursor
 PRINT_STRING = $AB1E    ; print string
 
+;*** interrupt vector 
+IRQ_VECTOR_LSB=$0314
+IRQ_VECTOR_MSB=$0315
+
 
 
 

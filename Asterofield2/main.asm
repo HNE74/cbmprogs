@@ -28,8 +28,12 @@ incasm "macros.asm"
         jsr setupScrollIRQ
         jsr drawMainscreenMap
         jsr InitSprites
-looper
-        jmp looper
+        jsr InitGame
+runGame
+        lda gameState
+        cmp GAME_STATE_RUNNING
+        beq runGame
+        rts
 
 incasm "routines.asm"
 incasm "variables.asm"

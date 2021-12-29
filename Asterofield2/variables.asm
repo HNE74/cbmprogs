@@ -6,20 +6,19 @@
 ;*** modified by any interested parties.
 ;*****************************************************
 
+;*** original irq setting
+lsb_irq byte $00
+msb_irq byte $00
 
 ;*** player variables
 playerSpritePage byte $80           ; page of player sprite
 playerXpos byte $50                 ; x position
 playerYpos byte $70                 ; y position
 
-currentColor
-        byte 10                             ;current color
+gameState byte $00                  ; game state
 
-scrollpos
-        byte 7                             ;current scroll position
 
-scrollcnt 
-        byte 255
+scrollpos  byte $07                 ; hardware scroll position                           
 
 ;*** Screenram tables
 SCREEN_TABLE
