@@ -25,14 +25,18 @@ incasm "macros.asm"
 
 *=PROGRAM_START
         jsr initProgram
-        jsr setupScrollIRQ
+startGame
         jsr drawMainscreenMap
+        jsr setupScrollIRQ
         jsr InitSprites
         jsr InitGame
 runGame
         lda gameState
         cmp GAME_STATE_RUNNING
         beq runGame
+
+        jsr WaitJoyButtonPressed
+        jmp startGame
         rts
 
 incasm "routines.asm"

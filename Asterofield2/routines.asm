@@ -19,6 +19,8 @@ InitProgram
 ;*** initializes the program
 ;*****************************************************
 InitGame
+        lda #07
+        sta scrollpos
         lda GAME_STATE_RUNNING
         sta gameState
         rts
@@ -74,8 +76,8 @@ RasterIrq
 doRasterIrq                         
         sta VIC_IRQ_REQUEST                ;confirm VIC IRQ handled
 
-        lda COLOR_YELLOW 
-        sta VIC_SCREEN_BDCOLOR 
+        ;lda COLOR_YELLOW 
+        ;sta VIC_SCREEN_BDCOLOR 
 
         lda VIC_SCREEN_RASTER              ;check scroll
         cmp #DOSCROLL
@@ -101,8 +103,8 @@ doRasterIrq
 ;*** carries out hardscroll of texline
 ;************************************************
 DoNoScroll
-        lda COLOR_GREEN 
-        sta VIC_SCREEN_BDCOLOR 
+        ;lda COLOR_GREEN 
+        ;sta VIC_SCREEN_BDCOLOR 
 
         lda VIC_SCROLL_MCOLOR              ;no scroll
         and #%11110000                   
@@ -118,8 +120,8 @@ noscrollExit
         jsr PositionSprites               ;position sprites on screen
         jsr CheckPlayerBackgroundCollision ; check spaceship collided
                                   
-        lda COLOR_BLUE
-        sta VIC_SCREEN_BDCOLOR 
+        ;lda COLOR_BLUE
+        ;sta VIC_SCREEN_BDCOLOR 
 
         lda #DOSCROLL                     ;set doscroll IRQ trigger                     
         sta VIC_SCREEN_RASTER                          
@@ -342,7 +344,9 @@ PositionSprites
 ;*** initialize sprites
 ;************************************************
 InitSprites
-        lda VIC_SPRITE_SPRITE_COLL
+
+        jsr PositionSprites
+
         lda #$00
         sta VIC_SPRITE_X255
         lda #%00000001          ; enable sprites
@@ -361,8 +365,9 @@ CheckPlayerBackgroundCollision
         and #%00000001
         cmp #%00000001
         bne noCollision
-        lda #2
-        sta VIC_SCREEN_BGCOLOR
+
+        lda #%00000000                  ; disable sprites
+        sta VIC_SPRITE_ENABLE
 
         sei                             ; restore original irq vector settings
         lda lsb_irq
@@ -378,6 +383,15 @@ CheckPlayerBackgroundCollision
         sta gameState
         cli
 noCollision
+        rts
+
+;************************************************
+;*** wait joystick button pressed 
+;************************************************
+WaitJoyButtonPressed 
+        lda CIA_PORT_A
+        and #JOY_BUTTON
+        bne WaitJoyButtonPressed
         rts
 
 
