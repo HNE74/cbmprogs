@@ -95,12 +95,11 @@ doRasterIrq
         sta VIC_SCROLL_MCOLOR              
 
         dec scrollpos                      ;decrease scroll position
-
         lda #%00000111                     
         and scrollpos                      
         sta scrollpos 
     
-        PrintBCD 8,23,#COLOR_BLUE,2,gameScore ; print score                    
+        PrintBCD 8,23,#COLOR_GREEN,2,gameScore ; print score                    
 
         lda #NOSCROLL                      ;set noscroll IRQ trigger
         sta VIC_SCREEN_RASTER                          
@@ -123,19 +122,7 @@ DoNoScroll
         bne noscrollExit                   
         
         jsr moveRow                       ;do hardscroll
-        
-        sed                               ;add point to score
-        clc
-        lda gameScore+0
-        adc #01
-        sta gameScore+0
-        lda gameScore+1
-        adc #00
-        sta gameScore+1
-        lda gameScore+2
-        adc #00
-        sta gameScore+2
-        cld   
+        IncreaseScore #01                 ;increase score by 1
 
 noscrollExit
         jsr HandleJoystickInput           ;read player input 
@@ -148,6 +135,10 @@ noscrollExit
         lda #DOSCROLL                     ;set doscroll IRQ trigger                     
         sta VIC_SCREEN_RASTER                          
         jmp rasterIrqExit
+
+
+
+
 
 ;************************************************
 ;*** generate random number

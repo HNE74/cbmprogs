@@ -7,6 +7,21 @@
 ;*****************************************************
 
 
+defm IncreaseScore
+        sed                               ;add point to score
+        clc
+        lda gameScore+0
+        adc /1
+        sta gameScore+0
+        lda gameScore+1
+        adc #00
+        sta gameScore+1
+        lda gameScore+2
+        adc #00
+        sta gameScore+2
+        cld 
+endm
+
 ;************************************************
 ;*** hardscroll screen ram row
 ;************************************************
