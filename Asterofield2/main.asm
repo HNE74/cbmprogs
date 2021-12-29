@@ -28,8 +28,8 @@ incasm "macros.asm"
 startGame
         jsr drawMainscreenMap
         jsr setupScrollIRQ
-        jsr InitSprites
         jsr InitGame
+        jsr InitSprites
 runGame
         lda gameState
         cmp GAME_STATE_RUNNING

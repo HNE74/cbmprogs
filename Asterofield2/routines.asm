@@ -29,6 +29,14 @@ InitGame
         sta gameScore
         sta gameScore+1
         sta gameScore+2
+
+        lda #$80                 ; init player
+        sta playerSpritePage
+        lda #$50
+        sta playerXpos
+        lda #$70
+        sta playerYpos
+
         rts
 
 ;*****************************************************
@@ -135,10 +143,6 @@ noscrollExit
         lda #DOSCROLL                     ;set doscroll IRQ trigger                     
         sta VIC_SCREEN_RASTER                          
         jmp rasterIrqExit
-
-
-
-
 
 ;************************************************
 ;*** generate random number
@@ -357,7 +361,6 @@ PositionSprites
 ;*** initialize sprites
 ;************************************************
 InitSprites
-
         jsr PositionSprites
 
         lda #$00
