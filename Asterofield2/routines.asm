@@ -37,12 +37,13 @@ InitGame
         lda #$70
         sta playerYpos
 
-        lda #3                  ; init energy state
+        lda ENERGY_MAX          ; init energy state
         sta msb_energy
         lda #255
         sta lsb_energy
         lda #0
         sta msb_noenergy
+        jsr DrawEnergyBar
 
         rts
 
@@ -248,6 +249,11 @@ mainscreenLoop4
 ;*** handle the player joystick input
 ;************************************************
 HandleJoystickInput
+        lda msb_energy
+        cmp #00
+        bne joyJmp1
+        rts
+joyJmp1        
         lda CIA_PORT_A
         and #JOY_UP_LEFT
         beq goUpLeft
@@ -426,23 +432,43 @@ UpdateEnergyState
         cmp #00
         beq energyUpdated     
 
-        lda lsb_energy
-        sta 1926
-
-        dec lsb_energy
+        dec lsb_energy                  ; decrease energy lsb
         lda lsb_energy
         cmp #00
         bne energyUpdated
         
-        dec msb_energy
+        dec msb_energy                  ; decrease energy msb
         inc msb_noenergy
 
-        lda msb_energy
-        sta 1924
-        lda msb_noenergy
-        sta 1928
-
+        jsr DrawEnergyBar               ; draw energy bar
 energyUpdated
+        rts
+
+;************************************************
+;*** draw energy bar
+;************************************************
+DrawEnergyBar
+        lda msb_energy
+        cmp #00
+        beq barEnd
+
+        ldx msb_energy
+        lda #188
+loopBar
+        sta ENERGY_SCRMEM_START,x       ; draw energy bar
+        dex
+        cpx #00
+        beq barEnd
+        jmp loopBar
+
+barEnd                          
+        ldx msb_energy                  ; remove last char at end of bar
+        cpx ENERGY_MAX
+        beq barDrawn
+        lda #32
+        inx
+        sta ENERGY_SCRMEM_START,x
+barDrawn
         rts
 
 

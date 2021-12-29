@@ -54,6 +54,7 @@ MAINSCREEN_MAP_MEM_BLOCK4 = $42FD
 
 ; *** energy bar screenram position
 ENERGY_SCRMEM_START = 1872
+ENERGY_MAX = #5
 
 ;*** player movement range coordinates
 PLAYER_MIN_X=#32

@@ -7,8 +7,8 @@
 ;*****************************************************
 
 ; 10 SYS2064
-;*=$0801
-;        BYTE    $0B, $08, $0A, $00, $9E, $32, $30, $36, $34, $00, $00, $00
+*=$0801
+        BYTE    $0B, $08, $0A, $00, $9E, $32, $30, $36, $34, $00, $00, $00
 
 incasm "constants.asm"
 
@@ -25,13 +25,6 @@ incasm "macros.asm"
 
 *=PROGRAM_START
         jsr initProgram
-
-;        jsr InitGame
-;ust
-;        jsr UpdateEnergyState
-;        jmp ust
-
-
 startGame
         jsr drawMainscreenMap
         jsr setupScrollIRQ
