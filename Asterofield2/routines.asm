@@ -19,10 +19,16 @@ InitProgram
 ;*** initializes the program
 ;*****************************************************
 InitGame
-        lda #07
+        lda #07                 ; init smooth scoll position
         sta scrollpos
-        lda GAME_STATE_RUNNING
+
+        lda GAME_STATE_RUNNING  ; set game state runinng
         sta gameState
+
+        lda #00                 ; init score
+        sta gameScore
+        sta gameScore+1
+        sta gameScore+2
         rts
 
 ;*****************************************************
@@ -92,7 +98,9 @@ doRasterIrq
 
         lda #%00000111                     
         and scrollpos                      
-        sta scrollpos                      
+        sta scrollpos 
+    
+        PrintBCD 8,23,#COLOR_BLUE,2,gameScore ; print score                    
 
         lda #NOSCROLL                      ;set noscroll IRQ trigger
         sta VIC_SCREEN_RASTER                          
@@ -106,14 +114,28 @@ DoNoScroll
         ;lda COLOR_GREEN 
         ;sta VIC_SCREEN_BDCOLOR 
 
-        lda VIC_SCROLL_MCOLOR              ;no scroll
+        lda VIC_SCROLL_MCOLOR             ;no scroll
         and #%11110000                   
         sta VIC_SCROLL_MCOLOR 
 
         lda scrollpos
-        cmp #07                            ;check hardscroll
+        cmp #07                           ;check hardscroll
         bne noscrollExit                   
-        jsr moveRow                        
+        
+        jsr moveRow                       ;do hardscroll
+        
+        sed                               ;add point to score
+        clc
+        lda gameScore+0
+        adc #01
+        sta gameScore+0
+        lda gameScore+1
+        adc #00
+        sta gameScore+1
+        lda gameScore+2
+        adc #00
+        sta gameScore+2
+        cld   
 
 noscrollExit
         jsr HandleJoystickInput           ;read player input 
@@ -393,6 +415,8 @@ WaitJoyButtonPressed
         and #JOY_BUTTON
         bne WaitJoyButtonPressed
         rts
+
+
 
 
 
