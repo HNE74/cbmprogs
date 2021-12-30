@@ -19,6 +19,7 @@ playerYpos byte $70                 ; y position
 peekYpos byte $00
 peekXpos byte $00
 peekValue byte $00
+plotValue byte $00
 
 ;*** game state related
 gameState byte $00                  ; game state

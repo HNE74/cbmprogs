@@ -396,24 +396,61 @@ CheckPlayerBackgroundCollision
         cmp #%00000001
         bne noCollision
 
-        jsr PrintPlayerBackground
+        jsr PlayerUpperRightScreenPosition
+        jsr ScreenPeek
+        lda peekValue
+        cmp #ASTERO_CHR
+        beq asteroidCollision
+        cmp #CRYSTAL_CHR
+        bne nextCheck
+        jsr RemoveCharFromScreenram
+nextCheck
+        jsr PlayerUpperLeftScreenPosition
+        jsr ScreenPeek
+        lda peekValue
+        cmp #ASTERO_CHR
+        beq asteroidCollision
+        cmp #CRYSTAL_CHR
+        bne nextCheck2
+        jsr RemoveCharFromScreenram
+nextCheck2
+        jsr PlayerLowerRightScreenPosition
+        jsr ScreenPeek
+        lda peekValue
+        cmp #ASTERO_CHR
+        beq asteroidCollision
+        cmp #CRYSTAL_CHR
+        bne nextCheck3
+        jsr RemoveCharFromScreenram
+nextCheck3
+        jsr PlayerLowerLeftScreenPosition
+        jsr ScreenPeek
+        lda peekValue
+        cmp ASTERO_CHR
+        beq asteroidCollision
+        cmp #CRYSTAL_CHR
+        bne endCheck
+        jsr RemoveCharFromScreenram
+endCheck
+        rts
 
-     ;   lda #%00000000                  ; disable sprites
-     ;   sta VIC_SPRITE_ENABLE
+asteroidCollision
+        lda #%00000000                  ; disable sprites
+        sta VIC_SPRITE_ENABLE
 
-     ;   sei                             ; restore original irq vector settings
-     ;   lda lsb_irq
-     ;   sta IRQ_VECTOR_LSB
-     ;   lda msb_irq
-     ;   sta IRQ_VECTOR_MSB
+        sei                             ; restore original irq vector settings
+        lda lsb_irq
+        sta IRQ_VECTOR_LSB
+        lda msb_irq
+        sta IRQ_VECTOR_MSB
 
-    ;    lda VIC_IRQ_TYPE                ; deactivate vic interrupts                          
-     ;   and #%11111110                    
-     ;   sta VIC_IRQ_TYPE
+        lda VIC_IRQ_TYPE                ; deactivate vic interrupts                          
+        and #%11111110                    
+        sta VIC_IRQ_TYPE
 
-    ;    lda GAME_STATE_DEAD             ; update game state from running to dead
-    ;    sta gameState
-    ;    cli
+        lda GAME_STATE_DEAD             ; update game state from running to dead
+        sta gameState
+        cli
 noCollision
         rts
 
@@ -621,6 +658,34 @@ PrintPlayerBackground
         jsr ScreenPeek
         lda peekValue
         sta 1941
+        rts
+
+;**************************************************
+;*** plot char to screenram
+;**************************************************
+RemoveCharFromScreenram
+        ldy #0                  ; set offset screen ram (y position)
+        ldx #0
+plot1   iny
+        iny
+        inx
+        cpx peekYpos
+        bne plot1
+
+        lda SCREEN_TABLE,y+1    ; store offset in zero page pointer register
+        sta ZERO_PAGE_PTR1
+        lda SCREEN_TABLE,y
+        sta ZERO_PAGE_PTR1+1
+        
+        lda #BLANK_CHR          ; set screen ram adding x position to 
+        ldy peekXpos            ; memory position zero page points to
+        sta (ZERO_PAGE_PTR1),y
+        rts
+
+;**************************************************
+;*** removes crystal from screen and adds energy
+;**************************************************
+HandleCrystalCollision
         rts
 
 

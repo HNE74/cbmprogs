@@ -42,6 +42,11 @@ NOSCROLL     = #210               ; end of scroll area
 PROGRAM_START = $0810             ; program start
 SPRITE_DEFINITION = $2000         ; sprite 0 definition
 
+; *** asteroid chars
+BLANK_CHR = #32
+ASTERO_CHR = #81
+CRYSTAL_CHR = #90
+
 ; *** start of screen scrollram
 SCREEN_SCROLLRAM_START = $04C8
 COLOR_SCROLLRAM_START = $D8C8
@@ -70,7 +75,7 @@ ENERGY_MAX = #20
 PLAYER_MIN_X=#32
 PLAYER_MAX_X=#250
 PLAYER_MIN_Y=#91
-PLAYER_MAX_Y=#191
+PLAYER_MAX_Y=#192
 
 ;*** game state constants
 GAME_STATE_INTRO=#0

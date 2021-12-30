@@ -30,8 +30,6 @@ defm MoveRowLeft
 nextChar/4
         lda /5+/1,x     ;move chars one left
         sta /5+/2,x
-        ;lda /6+/1,x   
-        ;sta /6+/2,x 
         inx                                
         cpx #39                            
         bne nextChar/4                       
@@ -39,11 +37,16 @@ nextChar/4
 fetchChar/4
         jsr RandomNumber
         cmp #255
+        bne checkAsteroid/4
+        lda #CRYSTAL_CHR
+        jmp showChar/4
+checkAsteroid/4
+        cmp #254
         bcs asteroidChar/4
-        lda #32
+        lda #BLANK_CHR
         jmp showChar/4
 asteroidChar/4
-        lda #81
+        lda #ASTERO_CHR
 showChar/4
         sta /5+/3
         lda #5
