@@ -12,24 +12,24 @@
     <expandx>False</expandx>
     <expandy>False</expandy>
     <sdata>
-      <data>16711680</data>
-      <data>16711680</data>
-      <data>8126464</data>
-      <data>8261616</data>
-      <data>4192280</data>
-      <data>2088972</data>
-      <data>2097148</data>
-      <data>1013754</data>
-      <data>506871</data>
-      <data>244247</data>
-      <data>506871</data>
-      <data>1013754</data>
-      <data>2097148</data>
-      <data>2045952</data>
-      <data>2082816</data>
-      <data>3729408</data>
-      <data>16740224</data>
-      <data>16727936</data>
+      <data>8388096</data>
+      <data>16776960</data>
+      <data>1040384</data>
+      <data>229376</data>
+      <data>188416</data>
+      <data>8386560</data>
+      <data>16579584</data>
+      <data>2090752</data>
+      <data>2090752</data>
+      <data>16579584</data>
+      <data>8386560</data>
+      <data>188416</data>
+      <data>229376</data>
+      <data>1040384</data>
+      <data>16776960</data>
+      <data>8388096</data>
+      <data>0</data>
+      <data>0</data>
       <data>0</data>
       <data>0</data>
       <data>0</data>
