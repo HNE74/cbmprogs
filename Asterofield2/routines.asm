@@ -160,6 +160,7 @@ DoNoScroll
         inc nextLevelCnt                  ;increase difficulty
         bne noscrollExit
         dec difficulty
+        jmp irqExit
 
 noscrollExit
         jsr HandleJoystickInput           ;read player input 
@@ -168,7 +169,7 @@ noscrollExit
                                   
         ;lda COLOR_BLUE
         ;sta VIC_SCREEN_BDCOLOR 
-
+irqExit
         lda #DOSCROLL                     ;set doscroll IRQ trigger                     
         sta VIC_SCREEN_RASTER 
 
