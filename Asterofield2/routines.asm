@@ -12,7 +12,13 @@
 InitProgram
         lda COLOR_BLACK 
         sta VIC_SCREEN_BGCOLOR 
-        sta VIC_SCREEN_BDCOLOR 
+        sta VIC_SCREEN_BDCOLOR
+
+        lda #251
+        sta difficulty
+        lda #00
+        sta nextLevelCnt
+ 
         rts
 
 ;*****************************************************
@@ -29,6 +35,11 @@ InitGame
         sta gameScore
         sta gameScore+1
         sta gameScore+2
+
+        lda #251
+        sta difficulty
+        lda #00
+        sta nextLevelCnt
 
         lda #$80                 ; init player
         sta playerSpritePage
@@ -98,8 +109,8 @@ RasterIrq
 doRasterIrq                         
         sta VIC_IRQ_REQUEST                ;confirm VIC IRQ handled
 
-        lda COLOR_YELLOW 
-        sta VIC_SCREEN_BDCOLOR 
+        ;lda COLOR_YELLOW 
+        ;sta VIC_SCREEN_BDCOLOR 
 
         lda VIC_SCREEN_RASTER              ;check scroll
         cmp #DOSCROLL
@@ -129,11 +140,11 @@ doRasterIrq
 ;*** carries out hardscroll of texline
 ;************************************************
 DoNoScroll
-        lda #%00000000                    ; disable sprites
+        lda #%00000000                    ;disable sprites
         sta VIC_SPRITE_ENABLE
 
-        lda COLOR_GREEN 
-        sta VIC_SCREEN_BDCOLOR 
+        ;lda COLOR_GREEN 
+        ;sta VIC_SCREEN_BDCOLOR 
 
         lda VIC_SCROLL_MCOLOR             ;no scroll
         and #%11110000                   
@@ -146,13 +157,17 @@ DoNoScroll
         jsr moveRow                       ;do hardscroll
         IncreaseScore #01                 ;increase score by 1
 
+        inc nextLevelCnt                  ;increase difficulty
+        bne noscrollExit
+        dec difficulty
+
 noscrollExit
         jsr HandleJoystickInput           ;read player input 
         jsr PositionSprites               ;position sprites on screen
         jsr CheckPlayerBackgroundCollision ; check spaceship collided
                                   
-        lda COLOR_BLUE
-        sta VIC_SCREEN_BDCOLOR 
+        ;lda COLOR_BLUE
+        ;sta VIC_SCREEN_BDCOLOR 
 
         lda #DOSCROLL                     ;set doscroll IRQ trigger                     
         sta VIC_SCREEN_RASTER 
@@ -408,14 +423,14 @@ CheckPlayerBackgroundCollision
         jsr PlayerScreenPosition        ; fetch chars player collides with
         jsr PlayerScreenPeek
 
-        lda peekValue0                  ; check left char
+        lda peekValue0                  ; check left up char
         cmp #ASTERO_CHR
         beq asteroidCollision
         cmp #CRYSTAL_CHR
         bne nextCheck1
         jsr RemoveCharFromScreenram
         jsr AddPlayerEnergy
-nextCheck1                              ; check right char
+nextCheck1                              ; check right up char
         lda peekValue1
         cmp #ASTERO_CHR
         beq asteroidCollision
@@ -423,20 +438,22 @@ nextCheck1                              ; check right char
         bne nextCheck2
         jsr RemoveCharFromScreenram2
         jsr AddPlayerEnergy
-nextCheck2                              ; check right char
+nextCheck2                              ; check left low char
         lda peekValue2
         cmp #ASTERO_CHR
         beq asteroidCollision
         cmp #CRYSTAL_CHR
         bne nextCheck3
-        jsr RemoveCharFromScreenram3    ; jsr AddPlayerEnergy
-nextCheck3                              ; check right char
+        jsr RemoveCharFromScreenram3    
+        jsr AddPlayerEnergy
+nextCheck3                              ; check right low char
         lda peekValue3
         cmp #ASTERO_CHR
         beq asteroidCollision
         cmp #CRYSTAL_CHR
         bne endCheck
-        jsr RemoveCharFromScreenram4    ; jsr AddPlayerEnergy
+        jsr RemoveCharFromScreenram4   
+        jsr AddPlayerEnergy
 endCheck
         rts
 asteroidCollision
@@ -589,9 +606,12 @@ PrintPlayerBackground
         jsr PlayerScreenPeek
         lda peekValue1
         sta 1902
-        jsr PlayerScreenPeek
         lda peekValue0
         sta 1901
+        lda peekValue2
+        sta 1941
+        lda peekValue3
+        sta 1942
 
         rts
 

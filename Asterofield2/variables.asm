@@ -31,7 +31,9 @@ gameHighscore byte $00, $00, $00    ; game highscore in bcd format starting with
 msb_energy byte $00                 ; energy most significant byte
 lsb_energy byte $00                 ; energy least significant byte
 msb_noenergy byte $00               ; noenergy most significant byte
-scrollpos  byte $07                 ; hardware scroll position                           
+scrollpos  byte $07                 ; hardware scroll position 
+difficulty byte $251                ; difficulty control
+nextLevelCnt byte $00               ; counter for increase difficulty cnt                          
 
 ;*** Screenram tables
 SCREEN_TABLE

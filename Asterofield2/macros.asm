@@ -36,12 +36,12 @@ nextChar/4
 
 fetchChar/4
         jsr RandomNumber
-        cmp #255
+        cmp #252
         bne checkAsteroid/4
         lda #CRYSTAL_CHR
         jmp showChar/4
 checkAsteroid/4
-        cmp #254
+        cmp difficulty
         bcs asteroidChar/4
         lda #BLANK_CHR
         jmp showChar/4

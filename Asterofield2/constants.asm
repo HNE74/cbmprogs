@@ -59,7 +59,7 @@ MAINSCREEN_MAP_MEM_BLOCK4 = $42FD
 
 ; *** constants for player char collision detection
 SPRITE_SCREENPOS_XOFFSET_UL = #00
-SPRITE_SCREENPOS_YOFFSET_UL = #00
+SPRITE_SCREENPOS_YOFFSET_UL = #05
 
 ; *** energy bar screenram position
 ENERGY_SCRMEM_START = 1872
