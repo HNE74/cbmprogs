@@ -20,6 +20,7 @@ incbin "mainscreen.bin"
 
 incasm "mem_c64.asm"
 incasm "mem_vic2.asm"
+incasm "mem_sid.asm"
 incasm "mem_own.asm"
 incasm "macros.asm"
 

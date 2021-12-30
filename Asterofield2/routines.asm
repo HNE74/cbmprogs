@@ -131,10 +131,16 @@ doRasterIrq
         sta scrollpos 
     
         PrintBCD 8,23,#COLOR_GREEN,2,gameScore ; print score
-        jsr UpdateEnergyState 
-        jsr UpdateEnergyState 
-        jsr DrawEnergyBar               ; draw energy bar
 
+        lda playerState                    ; check player state
+        cmp PLAYER_STATE_DEAD
+        beq setNextIrq
+      
+        jsr UpdateEnergyState 
+        jsr UpdateEnergyState 
+        jsr DrawEnergyBar                  ; draw energy bar
+
+setNextIrq
         lda #NOSCROLL                      ;set noscroll IRQ trigger
         sta VIC_SCREEN_RASTER                          
         jmp rasterIrqExit
@@ -475,6 +481,7 @@ endCheck
 asteroidCollision
         lda PLAYER_STATE_DEAD           ; set player dead
         sta playerState
+        jsr PlayerExplosionSound
         inc playerSpritePage
 playerDeadInc
         inc playerExplosionCnt          ; count for next explosion frame
@@ -513,9 +520,65 @@ noCollision
         rts
 
 ;************************************************
+;*** sfx routines
+;************************************************
+PlayerEnergyDecreaseSound
+        lda #25
+        sta SID_SIGVOL
+        lda #0
+        sta SID_CHANNEL1_FRELO
+        lda #5
+        sta SID_CHANNEL1_FREHI
+        lda #22
+        sta SID_CHANNEL1_ATDCY
+        lda #10
+        sta SID_SURELI
+        lda #0
+        sta SID_CHANNEL1_VCREG
+        lda #WAVE_DREIECK
+        sta SID_CHANNEL1_VCREG
+        rts
+
+PlayerEnergycollectSound
+        lda #25
+        sta SID_SIGVOL
+        lda #0
+        sta SID_CHANNEL1_FRELO
+        lda #40
+        sta SID_CHANNEL1_FREHI
+        lda #5
+        sta SID_CHANNEL1_ATDCY
+        lda #10
+        sta SID_SURELI
+        lda #0
+        sta SID_CHANNEL1_VCREG
+        lda #WAVE_DREIECK
+        sta SID_CHANNEL1_VCREG
+        rts
+
+PlayerExplosionSound
+        lda #25
+        sta SID_SIGVOL
+        lda #20
+        sta SID_CHANNEL1_FRELO
+        lda #20
+        sta SID_CHANNEL1_FREHI
+        lda #10
+        sta SID_CHANNEL1_ATDCY
+        lda #8
+        sta SID_SURELI
+        lda #0
+        sta SID_CHANNEL1_VCREG
+        lda #WAVE_RAUSCHEN
+        sta SID_CHANNEL1_VCREG
+        rts
+
+;************************************************
 ;*** wait joystick button pressed 
 ;************************************************
 WaitJoyButtonPressed 
+        lda #00
+        sta SID_CHANNEL1_VCREG   
         lda CIA_PORT_A
         and #JOY_BUTTON
         bne WaitJoyButtonPressed
@@ -536,6 +599,7 @@ UpdateEnergyState
 
         dec msb_energy                  ; decrease energy msb
         inc msb_noenergy
+        jsr PlayerEnergyDecreaseSound
 energyUpdated
         rts
 
@@ -747,6 +811,7 @@ AddPlayerEnergy
         dec msb_noenergy
         jsr DrawEnergyBar
 endAdd
+        jsr PlayerEnergycollectSound
         rts
 
 

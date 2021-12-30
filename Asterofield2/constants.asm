@@ -36,6 +36,12 @@ COLOR_LIGHT_GREEN  = #13
 COLOR_LIGHT_BLUE   = #14
 COLOR_LIGHT_GREY   = #15
 
+;*** Waveforms
+WAVE_DREIECK   = $11
+WAVE_SAEGEZAHN = $21
+WAVE_RECHTECK  = $41
+WAVE_RAUSCHEN  = $81
+
 DOSCROLL     = #89                ; start of scroll area
 NOSCROLL     = #210               ; end of scroll area
 
@@ -74,7 +80,7 @@ PLAYER_MAX_Y=#192
 ;*** player state
 PLAYER_STATE_ALIVE=#00
 PLAYER_STATE_DEAD=#01
-MAX_PLAYER_EXPLOSION_CNT=#10
+MAX_PLAYER_EXPLOSION_CNT=#15
 
 ;*** game state constants
 GAME_STATE_INTRO=#0

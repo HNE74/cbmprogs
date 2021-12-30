@@ -44,6 +44,7 @@
         <FileName>constants.asm</FileName>
         <FileName>macros.asm</FileName>
         <FileName>mem_c64.asm</FileName>
+        <FileName>mem_sid.asm</FileName>
         <FileName>mem_vic2.asm</FileName>
         <FileName>routines.asm</FileName>
         <FileName>variables.asm</FileName>
@@ -121,6 +122,17 @@
             <Bookmarks />
             <Topmost>False</Topmost>
             <FileOpen>False</FileOpen>
+        </SourceFile>
+        <SourceFile>
+            <Name>mem_sid.asm</Name>
+            <PrgName />
+            <FileType>2</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>False</Topmost>
+            <FileOpen>True</FileOpen>
         </SourceFile>
         <SourceFile>
             <Name>mem_vic2.asm</Name>
