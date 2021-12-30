@@ -14,6 +14,8 @@ msb_irq byte $00
 playerSpritePage byte $80           ; page of player sprite
 playerXpos byte $50                 ; x position
 playerYpos byte $70                 ; y position
+playerState byte $00                ; player state
+playerExplosionCnt byte $00         ; player explosion counter
 
 ;*** screen char peek
 peekYpos byte $00

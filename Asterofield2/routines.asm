@@ -47,6 +47,10 @@ InitGame
         sta playerXpos
         lda #$70
         sta playerYpos
+        lda PLAYER_STATE_ALIVE
+        sta playerState
+        lda #00
+        sta playerExplosionCnt
 
         lda ENERGY_MAX          ; init energy state
         sta msb_energy
@@ -160,7 +164,6 @@ DoNoScroll
         inc nextLevelCnt                  ;increase difficulty
         bne noscrollExit
         dec difficulty
-        jmp irqExit
 
 noscrollExit
         jsr HandleJoystickInput           ;read player input 
@@ -169,6 +172,7 @@ noscrollExit
                                   
         ;lda COLOR_BLUE
         ;sta VIC_SCREEN_BDCOLOR 
+
 irqExit
         lda #DOSCROLL                     ;set doscroll IRQ trigger                     
         sta VIC_SCREEN_RASTER 
@@ -274,6 +278,11 @@ mainscreenLoop4
 ;*** handle the player joystick input
 ;************************************************
 HandleJoystickInput
+        lda playerState
+        cmp PLAYER_STATE_ALIVE
+        beq checkEnergyLeft
+        rts
+checkEnergyLeft
         lda msb_energy
         cmp #00
         bne joyJmp1
@@ -416,48 +425,74 @@ InitSprites
 ;*** check player background collision
 ;*************************************************
 CheckPlayerBackgroundCollision
+        lda playerState                 ; check player dead
+        cmp PLAYER_STATE_DEAD
+        beq playerDeadInc
+
         lda VIC_SPRITE_BACKGR_COLL      ; player sprite register check
         and #%00000001
         cmp #%00000001
-        bne noCollision
-        
+        beq checkCollision
+        jmp noCollision
+
+checkCollision
         jsr PlayerScreenPosition        ; fetch chars player collides with
         jsr PlayerScreenPeek
 
         lda peekValue0                  ; check left up char
-        cmp #ASTERO_CHR
+        cmp ASTERO_CHR
         beq asteroidCollision
-        cmp #CRYSTAL_CHR
+        cmp#CRYSTAL_CHR
         bne nextCheck1
         jsr RemoveCharFromScreenram
         jsr AddPlayerEnergy
 nextCheck1                              ; check right up char
         lda peekValue1
-        cmp #ASTERO_CHR
+        cmp ASTERO_CHR
         beq asteroidCollision
-        cmp #CRYSTAL_CHR
+        cmp CRYSTAL_CHR
         bne nextCheck2
         jsr RemoveCharFromScreenram2
         jsr AddPlayerEnergy
 nextCheck2                              ; check left low char
         lda peekValue2
-        cmp #ASTERO_CHR
+        cmp ASTERO_CHR
         beq asteroidCollision
-        cmp #CRYSTAL_CHR
+        cmp CRYSTAL_CHR
         bne nextCheck3
         jsr RemoveCharFromScreenram3    
         jsr AddPlayerEnergy
 nextCheck3                              ; check right low char
         lda peekValue3
-        cmp #ASTERO_CHR
+        cmp ASTERO_CHR
         beq asteroidCollision
-        cmp #CRYSTAL_CHR
+        cmp CRYSTAL_CHR
         bne endCheck
         jsr RemoveCharFromScreenram4   
         jsr AddPlayerEnergy
 endCheck
         rts
 asteroidCollision
+        lda PLAYER_STATE_DEAD           ; set player dead
+        sta playerState
+        inc playerSpritePage
+playerDeadInc
+        inc playerExplosionCnt          ; count for next explosion frame
+        lda playerExplosionCnt
+        sta VIC_SPRITE0_COLOR
+        cmp MAX_PLAYER_EXPLOSION_CNT
+        beq nextExplosionFrame
+        rts
+nextExplosionFrame
+        lda #00                         ; next explosion frame
+        sta playerExplosionCnt
+        inc playerSpritePage           
+        lda playerSpritePage
+        cmp #$86
+        beq stopIrq
+        rts
+
+stopIrq
         lda #%00000000                  ; disable sprites
         sta VIC_SPRITE_ENABLE
 
