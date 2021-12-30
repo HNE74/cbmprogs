@@ -20,6 +20,8 @@ peekYpos byte $00
 peekXpos byte $00
 peekValue0 byte $00
 peekValue1 byte $00
+peekValue2 byte $00
+peekValue3 byte $00
 plotValue byte $00
 
 ;*** game state related

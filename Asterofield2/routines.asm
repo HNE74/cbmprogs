@@ -412,19 +412,31 @@ CheckPlayerBackgroundCollision
         cmp #ASTERO_CHR
         beq asteroidCollision
         cmp #CRYSTAL_CHR
-        bne nextCheck
+        bne nextCheck1
         jsr RemoveCharFromScreenram
         jsr AddPlayerEnergy
-        lda #01
-nextCheck                               ; check right char
+nextCheck1                              ; check right char
         lda peekValue1
         cmp #ASTERO_CHR
         beq asteroidCollision
         cmp #CRYSTAL_CHR
-        bne endCheck
+        bne nextCheck2
         jsr RemoveCharFromScreenram2
         jsr AddPlayerEnergy
-        lda #01
+nextCheck2                              ; check right char
+        lda peekValue2
+        cmp #ASTERO_CHR
+        beq asteroidCollision
+        cmp #CRYSTAL_CHR
+        bne nextCheck3
+        jsr RemoveCharFromScreenram3    ; jsr AddPlayerEnergy
+nextCheck3                              ; check right char
+        lda peekValue3
+        cmp #ASTERO_CHR
+        beq asteroidCollision
+        cmp #CRYSTAL_CHR
+        bne endCheck
+        jsr RemoveCharFromScreenram4    ; jsr AddPlayerEnergy
 endCheck
         rts
 asteroidCollision
@@ -546,12 +558,27 @@ peekinc1
         iny
         lda SCREEN_TABLE,y
         sta ZERO_PAGE_PTR1
+
+        iny
+        lda SCREEN_TABLE,y; Load y address offset into zeropage
+        sta ZERO_PAGE_PTR2+1
+        iny
+        lda SCREEN_TABLE,y
+        sta ZERO_PAGE_PTR2
+
         ldy peekXpos
         lda (ZERO_PAGE_PTR1),y; Peek value and store it to result 
         sta peekValue0
         iny
         lda (ZERO_PAGE_PTR1),y; Peek value and store it to result 
         sta peekValue1
+
+        ldy peekXpos
+        lda (ZERO_PAGE_PTR2),y; Peek value and store it to result 
+        sta peekValue2
+        iny
+        lda (ZERO_PAGE_PTR2),y; Peek value and store it to result 
+        sta peekValue3
         rts
 
 ;**************************************************
@@ -599,6 +626,49 @@ plot2   iny
         cpx peekYpos
         bne plot2
 
+        lda SCREEN_TABLE,y+1    ; store offset in zero page pointer register
+        sta ZERO_PAGE_PTR1
+        lda SCREEN_TABLE,y
+        sta ZERO_PAGE_PTR1+1
+        
+        lda #BLANK_CHR          ; set screen ram adding x position to 
+        ldy peekXpos            ; memory position zero page points to
+        iny
+        sta (ZERO_PAGE_PTR1),y
+        rts
+
+RemoveCharFromScreenram3
+        ldy #0                  ; set offset screen ram (y position)
+        ldx #0
+plot3   iny
+        iny
+        inx
+        cpx peekYpos
+        bne plot3
+
+        iny
+        iny
+        lda SCREEN_TABLE,y+1    ; store offset in zero page pointer register
+        sta ZERO_PAGE_PTR1
+        lda SCREEN_TABLE,y
+        sta ZERO_PAGE_PTR1+1
+        
+        lda #BLANK_CHR          ; set screen ram adding x position to 
+        ldy peekXpos            ; memory position zero page points to
+        sta (ZERO_PAGE_PTR1),y
+        rts
+
+RemoveCharFromScreenram4
+        ldy #0                  ; set offset screen ram (y position)
+        ldx #0
+plot4   iny
+        iny
+        inx
+        cpx peekYpos
+        bne plot4
+
+        iny
+        iny
         lda SCREEN_TABLE,y+1    ; store offset in zero page pointer register
         sta ZERO_PAGE_PTR1
         lda SCREEN_TABLE,y
