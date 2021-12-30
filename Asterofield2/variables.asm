@@ -14,11 +14,13 @@ msb_irq byte $00
 playerSpritePage byte $80           ; page of player sprite
 playerXpos byte $50                 ; x position
 playerYpos byte $70                 ; y position
+playerPickedUpSomething byte $00    ; flag if player has picked something up
 
 ;*** screen char peek
 peekYpos byte $00
 peekXpos byte $00
-peekValue byte $00
+peekValue0 byte $00
+peekValue1 byte $00
 plotValue byte $00
 
 ;*** game state related

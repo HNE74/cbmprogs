@@ -116,7 +116,9 @@ doRasterIrq
         sta scrollpos 
     
         PrintBCD 8,23,#COLOR_GREEN,2,gameScore ; print score
-        jsr UpdateEnergyState                    
+        jsr UpdateEnergyState 
+        jsr UpdateEnergyState 
+        jsr DrawEnergyBar               ; draw energy bar
 
         lda #NOSCROLL                      ;set noscroll IRQ trigger
         sta VIC_SCREEN_RASTER                          
@@ -396,44 +398,26 @@ CheckPlayerBackgroundCollision
         cmp #%00000001
         bne noCollision
 
-        jsr PlayerUpperRightScreenPosition
-        jsr ScreenPeek
-        lda peekValue
+        jsr PlayerScreenPosition        ; fetch chars player collides with
+        jsr PlayerScreenPeek
+
+        lda peekValue0                  ; check left char
         cmp #ASTERO_CHR
         beq asteroidCollision
         cmp #CRYSTAL_CHR
         bne nextCheck
         jsr RemoveCharFromScreenram
-nextCheck
-        jsr PlayerUpperLeftScreenPosition
-        jsr ScreenPeek
-        lda peekValue
+        jsr AddPlayerEnergy
+nextCheck                               ; check right char
+        lda peekValue1
         cmp #ASTERO_CHR
-        beq asteroidCollision
-        cmp #CRYSTAL_CHR
-        bne nextCheck2
-        jsr RemoveCharFromScreenram
-nextCheck2
-        jsr PlayerLowerRightScreenPosition
-        jsr ScreenPeek
-        lda peekValue
-        cmp #ASTERO_CHR
-        beq asteroidCollision
-        cmp #CRYSTAL_CHR
-        bne nextCheck3
-        jsr RemoveCharFromScreenram
-nextCheck3
-        jsr PlayerLowerLeftScreenPosition
-        jsr ScreenPeek
-        lda peekValue
-        cmp ASTERO_CHR
         beq asteroidCollision
         cmp #CRYSTAL_CHR
         bne endCheck
-        jsr RemoveCharFromScreenram
+        jsr RemoveCharFromScreenram2
+        jsr AddPlayerEnergy
 endCheck
         rts
-
 asteroidCollision
         lda #%00000000                  ; disable sprites
         sta VIC_SPRITE_ENABLE
@@ -475,11 +459,9 @@ UpdateEnergyState
         lda lsb_energy
         cmp #00
         bne energyUpdated
-        
+
         dec msb_energy                  ; decrease energy msb
         inc msb_noenergy
-
-        jsr DrawEnergyBar               ; draw energy bar
 energyUpdated
         rts
 
@@ -511,34 +493,9 @@ barDrawn
         rts
 
 ;**************************************************
-;*** fetch player sprite background chars
+;*** Fetch player screenram position
 ;**************************************************
-PlayerUpperRightScreenPosition
-        clc                          ; y position 
-        lda VIC_SPRITE0_YPOS
-        adc SPRITE_SCREENPOS_YOFFSET_UR
-        sbc #50
-        sta peekYpos
-
-        lsr                          ; division by 8
-        lsr  
-        lsr  
-        sta peekYpos 
-
-        clc                          ; x position
-        lda VIC_SPRITE0_XPOS                     
-        adc SPRITE_SCREENPOS_XOFFSET_UR                   
-        sbc #24
-        sbc scrollpos                                            
-        sta peekXpos                            
-
-        lsr                           ; division by 8
-        lsr                         
-        lsr                            
-        sta peekXpos              
-        rts
-
-PlayerUpperLeftScreenPosition
+PlayerScreenPosition
         clc                          ; y position 
         lda VIC_SPRITE0_YPOS
         adc SPRITE_SCREENPOS_YOFFSET_UL
@@ -563,60 +520,10 @@ PlayerUpperLeftScreenPosition
         sta peekXpos              
         rts
 
-PlayerLowerLeftScreenPosition
-        clc                          ; y position 
-        lda VIC_SPRITE0_YPOS
-        adc SPRITE_SCREENPOS_YOFFSET_LL
-        sbc #50
-        sta peekYpos
-
-        lsr                          ; division by 8
-        lsr  
-        lsr  
-        sta peekYpos
-
-        clc                          ; x position
-        lda VIC_SPRITE0_XPOS                     
-        adc SPRITE_SCREENPOS_XOFFSET_LL                   
-        sbc #24
-        sbc scrollpos                                             
-        sta peekXpos                            
-
-        lsr                           ; division by 8
-        lsr                        
-        lsr                            
-        sta peekXpos            
-        rts
-
-PlayerLowerRightScreenPosition
-        clc                          ; y position 
-        lda VIC_SPRITE0_YPOS
-        adc SPRITE_SCREENPOS_YOFFSET_LR
-        sbc #50
-        sta peekYpos
-
-        lsr                          ; division by 8
-        lsr  
-        lsr  
-        sta peekYpos
-
-        clc                          ; x position
-        lda VIC_SPRITE0_XPOS                     
-        adc SPRITE_SCREENPOS_XOFFSET_LR                   
-        sbc #24 
-        sbc scrollpos                                             
-        sta peekXpos                            
-
-        lsr                          ; division by 8
-        lsr                         
-        lsr                            
-        sta peekXpos              
-        rts
-
 ;**************************************************
 ;*** fetch player sprite background chars
 ;**************************************************
-ScreenPeek
+PlayerScreenPeek
         ldy #0
         ldx #0
 peekinc1
@@ -632,36 +539,28 @@ peekinc1
         sta ZERO_PAGE_PTR1
         ldy peekXpos
         lda (ZERO_PAGE_PTR1),y; Peek value and store it to result 
-        sta peekValue
+        sta peekValue0
+        iny
+        lda (ZERO_PAGE_PTR1),y; Peek value and store it to result 
+        sta peekValue1
         rts
 
 ;**************************************************
 ;*** print player background chars for debugging
 ;**************************************************
 PrintPlayerBackground
-        jsr PlayerUpperRightScreenPosition
-        jsr ScreenPeek
-        lda peekValue
+        jsr PlayerScreenPosition
+        jsr PlayerScreenPeek
+        lda peekValue1
         sta 1902
-
-        jsr PlayerUpperLeftScreenPosition
-        jsr ScreenPeek
-        lda peekValue
+        jsr PlayerScreenPeek
+        lda peekValue0
         sta 1901
 
-        jsr PlayerLowerRightScreenPosition
-        jsr ScreenPeek
-        lda peekValue
-        sta 1942
-
-        jsr PlayerLowerLeftScreenPosition
-        jsr ScreenPeek
-        lda peekValue
-        sta 1941
         rts
 
 ;**************************************************
-;*** plot char to screenram
+;*** Remove char from screenram
 ;**************************************************
 RemoveCharFromScreenram
         ldy #0                  ; set offset screen ram (y position)
@@ -682,10 +581,37 @@ plot1   iny
         sta (ZERO_PAGE_PTR1),y
         rts
 
+RemoveCharFromScreenram2
+        ldy #0                  ; set offset screen ram (y position)
+        ldx #0
+plot2   iny
+        iny
+        inx
+        cpx peekYpos
+        bne plot2
+
+        lda SCREEN_TABLE,y+1    ; store offset in zero page pointer register
+        sta ZERO_PAGE_PTR1
+        lda SCREEN_TABLE,y
+        sta ZERO_PAGE_PTR1+1
+        
+        lda #BLANK_CHR          ; set screen ram adding x position to 
+        ldy peekXpos            ; memory position zero page points to
+        iny
+        sta (ZERO_PAGE_PTR1),y
+        rts
+
 ;**************************************************
-;*** removes crystal from screen and adds energy
+;*** Increase energy bar msb value
 ;**************************************************
-HandleCrystalCollision
+AddPlayerEnergy
+        ldx msb_energy
+        cpx #ENERGY_MAX
+        beq endAdd
+        inc msb_energy
+        dec msb_noenergy
+        jsr DrawEnergyBar
+endAdd
         rts
 
 
