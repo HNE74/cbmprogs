@@ -396,22 +396,24 @@ CheckPlayerBackgroundCollision
         cmp #%00000001
         bne noCollision
 
-        lda #%00000000                  ; disable sprites
-        sta VIC_SPRITE_ENABLE
+        jsr PrintPlayerBackground
 
-        sei                             ; restore original irq vector settings
-        lda lsb_irq
-        sta IRQ_VECTOR_LSB
-        lda msb_irq
-        sta IRQ_VECTOR_MSB
+     ;   lda #%00000000                  ; disable sprites
+     ;   sta VIC_SPRITE_ENABLE
 
-        lda VIC_IRQ_TYPE                ; deactivate vic interrupts                          
-        and #%11111110                    
-        sta VIC_IRQ_TYPE
+     ;   sei                             ; restore original irq vector settings
+     ;   lda lsb_irq
+     ;   sta IRQ_VECTOR_LSB
+     ;   lda msb_irq
+     ;   sta IRQ_VECTOR_MSB
 
-        lda GAME_STATE_DEAD             ; update game state from running to dead
-        sta gameState
-        cli
+    ;    lda VIC_IRQ_TYPE                ; deactivate vic interrupts                          
+     ;   and #%11111110                    
+     ;   sta VIC_IRQ_TYPE
+
+    ;    lda GAME_STATE_DEAD             ; update game state from running to dead
+    ;    sta gameState
+    ;    cli
 noCollision
         rts
 
@@ -469,6 +471,156 @@ barEnd
         inx
         sta ENERGY_SCRMEM_START,x
 barDrawn
+        rts
+
+;**************************************************
+;*** fetch player sprite background chars
+;**************************************************
+PlayerUpperRightScreenPosition
+        clc                          ; y position 
+        lda VIC_SPRITE0_YPOS
+        adc SPRITE_SCREENPOS_YOFFSET_UR
+        sbc #50
+        sta peekYpos
+
+        lsr                          ; division by 8
+        lsr  
+        lsr  
+        sta peekYpos 
+
+        clc                          ; x position
+        lda VIC_SPRITE0_XPOS                     
+        adc SPRITE_SCREENPOS_XOFFSET_UR                   
+        sbc #24
+        sbc scrollpos                                            
+        sta peekXpos                            
+
+        lsr                           ; division by 8
+        lsr                         
+        lsr                            
+        sta peekXpos              
+        rts
+
+PlayerUpperLeftScreenPosition
+        clc                          ; y position 
+        lda VIC_SPRITE0_YPOS
+        adc SPRITE_SCREENPOS_YOFFSET_UL
+        sbc #50
+        sta peekYpos
+
+        lsr                          ; division by 8
+        lsr  
+        lsr  
+        sta peekYPos 
+
+        clc                          ; x position
+        lda VIC_SPRITE0_XPOS                     
+        adc SPRITE_SCREENPOS_XOFFSET_UL                   
+        sbc #24 
+        sbc scrollpos                                             
+        sta peekXpos                            
+
+        lsr                          ; division by 8
+        lsr                         
+        lsr                            
+        sta peekXpos              
+        rts
+
+PlayerLowerLeftScreenPosition
+        clc                          ; y position 
+        lda VIC_SPRITE0_YPOS
+        adc SPRITE_SCREENPOS_YOFFSET_LL
+        sbc #50
+        sta peekYpos
+
+        lsr                          ; division by 8
+        lsr  
+        lsr  
+        sta peekYpos
+
+        clc                          ; x position
+        lda VIC_SPRITE0_XPOS                     
+        adc SPRITE_SCREENPOS_XOFFSET_LL                   
+        sbc #24
+        sbc scrollpos                                             
+        sta peekXpos                            
+
+        lsr                           ; division by 8
+        lsr                        
+        lsr                            
+        sta peekXpos            
+        rts
+
+PlayerLowerRightScreenPosition
+        clc                          ; y position 
+        lda VIC_SPRITE0_YPOS
+        adc SPRITE_SCREENPOS_YOFFSET_LR
+        sbc #50
+        sta peekYpos
+
+        lsr                          ; division by 8
+        lsr  
+        lsr  
+        sta peekYpos
+
+        clc                          ; x position
+        lda VIC_SPRITE0_XPOS                     
+        adc SPRITE_SCREENPOS_XOFFSET_LR                   
+        sbc #24 
+        sbc scrollpos                                             
+        sta peekXpos                            
+
+        lsr                          ; division by 8
+        lsr                         
+        lsr                            
+        sta peekXpos              
+        rts
+
+;**************************************************
+;*** fetch player sprite background chars
+;**************************************************
+ScreenPeek
+        ldy #0
+        ldx #0
+peekinc1
+        iny
+        iny
+        inx
+        cpx peekYpos
+        bne peekinc1
+        lda SCREEN_TABLE,y; Load y address offset into zeropage
+        sta ZERO_PAGE_PTR1+1
+        iny
+        lda SCREEN_TABLE,y
+        sta ZERO_PAGE_PTR1
+        ldy peekXpos
+        lda (ZERO_PAGE_PTR1),y; Peek value and store it to result 
+        sta peekValue
+        rts
+
+;**************************************************
+;*** print player background chars for debugging
+;**************************************************
+PrintPlayerBackground
+        jsr PlayerUpperRightScreenPosition
+        jsr ScreenPeek
+        lda peekValue
+        sta 1902
+
+        jsr PlayerUpperLeftScreenPosition
+        jsr ScreenPeek
+        lda peekValue
+        sta 1901
+
+        jsr PlayerLowerRightScreenPosition
+        jsr ScreenPeek
+        lda peekValue
+        sta 1942
+
+        jsr PlayerLowerLeftScreenPosition
+        jsr ScreenPeek
+        lda peekValue
+        sta 1941
         rts
 
 

@@ -15,7 +15,12 @@ playerSpritePage byte $80           ; page of player sprite
 playerXpos byte $50                 ; x position
 playerYpos byte $70                 ; y position
 
-;*** game state related variables
+;*** screen char peek
+peekYpos byte $00
+peekXpos byte $00
+peekValue byte $00
+
+;*** game state related
 gameState byte $00                  ; game state
 gameScore byte $00, $00, $00        ; game score in bcd format starting with low values
 gameHighscore byte $00, $00, $00    ; game highscore in bcd format starting with low values
