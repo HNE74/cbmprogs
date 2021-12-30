@@ -397,7 +397,7 @@ CheckPlayerBackgroundCollision
         and #%00000001
         cmp #%00000001
         bne noCollision
-
+        
         jsr PlayerScreenPosition        ; fetch chars player collides with
         jsr PlayerScreenPeek
 
@@ -408,6 +408,7 @@ CheckPlayerBackgroundCollision
         bne nextCheck
         jsr RemoveCharFromScreenram
         jsr AddPlayerEnergy
+        lda #01
 nextCheck                               ; check right char
         lda peekValue1
         cmp #ASTERO_CHR
@@ -416,6 +417,7 @@ nextCheck                               ; check right char
         bne endCheck
         jsr RemoveCharFromScreenram2
         jsr AddPlayerEnergy
+        lda #01
 endCheck
         rts
 asteroidCollision
