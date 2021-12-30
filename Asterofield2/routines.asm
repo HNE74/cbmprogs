@@ -98,8 +98,8 @@ RasterIrq
 doRasterIrq                         
         sta VIC_IRQ_REQUEST                ;confirm VIC IRQ handled
 
-        ;lda COLOR_YELLOW 
-        ;sta VIC_SCREEN_BDCOLOR 
+        lda COLOR_YELLOW 
+        sta VIC_SCREEN_BDCOLOR 
 
         lda VIC_SCREEN_RASTER              ;check scroll
         cmp #DOSCROLL
@@ -129,8 +129,11 @@ doRasterIrq
 ;*** carries out hardscroll of texline
 ;************************************************
 DoNoScroll
-        ;lda COLOR_GREEN 
-        ;sta VIC_SCREEN_BDCOLOR 
+        lda #%00000000                    ; disable sprites
+        sta VIC_SPRITE_ENABLE
+
+        lda COLOR_GREEN 
+        sta VIC_SCREEN_BDCOLOR 
 
         lda VIC_SCROLL_MCOLOR             ;no scroll
         and #%11110000                   
@@ -148,11 +151,15 @@ noscrollExit
         jsr PositionSprites               ;position sprites on screen
         jsr CheckPlayerBackgroundCollision ; check spaceship collided
                                   
-        ;lda COLOR_BLUE
-        ;sta VIC_SCREEN_BDCOLOR 
+        lda COLOR_BLUE
+        sta VIC_SCREEN_BDCOLOR 
 
         lda #DOSCROLL                     ;set doscroll IRQ trigger                     
-        sta VIC_SCREEN_RASTER                          
+        sta VIC_SCREEN_RASTER 
+
+        lda #%00000001                    ; enable sprites
+        sta VIC_SPRITE_ENABLE
+                         
         jmp rasterIrqExit
 
 ;************************************************
