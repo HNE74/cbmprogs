@@ -41,7 +41,7 @@ InitGame
         lda #00
         sta nextLevelCnt
 
-        lda #$80                 ; init player
+        lda PLAYER_SPRITE_PAGE  ; init player
         sta playerSpritePage
         lda #$50
         sta playerXpos
@@ -113,8 +113,8 @@ RasterIrq
 doRasterIrq                         
         sta VIC_IRQ_REQUEST                ;confirm VIC IRQ handled
 
-        ;lda COLOR_YELLOW 
-        ;sta VIC_SCREEN_BDCOLOR 
+        lda COLOR_YELLOW 
+        sta VIC_SCREEN_BDCOLOR 
 
         lda VIC_SCREEN_RASTER              ;check scroll
         cmp #DOSCROLL
@@ -153,8 +153,8 @@ DoNoScroll
         lda #%00000000                    ;disable sprites
         sta VIC_SPRITE_ENABLE
 
-        ;lda COLOR_GREEN 
-        ;sta VIC_SCREEN_BDCOLOR 
+        lda COLOR_GREEN 
+        sta VIC_SCREEN_BDCOLOR 
 
         lda VIC_SCROLL_MCOLOR             ;no scroll
         and #%11110000                   
@@ -176,8 +176,8 @@ noscrollExit
         jsr PositionSprites               ;position sprites on screen
         jsr CheckPlayerBackgroundCollision ; check spaceship collided
                                   
-        ;lda COLOR_BLUE
-        ;sta VIC_SCREEN_BDCOLOR 
+        lda COLOR_BLUE
+        sta VIC_SCREEN_BDCOLOR 
 
 irqExit
         lda #DOSCROLL                     ;set doscroll IRQ trigger                     
@@ -200,26 +200,24 @@ RandomNumber
         eor $dd07 
         rts
 
-;************************************************
-;*** hardscroll routine 
-;************************************************
+
 MoveRow
-        MoveRowLeft #1,#0,#39,m1,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #41,#40,#79,m2,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #81,#80,#119,m3,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #121,#120,#159,m4,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #161,#160,#199,m5,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #201,#200,#239,m6,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #241,#240,#279,m7,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #281,#280,#319,m8,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #321,#320,#359,m9,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #361,#360,#399,m10,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #401,#400,#439,m11,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #441,#440,#479,m12,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #481,#480,#519,m13,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #521,#520,#559,m14,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        MoveRowLeft #561,#560,#599,m15,SCREEN_SCROLLRAM_START,COLOR_SCROLLRAM_START
-        rts                                
+        MoveRowLeft 1224,s1
+        MoveRowLeft 1264,s2
+        MoveRowLeft 1304,s3
+        MoveRowLeft 1344,s4
+        MoveRowLeft 1384,s5
+        MoveRowLeft 1424,s6
+        MoveRowLeft 1464,s7
+        MoveRowLeft 1504,s8
+        MoveRowLeft 1544,s9
+        MoveRowLeft 1584,s10
+        MoveRowLeft 1624,s11
+        MoveRowLeft 1664,s12
+        MoveRowLeft 1704,s13
+        MoveRowLeft 1744,s14
+        MoveRowLeft 1784,s15
+        rts
 
 ;************************************************
 ;*** restore registers when leaving IRQ routine
@@ -495,7 +493,7 @@ nextExplosionFrame
         sta playerExplosionCnt
         inc playerSpritePage           
         lda playerSpritePage
-        cmp #$86
+        cmp PLAYER_SPRITE_PAGE_EXP
         beq stopIrq
         rts
 

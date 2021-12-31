@@ -46,7 +46,7 @@ DOSCROLL     = #89                ; start of scroll area
 NOSCROLL     = #210               ; end of scroll area
 
 PROGRAM_START = $0810             ; program start
-SPRITE_DEFINITION = $2000         ; sprite 0 definition
+SPRITE_DEFINITION = $3000         ; sprite 0 definition
 
 ; *** asteroid chars
 BLANK_CHR = #32
@@ -62,6 +62,9 @@ MAINSCREEN_MAP_MEM_BLOCK1 = $4000
 MAINSCREEN_MAP_MEM_BLOCK2 = $40FF
 MAINSCREEN_MAP_MEM_BLOCK3 = $41FE
 MAINSCREEN_MAP_MEM_BLOCK4 = $42FD
+
+PLAYER_SPRITE_PAGE=#192
+PLAYER_SPRITE_PAGE_EXP=#198
 
 ; *** constants for player char collision detection
 SPRITE_SCREENPOS_XOFFSET_UL = #00

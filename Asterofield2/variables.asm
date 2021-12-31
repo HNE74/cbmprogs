@@ -11,7 +11,7 @@ lsb_irq byte $00
 msb_irq byte $00
 
 ;*** player variables
-playerSpritePage byte $80           ; page of player sprite
+playerSpritePage byte 192           ; page of player sprite
 playerXpos byte $50                 ; x position
 playerYpos byte $70                 ; y position
 playerState byte $00                ; player state

@@ -49,6 +49,7 @@
         <FileName>routines.asm</FileName>
         <FileName>variables.asm</FileName>
         <FileName>main.asm</FileName>
+        <FileName>numgen.bas</FileName>
     </BuildList>
     <DetermineBuildOrder>0</DetermineBuildOrder>
     <PaddingByte>0</PaddingByte>
@@ -88,7 +89,7 @@
             <Breakpoints />
             <Bookmarks />
             <Topmost>False</Topmost>
-            <FileOpen>False</FileOpen>
+            <FileOpen>True</FileOpen>
         </SourceFile>
         <SourceFile>
             <Name>main.asm</Name>
@@ -138,6 +139,17 @@
             <Name>mem_vic2.asm</Name>
             <PrgName />
             <FileType>2</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>False</Topmost>
+            <FileOpen>True</FileOpen>
+        </SourceFile>
+        <SourceFile>
+            <Name>numgen.bas</Name>
+            <PrgName />
+            <FileType>1</FileType>
             <IncludeInBuild>True</IncludeInBuild>
             <Regions />
             <Breakpoints />
