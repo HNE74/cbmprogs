@@ -21,7 +21,8 @@ playerExplosionCnt byte $00
 shotSpritePage byte 199
 shotState byte $00                  
 shotXpos byte $00
-shotYpos byte $00                      
+shotYpos byte $00 
+shotCollisionState byte $00                     
 
 ;*** screen char peek values
 peekYpos byte $00

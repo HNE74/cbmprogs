@@ -185,6 +185,8 @@ noShot
         jsr HandleJoystickInput           ;read player input 
         jsr PositionSprites               ;position sprites on screen
         jsr CheckPlayerBackgroundCollision ; check spaceship collided
+        jsr CheckShotBackgroundCollision  ; check shot collided
+
                                   
         ;lda COLOR_BLUE
         ;sta VIC_SCREEN_BDCOLOR 
@@ -539,6 +541,7 @@ CheckPlayerBackgroundCollision
         beq playerDeadInc
 
         lda VIC_SPRITE_BACKGR_COLL      ; player sprite register check
+        sta shotCollisionState
         and #%00000001
         cmp #%00000001
         beq checkCollision
@@ -620,6 +623,33 @@ stopIrq
         sta gameState
         cli
 noCollision
+        rts
+
+;************************************************
+;*** check shot background collision
+;************************************************
+CheckShotBackgroundCollision
+        lda shotState                   ; enable shot sprite
+        ora VIC_SPRITE_ENABLE
+        sta VIC_SPRITE_ENABLE
+
+        lda shotCollisionState         ; shot sprite register check
+        and #%00000010
+        cmp #%00000010
+        beq checkShotCollision
+        jmp noShotCollision
+checkShotCollision
+        lda #00
+        sta 1025
+        jsr ShotScreenPosition        ; fetch char shot collided
+        lda peekXpos
+        sta 1026
+        lda peekYpos
+        sta 1027
+        lda peekValue0
+        sta 1029
+        jsr RemoveCharFromScreenram
+noShotCollision
         rts
 
 ;************************************************
@@ -731,6 +761,58 @@ barEnd
         inx
         sta ENERGY_SCRMEM_START,x
 barDrawn
+        rts
+
+;**************************************************
+;*** Fetch shot screenram position
+;**************************************************
+ShotScreenPosition
+        clc                          ; y position 
+        lda shotYpos
+        adc SHOT_SCREENPOS_YOFFSET
+        sbc #50
+        sta peekYpos
+
+        lsr                          ; division by 8
+        lsr  
+        lsr  
+        sta peekYPos 
+
+        clc                          ; x position
+        lda shotXpos                   
+        adc SHOT_SCREENPOS_XOFFSET                   
+        sbc #24        
+        sbc scrollpos                                            
+        sta peekXpos                            
+
+        lsr                          ; division by 8
+        lsr                         
+        lsr                            
+        sta peekXpos              
+        rts
+
+
+;**************************************************
+;*** fetch shot sprite background char
+;**************************************************
+ShotScreenPeek
+        ldy #0
+        ldx #0
+speekinc1
+        iny
+        iny
+        inx
+        cpx peekYpos
+        bne speekinc1
+        lda SCREEN_TABLE,y; Load y address offset into zeropage
+        sta ZERO_PAGE_PTR1+1
+        iny
+        lda SCREEN_TABLE,y
+        sta ZERO_PAGE_PTR1
+
+        ldy peekXpos
+        lda (ZERO_PAGE_PTR1),y; Peek value and store it to result 
+        sta peekValue0
         rts
 
 ;**************************************************

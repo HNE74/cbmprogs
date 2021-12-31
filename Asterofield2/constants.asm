@@ -77,6 +77,10 @@ SHOT_MAX_XPOS=#80
 SPRITE_SCREENPOS_XOFFSET_UL = #00
 SPRITE_SCREENPOS_YOFFSET_UL = #05
 
+; *** constants for shot char collision detection
+SHOT_SCREENPOS_XOFFSET = #04
+SHOT_SCREENPOS_YOFFSET = #04
+
 ; *** energy bar screenram position
 ENERGY_SCRMEM_START = 1872
 ENERGY_MAX = #20
