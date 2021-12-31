@@ -175,6 +175,13 @@ DoNoScroll
         dec difficulty
 
 noscrollExit
+        lda shotState
+        beq noShot
+        lda shotState
+        cmp SHOT_STATE_OFF
+        beq noShot
+        jsr MoveShot
+noShot
         jsr HandleJoystickInput           ;read player input 
         jsr PositionSprites               ;position sprites on screen
         jsr CheckPlayerBackgroundCollision ; check spaceship collided
@@ -208,6 +215,9 @@ RandomNumber
         rts
 
 
+;************************************************
+;*** hardscroll play area from right to left
+;************************************************
 MoveRow
         MoveRowLeft 1224,s1
         MoveRowLeft 1264,s2
@@ -236,6 +246,42 @@ RasterIrqExit
         tax
         pla
         rti
+
+;************************************************
+;***
+;************************************************
+MoveShot
+        lda shotXpos            ; rescue old shot positoni
+        sta ZERO_PAGE_PTR1
+
+        inc shotXpos            ; increase shot horizontal position
+        inc shotXpos
+        inc shotXpos
+        inc shotXpos
+
+        lda VIC_SPRITE_X255     ; check shot has extended x coordinate
+        cmp #%00000010
+        beq checkDisableShot
+
+        lda shotXpos            ; check switch to extended x coordinate
+        cmp ZERO_PAGE_PTR1
+        bcs movedShot
+           
+        lda #%00000010          ; set shot x coordinate extended
+        sta VIC_SPRITE_X255
+        jmp movedShot
+
+checkDisableShot
+        lda shotXpos            ; check shot has reached max x coordinate
+        cmp SHOT_MAX_XPOS
+        bcc movedShot
+
+        lda #00                 ; disable shot
+        sta VIC_SPRITE_X255
+        lda SHOT_STATE_OFF
+        sta shotState
+movedShot
+        rts
 
 ;************************************************
 ;*** draw the mainscreen map to screenram
@@ -404,23 +450,15 @@ goDownRight
 noGoDownRight
         rts
 shotButton   
-        ldy playerXpos
-        ldx #10
-shotLoop1        
-        iny
-        dex
-        cpx #00
-        bne shotLoop1
-        sty shotXpos
-        ldx playerYpos
-        inx
-        inx
-        inx
-        stx shotYpos
-        lda SHOT_STATE_ON
-        sta shotState
+        lda shotState
+        cmp SHOT_STATE_ON
+        beq noNewShot
+        lda msb_energy
+        cmp #00
+        beq noNewShot
+        jmp CreateNewShot
+noNewShot
         rts
-
 
 ;************************************************
 ;*** position sprites
@@ -462,6 +500,34 @@ InitSprites
         sta VIC_SPRITE_HEIGHT_EXP
         lda #%00000000          ; sprite width expansion
         sta VIC_SPRITE_WIDTH_EXP
+        rts
+
+;************************************************
+;*** create shot
+;************************************************
+CreateNewShot
+        ldy playerXpos          ; calculate shot horiontal pos
+        ldx #10
+shotLoop1        
+        iny
+        dex
+        cpx #00
+        bne shotLoop1
+        sty shotXpos
+
+        ldx playerYpos          ; calculate shot vertical pos
+        inx
+        inx
+        inx
+        iny
+        stx shotYpos
+
+        lda SHOT_STATE_ON       ; activate shot
+        sta shotState
+        lda VIC_SPRITE_X255
+        eor #%00000000
+
+        dec msb_energy          ; deduct energy
         rts
 
 ;*************************************************

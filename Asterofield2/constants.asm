@@ -71,6 +71,7 @@ PLAYER_SPRITE_PAGE_EXP=#197
 SHOT_SPRITE_PAGE=#197
 SHOT_STATE_OFF=#00
 SHOT_STATE_ON=#02
+SHOT_MAX_XPOS=#80
 
 ; *** constants for player char collision detection
 SPRITE_SCREENPOS_XOFFSET_UL = #00
@@ -82,7 +83,7 @@ ENERGY_MAX = #20
 
 ;*** player movement range coordinates
 PLAYER_MIN_X=#32
-PLAYER_MAX_X=#250
+PLAYER_MAX_X=#220
 PLAYER_MIN_Y=#91
 PLAYER_MAX_Y=#192
 
