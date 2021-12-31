@@ -52,6 +52,9 @@ InitGame
         lda #00
         sta playerExplosionCnt
 
+        lda SHOT_STATE_OFF      ; init shot
+        sta shotState
+
         lda ENERGY_MAX          ; init energy state
         sta msb_energy
         lda #255
@@ -185,6 +188,10 @@ irqExit
 
         lda #%00000001                    ; enable sprites
         sta VIC_SPRITE_ENABLE
+        
+        lda shotState
+        ora VIC_SPRITE_ENABLE
+        sta VIC_SPRITE_ENABLE
                          
         jmp rasterIrqExit
 
@@ -291,7 +298,12 @@ checkEnergyLeft
         cmp #00
         bne joyJmp1
         rts
-joyJmp1        
+joyJmp1  
+        lda CIA_PORT_A
+        and #JOY_BUTTON
+        bne noBtn
+        jmp shotButton
+noBtn
         lda CIA_PORT_A
         and #JOY_UP_LEFT
         beq goUpLeft
@@ -391,22 +403,49 @@ goDownRight
         inc playerXpos
 noGoDownRight
         rts
-goButton
-        ldy #JOY_BUTTON
+shotButton   
+        ldy playerXpos
+        ldx #10
+shotLoop1        
+        iny
+        dex
+        cpx #00
+        bne shotLoop1
+        sty shotXpos
+        ldx playerYpos
+        inx
+        inx
+        inx
+        stx shotYpos
+        lda SHOT_STATE_ON
+        sta shotState
         rts
+
 
 ;************************************************
 ;*** position sprites
 ;************************************************
 PositionSprites
-        lda playerSpritePage     ; set pointer to sprite data
+        lda playerSpritePage     
         sta VIC_SPRITE0_PTR
-        lda COLOR_LIGHT_BLUE     ; set sprite color
+        lda COLOR_LIGHT_BLUE     
         sta VIC_SPRITE0_COLOR
-        lda playerXpos           ; position sprite on screen
+        lda playerXpos           
         sta VIC_SPRITE0_XPOS
         lda playerYpos
         sta VIC_SPRITE0_YPOS
+
+        lda SHOT_SPRITE_PAGE
+        sta VIC_SPRITE1_PTR
+        lda COLOR_LIGHT_GREEN   
+        sta VIC_SPRITE1_COLOR
+        lda shotXpos           
+        sta VIC_SPRITE1_XPOS
+        lda shotYpos
+        sta VIC_SPRITE1_YPOS
+        lda VIC_SPRITE_ENABLE
+        ora shotState
+        sta VIC_SPRITE_ENABLE
         rts
 
 ;************************************************

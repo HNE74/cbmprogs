@@ -11,13 +11,19 @@ lsb_irq byte $00
 msb_irq byte $00
 
 ;*** player variables
-playerSpritePage byte 192           ; page of player sprite
-playerXpos byte $50                 ; x position
-playerYpos byte $70                 ; y position
-playerState byte $00                ; player state
-playerExplosionCnt byte $00         ; player explosion counter
+playerSpritePage byte 192           
+playerXpos byte $50                 
+playerYpos byte $70             
+playerState byte $00               
+playerExplosionCnt byte $00   
 
-;*** screen char peek
+;*** shot variables
+shotSpritePage byte 199
+shotState byte $00                  
+shotXpos byte $00
+shotYpos byte $00                      
+
+;*** screen char peek values
 peekYpos byte $00
 peekXpos byte $00
 peekValue0 byte $00

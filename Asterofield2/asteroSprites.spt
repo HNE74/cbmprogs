@@ -175,6 +175,41 @@
       <data>0</data>
     </sdata>
    </sprite>
+  <sprite>
+    <description></description>
+    <links></links>
+    <include>True</include>
+    <multi>False</multi>
+    <spbkgnd>1</spbkgnd>
+    <spcolour>0</spcolour>
+    <mcolour1>6</mcolour1>
+    <mcolour2>7</mcolour2>
+    <expandx>False</expandx>
+    <expandy>False</expandy>
+    <sdata>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>8257536</data>
+      <data>16711680</data>
+      <data>8257536</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+      <data>0</data>
+    </sdata>
+   </sprite>
     <!-- Scratchpad data -->
     <ScratchpadData>
         <MaxSprites>0</MaxSprites>

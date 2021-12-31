@@ -35,7 +35,7 @@ runGame
         lda gameState
         cmp GAME_STATE_RUNNING
         beq runGame
-
+ 
         jsr WaitJoyButtonPressed
         jmp startGame
         rts
