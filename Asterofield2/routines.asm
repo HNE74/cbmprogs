@@ -173,6 +173,8 @@ DoNoScroll
         inc nextLevelCnt                  ;increase difficulty
         bne noscrollExit
         dec difficulty
+        dec difficulty
+        dec difficulty
 
 noscrollExit
         lda shotState
@@ -185,9 +187,12 @@ noShot
         jsr HandleJoystickInput           ;read player input 
         jsr PositionSprites               ;position sprites on screen
         jsr CheckPlayerBackgroundCollision ; check spaceship collided
-        jsr CheckShotBackgroundCollision  ; check shot collided
-
-                                  
+        
+        lda shotState                     ; check shot collided 
+        cmp SHOT_STATE_OFF
+        beq irqExit
+        jsr CheckShotBackgroundCollision                                 
+        
         ;lda COLOR_BLUE
         ;sta VIC_SCREEN_BDCOLOR 
 
@@ -458,6 +463,7 @@ shotButton
         lda msb_energy
         cmp #00
         beq noNewShot
+        jsr DrawEnergyBar
         jmp CreateNewShot
 noNewShot
         rts
@@ -530,6 +536,7 @@ shotLoop1
         eor #%00000000
 
         dec msb_energy          ; deduct energy
+        inc msb_noenergy
         rts
 
 ;*************************************************
@@ -629,26 +636,19 @@ noCollision
 ;*** check shot background collision
 ;************************************************
 CheckShotBackgroundCollision
-        lda shotState                   ; enable shot sprite
-        ora VIC_SPRITE_ENABLE
-        sta VIC_SPRITE_ENABLE
-
         lda shotCollisionState         ; shot sprite register check
         and #%00000010
         cmp #%00000010
         beq checkShotCollision
         jmp noShotCollision
 checkShotCollision
-        lda #00
-        sta 1025
         jsr ShotScreenPosition        ; fetch char shot collided
-        lda peekXpos
-        sta 1026
-        lda peekYpos
-        sta 1027
-        lda peekValue0
-        sta 1029
         jsr RemoveCharFromScreenram
+        lda SHOT_STATE_OFF            ; disable shot
+        sta shotState                  
+        lda VIC_SPRITE_ENABLE
+        and #%00000010
+        sta VIC_SPRITE_ENABLE
 noShotCollision
         rts
 
