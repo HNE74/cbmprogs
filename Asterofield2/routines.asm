@@ -113,8 +113,8 @@ RasterIrq
 doRasterIrq                         
         sta VIC_IRQ_REQUEST                ;confirm VIC IRQ handled
 
-        lda COLOR_YELLOW 
-        sta VIC_SCREEN_BDCOLOR 
+        ;lda COLOR_YELLOW 
+        ;sta VIC_SCREEN_BDCOLOR 
 
         lda VIC_SCREEN_RASTER              ;check scroll
         cmp #DOSCROLL
@@ -153,8 +153,8 @@ DoNoScroll
         lda #%00000000                    ;disable sprites
         sta VIC_SPRITE_ENABLE
 
-        lda COLOR_GREEN 
-        sta VIC_SCREEN_BDCOLOR 
+        ;lda COLOR_GREEN 
+        ;sta VIC_SCREEN_BDCOLOR 
 
         lda VIC_SCROLL_MCOLOR             ;no scroll
         and #%11110000                   
@@ -176,8 +176,8 @@ noscrollExit
         jsr PositionSprites               ;position sprites on screen
         jsr CheckPlayerBackgroundCollision ; check spaceship collided
                                   
-        lda COLOR_BLUE
-        sta VIC_SCREEN_BDCOLOR 
+        ;lda COLOR_BLUE
+        ;sta VIC_SCREEN_BDCOLOR 
 
 irqExit
         lda #DOSCROLL                     ;set doscroll IRQ trigger                     
@@ -523,11 +523,11 @@ noCollision
 PlayerEnergyDecreaseSound
         lda #25
         sta SID_SIGVOL
-        lda #0
+        lda #2
         sta SID_CHANNEL1_FRELO
-        lda #5
+        lda #20
         sta SID_CHANNEL1_FREHI
-        lda #22
+        lda #8
         sta SID_CHANNEL1_ATDCY
         lda #10
         sta SID_SURELI
