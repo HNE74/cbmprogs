@@ -59,8 +59,6 @@ InitGame
         sta msb_energy
         lda #255
         sta lsb_energy
-        lda #0
-        sta msb_noenergy
         jsr DrawEnergyBar
 
         rts
@@ -140,6 +138,7 @@ doRasterIrq
         beq setNextIrq
       
         jsr UpdateEnergyState 
+        jsr DrawEnergyBar                  ; draw energy bar
         jsr UpdateEnergyState 
         jsr DrawEnergyBar                  ; draw energy bar
 
@@ -265,7 +264,6 @@ MoveShot
         inc shotXpos
         inc shotXpos
         inc shotXpos
-
         lda VIC_SPRITE_X255     ; check shot has extended x coordinate
         cmp #%00000010
         beq checkDisableShot
@@ -463,7 +461,6 @@ shotButton
         lda msb_energy
         cmp #00
         beq noNewShot
-        jsr DrawEnergyBar
         jmp CreateNewShot
 noNewShot
         rts
@@ -536,7 +533,8 @@ shotLoop1
         eor #%00000000
 
         dec msb_energy          ; deduct energy
-        inc msb_noenergy
+        jsr ShotSound
+        jsr DrawEnergyBar
         rts
 
 ;*************************************************
@@ -643,7 +641,13 @@ CheckShotBackgroundCollision
         jmp noShotCollision
 checkShotCollision
         jsr ShotScreenPosition        ; fetch char shot collided
-        jsr RemoveCharFromScreenram
+        jsr ShotScreenPeek
+        lda peekValue0
+        cmp BLANK_CHR
+        beq noShotCollision
+
+        jsr ShotExplosionSound
+        jsr RemoveCharFromScreenram   ; remove asteroid hit
         lda SHOT_STATE_OFF            ; disable shot
         sta shotState                  
         lda VIC_SPRITE_ENABLE
@@ -656,7 +660,7 @@ noShotCollision
 ;*** sfx routines
 ;************************************************
 PlayerEnergyDecreaseSound
-        lda #25
+        lda #15
         sta SID_SIGVOL
         lda #2
         sta SID_CHANNEL1_FRELO
@@ -673,7 +677,7 @@ PlayerEnergyDecreaseSound
         rts
 
 PlayerEnergycollectSound
-        lda #25
+        lda #15
         sta SID_SIGVOL
         lda #0
         sta SID_CHANNEL1_FRELO
@@ -690,7 +694,7 @@ PlayerEnergycollectSound
         rts
 
 PlayerExplosionSound
-        lda #25
+        lda #15
         sta SID_SIGVOL
         lda #20
         sta SID_CHANNEL1_FRELO
@@ -703,6 +707,44 @@ PlayerExplosionSound
         lda #0
         sta SID_CHANNEL1_VCREG
         lda #WAVE_RAUSCHEN
+        sta SID_CHANNEL1_VCREG
+        rts
+
+ShotExplosionSound
+        lda #15
+        sta SID_SIGVOL
+        lda #40
+        sta SID_CHANNEL1_FRELO
+        lda #40
+        sta SID_CHANNEL1_FREHI
+        lda #5
+        sta SID_CHANNEL1_ATDCY
+        lda #5
+        sta SID_SURELI
+        lda #0
+        sta SID_CHANNEL1_VCREG
+        lda #WAVE_RAUSCHEN
+        sta SID_CHANNEL1_VCREG
+        rts
+
+ShotSound
+        lda #15
+        sta SID_SIGVOL
+        lda #20
+        sta SID_CHANNEL1_FRELO
+        lda #20
+        sta SID_CHANNEL1_FREHI
+        lda #$00
+        sta SID_CHANNEL1_PWLO
+        lda #$29
+        sta SID_CHANNEL1_PWLH
+        lda #20
+        sta SID_CHANNEL1_ATDCY
+        lda #8
+        sta SID_SURELI
+        lda #20
+        sta SID_CHANNEL1_VCREG
+        lda #WAVE_RECHTECK
         sta SID_CHANNEL1_VCREG
         rts
 
@@ -731,7 +773,6 @@ UpdateEnergyState
         bne energyUpdated
 
         dec msb_energy                  ; decrease energy msb
-        inc msb_noenergy
         jsr PlayerEnergyDecreaseSound
 energyUpdated
         rts
@@ -993,7 +1034,6 @@ AddPlayerEnergy
         cpx #ENERGY_MAX
         beq endAdd
         inc msb_energy
-        dec msb_noenergy
         jsr DrawEnergyBar
 endAdd
         jsr PlayerEnergycollectSound
