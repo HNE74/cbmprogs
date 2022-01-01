@@ -10,14 +10,14 @@
 ;*** initializes the program
 ;*****************************************************
 InitProgram
-        lda COLOR_BLACK 
+        lda COLOR_BLACK         ; set colors 
         sta VIC_SCREEN_BGCOLOR 
         sta VIC_SCREEN_BDCOLOR
 
-        lda #251
-        sta difficulty
-        lda #00
-        sta nextLevelCnt
+        
+        lda VIC_SCROLL_MCOLOR   ; set screen with to 38 columns              
+        and #%11110000                    
+        sta VIC_SCROLL_MCOLOR   
  
         rts
 
@@ -66,12 +66,7 @@ InitGame
 ;*****************************************************
 ;*** setup scroll IRQ routines
 ;*****************************************************
-SetupScrollIRQ
-        ; set screen with to 38 columns
-        lda VIC_SCROLL_MCOLOR              
-        and #%11110000                    
-        sta VIC_SCROLL_MCOLOR              
-
+SetupScrollIRQ          
         ; rescue irq vector settings
         lda IRQ_VECTOR_LSB
         sta lsb_irq
@@ -119,8 +114,9 @@ doRasterIrq
 
         lda VIC_SCREEN_RASTER              ;check scroll
         cmp #DOSCROLL
-        bne doNoScroll
-
+        beq screenScroll
+        jmp doNoScroll
+screenScroll
         lda VIC_SCROLL_MCOLOR              ;update screen scroll
         and #%11110000                     
         ora scrollpos                      
@@ -131,7 +127,8 @@ doRasterIrq
         and scrollpos                      
         sta scrollpos 
     
-        PrintBCD 8,23,#COLOR_GREEN,2,gameScore ; print score
+        PrintBCD 8,23,#COLOR_LIGHT_GREEN,2,gameScore ; print score
+        PrintBCD 32,23,#COLOR_LIGHT_GREEN,2,gameHighscore ; print highsoce
 
         lda playerState                    ; check player state
         cmp PLAYER_STATE_DEAD
@@ -263,7 +260,7 @@ MoveShot
         inc shotXpos            ; increase shot horizontal position
         inc shotXpos
         inc shotXpos
-        inc shotXpos
+
         lda VIC_SPRITE_X255     ; check shot has extended x coordinate
         cmp #%00000010
         beq checkDisableShot
@@ -751,9 +748,8 @@ ShotSound
 ;************************************************
 ;*** wait joystick button pressed 
 ;************************************************
-WaitJoyButtonPressed 
-        lda #00
-        sta SID_CHANNEL1_VCREG   
+WaitJoyButtonPressed
+        jsr RandomNumber       
         lda CIA_PORT_A
         and #JOY_BUTTON
         bne WaitJoyButtonPressed
@@ -1037,6 +1033,61 @@ AddPlayerEnergy
         jsr DrawEnergyBar
 endAdd
         jsr PlayerEnergycollectSound
+        rts
+
+;**************************************************
+;*** Show game information
+;**************************************************
+ShowGameInfo
+        PrintString 2,6,COLOR_ORANGE,GameInfo1
+        PrintString 2,8,COLOR_ORANGE,GameInfo2
+        PrintString 2,10,COLOR_ORANGE,GameInfo3
+        PrintString 2,12,COLOR_ORANGE,GameInfo4
+        PrintString 2,14,COLOR_ORANGE,GameInfo5
+        PrintString 2,16,COLOR_ORANGE,GameInfo6
+        PrintString 2,18,COLOR_ORANGE,GameInfo7
+        PrintString 0,20,COLOR_ORANGE,EmptyLine
+        PrintString 0,21,COLOR_ORANGE,EmptyLine
+        PrintString 2,20,COLOR_LIGHT_BLUE,GameInfo8
+        PrintBCD 8,23,#COLOR_LIGHT_GREEN,2,gameScore ; print score
+        PrintBCD 32,23,#COLOR_LIGHT_GREEN,2,gameHighscore ; print highsore
+        jsr WaitJoyButtonPressed
+        rts
+
+;**************************************************
+;*** Show game over information
+;**************************************************
+ShowGameOver
+        PrintString 14,12,COLOR_LIGHT_BLUE,GameOver
+        lda #%00000000                    ;disable sprites
+        sta VIC_SPRITE_ENABLE
+
+        lda gameScore+2
+        cmp gameHighscore+2
+        bcc endhigh
+        beq test1
+        bcs high
+test1
+        lda gameScore+1
+        cmp gameHighscore+1
+        bcc endhigh
+        beq test2
+        bcs high
+test2
+        lda gameScore
+        cmp gameHighscore
+        bcc endhigh
+        beq endhigh
+high
+        PrintString #13,#14,#COLOR_LIGHT_BLUE,Highscore
+        lda gameScore
+        sta gameHighscore
+        lda gameScore+1
+        sta gameHighscore+1
+        lda gameScore+2
+        sta gameHighscore+2 
+endhigh
+        jsr WaitJoyButtonPressed
         rts
 
 

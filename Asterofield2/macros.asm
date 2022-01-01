@@ -138,11 +138,11 @@ endm
 ;*** print string to screen
 ;************************************************
 defm PrintString
-        ldx /2    ; Select row
-        ldy /1    ; Select column
+        ldx #/2    ; Select row
+        ldy #/1    ; Select column
         jsr POSITION_CURSOR
  
-        lda /3
+        lda #/3
         sta VIC_TEXT_COLOR
 
         lda #</4

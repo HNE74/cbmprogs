@@ -25,19 +25,23 @@ incasm "mem_own.asm"
 incasm "macros.asm"
 
 *=PROGRAM_START
-        jsr initProgram
+        jsr InitProgram
+gameInfo
+        jsr DrawMainscreenMap
+        jsr ShowGameInfo
+        DoWait 200,50
 startGame
-        jsr drawMainscreenMap
-        jsr setupScrollIRQ
+        jsr DrawMainscreenMap
+        jsr SetupScrollIRQ
         jsr InitGame
         jsr InitSprites
 runGame
         lda gameState
         cmp GAME_STATE_RUNNING
         beq runGame
- 
-        jsr WaitJoyButtonPressed
-        jmp startGame
+        jsr ShowGameOver
+        DoWait 200,50
+        jmp gameInfo
         rts
 
 incasm "routines.asm"

@@ -83,7 +83,7 @@ mainScreenChars
         BYTE    $A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0
         BYTE    $A0,$A0,$05,$0E,$05,$12,$07,$19,$3A,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0
         BYTE    $A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0
-        BYTE    $A0,$A0,$13,$03,$0F,$12,$05,$3A,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0
+        BYTE    $A0,$A0,$13,$03,$0F,$12,$05,$3A,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$08,$09,$07,$08,$13,$03,$0F,$12,$05,$3A,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0
         BYTE    $A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0,$A0
 
 mainScreenColors
@@ -110,13 +110,42 @@ mainScreenColors
         BYTE    $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
         BYTE    $0F,$0F,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0A,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
         BYTE    $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
-        BYTE    $0F,$0F,$05,$05,$05,$05,$05,$05,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
+        BYTE    $0F,$0F,$0D,$0D,$0D,$0D,$0D,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0D,$0D,$0D,$0D,$0D,$0D,$0D,$0D,$0D,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
         BYTE    $0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
 
-
-
-
-
+EmptyLine 
+        TEXT "                                       " 
+        BYTE $00
+GameInfo1 
+        TEXT "welcome commander! you have been"
+        BYTE $00
+GameInfo2
+        TEXT "been deployed to the asteroid belt. "
+        BYTE $00
+GameInfo3        
+        TEXT "your mission is to explore it as    "
+        BYTE $00
+GameInfo4        
+        TEXT "as deep as possible. beware of"
+        BYTE $00
+GameInfo5        
+        TEXT "collisions with stone asteroids."        
+        BYTE $00
+GameInfo6        
+        TEXT "collecting crystal asteroids refuels"
+        BYTE $00
+GameInfo7
+        TEXT "your energy."
+        BYTE $00
+GameInfo8
+        TEXT "press [fire] button to start."
+        BYTE $00
+GameOver
+        TEXT "game over!"
+        BYTE $00
+Highscore
+        TEXT "a new hiscore"
+        BYTE $00
 
 
 
