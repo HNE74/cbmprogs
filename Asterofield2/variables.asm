@@ -123,19 +123,19 @@ GameInfo2
         TEXT "been deployed to the asteroid belt. "
         BYTE $00
 GameInfo3        
-        TEXT "your mission is to explore it as    "
+        TEXT "your mission is to explore it. avoid"
         BYTE $00
 GameInfo4        
-        TEXT "as deep as possible. beware of"
+        TEXT "to collide with stone asteroids."
         BYTE $00
 GameInfo5        
-        TEXT "collisions with stone asteroids."        
+        TEXT "collecting crystal asteroids refuels."        
         BYTE $00
 GameInfo6        
-        TEXT "collecting crystal asteroids refuels"
+        TEXT "your energy. firing you railgun on"
         BYTE $00
 GameInfo7
-        TEXT "your energy."
+        TEXT "asteroids depletes your energy."
         BYTE $00
 GameInfo8
         TEXT "press [fire] button to start."

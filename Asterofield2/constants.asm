@@ -47,6 +47,7 @@ NOSCROLL     = #210               ; end of scroll area
 
 PROGRAM_START = $0810             ; program start
 SPRITE_DEFINITION = $3000         ; sprite 0 definition
+CHARSET_LOCATION =$3800
 
 ; *** asteroid chars
 BLANK_CHR = #32

@@ -36,11 +36,6 @@ InitGame
         sta gameScore+1
         sta gameScore+2
 
-        lda #251
-        sta difficulty
-        lda #00
-        sta nextLevelCnt
-
         lda PLAYER_SPRITE_PAGE  ; init player
         sta playerSpritePage
         lda #$50
@@ -60,6 +55,11 @@ InitGame
         lda #255
         sta lsb_energy
         jsr DrawEnergyBar
+
+        lda #251                ; init difficulty
+        sta difficulty
+        lda #00
+        sta nextLevelCnt
 
         rts
 
@@ -1088,6 +1088,16 @@ high
         sta gameHighscore+2 
 endhigh
         jsr WaitJoyButtonPressed
+        rts
+
+;**************************************************
+;*** Initialize the custom charset
+;**************************************************
+InitCharacterSet
+        lda VIC_MEMORY_CONTROL
+        ora #$0E                   ; char location $3800
+        sta VIC_MEMORY_CONTROL
+
         rts
 
 

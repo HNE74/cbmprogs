@@ -18,6 +18,9 @@ incbin "asterosprites.bin"
 *=MAINSCREEN_MAP_MEM_BLOCK1
 incbin "mainscreen.bin"
 
+*=CHARSET_LOCATION
+incbin "asterochars.bin"
+
 incasm "mem_c64.asm"
 incasm "mem_vic2.asm"
 incasm "mem_sid.asm"
@@ -25,16 +28,17 @@ incasm "mem_own.asm"
 incasm "macros.asm"
 
 *=PROGRAM_START
+        jsr InitCharacterSet
         jsr InitProgram
 gameInfo
         jsr DrawMainscreenMap
         jsr ShowGameInfo
         DoWait 200,50
 startGame
-        jsr DrawMainscreenMap
-        jsr SetupScrollIRQ
         jsr InitGame
         jsr InitSprites
+        jsr DrawMainscreenMap
+        jsr SetupScrollIRQ
 runGame
         lda gameState
         cmp GAME_STATE_RUNNING
