@@ -749,7 +749,6 @@ ShotSound
 ;*** wait joystick button pressed 
 ;************************************************
 WaitJoyButtonPressed
-        jsr RandomNumber       
         lda CIA_PORT_A
         and #JOY_BUTTON
         bne WaitJoyButtonPressed
