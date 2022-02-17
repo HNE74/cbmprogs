@@ -48,6 +48,19 @@
 375 FE(I)=FE(I)-DX(I)
 380 IF FE(I)<0 THEN XP(I)=XP(I)-1:FE(I)=FE(I)+DY(I)
 385 YP(I)=YP(I)+1:RETURN
+400 REM *** MOVE CROSSHAIR
+410 if JI=JN then JI=PEEK(JO):if JI=JN then return
+415 IF JI=J1 THEN cy=cy-1:gosub 500:goto492
+420 IF JI=J2 THEN cx=cx+1:cy=cy-1:gosub 500:goto492
+430 IF JI=J3 THEN cx=cx+1:gosub 500:goto492
+440 IF JI=J4 THEN cx=cx+1:cy=cy+1:gosub 500:goto492
+450 IF JI=J5 THEN cy=cy+1:gosub 500:goto492
+460 IF JI=J6 THEN cx=cx-1:cy=cy+1:gosub 500:goto492
+470 IF JI=J7 THEN cx=cx-1:gosub 500:goto492
+480 IF JI=J8 THEN cx=cx-1:cy=cy-1:gosub 500:goto492
+490 if JI=J9 then gosub 600:goto492
+492 JI=JN
+495 return
 500 rem *** UPDATE CROSSHAIR
 505 if cx<1 then cx=1
 508 if cx>38 then cx=38
@@ -77,19 +90,6 @@
 720 for k=0 to 50:poke 53280,k:nextk
 745 poke 53280,12:gosub3000:return
 750 next j:return
-800 REM *** MOVE CROSSHAIR
-810 if JI=JN then JI=PEEK(JO):if JI=JN then return
-815 IF JI=J1 THEN cy=cy-1:gosub 500
-820 IF JI=J2 THEN cx=cx+1:cy=cy-1:gosub 500
-830 IF JI=J3 THEN cx=cx+1:gosub 500
-840 IF JI=J4 THEN cx=cx+1:cy=cy+1:gosub 500
-850 IF JI=J5 THEN cy=cy+1:gosub 500
-860 IF JI=J6 THEN cx=cx-1:cy=cy+1:gosub 500
-870 IF JI=J7 THEN cx=cx-1:gosub 500
-880 IF JI=J8 THEN cx=cx-1:cy=cy-1:gosub 500
-890 if JI=J9 then gosub 600
-892 JI=JN
-895 return
 900 REM *** move nukes
 910 I=OP:if xp(i)=-1 then return
 912 IF YT(I)=YP(I) THEN gosub700:xp(i)=-1:OC=OC+1:RETURN
@@ -149,15 +149,15 @@
 10015 wv=wv+1:rs=1
 10020 PRINT "{clear}":gosub 12000
 10030 GOSUB 1200
-10040 gosub 800
+10040 for ml=.to1000step0:gosub400
 10041 if rc=1 then gosub 12000
 10042 OP=OP+1:IF OP>ob THEN OP=0
 10043 GOSUB 900:if JI=JN then JI=PEEK(JO)
 10044 gosub 950:if JI=JN then JI=PEEK(JO)
 10045 gosub 1000:if JI=JN then JI=PEEK(JO)
 10046 if rs=1 then gosub 13000
-10047 IF OC=OB+1 THEN gosub12000:goto10055
-10050 GOTO 10040
+10047 IF OC=OB+1 THEN gosub12000:ml=1000:rem goto10055
+10050 nextml:rem GOTO 10040
 10055 cc=0:for i=0to4:ifca(i)=1thencc=cc+1
 10060 next:if cc=0 then gosub 14000:poke sa,0:goto110
 10062 if cc>0 then poke sa,0:gosub 15000
