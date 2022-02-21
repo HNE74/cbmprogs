@@ -40,10 +40,7 @@
         <PreBuildCommands />
         <PostBuildCommands />
     </BuildEvents>
-    <BuildList>
-        <FileName>floating.asm</FileName>
-        <FileName>floating2.asm</FileName>
-    </BuildList>
+    <BuildList />
     <DetermineBuildOrder>0</DetermineBuildOrder>
     <PaddingByte>234</PaddingByte>
     <!--Screen designer settings-->
@@ -213,18 +210,18 @@
             <Name>floating.asm</Name>
             <PrgName />
             <FileType>2</FileType>
-            <IncludeInBuild>True</IncludeInBuild>
+            <IncludeInBuild>False</IncludeInBuild>
             <Regions />
             <Breakpoints />
             <Bookmarks />
-            <Topmost>True</Topmost>
+            <Topmost>False</Topmost>
             <FileOpen>True</FileOpen>
         </SourceFile>
         <SourceFile>
             <Name>floating2.asm</Name>
             <PrgName />
             <FileType>2</FileType>
-            <IncludeInBuild>True</IncludeInBuild>
+            <IncludeInBuild>False</IncludeInBuild>
             <Regions />
             <Breakpoints />
             <Bookmarks />
@@ -709,6 +706,17 @@
             <PrgName />
             <FileType>2</FileType>
             <IncludeInBuild>False</IncludeInBuild>
+            <Regions />
+            <Breakpoints />
+            <Bookmarks />
+            <Topmost>False</Topmost>
+            <FileOpen>True</FileOpen>
+        </SourceFile>
+        <SourceFile>
+            <Name>sfx.bas</Name>
+            <PrgName />
+            <FileType>1</FileType>
+            <IncludeInBuild>True</IncludeInBuild>
             <Regions />
             <Breakpoints />
             <Bookmarks />
