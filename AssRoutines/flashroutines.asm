@@ -80,7 +80,7 @@ DO0
         sta TEMP+3
 FINISH
         jmp KERNEL_ROM_CLOCKINC
-RESET
+RESET                           ; inactivate flash
         sei
         lda #<KERNEL_ROM_CLOCKINC
         sta $0314
