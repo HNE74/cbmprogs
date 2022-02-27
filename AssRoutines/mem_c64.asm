@@ -6,6 +6,9 @@
 ;*** modified by any interested parties.*
 ;*****************************************************
 
+ZERO_PAGE_PTR1 = $FB ; zero page pointer address
+ZERO_PAGE_PTR2 = $FD ; zero page pointer address
+
 BASIC_ROM_CHKCOM=$AEFD   ; check for komma
 BASIC_ROM_FRMNUM=$AD8A   ; fetch value and check if numeric
 BASIC_ROM_FACTOINT=$B7F7 ; convert FAC value to 2 byte integer

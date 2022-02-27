@@ -1,7 +1,10 @@
 ;******************************************************
 ;*** Screen and color flash routines
 ;***
-;*** From the book "40 best machine code routines for the Commodore 64" 
+;*** Inspired by the book "40 best machine code routines for the Commodore 64" 
+;*** by Noltisoft in 2021/2022
+;*** The code is GNU General Public License v3.0 and might be used and/or
+;*** modified by any interested parties.
 ;*****************************************************
 
 incasm "mem_c64.asm"
@@ -9,7 +12,15 @@ incasm "mem_vic2.asm"
 
 
 *=$C000
-        jsr BASIC_ROM_CHKCOM    ; fetch color 1 param
+        jsr BASIC_ROM_CHKCOM    ; fetch flash memory position
+        jsr BASIC_ROM_FRMNUM
+        jsr BASIC_ROM_FACTOINT
+        lda $14
+        sta ZERO_PAGE_PTR1
+        lda $15
+        sta ZERO_PAGE_PTR1+1
+
+        jsr BASIC_ROM_CHKCOM    ; fetch value 1 param
         jsr BASIC_ROM_FRMNUM
         jsr BASIC_ROM_FACTOINT
         lda $15
@@ -19,7 +30,7 @@ MORE
         lda $14
         sta TEMP
         
-        jsr BASIC_ROM_CHKCOM    ; fetch color 2 param
+        jsr BASIC_ROM_CHKCOM    ; fetch value 2 param
         jsr BASIC_ROM_FRMNUM
         jsr BASIC_ROM_FACTOINT
         lda $15
@@ -49,21 +60,22 @@ MORE2
         lda TEMP+2              ; leave init routine
         sta TEMP+3
         rts
-MAIN                
+MAIN    
+        ldy #$00
         dec TEMP+3      
         bne FINISH              ; check no flash
-        lda VIC_SCREEN_BGCOLOR  ; do flash
+        lda (ZERO_PAGE_PTR1),y  ; do flash
         and #$0F
         cmp TEMP+1
         beq DO0
         lda TEMP+1
-        sta VIC_SCREEN_BGCOLOR
+        sta (ZERO_PAGE_PTR1),y
         lda TEMP+2
         sta TEMP+3
         jmp FINISH
 DO0
         lda TEMP
-        sta VIC_SCREEN_BGCOLOR
+        sta (ZERO_PAGE_PTR1),y
         lda TEMP+2
         sta TEMP+3
 FINISH
