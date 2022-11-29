@@ -1,110 +1,106 @@
-!--------------------------------------------------
-!- Dienstag, 29. November 2022 21:11:40
-!- Import of : GAME16.PRG
-!- From Disk : c:\myprogs\winvice-3.0-x64\roms\c16\c16data.d64
-!- Commodore 64
-!--------------------------------------------------
-10 SN=3072:CM=2048
-20 XP=10:YP=10:PC=81:LL=40:BL=32
-25 XN=0:YN=0:PS=0:PW=0
-30 DIM XM(17),YM(17)
-35 EC=5:EP=0:RN=0
-40 DIM EX(16,5),EY(16,5),ET(16,5),EH(16,5)
-150 GOSUB 2000
-160 GOSUB 1100
-170 GOSUB 1000
-200 REM *****************
-210 REM *** MAIN LOOP ***
-220 REM *****************
-230 POKE SN+40*YP+XP,PC
-235 GOSUB 400
-240 J1=joy(1):IF J1<>0 THEN GOSUB 600
-250 GOSUB 500:GOTO 235
-400 REM *********************
-410 REM *** MONSTER MOVES ***
-420 REM *********************
-425 XN=EX(RN,EP):YN=EY(RN,EP)
-430 IF EX(RN,EP)<XP THEN XN=EX(RN,EP)+1:GOTO 450
-440 IF EX(RN,EP)>XP THEN XN=EX(RN,EP)-1
-450 IF EY(RN,EP)<YP THEN YN=EY(RN,EP)+1:GOTO 465
-460 IF EY(RN,EP)>YP THEN YN=EY(RN,EP)-1
-465 IF PEEK(SN+40*YN+XN)<>BL THEN 475
-467 POKE SN+40*EY(RN,EP)+EX(RN,EP),BL
-468 EX(RN,EP)=XN:EY(RN,EP)=YN
-470 POKE SN+40*EY(RN,EP)+EX(RN,EP),ET(RN,EP)
-475 EP=EP+1:IF EP>EC THEN EP=0
-480 RETURN
-500 REM ***********************
-505 REM *** MONSTER STRIKES ***
-510 REM ***********************
-515 FOR I=0TOEC
-520 IF EH(RN,I)<1 THEN 540
-525 IF ABS(XP-EX(RN,I))>1 OR ABS(YP-EY(RN,I))>1 THEN 540
-530 char 1,25,2,"monster":PRINT I;"hit!"
-535 FOR J=0TO10:NEXTJ:char 1,25,2,"{space*14}"
-540 NEXTI
-550 RETURN
-600 REM *******************
-610 REM *** MOVE PLAYER ***
-620 REM *******************
-625 IF J1>=128 THEN J1=J1-127+8
-626 XN=XP+XM(J1):YN=YP+YM(J1)
-634 IF J1=9 THEN RETURN
-635 IF J1>9 THEN 730:RETURN
-636 IF PEEK(SN+40*YN+XN)<>BL THEN RETURN
-637 POKE SN+40*YP+XP,BL
-640 XP=XN:YP=YN
-650 POKE SN+LL*YP+XP,PC
-660 RETURN
-700 REM **********************
-710 REM *** PLAYER STRIKES ***
-720 REM **********************
-730 PS=PEEK(SN+40*YN+XN)
-740 IF J1=10ORJ1=14 THEN PW=66:GOTO 800
-745 IF J1=11ORJ1=15 THEN PW=78:GOTO 800
-750 IF J1=12ORJ1=16 THEN PW=67:GOTO 800
-755 IF J1=13ORJ1=17 THEN PW=77:GOTO 800
-800 POKE SN+40*YN+XN,PW
-805 FOR I=1TO50:NEXT
-810 POKE SN+40*YN+XN,PS
-820 RETURN
-1000 REM *******************
-1010 REM *** INIT ARRAYS ***
-1020 REM *******************
-1030 FOR I=0TO17:READ XM(I):NEXT
-1040 FOR I=0TO17:READ YM(I):NEXT
-1045 RETURN
-1050 DATA 0,0,1,1,1,0,-1,-1,-1
-1055 DATA 0,0,1,1,1,0,-1,-1,-1
-1060 DATA 0,-1,-1,0,1,1,1,0,-1
-1065 DATA 0,-1,-1,0,1,1,1,0,-1
-1100 REM *******************
-1105 REM *** SPAWN MONSTER ***
-1110 REM *********************
-1120 FOR I=0TOEC
-1130 XW=INT(RND(1)*23)+2
-1140 YW=INT(RND(1)*18)+2
-1150 IF PEEK(SN+40*YW+XW)<>32 THEN 1130
-1160 EX(RN,I)=XW:EY(RN,I)=YW:ET(RN,I)=90:EH(RN,I)=5
-1170 POKE SN+40*YW+XW,ET(RN,I)
-1200 NEXTI:RETURN
-2000 REM ********************
-2010 REM *** CREATE SCENE ***
-2020 REM ********************
+1 rem ********************************
+2 rem *** 
+10 sn=3072:cm=2048
+20 xp=10:yp=10:pc=81:ll=40:bl=32
+25 xn=0:yn=0:ps=0:pw=0
+30 dim xm(17),ym(17)
+35 ec=5:ep=0:rn=0
+40 dim ex(16,5),ey(16,5),et(16,5),eh(16,5)
+150 gosub 1000
+160 gosub 2000
+170 gosub 1100
+200 rem *****************
+210 rem *** main loop ***
+220 rem *****************
+230 poke sn+40*yp+xp,pc
+235 gosub 400
+240 j1=joy(1):if j1<>0 then gosub 600
+250 gosub 500:goto 235
+400 rem *********************
+410 rem *** monster moves ***
+420 rem *********************
+425 xn=ex(rn,ep):yn=ey(rn,ep)
+430 if ex(rn,ep)<xp then xn=ex(rn,ep)+1:goto 450
+440 if ex(rn,ep)>xp then xn=ex(rn,ep)-1
+450 if ey(rn,ep)<yp then yn=ey(rn,ep)+1:goto 465
+460 if ey(rn,ep)>yp then yn=ey(rn,ep)-1
+465 if peek(sn+40*yn+xn)<>bl then 475
+467 poke sn+40*ey(rn,ep)+ex(rn,ep),bl
+468 ex(rn,ep)=xn:ey(rn,ep)=yn
+470 poke sn+40*ey(rn,ep)+ex(rn,ep),et(rn,ep)
+475 ep=ep+1:if ep>ec then ep=0
+480 return
+500 rem ***********************
+505 rem *** monster strikes ***
+510 rem ***********************
+515 for i=0toec
+520 if eh(rn,i)<1 then 540
+525 if abs(xp-ex(rn,i))>1 or abs(yp-ey(rn,i))>1 then 540
+530 char 1,25,2,"monster":print i;"hit!"
+535 for j=0to10:nextj:char 1,25,2,"{space*14}"
+540 nexti
+550 return
+600 rem *******************
+610 rem *** move player ***
+620 rem *******************
+625 if j1>=128 then j1=j1-127+8
+626 xn=xp+xm(j1):yn=yp+ym(j1)
+634 if j1=9 then return
+635 if j1>9 then 730:return
+636 if peek(sn+40*yn+xn)<>bl then return
+637 poke sn+40*yp+xp,bl
+640 xp=xn:yp=yn
+650 poke sn+ll*yp+xp,pc
+660 return
+700 rem **********************
+710 rem *** player strikes ***
+720 rem **********************
+730 ps=peek(sn+40*yn+xn)
+740 if j1=10orj1=14 then pw=66:goto 800
+745 if j1=11orj1=15 then pw=78:goto 800
+750 if j1=12orj1=16 then pw=67:goto 800
+755 if j1=13orj1=17 then pw=77:goto 800
+800 poke sn+40*yn+xn,pw
+805 for i=1to50:next
+810 poke sn+40*yn+xn,ps
+820 return
+1000 rem *******************
+1010 rem *** init arrays ***
+1020 rem *******************
+1030 for i=0to17:read xm(i):next
+1040 for i=0to17:read ym(i):next
+1045 return
+1050 data 0,0,1,1,1,0,-1,-1,-1
+1055 data 0,0,1,1,1,0,-1,-1,-1
+1060 data 0,-1,-1,0,1,1,1,0,-1
+1065 data 0,-1,-1,0,1,1,1,0,-1
+1100 rem *******************
+1105 rem *** spawn monster ***
+1110 rem *********************
+1120 for i=0toec
+1130 xw=int(rnd(1)*23)+2
+1140 yw=int(rnd(1)*18)+2
+1150 if peek(sn+40*yw+xw)<>32 then 1130
+1160 ex(rn,i)=xw:ey(rn,i)=yw:et(rn,i)=90:eh(rn,i)=5
+1170 poke sn+40*yw+xw,et(rn,i)
+1200 nexti:return
+2000 rem ********************
+2010 rem *** create scene ***
+2020 rem ********************
 2025 scnclr
-2030 FOR I=0TO39
-2040 POKE SN+40*24+I,102
-2045 POKE SN+I,102
-2050 NEXT
-2060 FOR I=1TO24
-2070 POKE SN+40*I+24,102
-2075 POKE SN+40*I+39,102
-2080 POKE SN+40*I,102
-2090 NEXT
-2100 FOR I=0TO10
-2110 XW=INT(RND(1)*20)+2
-2120 YW=INT(RND(1)*18)+2
-2130 char 1,XW,YW,"{cm +*2}"
-2135 char 1,XW,YW+1,"{cm +*2}"
-2140 NEXT
-2150 RETURN
+2030 for i=0to39
+2040 poke sn+40*24+i,102
+2045 poke sn+i,102
+2050 next
+2060 for i=1to24
+2070 poke sn+40*i+24,102
+2075 poke sn+40*i+39,102
+2080 poke sn+40*i,102
+2090 next
+2100 for i=0to10
+2110 xw=int(rnd(1)*20)+2
+2120 yw=int(rnd(1)*18)+2
+2130 char 1,xw,yw,"{cm +*2}"
+2135 char 1,xw,yw+1,"{cm +*2}"
+2140 next
+2150 return
