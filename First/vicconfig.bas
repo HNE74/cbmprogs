@@ -1,4 +1,7 @@
 !- see: https://www.youtube.com/watch?v=yLhFhn6TzYs
+!- This program demonstrates how to configure the VIC-II chip to use bank 3.
+!- Char ROM in bank 3 is hidden by IO-area therefor it has to be copied to
+!- the RAM in order make it available for the VIC-II chip.
 1 rem *********************************************
 2 rem *** copy charset to ram for vic-II bank 3 ***
 3 rem *********************************************
@@ -16,5 +19,6 @@
 101 rem *** move screen ram ***
 102 rem ***********************
 110 poke 56578, peek(56578) or 3 : REM bit 0 and 1 of port a output
-120 poke 53272,(peek(53272) and 15) or 48 : rem adjust vic-II screen mem pointer
+120 poke 53272, (peek(53272) and 15) or 48 : rem adjust vic-II screen mem pointer
 130 poke 648,204 : rem adjust screen ram high byte pointer
+140 sys 58692 : rem clear screen ram
