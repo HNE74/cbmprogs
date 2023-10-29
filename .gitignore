@@ -4,6 +4,9 @@
 *.tmp
 #*.prg
 *.dup
+*.int
+*.lbl
+*.map
 
 Astroclash/bak/*
 Asterofield2/bak/*
