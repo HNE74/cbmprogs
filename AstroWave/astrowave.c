@@ -11,6 +11,7 @@
 #define HEIGHT_MIN 3
 #define HEIGHT_MAX 24
 #define MAX_ENEMIES 10
+#define ENEMY_CHAR 88
 #define Screen ((byte *)0x0400)
 #define Color ((byte *)0xd800)
 
@@ -67,7 +68,7 @@ void render_enemies()
     {
         if (Enemy[i].active == true)
         {
-            Screen[40 * Enemy[i].yp + Enemy[i].xp] = 88;
+            Screen[40 * Enemy[i].yp + Enemy[i].xp] = ENEMY_CHAR;
             Color[40 * Enemy[i].yp + Enemy[i].xp] = VCOL_ORANGE;
         }
     }
@@ -75,6 +76,8 @@ void render_enemies()
 
 void move_enemies()
 {
+    sbyte yd = 0;
+    byte newP = 0;
     for (byte i = 0; i < MAX_ENEMIES; i++)
     {
         if (Enemy[i].active == true)
@@ -85,6 +88,15 @@ void move_enemies()
             if (Enemy[i].xp > 0)
             {
                 Enemy[i].xp--;
+
+                yd = rand() % 3 - 1;
+                newP = 40 * (Enemy[i].yp + yd) + Enemy[i].xp;
+                if(Screen[newP] != ENEMY_CHAR 
+                    && Enemy[i].yp + yd >= HEIGHT_MIN 
+                    && Enemy[i].yp + yd <= HEIGHT_MAX)
+                {
+                    Enemy[i].yp += yd;
+                }                
             }
             else
             {
@@ -186,7 +198,7 @@ int main(void)
         control_player_ship();
         render_player_ship();
         check_player_enemy_collision();
-        wait_frames(2);
+        wait_frames(4);
     }
 
     return 0;
