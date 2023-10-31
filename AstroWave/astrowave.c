@@ -27,6 +27,18 @@ struct EnemyInfo
     byte active;
 } Enemy[MAX_ENEMIES];
 
+enum GameState
+{
+    GS_RUNNING,
+    GS_PLAYER_DEAD
+};
+
+// Game data
+struct Game
+{
+    GameState state; // Current game state
+} game;
+
 void init_enemies()
 {
     for (int i = 0; i < MAX_ENEMIES; i++)
@@ -37,7 +49,7 @@ void init_enemies()
     }
 }
 
-void init_player() 
+void init_player()
 {
     Player.xp = 5;
     Player.yp = 12;
@@ -49,11 +61,11 @@ void render_player_ship()
     Color[40 * Player.yp + Player.xp] = VCOL_CYAN;
 }
 
-void render_enemies() 
+void render_enemies()
 {
-    for(byte i=0; i<MAX_ENEMIES; i++)
+    for (byte i = 0; i < MAX_ENEMIES; i++)
     {
-        if(Enemy[i].active == true) 
+        if (Enemy[i].active == true)
         {
             Screen[40 * Enemy[i].yp + Enemy[i].xp] = 88;
             Color[40 * Enemy[i].yp + Enemy[i].xp] = VCOL_ORANGE;
@@ -63,21 +75,57 @@ void render_enemies()
 
 void move_enemies()
 {
-    for(byte i=0; i<MAX_ENEMIES; i++)
+    for (byte i = 0; i < MAX_ENEMIES; i++)
     {
-        if(Enemy[i].active == true) 
+        if (Enemy[i].active == true)
         {
             Screen[40 * Enemy[i].yp + Enemy[i].xp] = 32;
-            Color[40 * Enemy[i].yp + Enemy[i].xp] = VCOL_BLACK;            
+            Color[40 * Enemy[i].yp + Enemy[i].xp] = VCOL_BLACK;
 
-            if(Enemy[i].xp > 0) {
+            if (Enemy[i].xp > 0)
+            {
                 Enemy[i].xp--;
             }
-            else {
+            else
+            {
                 Enemy[i].active = false;
             }
         }
-    }    
+    }
+}
+
+void spawn_enemy()
+{
+    if (rand() % 2 > 0)
+    {
+        return;
+    }
+
+    for (byte i = 0; i < MAX_ENEMIES; i++)
+    {
+        if (Enemy[i].active == false)
+        {
+            Enemy[i].xp = WIDTH_MAX;
+            Enemy[i].yp = (rand() % (HEIGHT_MAX - HEIGHT_MIN + 1)) + HEIGHT_MIN;
+            Enemy[i].active = true;
+            i = MAX_ENEMIES;
+        }
+    }
+}
+
+void check_player_enemy_collision()
+{
+    for (byte i = 0; i < MAX_ENEMIES; i++)
+    {
+        if (Enemy[i].active == true)
+        {
+            if (Enemy[i].xp == Player.xp && Enemy[i].yp == Player.yp)
+            {
+                game.state = GS_PLAYER_DEAD;
+                i = MAX_ENEMIES;                
+            }
+        }
+    }
 }
 
 void control_player_ship()
@@ -122,38 +170,23 @@ void init_game_screen()
     vic.color_border = VCOL_DARK_GREY;
 }
 
-void spawn_enemy()
-{
-    if(rand() % 10 > 0)
-    {
-        return;
-    }
-    
-    for(byte i=0; i<MAX_ENEMIES; i++)
-    {
-        if(Enemy[i].active == false) 
-        {
-          Enemy[i].xp = WIDTH_MAX;
-          Enemy[i].yp = (rand() % (HEIGHT_MAX - HEIGHT_MIN + 1)) + HEIGHT_MIN; 
-          Enemy[i].active = true;
-          break;
-        }
-    }
-}
-
 int main(void)
 {
     init_player();
     init_enemies();
     init_game_screen();
-    while (1)
+
+    game.state = GS_RUNNING;
+    while (game.state == GS_RUNNING)
     {
         spawn_enemy();
         move_enemies();
         render_enemies();
+        check_player_enemy_collision();
         control_player_ship();
         render_player_ship();
-        wait_frames(5);
+        check_player_enemy_collision();
+        wait_frames(2);
     }
 
     return 0;
