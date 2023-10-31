@@ -1,5 +1,6 @@
 {
     "files.associations": {
         "vic.h": "c"
-    }
+    },
+    "C_Cpp.default.compilerPath": ""
 }

@@ -237,7 +237,7 @@ ballbounce:
 .s15:
 098a : d0 06 __ BNE $0992 ; (ballbounce.s12 + 0)
 .s1004:
-098c : a9 1e __ LDA #$1e
+098c : a9 18 __ LDA #$18
 098e : c5 4c __ CMP T8 + 0 
 0990 : b0 11 __ BCS $09a3 ; (ballbounce.s14 + 0)
 .s12:
