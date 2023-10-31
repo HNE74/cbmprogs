@@ -11,6 +11,7 @@
 #define HEIGHT_MIN 3
 #define HEIGHT_MAX 24
 #define MAX_ENEMIES 10
+#define MAX_PLAYER_SHOTS 3
 #define ENEMY_CHAR 88
 #define Screen ((byte *)0x0400)
 #define Color ((byte *)0xd800)
@@ -28,6 +29,13 @@ struct EnemyInfo
     byte active;
 } Enemy[MAX_ENEMIES];
 
+struct PlayerShotInfo
+{
+    byte xp;
+    byte yp;
+    byte active;
+} PlayerShot[MAX_PLAYER_SHOTS];
+
 enum GameState
 {
     GS_RUNNING,
@@ -37,7 +45,8 @@ enum GameState
 // Game data
 struct Game
 {
-    GameState state; // Current game state
+    GameState state;
+    long score;
 } game;
 
 void init_enemies()
@@ -46,7 +55,17 @@ void init_enemies()
     {
         Enemy[i].xp = 0;
         Enemy[i].yp = 0;
-        Enemy[i].active = 0;
+        Enemy[i].active = false;
+    }
+}
+
+void init_shots()
+{
+    for (byte i = 0; i < MAX_PLAYER_SHOTS; i++)
+    {
+        PlayerShot[i].xp = 0;
+        PlayerShot[i].yp = 0;
+        PlayerShot[i].active = false;
     }
 }
 
@@ -56,10 +75,52 @@ void init_player()
     Player.yp = 12;
 }
 
+void init_game_state()
+{
+    game.state = GS_RUNNING;
+    game.score = 0;
+}
+
+void render_game_state()
+{
+    gotoxy(1,1);
+    printf("\x1ESCORE: %d", game.score);
+}
+
 void render_player_ship()
 {
     Screen[40 * Player.yp + Player.xp] = 81;
     Color[40 * Player.yp + Player.xp] = VCOL_CYAN;
+}
+
+void render_player_shots()
+{
+    for (byte i = 0; i < MAX_PLAYER_SHOTS; i++)
+    {
+        if (PlayerShot[i].active == true)
+        {
+            Screen[40 * PlayerShot[i].yp + PlayerShot[i].xp] = 43;
+            Color[40 * PlayerShot[i].yp + PlayerShot[i].xp] = VCOL_WHITE;
+        }
+    }
+}
+
+void move_player_shots()
+{
+    for (byte i = 0; i < MAX_PLAYER_SHOTS; i++)
+    {
+        if (PlayerShot[i].active == true)
+        {
+            Screen[40 * PlayerShot[i].yp + PlayerShot[i].xp] = 32;
+            Color[40 * PlayerShot[i].yp + PlayerShot[i].xp] = VCOL_BLACK;
+
+            PlayerShot[i].xp += 1;
+            if (PlayerShot[i].xp > WIDTH_MAX)
+            {
+                PlayerShot[i].active = false;
+            }
+        }
+    }
 }
 
 void render_enemies()
@@ -91,17 +152,41 @@ void move_enemies()
 
                 yd = rand() % 3 - 1;
                 newP = 40 * (Enemy[i].yp + yd) + Enemy[i].xp;
-                if(Screen[newP] != ENEMY_CHAR 
-                    && Enemy[i].yp + yd >= HEIGHT_MIN 
-                    && Enemy[i].yp + yd <= HEIGHT_MAX)
+                if (Screen[newP] != ENEMY_CHAR && Enemy[i].yp + yd >= HEIGHT_MIN && Enemy[i].yp + yd <= HEIGHT_MAX)
                 {
                     Enemy[i].yp += yd;
-                }                
+                }
             }
             else
             {
                 Enemy[i].active = false;
             }
+        }
+    }
+}
+
+void spawn_player_shot()
+{
+    if (Player.xp == WIDTH_MAX)
+    {
+        return;
+    }
+
+    for (byte i = 0; i < MAX_PLAYER_SHOTS; i++)
+    {
+        if (PlayerShot[i].active == false)
+        {
+            if (joyx[0] > 0)
+            {
+                PlayerShot[i].xp = Player.xp + 1;
+            }
+            else
+            {
+                PlayerShot[i].xp = Player.xp;
+            }
+            PlayerShot[i].yp = Player.yp;
+            PlayerShot[i].active = true;
+            i = MAX_PLAYER_SHOTS;
         }
     }
 }
@@ -134,7 +219,31 @@ void check_player_enemy_collision()
             if (Enemy[i].xp == Player.xp && Enemy[i].yp == Player.yp)
             {
                 game.state = GS_PLAYER_DEAD;
-                i = MAX_ENEMIES;                
+                i = MAX_ENEMIES;
+            }
+        }
+    }
+}
+
+void check_shot_enemy_collision()
+{
+    for (byte j = 0; j < MAX_PLAYER_SHOTS; j++)
+    {
+        if (PlayerShot[j].active == true)
+        {
+            for (byte i = 0; i < MAX_ENEMIES; i++)
+            {
+                if (Enemy[i].active == true)
+                {
+                    if (Enemy[i].xp == PlayerShot[j].xp && Enemy[i].yp == PlayerShot[j].yp)
+                    {
+                        Screen[40 * Enemy[i].yp + Enemy[i].xp] = 32;
+                        Color[40 * Enemy[i].yp + Enemy[i].xp] = VCOL_BLACK;
+                        Enemy[i].active = false;
+                        PlayerShot[j].active = false;
+                        game.score += 1;
+                    }
+                }
             }
         }
     }
@@ -165,6 +274,11 @@ void control_player_ship()
             Player.yp += joyy[0];
         }
     }
+
+    if (joyb[0] == 1)
+    {
+        spawn_player_shot();
+    }
 }
 
 void wait_frames(int frames)
@@ -186,19 +300,32 @@ int main(void)
 {
     init_player();
     init_enemies();
+    init_shots();
+    init_game_state();
     init_game_screen();
 
-    game.state = GS_RUNNING;
+    byte cnt = 0;
     while (game.state == GS_RUNNING)
     {
-        spawn_enemy();
-        move_enemies();
-        render_enemies();
+        render_game_state();
+        
+        if (cnt++ % 3 == 0)
+        {
+            spawn_enemy();
+            move_enemies();
+            render_enemies();
+        }
+
         check_player_enemy_collision();
         control_player_ship();
         render_player_ship();
         check_player_enemy_collision();
-        wait_frames(4);
+
+        move_player_shots();
+        render_player_shots();
+        check_shot_enemy_collision();
+
+        wait_frames(3);
     }
 
     return 0;
