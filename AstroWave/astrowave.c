@@ -12,6 +12,7 @@
 #define HEIGHT_MAX 24
 #define MAX_ENEMIES 10
 #define MAX_PLAYER_SHOTS 3
+#define MAX_ENEMY_SHOTS 3
 #define ENEMY_CHAR 88
 #define Screen ((byte *)0x0400)
 #define Color ((byte *)0xd800)
@@ -35,6 +36,13 @@ struct PlayerShotInfo
     byte yp;
     byte active;
 } PlayerShot[MAX_PLAYER_SHOTS];
+
+struct EnemyShotInfo
+{
+    byte xp;
+    byte yp;
+    byte active;
+} EnemyShot[MAX_ENEMY_SHOTS];
 
 enum GameState
 {
@@ -67,6 +75,13 @@ void init_shots()
         PlayerShot[i].yp = 0;
         PlayerShot[i].active = false;
     }
+
+    for (byte i = 0; i < MAX_ENEMY_SHOTS; i++)
+    {
+        EnemyShot[i].xp = 0;
+        EnemyShot[i].yp = 0;
+        EnemyShot[i].active = false;
+    }    
 }
 
 void init_player()
@@ -114,7 +129,7 @@ void move_player_shots()
             Screen[40 * PlayerShot[i].yp + PlayerShot[i].xp] = 32;
             Color[40 * PlayerShot[i].yp + PlayerShot[i].xp] = VCOL_BLACK;
 
-            PlayerShot[i].xp += 1;
+            PlayerShot[i].xp++;
             if (PlayerShot[i].xp > WIDTH_MAX)
             {
                 PlayerShot[i].active = false;
@@ -135,6 +150,58 @@ void render_enemies()
     }
 }
 
+void render_enemy_shots()
+{
+    for (byte i = 0; i < MAX_ENEMY_SHOTS; i++)
+    {
+        if (EnemyShot[i].active == true)
+        {
+            Screen[40 * EnemyShot[i].yp + EnemyShot[i].xp] = 31;
+            Color[40 * EnemyShot[i].yp + EnemyShot[i].xp] = VCOL_WHITE;
+        }
+    }
+}
+
+void spawn_enemy_shot(EnemyInfo *e)
+{
+    if(e->xp < 1)
+    {
+        return;
+    }
+
+    for(int i=0; i<MAX_ENEMY_SHOTS; i++)
+    {
+        if(EnemyShot[i].active == false)
+        {
+            EnemyShot[i].active = true;
+            EnemyShot[i].xp = (e->xp)-1;
+            EnemyShot[i].yp = e->yp;
+
+            gotoxy(20,1);
+            printf("%d - %d", EnemyShot[i].xp, EnemyShot[i].yp);
+            break;
+        }
+    }
+}
+
+void move_enemy_shots()
+{
+    for (byte i = 0; i < MAX_ENEMY_SHOTS; i++)
+    {
+        if (EnemyShot[i].active == true)
+        {
+            Screen[40 * EnemyShot[i].yp + EnemyShot[i].xp] = 32;
+            Color[40 * EnemyShot[i].yp + EnemyShot[i].xp] = VCOL_BLACK;
+
+            EnemyShot[i].xp--;
+            if (EnemyShot[i].xp == 255)
+            {
+                EnemyShot[i].active = false;
+            }
+        }
+    }
+}
+
 void move_enemies()
 {
     sbyte yd = 0;
@@ -143,6 +210,12 @@ void move_enemies()
     {
         if (Enemy[i].active == true)
         {
+            if(Enemy[i].yp == Player.yp)
+            {
+                spawn_enemy_shot(&Enemy[i]);
+                render_enemy_shots();
+            }
+            
             Screen[40 * Enemy[i].yp + Enemy[i].xp] = 32;
             Color[40 * Enemy[i].yp + Enemy[i].xp] = VCOL_BLACK;
 
@@ -316,6 +389,8 @@ int main(void)
             render_enemies();
         }
 
+        move_enemy_shots();
+        render_enemy_shots();
         check_player_enemy_collision();
         control_player_ship();
         render_player_ship();
