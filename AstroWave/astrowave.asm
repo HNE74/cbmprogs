@@ -11,8 +11,8 @@ startup:
 080b : 00 __ __ BRK
 080c : 00 __ __ BRK
 080d : ba __ __ TSX
-080e : 8e 4b 21 STX $214b ; (spentry + 0)
-0811 : a9 6b __ LDA #$6b
+080e : 8e 73 21 STX $2173 ; (spentry + 0)
+0811 : a9 93 __ LDA #$93
 0813 : 85 19 __ STA IP + 0 
 0815 : a9 21 __ LDA #$21
 0817 : 85 1a __ STA IP + 1 
@@ -30,8 +30,8 @@ startup:
 082c : ca __ __ DEX
 082d : d0 f6 __ BNE $0825 ; (startup + 36)
 082f : 38 __ __ SEC
-0830 : a9 a8 __ LDA #$a8
-0832 : e9 6b __ SBC #$6b
+0830 : a9 d0 __ LDA #$d0
+0832 : e9 93 __ SBC #$93
 0834 : f0 08 __ BEQ $083e ; (startup + 61)
 0836 : a8 __ __ TAY
 0837 : a9 00 __ LDA #$00
@@ -59,7 +59,7 @@ startup:
 0862 : 60 __ __ RTS
 --------------------------------------------------------------------
 spentry:
-214b : __ __ __ BYT 00                                              : .
+2173 : __ __ __ BYT 00                                              : .
 --------------------------------------------------------------------
 main:
 .s1000:
@@ -71,7 +71,7 @@ main:
 088b : 20 17 09 JSR $0917 ; (init_shots.s0 + 0)
 088e : 20 3e 09 JSR $093e ; (init_game_state.s0 + 0)
 0891 : 20 50 09 JSR $0950 ; (init_game_screen.s0 + 0)
-0894 : ad 9d 21 LDA $219d ; (game + 0)
+0894 : ad c5 21 LDA $21c5 ; (game + 0)
 0897 : d0 52 __ BNE $08eb ; (main.s4 + 0)
 .s9:
 0899 : 85 53 __ STA T0 + 0 
@@ -84,7 +84,7 @@ main:
 08a6 : 85 04 __ STA WORK + 1 
 08a8 : a9 03 __ LDA #$03
 08aa : 85 03 __ STA WORK + 0 
-08ac : 20 70 1f JSR $1f70 ; (divmod + 0)
+08ac : 20 98 1f JSR $1f98 ; (divmod + 0)
 08af : a5 05 __ LDA WORK + 2 
 08b1 : 05 06 __ ORA WORK + 3 
 08b3 : d0 09 __ BNE $08be ; (main.s7 + 0)
@@ -96,19 +96,19 @@ main:
 08be : 20 0e 19 JSR $190e ; (move_enemy_shots.s0 + 0)
 08c1 : 20 64 18 JSR $1864 ; (render_enemy_shots.s0 + 0)
 08c4 : 20 78 19 JSR $1978 ; (check_player_enemy_collision.s0 + 0)
-08c7 : 20 a0 19 JSR $19a0 ; (control_player_ship.s0 + 0)
-08ca : 20 be 1a JSR $1abe ; (render_player_ship.s0 + 0)
+08c7 : 20 c8 19 JSR $19c8 ; (control_player_ship.s0 + 0)
+08ca : 20 e6 1a JSR $1ae6 ; (render_player_ship.s0 + 0)
 08cd : 20 78 19 JSR $1978 ; (check_player_enemy_collision.s0 + 0)
-08d0 : 20 fe 1a JSR $1afe ; (move_player_shots.s0 + 0)
-08d3 : 20 66 1b JSR $1b66 ; (render_player_shots.s0 + 0)
-08d6 : 20 bb 1b JSR $1bbb ; (check_shot_enemy_collision.s0 + 0)
+08d0 : 20 26 1b JSR $1b26 ; (move_player_shots.s0 + 0)
+08d3 : 20 8e 1b JSR $1b8e ; (render_player_shots.s0 + 0)
+08d6 : 20 e3 1b JSR $1be3 ; (check_shot_enemy_collision.s0 + 0)
 08d9 : a9 03 __ LDA #$03
 08db : 85 0d __ STA P0 
 08dd : a9 00 __ LDA #$00
 08df : 85 0e __ STA P1 
-08e1 : 20 6c 1c JSR $1c6c ; (wait_frames.s0 + 0)
+08e1 : 20 94 1c JSR $1c94 ; (wait_frames.s0 + 0)
 08e4 : e6 53 __ INC T0 + 0 
-08e6 : ad 9d 21 LDA $219d ; (game + 0)
+08e6 : ad c5 21 LDA $21c5 ; (game + 0)
 08e9 : f0 b0 __ BEQ $089b ; (main.l3 + 0)
 .s4:
 08eb : a9 00 __ LDA #$00
@@ -122,14 +122,14 @@ main:
 init_player:
 .s0:
 08f7 : a9 05 __ LDA #$05
-08f9 : 8d 6b 21 STA $216b ; (Player + 0)
+08f9 : 8d 93 21 STA $2193 ; (Player + 0)
 08fc : a9 0c __ LDA #$0c
-08fe : 8d 6c 21 STA $216c ; (Player + 1)
+08fe : 8d 94 21 STA $2194 ; (Player + 1)
 .s1001:
 0901 : 60 __ __ RTS
 --------------------------------------------------------------------
 Player:
-216b : __ __ __ BSS	2
+2193 : __ __ __ BSS	2
 --------------------------------------------------------------------
 init_enemies:
 .s0:
@@ -137,9 +137,9 @@ init_enemies:
 0904 : a2 00 __ LDX #$00
 0906 : 8a __ __ TXA
 .l1004:
-0907 : 9d 6d 21 STA $216d,x ; (Enemy + 0)
-090a : 9d 6e 21 STA $216e,x ; (Enemy + 1)
-090d : 9d 6f 21 STA $216f,x ; (Enemy + 2)
+0907 : 9d 95 21 STA $2195,x ; (Enemy + 0)
+090a : 9d 96 21 STA $2196,x ; (Enemy + 1)
+090d : 9d 97 21 STA $2197,x ; (Enemy + 2)
 0910 : e8 __ __ INX
 0911 : e8 __ __ INX
 0912 : e8 __ __ INX
@@ -149,7 +149,7 @@ init_enemies:
 0916 : 60 __ __ RTS
 --------------------------------------------------------------------
 Enemy:
-216d : __ __ __ BSS	30
+2195 : __ __ __ BSS	30
 --------------------------------------------------------------------
 init_shots:
 .s0:
@@ -157,9 +157,9 @@ init_shots:
 0919 : a0 03 __ LDY #$03
 091b : 8a __ __ TXA
 .l1006:
-091c : 9d 8b 21 STA $218b,x ; (PlayerShot + 0)
-091f : 9d 8c 21 STA $218c,x ; (PlayerShot + 1)
-0922 : 9d 8d 21 STA $218d,x ; (PlayerShot + 2)
+091c : 9d b3 21 STA $21b3,x ; (PlayerShot + 0)
+091f : 9d b4 21 STA $21b4,x ; (PlayerShot + 1)
+0922 : 9d b5 21 STA $21b5,x ; (PlayerShot + 2)
 0925 : e8 __ __ INX
 0926 : e8 __ __ INX
 0927 : e8 __ __ INX
@@ -169,9 +169,9 @@ init_shots:
 092b : a0 03 __ LDY #$03
 092d : aa __ __ TAX
 .l1008:
-092e : 9d 94 21 STA $2194,x ; (EnemyShot + 0)
-0931 : 9d 95 21 STA $2195,x ; (EnemyShot + 1)
-0934 : 9d 96 21 STA $2196,x ; (EnemyShot + 2)
+092e : 9d bc 21 STA $21bc,x ; (EnemyShot + 0)
+0931 : 9d bd 21 STA $21bd,x ; (EnemyShot + 1)
+0934 : 9d be 21 STA $21be,x ; (EnemyShot + 2)
 0937 : e8 __ __ INX
 0938 : e8 __ __ INX
 0939 : e8 __ __ INX
@@ -181,24 +181,24 @@ init_shots:
 093d : 60 __ __ RTS
 --------------------------------------------------------------------
 PlayerShot:
-218b : __ __ __ BSS	9
+21b3 : __ __ __ BSS	9
 --------------------------------------------------------------------
 EnemyShot:
-2194 : __ __ __ BSS	9
+21bc : __ __ __ BSS	9
 --------------------------------------------------------------------
 init_game_state:
 .s0:
 093e : a9 00 __ LDA #$00
-0940 : 8d 9d 21 STA $219d ; (game + 0)
-0943 : 8d 9e 21 STA $219e ; (game + 1)
-0946 : 8d 9f 21 STA $219f ; (game + 2)
-0949 : 8d a0 21 STA $21a0 ; (game + 3)
-094c : 8d a1 21 STA $21a1 ; (game + 4)
+0940 : 8d c5 21 STA $21c5 ; (game + 0)
+0943 : 8d c6 21 STA $21c6 ; (game + 1)
+0946 : 8d c7 21 STA $21c7 ; (game + 2)
+0949 : 8d c8 21 STA $21c8 ; (game + 3)
+094c : 8d c9 21 STA $21c9 ; (game + 4)
 .s1001:
 094f : 60 __ __ RTS
 --------------------------------------------------------------------
 game:
-219d : __ __ __ BSS	5
+21c5 : __ __ __ BSS	5
 --------------------------------------------------------------------
 init_game_screen:
 .s0:
@@ -238,16 +238,16 @@ render_game_state:
 0982 : a9 16 __ LDA #$16
 0984 : c8 __ __ INY
 0985 : 91 23 __ STA (SP + 0),y 
-0987 : ad 9e 21 LDA $219e ; (game + 1)
+0987 : ad c6 21 LDA $21c6 ; (game + 1)
 098a : c8 __ __ INY
 098b : 91 23 __ STA (SP + 0),y 
-098d : ad 9f 21 LDA $219f ; (game + 2)
+098d : ad c7 21 LDA $21c7 ; (game + 2)
 0990 : c8 __ __ INY
 0991 : 91 23 __ STA (SP + 0),y 
-0993 : ad a0 21 LDA $21a0 ; (game + 3)
+0993 : ad c8 21 LDA $21c8 ; (game + 3)
 0996 : c8 __ __ INY
 0997 : 91 23 __ STA (SP + 0),y 
-0999 : ad a1 21 LDA $21a1 ; (game + 4)
+0999 : ad c9 21 LDA $21c9 ; (game + 4)
 099c : c8 __ __ INY
 099d : 91 23 __ STA (SP + 0),y 
 099f : 20 b7 09 JSR $09b7 ; (printf.s0 + 0)
@@ -943,7 +943,7 @@ puts:
 0e3a : 60 __ __ RTS
 --------------------------------------------------------------------
 putpch:
-0e3b : ae 4c 21 LDX $214c ; (giocharmap + 0)
+0e3b : ae 74 21 LDX $2174 ; (giocharmap + 0)
 0e3e : e0 01 __ CPX #$01
 0e40 : 90 26 __ BCC $0e68 ; (putpch + 45)
 0e42 : c9 0a __ CMP #$0a
@@ -979,7 +979,7 @@ putpch:
 0e7d : 60 __ __ RTS
 --------------------------------------------------------------------
 giocharmap:
-214c : __ __ __ BYT 01                                              : .
+2174 : __ __ __ BYT 01                                              : .
 --------------------------------------------------------------------
 nformi:
 .s0:
@@ -1024,7 +1024,7 @@ nformi:
 0ebe : 85 1b __ STA ACCU + 0 
 0ec0 : a5 12 __ LDA P5 ; (v + 1)
 0ec2 : 85 1c __ STA ACCU + 1 
-0ec4 : 20 70 1f JSR $1f70 ; (divmod + 0)
+0ec4 : 20 98 1f JSR $1f98 ; (divmod + 0)
 0ec7 : a5 06 __ LDA WORK + 3 
 0ec9 : 30 10 __ BMI $0edb ; (nformi.s9 + 0)
 .s1019:
@@ -1054,7 +1054,7 @@ nformi:
 0ef1 : 85 03 __ STA WORK + 0 
 0ef3 : a5 48 __ LDA T5 + 1 
 0ef5 : 85 04 __ STA WORK + 1 
-0ef7 : 20 70 1f JSR $1f70 ; (divmod + 0)
+0ef7 : 20 98 1f JSR $1f98 ; (divmod + 0)
 0efa : a5 1b __ LDA ACCU + 0 
 0efc : 85 11 __ STA P4 ; (v + 0)
 0efe : a5 1c __ LDA ACCU + 1 
@@ -1403,7 +1403,7 @@ nforml:
 1116 : a9 00 __ LDA #$00
 1118 : 85 05 __ STA WORK + 2 
 111a : 85 06 __ STA WORK + 3 
-111c : 20 ab 20 JSR $20ab ; (divmod32 + 0)
+111c : 20 d3 20 JSR $20d3 ; (divmod32 + 0)
 111f : a5 08 __ LDA WORK + 5 
 1121 : 30 10 __ BMI $1133 ; (nforml.s9 + 0)
 .s1023:
@@ -1440,7 +1440,7 @@ nforml:
 1157 : a9 00 __ LDA #$00
 1159 : 85 05 __ STA WORK + 2 
 115b : 85 06 __ STA WORK + 3 
-115d : 20 ab 20 JSR $20ab ; (divmod32 + 0)
+115d : 20 d3 20 JSR $20d3 ; (divmod32 + 0)
 1160 : a5 1b __ LDA ACCU + 0 
 1162 : 85 11 __ STA P4 ; (v + 0)
 1164 : a5 1c __ LDA ACCU + 1 
@@ -1593,8 +1593,8 @@ nformf:
 125d : 85 05 __ STA WORK + 2 
 125f : a9 41 __ LDA #$41
 1261 : 85 06 __ STA WORK + 3 
-1263 : 20 a1 1c JSR $1ca1 ; (freg + 20)
-1266 : 20 88 1e JSR $1e88 ; (fdiv + 0)
+1263 : 20 c9 1c JSR $1cc9 ; (freg + 20)
+1266 : 20 b0 1e JSR $1eb0 ; (fdiv + 0)
 1269 : a5 4b __ LDA T5 + 1 
 126b : 30 e2 __ BMI $124f ; (nformf.l1085 + 0)
 .s1086:
@@ -1616,29 +1616,29 @@ nformf:
 1287 : c9 07 __ CMP #$07
 1289 : 90 13 __ BCC $129e ; (nformf.s35 + 0)
 .s36:
-128b : ad 66 21 LDA $2166 ; (fround5 + 25)
+128b : ad 8e 21 LDA $218e ; (fround5 + 25)
 128e : 85 1c __ STA ACCU + 1 
-1290 : ad 67 21 LDA $2167 ; (fround5 + 26)
+1290 : ad 8f 21 LDA $218f ; (fround5 + 26)
 1293 : 85 1d __ STA ACCU + 2 
-1295 : ad 68 21 LDA $2168 ; (fround5 + 27)
-1298 : ae 65 21 LDX $2165 ; (fround5 + 24)
+1295 : ad 90 21 LDA $2190 ; (fround5 + 27)
+1298 : ae 8d 21 LDX $218d ; (fround5 + 24)
 129b : 4c b1 12 JMP $12b1 ; (nformf.s214 + 0)
 .s35:
 129e : 0a __ __ ASL
 129f : 0a __ __ ASL
 12a0 : a8 __ __ TAY
-12a1 : b9 4a 21 LDA $214a,y ; (__multab3L + 9)
+12a1 : b9 72 21 LDA $2172,y ; (__multab3L + 9)
 12a4 : 85 1c __ STA ACCU + 1 
-12a6 : b9 4b 21 LDA $214b,y ; (spentry + 0)
+12a6 : b9 73 21 LDA $2173,y ; (spentry + 0)
 12a9 : 85 1d __ STA ACCU + 2 
-12ab : b9 4c 21 LDA $214c,y ; (giocharmap + 0)
-12ae : be 49 21 LDX $2149,y ; (__multab3L + 8)
+12ab : b9 74 21 LDA $2174,y ; (giocharmap + 0)
+12ae : be 71 21 LDX $2171,y ; (__multab3L + 8)
 .s214:
 12b1 : 86 1b __ STX ACCU + 0 
 12b3 : 85 1e __ STA ACCU + 3 
 12b5 : a2 43 __ LDX #$43
-12b7 : 20 91 1c JSR $1c91 ; (freg + 4)
-12ba : 20 d2 1c JSR $1cd2 ; (faddsub + 0)
+12b7 : 20 b9 1c JSR $1cb9 ; (freg + 4)
+12ba : 20 fa 1c JSR $1cfa ; (faddsub + 0)
 12bd : a5 1c __ LDA ACCU + 1 
 12bf : 85 16 __ STA P9 ; (f + 1)
 12c1 : a5 1d __ LDA ACCU + 2 
@@ -1664,8 +1664,8 @@ nformf:
 12e1 : 85 05 __ STA WORK + 2 
 12e3 : a9 41 __ LDA #$41
 12e5 : 85 06 __ STA WORK + 3 
-12e7 : 20 a1 1c JSR $1ca1 ; (freg + 20)
-12ea : 20 88 1e JSR $1e88 ; (fdiv + 0)
+12e7 : 20 c9 1c JSR $1cc9 ; (freg + 20)
+12ea : 20 b0 1e JSR $1eb0 ; (fdiv + 0)
 12ed : a5 1c __ LDA ACCU + 1 
 12ef : 85 16 __ STA P9 ; (f + 1)
 12f1 : a5 1d __ LDA ACCU + 2 
@@ -1724,16 +1724,16 @@ nformf:
 1347 : a5 18 __ LDA P11 ; (f + 3)
 1349 : 85 1e __ STA ACCU + 3 
 134b : 85 46 __ STA T1 + 3 
-134d : 20 1e 20 JSR $201e ; (f32_to_i16 + 0)
+134d : 20 46 20 JSR $2046 ; (f32_to_i16 + 0)
 1350 : a5 1b __ LDA ACCU + 0 
 1352 : 85 4f __ STA T11 + 0 
-1354 : 20 60 20 JSR $2060 ; (sint16_to_float + 0)
+1354 : 20 88 20 JSR $2088 ; (sint16_to_float + 0)
 1357 : a2 43 __ LDX #$43
-1359 : 20 91 1c JSR $1c91 ; (freg + 4)
+1359 : 20 b9 1c JSR $1cb9 ; (freg + 4)
 135c : a5 1e __ LDA ACCU + 3 
 135e : 49 80 __ EOR #$80
 1360 : 85 1e __ STA ACCU + 3 
-1362 : 20 d2 1c JSR $1cd2 ; (faddsub + 0)
+1362 : 20 fa 1c JSR $1cfa ; (faddsub + 0)
 1365 : a9 00 __ LDA #$00
 1367 : 85 03 __ STA WORK + 0 
 1369 : 85 04 __ STA WORK + 1 
@@ -1741,8 +1741,8 @@ nformf:
 136d : 85 05 __ STA WORK + 2 
 136f : a9 41 __ LDA #$41
 1371 : 85 06 __ STA WORK + 3 
-1373 : 20 a1 1c JSR $1ca1 ; (freg + 20)
-1376 : 20 b9 1d JSR $1db9 ; (fmul + 0)
+1373 : 20 c9 1c JSR $1cc9 ; (freg + 20)
+1376 : 20 e1 1d JSR $1de1 ; (fmul + 0)
 1379 : a5 1c __ LDA ACCU + 1 
 137b : 85 16 __ STA P9 ; (f + 1)
 137d : a5 1d __ LDA ACCU + 2 
@@ -1798,7 +1798,7 @@ nformf:
 13d1 : 85 03 __ STA WORK + 0 
 13d3 : a9 00 __ LDA #$00
 13d5 : 85 04 __ STA WORK + 1 
-13d7 : 20 36 1f JSR $1f36 ; (divs16 + 0)
+13d7 : 20 5e 1f JSR $1f5e ; (divs16 + 0)
 13da : 18 __ __ CLC
 13db : a5 1b __ LDA ACCU + 0 
 13dd : 69 30 __ ADC #$30
@@ -1814,7 +1814,7 @@ nformf:
 13ef : 85 03 __ STA WORK + 0 
 13f1 : a9 00 __ LDA #$00
 13f3 : 85 04 __ STA WORK + 1 
-13f5 : 20 f5 1f JSR $1ff5 ; (mods16 + 0)
+13f5 : 20 1d 20 JSR $201d ; (mods16 + 0)
 13f8 : 18 __ __ CLC
 13f9 : a5 05 __ LDA WORK + 2 
 13fb : 69 30 __ ADC #$30
@@ -1914,29 +1914,29 @@ nformf:
 148d : c9 07 __ CMP #$07
 148f : 90 13 __ BCC $14a4 ; (nformf.s41 + 0)
 .s42:
-1491 : ad 66 21 LDA $2166 ; (fround5 + 25)
+1491 : ad 8e 21 LDA $218e ; (fround5 + 25)
 1494 : 85 1c __ STA ACCU + 1 
-1496 : ad 67 21 LDA $2167 ; (fround5 + 26)
+1496 : ad 8f 21 LDA $218f ; (fround5 + 26)
 1499 : 85 1d __ STA ACCU + 2 
-149b : ad 68 21 LDA $2168 ; (fround5 + 27)
-149e : ae 65 21 LDX $2165 ; (fround5 + 24)
+149b : ad 90 21 LDA $2190 ; (fround5 + 27)
+149e : ae 8d 21 LDX $218d ; (fround5 + 24)
 14a1 : 4c b7 14 JMP $14b7 ; (nformf.s204 + 0)
 .s41:
 14a4 : 0a __ __ ASL
 14a5 : 0a __ __ ASL
 14a6 : a8 __ __ TAY
-14a7 : b9 4a 21 LDA $214a,y ; (__multab3L + 9)
+14a7 : b9 72 21 LDA $2172,y ; (__multab3L + 9)
 14aa : 85 1c __ STA ACCU + 1 
-14ac : b9 4b 21 LDA $214b,y ; (spentry + 0)
+14ac : b9 73 21 LDA $2173,y ; (spentry + 0)
 14af : 85 1d __ STA ACCU + 2 
-14b1 : b9 4c 21 LDA $214c,y ; (giocharmap + 0)
-14b4 : be 49 21 LDX $2149,y ; (__multab3L + 8)
+14b1 : b9 74 21 LDA $2174,y ; (giocharmap + 0)
+14b4 : be 71 21 LDX $2171,y ; (__multab3L + 8)
 .s204:
 14b7 : 86 1b __ STX ACCU + 0 
 14b9 : 85 1e __ STA ACCU + 3 
 14bb : a2 43 __ LDX #$43
-14bd : 20 91 1c JSR $1c91 ; (freg + 4)
-14c0 : 20 d2 1c JSR $1cd2 ; (faddsub + 0)
+14bd : 20 b9 1c JSR $1cb9 ; (freg + 4)
+14c0 : 20 fa 1c JSR $1cfa ; (faddsub + 0)
 14c3 : a5 1c __ LDA ACCU + 1 
 14c5 : 85 16 __ STA P9 ; (f + 1)
 14c7 : a5 1d __ LDA ACCU + 2 
@@ -1964,8 +1964,8 @@ nformf:
 14ed : 85 05 __ STA WORK + 2 
 14ef : a9 41 __ LDA #$41
 14f1 : 85 06 __ STA WORK + 3 
-14f3 : 20 a1 1c JSR $1ca1 ; (freg + 20)
-14f6 : 20 88 1e JSR $1e88 ; (fdiv + 0)
+14f3 : 20 c9 1c JSR $1cc9 ; (freg + 20)
+14f6 : 20 b0 1e JSR $1eb0 ; (fdiv + 0)
 14f9 : a5 1c __ LDA ACCU + 1 
 14fb : 85 16 __ STA P9 ; (f + 1)
 14fd : a5 1d __ LDA ACCU + 2 
@@ -2014,8 +2014,8 @@ nformf:
 1547 : 85 05 __ STA WORK + 2 
 1549 : a9 44 __ LDA #$44
 154b : 85 06 __ STA WORK + 3 
-154d : 20 a1 1c JSR $1ca1 ; (freg + 20)
-1550 : 20 88 1e JSR $1e88 ; (fdiv + 0)
+154d : 20 c9 1c JSR $1cc9 ; (freg + 20)
+1550 : 20 b0 1e JSR $1eb0 ; (fdiv + 0)
 1553 : a5 1b __ LDA ACCU + 0 
 1555 : 85 43 __ STA T1 + 0 
 1557 : a5 1c __ LDA ACCU + 1 
@@ -2042,8 +2042,8 @@ nformf:
 157a : a9 44 __ LDA #$44
 157c : 85 1e __ STA ACCU + 3 
 157e : a2 43 __ LDX #$43
-1580 : 20 91 1c JSR $1c91 ; (freg + 4)
-1583 : 20 b9 1d JSR $1db9 ; (fmul + 0)
+1580 : 20 b9 1c JSR $1cb9 ; (freg + 4)
+1583 : 20 e1 1d JSR $1de1 ; (fmul + 0)
 1586 : a5 1b __ LDA ACCU + 0 
 1588 : 85 43 __ STA T1 + 0 
 158a : a5 1c __ LDA ACCU + 1 
@@ -2102,8 +2102,8 @@ nformf:
 15dd : 85 05 __ STA WORK + 2 
 15df : a9 41 __ LDA #$41
 15e1 : 85 06 __ STA WORK + 3 
-15e3 : 20 a1 1c JSR $1ca1 ; (freg + 20)
-15e6 : 20 88 1e JSR $1e88 ; (fdiv + 0)
+15e3 : 20 c9 1c JSR $1cc9 ; (freg + 20)
+15e6 : 20 b0 1e JSR $1eb0 ; (fdiv + 0)
 15e9 : a5 1b __ LDA ACCU + 0 
 15eb : 85 43 __ STA T1 + 0 
 15ed : a5 1c __ LDA ACCU + 1 
@@ -2174,8 +2174,8 @@ isinf:
 1654 : 60 __ __ RTS
 --------------------------------------------------------------------
 fround5:
-214d : __ __ __ BYT 00 00 00 3f cd cc 4c 3d 0a d7 a3 3b 6f 12 03 3a : ...?..L=...;o..:
-215d : __ __ __ BYT 17 b7 51 38 ac c5 a7 36 bd 37 06 35             : ..Q8...6.7.5
+2175 : __ __ __ BYT 00 00 00 3f cd cc 4c 3d 0a d7 a3 3b 6f 12 03 3a : ...?..L=...;o..:
+2185 : __ __ __ BYT 17 b7 51 38 ac c5 a7 36 bd 37 06 35             : ..Q8...6.7.5
 --------------------------------------------------------------------
 1655 : __ __ __ BYT 1e 53 43 4f 52 45 3a 20 25 64 00                : .SCORE: %d.
 --------------------------------------------------------------------
@@ -2187,8 +2187,8 @@ spawn_enemy:
 .s3:
 1667 : a0 00 __ LDY #$00
 .l6:
-1669 : be 41 21 LDX $2141,y ; (__multab3L + 0)
-166c : bd 6f 21 LDA $216f,x ; (Enemy + 2)
+1669 : be 69 21 LDX $2169,y ; (__multab3L + 0)
+166c : bd 97 21 LDA $2197,x ; (Enemy + 2)
 166f : f0 06 __ BEQ $1677 ; (spawn_enemy.s9 + 0)
 .s7:
 1671 : c8 __ __ INY
@@ -2199,49 +2199,49 @@ spawn_enemy:
 .s9:
 1677 : 86 43 __ STX T0 + 0 
 1679 : a9 27 __ LDA #$27
-167b : 9d 6d 21 STA $216d,x ; (Enemy + 0)
+167b : 9d 95 21 STA $2195,x ; (Enemy + 0)
 167e : 20 9e 16 JSR $169e ; (rand.s0 + 0)
 1681 : a9 01 __ LDA #$01
 1683 : a6 43 __ LDX T0 + 0 
-1685 : 9d 6f 21 STA $216f,x ; (Enemy + 2)
+1685 : 9d 97 21 STA $2197,x ; (Enemy + 2)
 1688 : a9 16 __ LDA #$16
 168a : 85 03 __ STA WORK + 0 
 168c : a9 00 __ LDA #$00
 168e : 85 04 __ STA WORK + 1 
-1690 : 20 70 1f JSR $1f70 ; (divmod + 0)
+1690 : 20 98 1f JSR $1f98 ; (divmod + 0)
 1693 : 18 __ __ CLC
 1694 : a5 05 __ LDA WORK + 2 
 1696 : 69 03 __ ADC #$03
 1698 : a6 43 __ LDX T0 + 0 
-169a : 9d 6e 21 STA $216e,x ; (Enemy + 1)
+169a : 9d 96 21 STA $2196,x ; (Enemy + 1)
 169d : 60 __ __ RTS
 --------------------------------------------------------------------
 rand:
 .s0:
-169e : ad 6a 21 LDA $216a ; (seed + 1)
+169e : ad 92 21 LDA $2192 ; (seed + 1)
 16a1 : 4a __ __ LSR
-16a2 : ad 69 21 LDA $2169 ; (seed + 0)
+16a2 : ad 91 21 LDA $2191 ; (seed + 0)
 16a5 : 6a __ __ ROR
 16a6 : aa __ __ TAX
 16a7 : a9 00 __ LDA #$00
 16a9 : 6a __ __ ROR
-16aa : 4d 69 21 EOR $2169 ; (seed + 0)
+16aa : 4d 91 21 EOR $2191 ; (seed + 0)
 16ad : 85 1b __ STA ACCU + 0 
 16af : 8a __ __ TXA
-16b0 : 4d 6a 21 EOR $216a ; (seed + 1)
+16b0 : 4d 92 21 EOR $2192 ; (seed + 1)
 16b3 : 85 1c __ STA ACCU + 1 
 16b5 : 4a __ __ LSR
 16b6 : 45 1b __ EOR ACCU + 0 
-16b8 : 8d 69 21 STA $2169 ; (seed + 0)
+16b8 : 8d 91 21 STA $2191 ; (seed + 0)
 16bb : 85 1b __ STA ACCU + 0 
 16bd : 45 1c __ EOR ACCU + 1 
-16bf : 8d 6a 21 STA $216a ; (seed + 1)
+16bf : 8d 92 21 STA $2192 ; (seed + 1)
 16c2 : 85 1c __ STA ACCU + 1 
 .s1001:
 16c4 : 60 __ __ RTS
 --------------------------------------------------------------------
 seed:
-2169 : __ __ __ BYT 00 7a                                           : .z
+2191 : __ __ __ BYT 00 7a                                           : .z
 --------------------------------------------------------------------
 move_enemies:
 .s1000:
@@ -2254,21 +2254,21 @@ move_enemies:
 16cf : a2 00 __ LDX #$00
 .l2:
 16d1 : 86 53 __ STX T0 + 0 
-16d3 : bc 41 21 LDY $2141,x ; (__multab3L + 0)
-16d6 : b9 6f 21 LDA $216f,y ; (Enemy + 2)
+16d3 : bc 69 21 LDY $2169,x ; (__multab3L + 0)
+16d6 : b9 97 21 LDA $2197,y ; (Enemy + 2)
 16d9 : c9 01 __ CMP #$01
 16db : d0 70 __ BNE $174d ; (move_enemies.s33 + 0)
 .s5:
 16dd : 18 __ __ CLC
-16de : a9 6d __ LDA #$6d
-16e0 : 7d 41 21 ADC $2141,x ; (__multab3L + 0)
+16de : a9 95 __ LDA #$95
+16e0 : 7d 69 21 ADC $2169,x ; (__multab3L + 0)
 16e3 : 85 54 __ STA T1 + 0 
 16e5 : a9 21 __ LDA #$21
 16e7 : 69 00 __ ADC #$00
 16e9 : 85 55 __ STA T1 + 1 
 16eb : a0 01 __ LDY #$01
 16ed : b1 54 __ LDA (T1 + 0),y 
-16ef : cd 6c 21 CMP $216c ; (Player + 1)
+16ef : cd 94 21 CMP $2194 ; (Player + 1)
 16f2 : d0 10 __ BNE $1704 ; (move_enemies.s10 + 0)
 .s8:
 16f4 : a5 54 __ LDA T1 + 0 
@@ -2349,7 +2349,7 @@ move_enemies:
 1773 : 85 03 __ STA WORK + 0 
 1775 : a9 00 __ LDA #$00
 1777 : 85 04 __ STA WORK + 1 
-1779 : 20 70 1f JSR $1f70 ; (divmod + 0)
+1779 : 20 98 1f JSR $1f98 ; (divmod + 0)
 177c : 38 __ __ SEC
 177d : a5 05 __ LDA WORK + 2 
 177f : e9 01 __ SBC #$01
@@ -2415,8 +2415,8 @@ spawn_enemy_shot:
 .s3:
 17d9 : a2 00 __ LDX #$00
 .l6:
-17db : bc 41 21 LDY $2141,x ; (__multab3L + 0)
-17de : b9 96 21 LDA $2196,y ; (EnemyShot + 2)
+17db : bc 69 21 LDY $2169,x ; (__multab3L + 0)
+17de : b9 be 21 LDA $21be,y ; (EnemyShot + 2)
 17e1 : f0 1b __ BEQ $17fe ; (spawn_enemy_shot.s9 + 0)
 .s7:
 17e3 : e8 __ __ INX
@@ -2442,7 +2442,7 @@ spawn_enemy_shot:
 1806 : 85 10 __ STA P3 
 1808 : a9 01 __ LDA #$01
 180a : 85 0f __ STA P2 
-180c : 99 96 21 STA $2196,y ; (EnemyShot + 2)
+180c : 99 be 21 STA $21be,y ; (EnemyShot + 2)
 180f : ad fe 9f LDA $9ffe ; (sstack + 8)
 1812 : 85 45 __ STA T2 + 0 
 1814 : ad ff 9f LDA $9fff ; (sstack + 9)
@@ -2452,13 +2452,13 @@ spawn_enemy_shot:
 181d : 38 __ __ SEC
 181e : e9 01 __ SBC #$01
 1820 : 85 54 __ STA T3 + 0 
-1822 : bc 41 21 LDY $2141,x ; (__multab3L + 0)
-1825 : 99 94 21 STA $2194,y ; (EnemyShot + 0)
+1822 : bc 69 21 LDY $2169,x ; (__multab3L + 0)
+1825 : 99 bc 21 STA $21bc,y ; (EnemyShot + 0)
 1828 : a0 01 __ LDY #$01
 182a : b1 45 __ LDA (T2 + 0),y 
 182c : 85 53 __ STA T1 + 0 
-182e : bc 41 21 LDY $2141,x ; (__multab3L + 0)
-1831 : 99 95 21 STA $2195,y ; (EnemyShot + 1)
+182e : bc 69 21 LDY $2169,x ; (__multab3L + 0)
+1831 : 99 bd 21 STA $21bd,y ; (EnemyShot + 1)
 1834 : 20 ae 09 JSR $09ae ; (gotoxy.s0 + 0)
 1837 : a9 5c __ LDA #$5c
 1839 : a0 02 __ LDY #$02
@@ -2487,12 +2487,12 @@ render_enemy_shots:
 .s0:
 1864 : a2 00 __ LDX #$00
 .l1006:
-1866 : bc 41 21 LDY $2141,x ; (__multab3L + 0)
-1869 : b9 96 21 LDA $2196,y ; (EnemyShot + 2)
+1866 : bc 69 21 LDY $2169,x ; (__multab3L + 0)
+1869 : b9 be 21 LDA $21be,y ; (EnemyShot + 2)
 186c : c9 01 __ CMP #$01
 186e : d0 43 __ BNE $18b3 ; (render_enemy_shots.s19 + 0)
 .s5:
-1870 : b9 95 21 LDA $2195,y ; (EnemyShot + 1)
+1870 : b9 bd 21 LDA $21bd,y ; (EnemyShot + 1)
 1873 : 0a __ __ ASL
 1874 : 85 1b __ STA ACCU + 0 
 1876 : a9 00 __ LDA #$00
@@ -2501,7 +2501,7 @@ render_enemy_shots:
 187b : 2a __ __ ROL
 187c : 85 1c __ STA ACCU + 1 
 187e : a5 1b __ LDA ACCU + 0 
-1880 : 79 95 21 ADC $2195,y ; (EnemyShot + 1)
+1880 : 79 bd 21 ADC $21bd,y ; (EnemyShot + 1)
 1883 : 85 1b __ STA ACCU + 0 
 1885 : a5 1c __ LDA ACCU + 1 
 1887 : 69 00 __ ADC #$00
@@ -2514,7 +2514,7 @@ render_enemy_shots:
 1892 : 85 1c __ STA ACCU + 1 
 1894 : 18 __ __ CLC
 1895 : a5 1b __ LDA ACCU + 0 
-1897 : 79 94 21 ADC $2194,y ; (EnemyShot + 0)
+1897 : 79 bc 21 ADC $21bc,y ; (EnemyShot + 0)
 189a : 85 1b __ STA ACCU + 0 
 189c : 85 1f __ STA ADDR + 0 
 189e : a5 1c __ LDA ACCU + 1 
@@ -2539,12 +2539,12 @@ render_enemies:
 .s0:
 18b9 : a2 00 __ LDX #$00
 .l1006:
-18bb : bc 41 21 LDY $2141,x ; (__multab3L + 0)
-18be : b9 6f 21 LDA $216f,y ; (Enemy + 2)
+18bb : bc 69 21 LDY $2169,x ; (__multab3L + 0)
+18be : b9 97 21 LDA $2197,y ; (Enemy + 2)
 18c1 : c9 01 __ CMP #$01
 18c3 : d0 43 __ BNE $1908 ; (render_enemies.s19 + 0)
 .s5:
-18c5 : b9 6e 21 LDA $216e,y ; (Enemy + 1)
+18c5 : b9 96 21 LDA $2196,y ; (Enemy + 1)
 18c8 : 0a __ __ ASL
 18c9 : 85 1b __ STA ACCU + 0 
 18cb : a9 00 __ LDA #$00
@@ -2553,7 +2553,7 @@ render_enemies:
 18d0 : 2a __ __ ROL
 18d1 : 85 1c __ STA ACCU + 1 
 18d3 : a5 1b __ LDA ACCU + 0 
-18d5 : 79 6e 21 ADC $216e,y ; (Enemy + 1)
+18d5 : 79 96 21 ADC $2196,y ; (Enemy + 1)
 18d8 : 85 1b __ STA ACCU + 0 
 18da : a5 1c __ LDA ACCU + 1 
 18dc : 69 00 __ ADC #$00
@@ -2566,7 +2566,7 @@ render_enemies:
 18e7 : 85 1c __ STA ACCU + 1 
 18e9 : 18 __ __ CLC
 18ea : a5 1b __ LDA ACCU + 0 
-18ec : 79 6d 21 ADC $216d,y ; (Enemy + 0)
+18ec : 79 95 21 ADC $2195,y ; (Enemy + 0)
 18ef : 85 1b __ STA ACCU + 0 
 18f1 : 85 1f __ STA ADDR + 0 
 18f3 : a5 1c __ LDA ACCU + 1 
@@ -2591,13 +2591,13 @@ move_enemy_shots:
 .s0:
 190e : a2 00 __ LDX #$00
 .l1008:
-1910 : bc 41 21 LDY $2141,x ; (__multab3L + 0)
-1913 : b9 96 21 LDA $2196,y ; (EnemyShot + 2)
+1910 : bc 69 21 LDY $2169,x ; (__multab3L + 0)
+1913 : b9 be 21 LDA $21be,y ; (EnemyShot + 2)
 1916 : c9 01 __ CMP #$01
 1918 : d0 58 __ BNE $1972 ; (move_enemy_shots.s23 + 0)
 .s5:
 191a : 84 1d __ STY ACCU + 2 
-191c : b9 95 21 LDA $2195,y ; (EnemyShot + 1)
+191c : b9 bd 21 LDA $21bd,y ; (EnemyShot + 1)
 191f : 0a __ __ ASL
 1920 : 85 1b __ STA ACCU + 0 
 1922 : a9 00 __ LDA #$00
@@ -2606,7 +2606,7 @@ move_enemy_shots:
 1927 : 2a __ __ ROL
 1928 : 85 1c __ STA ACCU + 1 
 192a : a5 1b __ LDA ACCU + 0 
-192c : 79 95 21 ADC $2195,y ; (EnemyShot + 1)
+192c : 79 bd 21 ADC $21bd,y ; (EnemyShot + 1)
 192f : 85 1b __ STA ACCU + 0 
 1931 : a5 1c __ LDA ACCU + 1 
 1933 : 69 00 __ ADC #$00
@@ -2617,7 +2617,7 @@ move_enemy_shots:
 193b : 06 1b __ ASL ACCU + 0 
 193d : 2a __ __ ROL
 193e : 85 1c __ STA ACCU + 1 
-1940 : b9 94 21 LDA $2194,y ; (EnemyShot + 0)
+1940 : b9 bc 21 LDA $21bc,y ; (EnemyShot + 0)
 1943 : 85 1e __ STA ACCU + 3 
 1945 : 18 __ __ CLC
 1946 : 65 1b __ ADC ACCU + 0 
@@ -2637,12 +2637,12 @@ move_enemy_shots:
 1960 : c6 1e __ DEC ACCU + 3 
 1962 : a5 1e __ LDA ACCU + 3 
 1964 : a4 1d __ LDY ACCU + 2 
-1966 : 99 94 21 STA $2194,y ; (EnemyShot + 0)
+1966 : 99 bc 21 STA $21bc,y ; (EnemyShot + 0)
 1969 : c9 ff __ CMP #$ff
 196b : d0 05 __ BNE $1972 ; (move_enemy_shots.s23 + 0)
 .s8:
 196d : a9 00 __ LDA #$00
-196f : 99 96 21 STA $2196,y ; (EnemyShot + 2)
+196f : 99 be 21 STA $21be,y ; (EnemyShot + 2)
 .s23:
 1972 : e8 __ __ INX
 1973 : e0 03 __ CPX #$03
@@ -2654,1183 +2654,1206 @@ check_player_enemy_collision:
 .s0:
 1978 : a0 00 __ LDY #$00
 .l2:
-197a : be 41 21 LDX $2141,y ; (__multab3L + 0)
-197d : bd 6f 21 LDA $216f,x ; (Enemy + 2)
+197a : be 69 21 LDX $2169,y ; (__multab3L + 0)
+197d : bd 97 21 LDA $2197,x ; (Enemy + 2)
 1980 : c9 01 __ CMP #$01
 1982 : d0 10 __ BNE $1994 ; (check_player_enemy_collision.s3 + 0)
 .s5:
-1984 : bd 6d 21 LDA $216d,x ; (Enemy + 0)
-1987 : cd 6b 21 CMP $216b ; (Player + 0)
+1984 : bd 95 21 LDA $2195,x ; (Enemy + 0)
+1987 : cd 93 21 CMP $2193 ; (Player + 0)
 198a : d0 08 __ BNE $1994 ; (check_player_enemy_collision.s3 + 0)
 .s11:
-198c : bd 6e 21 LDA $216e,x ; (Enemy + 1)
-198f : cd 6c 21 CMP $216c ; (Player + 1)
-1992 : f0 06 __ BEQ $199a ; (check_player_enemy_collision.s8 + 0)
+198c : bd 96 21 LDA $2196,x ; (Enemy + 1)
+198f : cd 94 21 CMP $2194 ; (Player + 1)
+1992 : f0 2d __ BEQ $19c1 ; (check_player_enemy_collision.s8 + 0)
 .s3:
 1994 : c8 __ __ INY
 1995 : c0 0a __ CPY #$0a
 1997 : 90 e1 __ BCC $197a ; (check_player_enemy_collision.l2 + 0)
+.s4:
+1999 : a0 00 __ LDY #$00
+.l13:
+199b : be 69 21 LDX $2169,y ; (__multab3L + 0)
+199e : bd be 21 LDA $21be,x ; (EnemyShot + 2)
+19a1 : c9 01 __ CMP #$01
+19a3 : d0 10 __ BNE $19b5 ; (check_player_enemy_collision.s14 + 0)
+.s16:
+19a5 : bd bc 21 LDA $21bc,x ; (EnemyShot + 0)
+19a8 : cd 93 21 CMP $2193 ; (Player + 0)
+19ab : d0 08 __ BNE $19b5 ; (check_player_enemy_collision.s14 + 0)
+.s22:
+19ad : bd bd 21 LDA $21bd,x ; (EnemyShot + 1)
+19b0 : cd 94 21 CMP $2194 ; (Player + 1)
+19b3 : f0 06 __ BEQ $19bb ; (check_player_enemy_collision.s19 + 0)
+.s14:
+19b5 : c8 __ __ INY
+19b6 : c0 03 __ CPY #$03
+19b8 : 90 e1 __ BCC $199b ; (check_player_enemy_collision.l13 + 0)
 .s1001:
-1999 : 60 __ __ RTS
+19ba : 60 __ __ RTS
+.s19:
+19bb : a9 01 __ LDA #$01
+19bd : 8d c5 21 STA $21c5 ; (game + 0)
+19c0 : 60 __ __ RTS
 .s8:
-199a : a9 01 __ LDA #$01
-199c : 8d 9d 21 STA $219d ; (game + 0)
-199f : 60 __ __ RTS
+19c1 : a9 01 __ LDA #$01
+19c3 : 8d c5 21 STA $21c5 ; (game + 0)
+19c6 : d0 d1 __ BNE $1999 ; (check_player_enemy_collision.s4 + 0)
 --------------------------------------------------------------------
 control_player_ship:
 .s0:
-19a0 : a9 00 __ LDA #$00
-19a2 : 20 42 1a JSR $1a42 ; (joy_poll.s0 + 0)
-19a5 : ad a4 21 LDA $21a4 ; (joyx + 0)
-19a8 : 85 1d __ STA ACCU + 2 
-19aa : 85 1e __ STA ACCU + 3 
-19ac : d0 08 __ BNE $19b6 ; (control_player_ship.s1 + 0)
+19c8 : a9 00 __ LDA #$00
+19ca : 20 6a 1a JSR $1a6a ; (joy_poll.s0 + 0)
+19cd : ad cc 21 LDA $21cc ; (joyx + 0)
+19d0 : 85 1d __ STA ACCU + 2 
+19d2 : 85 1e __ STA ACCU + 3 
+19d4 : d0 08 __ BNE $19de ; (control_player_ship.s1 + 0)
 .s4:
-19ae : ad a2 21 LDA $21a2 ; (joyy + 0)
-19b1 : d0 03 __ BNE $19b6 ; (control_player_ship.s1 + 0)
-19b3 : 4c 37 1a JMP $1a37 ; (control_player_ship.s3 + 0)
+19d6 : ad ca 21 LDA $21ca ; (joyy + 0)
+19d9 : d0 03 __ BNE $19de ; (control_player_ship.s1 + 0)
+19db : 4c 5f 1a JMP $1a5f ; (control_player_ship.s3 + 0)
 .s1:
-19b6 : ad 6b 21 LDA $216b ; (Player + 0)
-19b9 : 85 43 __ STA T2 + 0 
-19bb : 85 44 __ STA T3 + 0 
-19bd : ad 6c 21 LDA $216c ; (Player + 1)
-19c0 : 85 45 __ STA T4 + 0 
-19c2 : 85 46 __ STA T5 + 0 
-19c4 : 0a __ __ ASL
-19c5 : 85 1b __ STA ACCU + 0 
-19c7 : a9 00 __ LDA #$00
-19c9 : 2a __ __ ROL
-19ca : 06 1b __ ASL ACCU + 0 
-19cc : 2a __ __ ROL
-19cd : aa __ __ TAX
-19ce : a5 1b __ LDA ACCU + 0 
-19d0 : 65 45 __ ADC T4 + 0 
-19d2 : 85 1b __ STA ACCU + 0 
-19d4 : 8a __ __ TXA
-19d5 : 69 00 __ ADC #$00
-19d7 : 06 1b __ ASL ACCU + 0 
-19d9 : 2a __ __ ROL
-19da : 06 1b __ ASL ACCU + 0 
-19dc : 2a __ __ ROL
-19dd : 06 1b __ ASL ACCU + 0 
-19df : 2a __ __ ROL
-19e0 : aa __ __ TAX
-19e1 : 18 __ __ CLC
-19e2 : a5 1b __ LDA ACCU + 0 
-19e4 : 65 43 __ ADC T2 + 0 
-19e6 : 85 1b __ STA ACCU + 0 
-19e8 : 85 1f __ STA ADDR + 0 
-19ea : 8a __ __ TXA
-19eb : 69 04 __ ADC #$04
-19ed : 85 1c __ STA ACCU + 1 
-19ef : 18 __ __ CLC
-19f0 : 69 d4 __ ADC #$d4
-19f2 : 85 20 __ STA ADDR + 1 
-19f4 : a9 20 __ LDA #$20
-19f6 : a0 00 __ LDY #$00
-19f8 : 91 1b __ STA (ACCU + 0),y 
-19fa : 98 __ __ TYA
-19fb : 91 1f __ STA (ADDR + 0),y 
-19fd : a5 43 __ LDA T2 + 0 
-19ff : f0 04 __ BEQ $1a05 ; (control_player_ship.s6 + 0)
+19de : ad 93 21 LDA $2193 ; (Player + 0)
+19e1 : 85 43 __ STA T2 + 0 
+19e3 : 85 44 __ STA T3 + 0 
+19e5 : ad 94 21 LDA $2194 ; (Player + 1)
+19e8 : 85 45 __ STA T4 + 0 
+19ea : 85 46 __ STA T5 + 0 
+19ec : 0a __ __ ASL
+19ed : 85 1b __ STA ACCU + 0 
+19ef : a9 00 __ LDA #$00
+19f1 : 2a __ __ ROL
+19f2 : 06 1b __ ASL ACCU + 0 
+19f4 : 2a __ __ ROL
+19f5 : aa __ __ TAX
+19f6 : a5 1b __ LDA ACCU + 0 
+19f8 : 65 45 __ ADC T4 + 0 
+19fa : 85 1b __ STA ACCU + 0 
+19fc : 8a __ __ TXA
+19fd : 69 00 __ ADC #$00
+19ff : 06 1b __ ASL ACCU + 0 
+1a01 : 2a __ __ ROL
+1a02 : 06 1b __ ASL ACCU + 0 
+1a04 : 2a __ __ ROL
+1a05 : 06 1b __ ASL ACCU + 0 
+1a07 : 2a __ __ ROL
+1a08 : aa __ __ TAX
+1a09 : 18 __ __ CLC
+1a0a : a5 1b __ LDA ACCU + 0 
+1a0c : 65 43 __ ADC T2 + 0 
+1a0e : 85 1b __ STA ACCU + 0 
+1a10 : 85 1f __ STA ADDR + 0 
+1a12 : 8a __ __ TXA
+1a13 : 69 04 __ ADC #$04
+1a15 : 85 1c __ STA ACCU + 1 
+1a17 : 18 __ __ CLC
+1a18 : 69 d4 __ ADC #$d4
+1a1a : 85 20 __ STA ADDR + 1 
+1a1c : a9 20 __ LDA #$20
+1a1e : a0 00 __ LDY #$00
+1a20 : 91 1b __ STA (ACCU + 0),y 
+1a22 : 98 __ __ TYA
+1a23 : 91 1f __ STA (ADDR + 0),y 
+1a25 : a5 43 __ LDA T2 + 0 
+1a27 : f0 04 __ BEQ $1a2d ; (control_player_ship.s6 + 0)
 .s8:
-1a01 : a5 1d __ LDA ACCU + 2 
-1a03 : 30 0c __ BMI $1a11 ; (control_player_ship.s5 + 0)
+1a29 : a5 1d __ LDA ACCU + 2 
+1a2b : 30 0c __ BMI $1a39 ; (control_player_ship.s5 + 0)
 .s6:
-1a05 : a5 43 __ LDA T2 + 0 
-1a07 : c9 27 __ CMP #$27
-1a09 : b0 0e __ BCS $1a19 ; (control_player_ship.s7 + 0)
+1a2d : a5 43 __ LDA T2 + 0 
+1a2f : c9 27 __ CMP #$27
+1a31 : b0 0e __ BCS $1a41 ; (control_player_ship.s7 + 0)
 .s12:
-1a0b : a5 1d __ LDA ACCU + 2 
-1a0d : 30 0a __ BMI $1a19 ; (control_player_ship.s7 + 0)
+1a33 : a5 1d __ LDA ACCU + 2 
+1a35 : 30 0a __ BMI $1a41 ; (control_player_ship.s7 + 0)
 .s1009:
-1a0f : f0 08 __ BEQ $1a19 ; (control_player_ship.s7 + 0)
+1a37 : f0 08 __ BEQ $1a41 ; (control_player_ship.s7 + 0)
 .s5:
-1a11 : 18 __ __ CLC
-1a12 : a5 44 __ LDA T3 + 0 
-1a14 : 65 1e __ ADC ACCU + 3 
-1a16 : 8d 6b 21 STA $216b ; (Player + 0)
+1a39 : 18 __ __ CLC
+1a3a : a5 44 __ LDA T3 + 0 
+1a3c : 65 1e __ ADC ACCU + 3 
+1a3e : 8d 93 21 STA $2193 ; (Player + 0)
 .s7:
-1a19 : a5 45 __ LDA T4 + 0 
-1a1b : c9 04 __ CMP #$04
-1a1d : 90 07 __ BCC $1a26 ; (control_player_ship.s14 + 0)
+1a41 : a5 45 __ LDA T4 + 0 
+1a43 : c9 04 __ CMP #$04
+1a45 : 90 07 __ BCC $1a4e ; (control_player_ship.s14 + 0)
 .s16:
-1a1f : ad a2 21 LDA $21a2 ; (joyy + 0)
-1a22 : 30 0d __ BMI $1a31 ; (control_player_ship.s32 + 0)
+1a47 : ad ca 21 LDA $21ca ; (joyy + 0)
+1a4a : 30 0d __ BMI $1a59 ; (control_player_ship.s32 + 0)
 .s1012:
-1a24 : a5 45 __ LDA T4 + 0 
+1a4c : a5 45 __ LDA T4 + 0 
 .s14:
-1a26 : c9 18 __ CMP #$18
-1a28 : b0 0d __ BCS $1a37 ; (control_player_ship.s3 + 0)
+1a4e : c9 18 __ CMP #$18
+1a50 : b0 0d __ BCS $1a5f ; (control_player_ship.s3 + 0)
 .s20:
-1a2a : ad a2 21 LDA $21a2 ; (joyy + 0)
-1a2d : 30 08 __ BMI $1a37 ; (control_player_ship.s3 + 0)
+1a52 : ad ca 21 LDA $21ca ; (joyy + 0)
+1a55 : 30 08 __ BMI $1a5f ; (control_player_ship.s3 + 0)
 .s1004:
-1a2f : f0 06 __ BEQ $1a37 ; (control_player_ship.s3 + 0)
+1a57 : f0 06 __ BEQ $1a5f ; (control_player_ship.s3 + 0)
 .s32:
-1a31 : 18 __ __ CLC
-1a32 : 65 46 __ ADC T5 + 0 
-1a34 : 8d 6c 21 STA $216c ; (Player + 1)
+1a59 : 18 __ __ CLC
+1a5a : 65 46 __ ADC T5 + 0 
+1a5c : 8d 94 21 STA $2194 ; (Player + 1)
 .s3:
-1a37 : ad a6 21 LDA $21a6 ; (joyb + 0)
-1a3a : c9 01 __ CMP #$01
-1a3c : f0 01 __ BEQ $1a3f ; (control_player_ship.s21 + 0)
+1a5f : ad ce 21 LDA $21ce ; (joyb + 0)
+1a62 : c9 01 __ CMP #$01
+1a64 : f0 01 __ BEQ $1a67 ; (control_player_ship.s21 + 0)
 .s1001:
-1a3e : 60 __ __ RTS
+1a66 : 60 __ __ RTS
 .s21:
-1a3f : 4c 82 1a JMP $1a82 ; (spawn_player_shot.s0 + 0)
+1a67 : 4c aa 1a JMP $1aaa ; (spawn_player_shot.s0 + 0)
 --------------------------------------------------------------------
 joy_poll:
 .s0:
-1a42 : aa __ __ TAX
-1a43 : bd 00 dc LDA $dc00,x 
-1a46 : a8 __ __ TAY
-1a47 : 29 10 __ AND #$10
-1a49 : f0 04 __ BEQ $1a4f ; (joy_poll.s1005 + 0)
+1a6a : aa __ __ TAX
+1a6b : bd 00 dc LDA $dc00,x 
+1a6e : a8 __ __ TAY
+1a6f : 29 10 __ AND #$10
+1a71 : f0 04 __ BEQ $1a77 ; (joy_poll.s1005 + 0)
 .s1006:
-1a4b : a9 00 __ LDA #$00
-1a4d : f0 02 __ BEQ $1a51 ; (joy_poll.s1007 + 0)
+1a73 : a9 00 __ LDA #$00
+1a75 : f0 02 __ BEQ $1a79 ; (joy_poll.s1007 + 0)
 .s1005:
-1a4f : a9 01 __ LDA #$01
+1a77 : a9 01 __ LDA #$01
 .s1007:
-1a51 : 9d a6 21 STA $21a6,x ; (joyb + 0)
-1a54 : 98 __ __ TYA
-1a55 : 4a __ __ LSR
-1a56 : b0 1d __ BCS $1a75 ; (joy_poll.s2 + 0)
+1a79 : 9d ce 21 STA $21ce,x ; (joyb + 0)
+1a7c : 98 __ __ TYA
+1a7d : 4a __ __ LSR
+1a7e : b0 1d __ BCS $1a9d ; (joy_poll.s2 + 0)
 .s1:
-1a58 : a9 ff __ LDA #$ff
+1a80 : a9 ff __ LDA #$ff
 .s15:
-1a5a : 9d a2 21 STA $21a2,x ; (joyy + 0)
-1a5d : 98 __ __ TYA
-1a5e : 29 04 __ AND #$04
-1a60 : d0 06 __ BNE $1a68 ; (joy_poll.s8 + 0)
+1a82 : 9d ca 21 STA $21ca,x ; (joyy + 0)
+1a85 : 98 __ __ TYA
+1a86 : 29 04 __ AND #$04
+1a88 : d0 06 __ BNE $1a90 ; (joy_poll.s8 + 0)
 .s7:
-1a62 : a9 ff __ LDA #$ff
+1a8a : a9 ff __ LDA #$ff
 .s1001:
-1a64 : 9d a4 21 STA $21a4,x ; (joyx + 0)
-1a67 : 60 __ __ RTS
+1a8c : 9d cc 21 STA $21cc,x ; (joyx + 0)
+1a8f : 60 __ __ RTS
 .s8:
-1a68 : 98 __ __ TYA
-1a69 : 29 08 __ AND #$08
-1a6b : f0 04 __ BEQ $1a71 ; (joy_poll.s1011 + 0)
+1a90 : 98 __ __ TYA
+1a91 : 29 08 __ AND #$08
+1a93 : f0 04 __ BEQ $1a99 ; (joy_poll.s1011 + 0)
 .s1012:
-1a6d : a9 00 __ LDA #$00
-1a6f : f0 f3 __ BEQ $1a64 ; (joy_poll.s1001 + 0)
+1a95 : a9 00 __ LDA #$00
+1a97 : f0 f3 __ BEQ $1a8c ; (joy_poll.s1001 + 0)
 .s1011:
-1a71 : a9 01 __ LDA #$01
-1a73 : d0 ef __ BNE $1a64 ; (joy_poll.s1001 + 0)
+1a99 : a9 01 __ LDA #$01
+1a9b : d0 ef __ BNE $1a8c ; (joy_poll.s1001 + 0)
 .s2:
-1a75 : 98 __ __ TYA
-1a76 : 29 02 __ AND #$02
-1a78 : f0 04 __ BEQ $1a7e ; (joy_poll.s1008 + 0)
+1a9d : 98 __ __ TYA
+1a9e : 29 02 __ AND #$02
+1aa0 : f0 04 __ BEQ $1aa6 ; (joy_poll.s1008 + 0)
 .s1009:
-1a7a : a9 00 __ LDA #$00
-1a7c : f0 dc __ BEQ $1a5a ; (joy_poll.s15 + 0)
+1aa2 : a9 00 __ LDA #$00
+1aa4 : f0 dc __ BEQ $1a82 ; (joy_poll.s15 + 0)
 .s1008:
-1a7e : a9 01 __ LDA #$01
-1a80 : d0 d8 __ BNE $1a5a ; (joy_poll.s15 + 0)
+1aa6 : a9 01 __ LDA #$01
+1aa8 : d0 d8 __ BNE $1a82 ; (joy_poll.s15 + 0)
 --------------------------------------------------------------------
 joyy:
-21a2 : __ __ __ BSS	2
+21ca : __ __ __ BSS	2
 --------------------------------------------------------------------
 joyx:
-21a4 : __ __ __ BSS	2
+21cc : __ __ __ BSS	2
 --------------------------------------------------------------------
 joyb:
-21a6 : __ __ __ BSS	2
+21ce : __ __ __ BSS	2
 --------------------------------------------------------------------
 spawn_player_shot:
 .s0:
-1a82 : ad 6b 21 LDA $216b ; (Player + 0)
-1a85 : c9 27 __ CMP #$27
-1a87 : f0 0f __ BEQ $1a98 ; (spawn_player_shot.s1001 + 0)
+1aaa : ad 93 21 LDA $2193 ; (Player + 0)
+1aad : c9 27 __ CMP #$27
+1aaf : f0 0f __ BEQ $1ac0 ; (spawn_player_shot.s1001 + 0)
 .s3:
-1a89 : a0 00 __ LDY #$00
+1ab1 : a0 00 __ LDY #$00
 .l6:
-1a8b : be 41 21 LDX $2141,y ; (__multab3L + 0)
-1a8e : bd 8d 21 LDA $218d,x ; (PlayerShot + 2)
-1a91 : f0 06 __ BEQ $1a99 ; (spawn_player_shot.s9 + 0)
+1ab3 : be 69 21 LDX $2169,y ; (__multab3L + 0)
+1ab6 : bd b5 21 LDA $21b5,x ; (PlayerShot + 2)
+1ab9 : f0 06 __ BEQ $1ac1 ; (spawn_player_shot.s9 + 0)
 .s7:
-1a93 : c8 __ __ INY
-1a94 : c0 03 __ CPY #$03
-1a96 : 90 f3 __ BCC $1a8b ; (spawn_player_shot.l6 + 0)
+1abb : c8 __ __ INY
+1abc : c0 03 __ CPY #$03
+1abe : 90 f3 __ BCC $1ab3 ; (spawn_player_shot.l6 + 0)
 .s1001:
-1a98 : 60 __ __ RTS
+1ac0 : 60 __ __ RTS
 .s9:
-1a99 : a9 01 __ LDA #$01
-1a9b : 9d 8d 21 STA $218d,x ; (PlayerShot + 2)
-1a9e : ad 6c 21 LDA $216c ; (Player + 1)
-1aa1 : 9d 8c 21 STA $218c,x ; (PlayerShot + 1)
-1aa4 : ad a4 21 LDA $21a4 ; (joyx + 0)
-1aa7 : 30 02 __ BMI $1aab ; (spawn_player_shot.s13 + 0)
+1ac1 : a9 01 __ LDA #$01
+1ac3 : 9d b5 21 STA $21b5,x ; (PlayerShot + 2)
+1ac6 : ad 94 21 LDA $2194 ; (Player + 1)
+1ac9 : 9d b4 21 STA $21b4,x ; (PlayerShot + 1)
+1acc : ad cc 21 LDA $21cc ; (joyx + 0)
+1acf : 30 02 __ BMI $1ad3 ; (spawn_player_shot.s13 + 0)
 .s1007:
-1aa9 : d0 06 __ BNE $1ab1 ; (spawn_player_shot.s12 + 0)
+1ad1 : d0 06 __ BNE $1ad9 ; (spawn_player_shot.s12 + 0)
 .s13:
-1aab : ad 6b 21 LDA $216b ; (Player + 0)
-1aae : 4c b7 1a JMP $1ab7 ; (spawn_player_shot.s1010 + 0)
+1ad3 : ad 93 21 LDA $2193 ; (Player + 0)
+1ad6 : 4c df 1a JMP $1adf ; (spawn_player_shot.s1010 + 0)
 .s12:
-1ab1 : ad 6b 21 LDA $216b ; (Player + 0)
-1ab4 : 18 __ __ CLC
-1ab5 : 69 01 __ ADC #$01
+1ad9 : ad 93 21 LDA $2193 ; (Player + 0)
+1adc : 18 __ __ CLC
+1add : 69 01 __ ADC #$01
 .s1010:
-1ab7 : be 41 21 LDX $2141,y ; (__multab3L + 0)
-1aba : 9d 8b 21 STA $218b,x ; (PlayerShot + 0)
-1abd : 60 __ __ RTS
+1adf : be 69 21 LDX $2169,y ; (__multab3L + 0)
+1ae2 : 9d b3 21 STA $21b3,x ; (PlayerShot + 0)
+1ae5 : 60 __ __ RTS
 --------------------------------------------------------------------
 render_player_ship:
 .s0:
-1abe : ad 6c 21 LDA $216c ; (Player + 1)
-1ac1 : 0a __ __ ASL
-1ac2 : 85 1b __ STA ACCU + 0 
-1ac4 : a9 00 __ LDA #$00
-1ac6 : 2a __ __ ROL
-1ac7 : 06 1b __ ASL ACCU + 0 
-1ac9 : 2a __ __ ROL
-1aca : aa __ __ TAX
-1acb : a5 1b __ LDA ACCU + 0 
-1acd : 6d 6c 21 ADC $216c ; (Player + 1)
-1ad0 : 85 1b __ STA ACCU + 0 
-1ad2 : 8a __ __ TXA
-1ad3 : 69 00 __ ADC #$00
-1ad5 : 06 1b __ ASL ACCU + 0 
-1ad7 : 2a __ __ ROL
-1ad8 : 06 1b __ ASL ACCU + 0 
-1ada : 2a __ __ ROL
-1adb : 06 1b __ ASL ACCU + 0 
-1add : 2a __ __ ROL
-1ade : aa __ __ TAX
-1adf : 18 __ __ CLC
-1ae0 : a5 1b __ LDA ACCU + 0 
-1ae2 : 6d 6b 21 ADC $216b ; (Player + 0)
-1ae5 : 85 1b __ STA ACCU + 0 
-1ae7 : 85 1f __ STA ADDR + 0 
-1ae9 : 8a __ __ TXA
-1aea : 69 04 __ ADC #$04
-1aec : 85 1c __ STA ACCU + 1 
-1aee : 18 __ __ CLC
-1aef : 69 d4 __ ADC #$d4
-1af1 : 85 20 __ STA ADDR + 1 
-1af3 : a9 51 __ LDA #$51
-1af5 : a0 00 __ LDY #$00
-1af7 : 91 1b __ STA (ACCU + 0),y 
-1af9 : a9 03 __ LDA #$03
-1afb : 91 1f __ STA (ADDR + 0),y 
+1ae6 : ad 94 21 LDA $2194 ; (Player + 1)
+1ae9 : 0a __ __ ASL
+1aea : 85 1b __ STA ACCU + 0 
+1aec : a9 00 __ LDA #$00
+1aee : 2a __ __ ROL
+1aef : 06 1b __ ASL ACCU + 0 
+1af1 : 2a __ __ ROL
+1af2 : aa __ __ TAX
+1af3 : a5 1b __ LDA ACCU + 0 
+1af5 : 6d 94 21 ADC $2194 ; (Player + 1)
+1af8 : 85 1b __ STA ACCU + 0 
+1afa : 8a __ __ TXA
+1afb : 69 00 __ ADC #$00
+1afd : 06 1b __ ASL ACCU + 0 
+1aff : 2a __ __ ROL
+1b00 : 06 1b __ ASL ACCU + 0 
+1b02 : 2a __ __ ROL
+1b03 : 06 1b __ ASL ACCU + 0 
+1b05 : 2a __ __ ROL
+1b06 : aa __ __ TAX
+1b07 : 18 __ __ CLC
+1b08 : a5 1b __ LDA ACCU + 0 
+1b0a : 6d 93 21 ADC $2193 ; (Player + 0)
+1b0d : 85 1b __ STA ACCU + 0 
+1b0f : 85 1f __ STA ADDR + 0 
+1b11 : 8a __ __ TXA
+1b12 : 69 04 __ ADC #$04
+1b14 : 85 1c __ STA ACCU + 1 
+1b16 : 18 __ __ CLC
+1b17 : 69 d4 __ ADC #$d4
+1b19 : 85 20 __ STA ADDR + 1 
+1b1b : a9 51 __ LDA #$51
+1b1d : a0 00 __ LDY #$00
+1b1f : 91 1b __ STA (ACCU + 0),y 
+1b21 : a9 03 __ LDA #$03
+1b23 : 91 1f __ STA (ADDR + 0),y 
 .s1001:
-1afd : 60 __ __ RTS
+1b25 : 60 __ __ RTS
 --------------------------------------------------------------------
 move_player_shots:
 .s0:
-1afe : a2 00 __ LDX #$00
+1b26 : a2 00 __ LDX #$00
 .l2:
-1b00 : 86 1d __ STX ACCU + 2 
-1b02 : bc 41 21 LDY $2141,x ; (__multab3L + 0)
-1b05 : b9 8d 21 LDA $218d,y ; (PlayerShot + 2)
-1b08 : c9 01 __ CMP #$01
-1b0a : d0 52 __ BNE $1b5e ; (move_player_shots.s23 + 0)
+1b28 : 86 1d __ STX ACCU + 2 
+1b2a : bc 69 21 LDY $2169,x ; (__multab3L + 0)
+1b2d : b9 b5 21 LDA $21b5,y ; (PlayerShot + 2)
+1b30 : c9 01 __ CMP #$01
+1b32 : d0 52 __ BNE $1b86 ; (move_player_shots.s23 + 0)
 .s5:
-1b0c : 84 1e __ STY ACCU + 3 
-1b0e : b9 8c 21 LDA $218c,y ; (PlayerShot + 1)
-1b11 : 0a __ __ ASL
-1b12 : 85 1b __ STA ACCU + 0 
-1b14 : a9 00 __ LDA #$00
-1b16 : 2a __ __ ROL
-1b17 : 06 1b __ ASL ACCU + 0 
-1b19 : 2a __ __ ROL
-1b1a : aa __ __ TAX
-1b1b : a5 1b __ LDA ACCU + 0 
-1b1d : 79 8c 21 ADC $218c,y ; (PlayerShot + 1)
-1b20 : 85 1b __ STA ACCU + 0 
-1b22 : 8a __ __ TXA
-1b23 : 69 00 __ ADC #$00
-1b25 : 06 1b __ ASL ACCU + 0 
-1b27 : 2a __ __ ROL
-1b28 : 06 1b __ ASL ACCU + 0 
-1b2a : 2a __ __ ROL
-1b2b : 06 1b __ ASL ACCU + 0 
-1b2d : 2a __ __ ROL
-1b2e : 85 1c __ STA ACCU + 1 
-1b30 : b9 8b 21 LDA $218b,y ; (PlayerShot + 0)
-1b33 : aa __ __ TAX
-1b34 : 18 __ __ CLC
-1b35 : 65 1b __ ADC ACCU + 0 
-1b37 : 85 1b __ STA ACCU + 0 
-1b39 : 85 1f __ STA ADDR + 0 
-1b3b : a5 1c __ LDA ACCU + 1 
-1b3d : 69 04 __ ADC #$04
-1b3f : 85 1c __ STA ACCU + 1 
-1b41 : 18 __ __ CLC
-1b42 : 69 d4 __ ADC #$d4
-1b44 : 85 20 __ STA ADDR + 1 
-1b46 : a9 20 __ LDA #$20
-1b48 : a0 00 __ LDY #$00
-1b4a : 91 1b __ STA (ACCU + 0),y 
-1b4c : 98 __ __ TYA
-1b4d : 91 1f __ STA (ADDR + 0),y 
-1b4f : e8 __ __ INX
-1b50 : 8a __ __ TXA
-1b51 : a6 1e __ LDX ACCU + 3 
-1b53 : 9d 8b 21 STA $218b,x ; (PlayerShot + 0)
-1b56 : c9 28 __ CMP #$28
-1b58 : 90 04 __ BCC $1b5e ; (move_player_shots.s23 + 0)
+1b34 : 84 1e __ STY ACCU + 3 
+1b36 : b9 b4 21 LDA $21b4,y ; (PlayerShot + 1)
+1b39 : 0a __ __ ASL
+1b3a : 85 1b __ STA ACCU + 0 
+1b3c : a9 00 __ LDA #$00
+1b3e : 2a __ __ ROL
+1b3f : 06 1b __ ASL ACCU + 0 
+1b41 : 2a __ __ ROL
+1b42 : aa __ __ TAX
+1b43 : a5 1b __ LDA ACCU + 0 
+1b45 : 79 b4 21 ADC $21b4,y ; (PlayerShot + 1)
+1b48 : 85 1b __ STA ACCU + 0 
+1b4a : 8a __ __ TXA
+1b4b : 69 00 __ ADC #$00
+1b4d : 06 1b __ ASL ACCU + 0 
+1b4f : 2a __ __ ROL
+1b50 : 06 1b __ ASL ACCU + 0 
+1b52 : 2a __ __ ROL
+1b53 : 06 1b __ ASL ACCU + 0 
+1b55 : 2a __ __ ROL
+1b56 : 85 1c __ STA ACCU + 1 
+1b58 : b9 b3 21 LDA $21b3,y ; (PlayerShot + 0)
+1b5b : aa __ __ TAX
+1b5c : 18 __ __ CLC
+1b5d : 65 1b __ ADC ACCU + 0 
+1b5f : 85 1b __ STA ACCU + 0 
+1b61 : 85 1f __ STA ADDR + 0 
+1b63 : a5 1c __ LDA ACCU + 1 
+1b65 : 69 04 __ ADC #$04
+1b67 : 85 1c __ STA ACCU + 1 
+1b69 : 18 __ __ CLC
+1b6a : 69 d4 __ ADC #$d4
+1b6c : 85 20 __ STA ADDR + 1 
+1b6e : a9 20 __ LDA #$20
+1b70 : a0 00 __ LDY #$00
+1b72 : 91 1b __ STA (ACCU + 0),y 
+1b74 : 98 __ __ TYA
+1b75 : 91 1f __ STA (ADDR + 0),y 
+1b77 : e8 __ __ INX
+1b78 : 8a __ __ TXA
+1b79 : a6 1e __ LDX ACCU + 3 
+1b7b : 9d b3 21 STA $21b3,x ; (PlayerShot + 0)
+1b7e : c9 28 __ CMP #$28
+1b80 : 90 04 __ BCC $1b86 ; (move_player_shots.s23 + 0)
 .s8:
-1b5a : 98 __ __ TYA
-1b5b : 9d 8d 21 STA $218d,x ; (PlayerShot + 2)
+1b82 : 98 __ __ TYA
+1b83 : 9d b5 21 STA $21b5,x ; (PlayerShot + 2)
 .s23:
-1b5e : a6 1d __ LDX ACCU + 2 
-1b60 : e8 __ __ INX
-1b61 : e0 03 __ CPX #$03
-1b63 : 90 9b __ BCC $1b00 ; (move_player_shots.l2 + 0)
+1b86 : a6 1d __ LDX ACCU + 2 
+1b88 : e8 __ __ INX
+1b89 : e0 03 __ CPX #$03
+1b8b : 90 9b __ BCC $1b28 ; (move_player_shots.l2 + 0)
 .s1001:
-1b65 : 60 __ __ RTS
+1b8d : 60 __ __ RTS
 --------------------------------------------------------------------
 render_player_shots:
 .s0:
-1b66 : a2 00 __ LDX #$00
+1b8e : a2 00 __ LDX #$00
 .l1006:
-1b68 : bc 41 21 LDY $2141,x ; (__multab3L + 0)
-1b6b : b9 8d 21 LDA $218d,y ; (PlayerShot + 2)
-1b6e : c9 01 __ CMP #$01
-1b70 : d0 43 __ BNE $1bb5 ; (render_player_shots.s19 + 0)
+1b90 : bc 69 21 LDY $2169,x ; (__multab3L + 0)
+1b93 : b9 b5 21 LDA $21b5,y ; (PlayerShot + 2)
+1b96 : c9 01 __ CMP #$01
+1b98 : d0 43 __ BNE $1bdd ; (render_player_shots.s19 + 0)
 .s5:
-1b72 : b9 8c 21 LDA $218c,y ; (PlayerShot + 1)
-1b75 : 0a __ __ ASL
-1b76 : 85 1b __ STA ACCU + 0 
-1b78 : a9 00 __ LDA #$00
-1b7a : 2a __ __ ROL
-1b7b : 06 1b __ ASL ACCU + 0 
-1b7d : 2a __ __ ROL
-1b7e : 85 1c __ STA ACCU + 1 
-1b80 : a5 1b __ LDA ACCU + 0 
-1b82 : 79 8c 21 ADC $218c,y ; (PlayerShot + 1)
-1b85 : 85 1b __ STA ACCU + 0 
-1b87 : a5 1c __ LDA ACCU + 1 
-1b89 : 69 00 __ ADC #$00
-1b8b : 06 1b __ ASL ACCU + 0 
-1b8d : 2a __ __ ROL
-1b8e : 06 1b __ ASL ACCU + 0 
-1b90 : 2a __ __ ROL
-1b91 : 06 1b __ ASL ACCU + 0 
-1b93 : 2a __ __ ROL
-1b94 : 85 1c __ STA ACCU + 1 
-1b96 : 18 __ __ CLC
-1b97 : a5 1b __ LDA ACCU + 0 
-1b99 : 79 8b 21 ADC $218b,y ; (PlayerShot + 0)
-1b9c : 85 1b __ STA ACCU + 0 
-1b9e : 85 1f __ STA ADDR + 0 
-1ba0 : a5 1c __ LDA ACCU + 1 
-1ba2 : 69 04 __ ADC #$04
-1ba4 : 85 1c __ STA ACCU + 1 
-1ba6 : 18 __ __ CLC
-1ba7 : 69 d4 __ ADC #$d4
-1ba9 : 85 20 __ STA ADDR + 1 
-1bab : a9 2b __ LDA #$2b
-1bad : a0 00 __ LDY #$00
-1baf : 91 1b __ STA (ACCU + 0),y 
-1bb1 : a9 01 __ LDA #$01
-1bb3 : 91 1f __ STA (ADDR + 0),y 
+1b9a : b9 b4 21 LDA $21b4,y ; (PlayerShot + 1)
+1b9d : 0a __ __ ASL
+1b9e : 85 1b __ STA ACCU + 0 
+1ba0 : a9 00 __ LDA #$00
+1ba2 : 2a __ __ ROL
+1ba3 : 06 1b __ ASL ACCU + 0 
+1ba5 : 2a __ __ ROL
+1ba6 : 85 1c __ STA ACCU + 1 
+1ba8 : a5 1b __ LDA ACCU + 0 
+1baa : 79 b4 21 ADC $21b4,y ; (PlayerShot + 1)
+1bad : 85 1b __ STA ACCU + 0 
+1baf : a5 1c __ LDA ACCU + 1 
+1bb1 : 69 00 __ ADC #$00
+1bb3 : 06 1b __ ASL ACCU + 0 
+1bb5 : 2a __ __ ROL
+1bb6 : 06 1b __ ASL ACCU + 0 
+1bb8 : 2a __ __ ROL
+1bb9 : 06 1b __ ASL ACCU + 0 
+1bbb : 2a __ __ ROL
+1bbc : 85 1c __ STA ACCU + 1 
+1bbe : 18 __ __ CLC
+1bbf : a5 1b __ LDA ACCU + 0 
+1bc1 : 79 b3 21 ADC $21b3,y ; (PlayerShot + 0)
+1bc4 : 85 1b __ STA ACCU + 0 
+1bc6 : 85 1f __ STA ADDR + 0 
+1bc8 : a5 1c __ LDA ACCU + 1 
+1bca : 69 04 __ ADC #$04
+1bcc : 85 1c __ STA ACCU + 1 
+1bce : 18 __ __ CLC
+1bcf : 69 d4 __ ADC #$d4
+1bd1 : 85 20 __ STA ADDR + 1 
+1bd3 : a9 2b __ LDA #$2b
+1bd5 : a0 00 __ LDY #$00
+1bd7 : 91 1b __ STA (ACCU + 0),y 
+1bd9 : a9 01 __ LDA #$01
+1bdb : 91 1f __ STA (ADDR + 0),y 
 .s19:
-1bb5 : e8 __ __ INX
-1bb6 : e0 03 __ CPX #$03
-1bb8 : 90 ae __ BCC $1b68 ; (render_player_shots.l1006 + 0)
+1bdd : e8 __ __ INX
+1bde : e0 03 __ CPX #$03
+1be0 : 90 ae __ BCC $1b90 ; (render_player_shots.l1006 + 0)
 .s1001:
-1bba : 60 __ __ RTS
+1be2 : 60 __ __ RTS
 --------------------------------------------------------------------
 check_shot_enemy_collision:
 .s0:
-1bbb : a2 00 __ LDX #$00
+1be3 : a2 00 __ LDX #$00
 .l2:
-1bbd : 86 1d __ STX ACCU + 2 
-1bbf : bc 41 21 LDY $2141,x ; (__multab3L + 0)
-1bc2 : b9 8d 21 LDA $218d,y ; (PlayerShot + 2)
-1bc5 : c9 01 __ CMP #$01
-1bc7 : f0 03 __ BEQ $1bcc ; (check_shot_enemy_collision.s5 + 0)
-1bc9 : 4c 61 1c JMP $1c61 ; (check_shot_enemy_collision.s3 + 0)
+1be5 : 86 1d __ STX ACCU + 2 
+1be7 : bc 69 21 LDY $2169,x ; (__multab3L + 0)
+1bea : b9 b5 21 LDA $21b5,y ; (PlayerShot + 2)
+1bed : c9 01 __ CMP #$01
+1bef : f0 03 __ BEQ $1bf4 ; (check_shot_enemy_collision.s5 + 0)
+1bf1 : 4c 89 1c JMP $1c89 ; (check_shot_enemy_collision.s3 + 0)
 .s5:
-1bcc : a2 00 __ LDX #$00
+1bf4 : a2 00 __ LDX #$00
 .l9:
-1bce : 86 43 __ STX T2 + 0 
-1bd0 : bc 41 21 LDY $2141,x ; (__multab3L + 0)
-1bd3 : 84 1e __ STY ACCU + 3 
-1bd5 : b9 6f 21 LDA $216f,y ; (Enemy + 2)
-1bd8 : c9 01 __ CMP #$01
-1bda : d0 7b __ BNE $1c57 ; (check_shot_enemy_collision.s43 + 0)
+1bf6 : 86 43 __ STX T2 + 0 
+1bf8 : bc 69 21 LDY $2169,x ; (__multab3L + 0)
+1bfb : 84 1e __ STY ACCU + 3 
+1bfd : b9 97 21 LDA $2197,y ; (Enemy + 2)
+1c00 : c9 01 __ CMP #$01
+1c02 : d0 7b __ BNE $1c7f ; (check_shot_enemy_collision.s43 + 0)
 .s12:
-1bdc : a6 1d __ LDX ACCU + 2 
-1bde : bd 41 21 LDA $2141,x ; (__multab3L + 0)
-1be1 : 85 44 __ STA T3 + 0 
-1be3 : aa __ __ TAX
-1be4 : b9 6d 21 LDA $216d,y ; (Enemy + 0)
-1be7 : dd 8b 21 CMP $218b,x ; (PlayerShot + 0)
-1bea : d0 6b __ BNE $1c57 ; (check_shot_enemy_collision.s43 + 0)
+1c04 : a6 1d __ LDX ACCU + 2 
+1c06 : bd 69 21 LDA $2169,x ; (__multab3L + 0)
+1c09 : 85 44 __ STA T3 + 0 
+1c0b : aa __ __ TAX
+1c0c : b9 95 21 LDA $2195,y ; (Enemy + 0)
+1c0f : dd b3 21 CMP $21b3,x ; (PlayerShot + 0)
+1c12 : d0 6b __ BNE $1c7f ; (check_shot_enemy_collision.s43 + 0)
 .s18:
-1bec : b9 6e 21 LDA $216e,y ; (Enemy + 1)
-1bef : dd 8c 21 CMP $218c,x ; (PlayerShot + 1)
-1bf2 : d0 63 __ BNE $1c57 ; (check_shot_enemy_collision.s43 + 0)
+1c14 : b9 96 21 LDA $2196,y ; (Enemy + 1)
+1c17 : dd b4 21 CMP $21b4,x ; (PlayerShot + 1)
+1c1a : d0 63 __ BNE $1c7f ; (check_shot_enemy_collision.s43 + 0)
 .s15:
-1bf4 : 0a __ __ ASL
-1bf5 : 85 1b __ STA ACCU + 0 
-1bf7 : a9 00 __ LDA #$00
-1bf9 : 2a __ __ ROL
-1bfa : 06 1b __ ASL ACCU + 0 
-1bfc : 2a __ __ ROL
-1bfd : aa __ __ TAX
-1bfe : a5 1b __ LDA ACCU + 0 
-1c00 : 79 6e 21 ADC $216e,y ; (Enemy + 1)
-1c03 : 85 1b __ STA ACCU + 0 
-1c05 : 8a __ __ TXA
-1c06 : 69 00 __ ADC #$00
-1c08 : 06 1b __ ASL ACCU + 0 
-1c0a : 2a __ __ ROL
-1c0b : 06 1b __ ASL ACCU + 0 
-1c0d : 2a __ __ ROL
-1c0e : 06 1b __ ASL ACCU + 0 
-1c10 : 2a __ __ ROL
-1c11 : aa __ __ TAX
-1c12 : 18 __ __ CLC
-1c13 : a5 1b __ LDA ACCU + 0 
-1c15 : 79 6d 21 ADC $216d,y ; (Enemy + 0)
-1c18 : 85 1b __ STA ACCU + 0 
-1c1a : 85 1f __ STA ADDR + 0 
-1c1c : 8a __ __ TXA
-1c1d : 69 04 __ ADC #$04
-1c1f : 85 1c __ STA ACCU + 1 
-1c21 : 18 __ __ CLC
-1c22 : 69 d4 __ ADC #$d4
-1c24 : 85 20 __ STA ADDR + 1 
-1c26 : a9 20 __ LDA #$20
-1c28 : a0 00 __ LDY #$00
-1c2a : 91 1b __ STA (ACCU + 0),y 
-1c2c : 98 __ __ TYA
-1c2d : 91 1f __ STA (ADDR + 0),y 
-1c2f : a6 1e __ LDX ACCU + 3 
-1c31 : 9d 6f 21 STA $216f,x ; (Enemy + 2)
-1c34 : a6 44 __ LDX T3 + 0 
-1c36 : 9d 8d 21 STA $218d,x ; (PlayerShot + 2)
-1c39 : ad 9e 21 LDA $219e ; (game + 1)
-1c3c : 18 __ __ CLC
-1c3d : 69 01 __ ADC #$01
-1c3f : 8d 9e 21 STA $219e ; (game + 1)
-1c42 : ad 9f 21 LDA $219f ; (game + 2)
-1c45 : 69 00 __ ADC #$00
-1c47 : 8d 9f 21 STA $219f ; (game + 2)
-1c4a : ad a0 21 LDA $21a0 ; (game + 3)
-1c4d : 69 00 __ ADC #$00
-1c4f : 8d a0 21 STA $21a0 ; (game + 3)
-1c52 : 90 03 __ BCC $1c57 ; (check_shot_enemy_collision.s43 + 0)
+1c1c : 0a __ __ ASL
+1c1d : 85 1b __ STA ACCU + 0 
+1c1f : a9 00 __ LDA #$00
+1c21 : 2a __ __ ROL
+1c22 : 06 1b __ ASL ACCU + 0 
+1c24 : 2a __ __ ROL
+1c25 : aa __ __ TAX
+1c26 : a5 1b __ LDA ACCU + 0 
+1c28 : 79 96 21 ADC $2196,y ; (Enemy + 1)
+1c2b : 85 1b __ STA ACCU + 0 
+1c2d : 8a __ __ TXA
+1c2e : 69 00 __ ADC #$00
+1c30 : 06 1b __ ASL ACCU + 0 
+1c32 : 2a __ __ ROL
+1c33 : 06 1b __ ASL ACCU + 0 
+1c35 : 2a __ __ ROL
+1c36 : 06 1b __ ASL ACCU + 0 
+1c38 : 2a __ __ ROL
+1c39 : aa __ __ TAX
+1c3a : 18 __ __ CLC
+1c3b : a5 1b __ LDA ACCU + 0 
+1c3d : 79 95 21 ADC $2195,y ; (Enemy + 0)
+1c40 : 85 1b __ STA ACCU + 0 
+1c42 : 85 1f __ STA ADDR + 0 
+1c44 : 8a __ __ TXA
+1c45 : 69 04 __ ADC #$04
+1c47 : 85 1c __ STA ACCU + 1 
+1c49 : 18 __ __ CLC
+1c4a : 69 d4 __ ADC #$d4
+1c4c : 85 20 __ STA ADDR + 1 
+1c4e : a9 20 __ LDA #$20
+1c50 : a0 00 __ LDY #$00
+1c52 : 91 1b __ STA (ACCU + 0),y 
+1c54 : 98 __ __ TYA
+1c55 : 91 1f __ STA (ADDR + 0),y 
+1c57 : a6 1e __ LDX ACCU + 3 
+1c59 : 9d 97 21 STA $2197,x ; (Enemy + 2)
+1c5c : a6 44 __ LDX T3 + 0 
+1c5e : 9d b5 21 STA $21b5,x ; (PlayerShot + 2)
+1c61 : ad c6 21 LDA $21c6 ; (game + 1)
+1c64 : 18 __ __ CLC
+1c65 : 69 01 __ ADC #$01
+1c67 : 8d c6 21 STA $21c6 ; (game + 1)
+1c6a : ad c7 21 LDA $21c7 ; (game + 2)
+1c6d : 69 00 __ ADC #$00
+1c6f : 8d c7 21 STA $21c7 ; (game + 2)
+1c72 : ad c8 21 LDA $21c8 ; (game + 3)
+1c75 : 69 00 __ ADC #$00
+1c77 : 8d c8 21 STA $21c8 ; (game + 3)
+1c7a : 90 03 __ BCC $1c7f ; (check_shot_enemy_collision.s43 + 0)
 .s1014:
-1c54 : ee a1 21 INC $21a1 ; (game + 4)
+1c7c : ee c9 21 INC $21c9 ; (game + 4)
 .s43:
-1c57 : a6 43 __ LDX T2 + 0 
-1c59 : e8 __ __ INX
-1c5a : e0 0a __ CPX #$0a
-1c5c : b0 03 __ BCS $1c61 ; (check_shot_enemy_collision.s3 + 0)
-1c5e : 4c ce 1b JMP $1bce ; (check_shot_enemy_collision.l9 + 0)
+1c7f : a6 43 __ LDX T2 + 0 
+1c81 : e8 __ __ INX
+1c82 : e0 0a __ CPX #$0a
+1c84 : b0 03 __ BCS $1c89 ; (check_shot_enemy_collision.s3 + 0)
+1c86 : 4c f6 1b JMP $1bf6 ; (check_shot_enemy_collision.l9 + 0)
 .s3:
-1c61 : a6 1d __ LDX ACCU + 2 
-1c63 : e8 __ __ INX
-1c64 : e0 03 __ CPX #$03
-1c66 : b0 03 __ BCS $1c6b ; (check_shot_enemy_collision.s1001 + 0)
-1c68 : 4c bd 1b JMP $1bbd ; (check_shot_enemy_collision.l2 + 0)
+1c89 : a6 1d __ LDX ACCU + 2 
+1c8b : e8 __ __ INX
+1c8c : e0 03 __ CPX #$03
+1c8e : b0 03 __ BCS $1c93 ; (check_shot_enemy_collision.s1001 + 0)
+1c90 : 4c e5 1b JMP $1be5 ; (check_shot_enemy_collision.l2 + 0)
 .s1001:
-1c6b : 60 __ __ RTS
+1c93 : 60 __ __ RTS
 --------------------------------------------------------------------
 wait_frames:
 .s0:
-1c6c : a5 0e __ LDA P1 ; (frames + 1)
-1c6e : 30 1c __ BMI $1c8c ; (wait_frames.s1001 + 0)
+1c94 : a5 0e __ LDA P1 ; (frames + 1)
+1c96 : 30 1c __ BMI $1cb4 ; (wait_frames.s1001 + 0)
 .s1005:
-1c70 : 05 0d __ ORA P0 ; (frames + 0)
-1c72 : f0 18 __ BEQ $1c8c ; (wait_frames.s1001 + 0)
+1c98 : 05 0d __ ORA P0 ; (frames + 0)
+1c9a : f0 18 __ BEQ $1cb4 ; (wait_frames.s1001 + 0)
 .s13:
-1c74 : a0 00 __ LDY #$00
-1c76 : a6 0e __ LDX P1 ; (frames + 1)
+1c9c : a0 00 __ LDY #$00
+1c9e : a6 0e __ LDX P1 ; (frames + 1)
 .l6:
-1c78 : ad 11 d0 LDA $d011 
-1c7b : 30 fb __ BMI $1c78 ; (wait_frames.l6 + 0)
+1ca0 : ad 11 d0 LDA $d011 
+1ca3 : 30 fb __ BMI $1ca0 ; (wait_frames.l6 + 0)
 .l9:
-1c7d : ad 11 d0 LDA $d011 
-1c80 : 10 fb __ BPL $1c7d ; (wait_frames.l9 + 0)
+1ca5 : ad 11 d0 LDA $d011 
+1ca8 : 10 fb __ BPL $1ca5 ; (wait_frames.l9 + 0)
 .s3:
-1c82 : c8 __ __ INY
-1c83 : 8a __ __ TXA
-1c84 : 30 06 __ BMI $1c8c ; (wait_frames.s1001 + 0)
+1caa : c8 __ __ INY
+1cab : 8a __ __ TXA
+1cac : 30 06 __ BMI $1cb4 ; (wait_frames.s1001 + 0)
 .s1004:
-1c86 : d0 f0 __ BNE $1c78 ; (wait_frames.l6 + 0)
+1cae : d0 f0 __ BNE $1ca0 ; (wait_frames.l6 + 0)
 .s1002:
-1c88 : c4 0d __ CPY P0 ; (frames + 0)
-1c8a : 90 ec __ BCC $1c78 ; (wait_frames.l6 + 0)
+1cb0 : c4 0d __ CPY P0 ; (frames + 0)
+1cb2 : 90 ec __ BCC $1ca0 ; (wait_frames.l6 + 0)
 .s1001:
-1c8c : 60 __ __ RTS
+1cb4 : 60 __ __ RTS
 --------------------------------------------------------------------
 freg:
-1c8d : b1 19 __ LDA (IP + 0),y 
-1c8f : c8 __ __ INY
-1c90 : aa __ __ TAX
-1c91 : b5 00 __ LDA $00,x 
-1c93 : 85 03 __ STA WORK + 0 
-1c95 : b5 01 __ LDA $01,x 
-1c97 : 85 04 __ STA WORK + 1 
-1c99 : b5 02 __ LDA $02,x 
-1c9b : 85 05 __ STA WORK + 2 
-1c9d : b5 03 __ LDA WORK + 0,x 
-1c9f : 85 06 __ STA WORK + 3 
-1ca1 : a5 05 __ LDA WORK + 2 
-1ca3 : 0a __ __ ASL
-1ca4 : a5 06 __ LDA WORK + 3 
-1ca6 : 2a __ __ ROL
-1ca7 : 85 08 __ STA WORK + 5 
-1ca9 : f0 06 __ BEQ $1cb1 ; (freg + 36)
-1cab : a5 05 __ LDA WORK + 2 
-1cad : 09 80 __ ORA #$80
-1caf : 85 05 __ STA WORK + 2 
-1cb1 : a5 1d __ LDA ACCU + 2 
-1cb3 : 0a __ __ ASL
-1cb4 : a5 1e __ LDA ACCU + 3 
-1cb6 : 2a __ __ ROL
-1cb7 : 85 07 __ STA WORK + 4 
-1cb9 : f0 06 __ BEQ $1cc1 ; (freg + 52)
-1cbb : a5 1d __ LDA ACCU + 2 
-1cbd : 09 80 __ ORA #$80
-1cbf : 85 1d __ STA ACCU + 2 
-1cc1 : 60 __ __ RTS
-1cc2 : 06 1e __ ASL ACCU + 3 
-1cc4 : a5 07 __ LDA WORK + 4 
-1cc6 : 6a __ __ ROR
-1cc7 : 85 1e __ STA ACCU + 3 
-1cc9 : b0 06 __ BCS $1cd1 ; (freg + 68)
-1ccb : a5 1d __ LDA ACCU + 2 
-1ccd : 29 7f __ AND #$7f
-1ccf : 85 1d __ STA ACCU + 2 
-1cd1 : 60 __ __ RTS
+1cb5 : b1 19 __ LDA (IP + 0),y 
+1cb7 : c8 __ __ INY
+1cb8 : aa __ __ TAX
+1cb9 : b5 00 __ LDA $00,x 
+1cbb : 85 03 __ STA WORK + 0 
+1cbd : b5 01 __ LDA $01,x 
+1cbf : 85 04 __ STA WORK + 1 
+1cc1 : b5 02 __ LDA $02,x 
+1cc3 : 85 05 __ STA WORK + 2 
+1cc5 : b5 03 __ LDA WORK + 0,x 
+1cc7 : 85 06 __ STA WORK + 3 
+1cc9 : a5 05 __ LDA WORK + 2 
+1ccb : 0a __ __ ASL
+1ccc : a5 06 __ LDA WORK + 3 
+1cce : 2a __ __ ROL
+1ccf : 85 08 __ STA WORK + 5 
+1cd1 : f0 06 __ BEQ $1cd9 ; (freg + 36)
+1cd3 : a5 05 __ LDA WORK + 2 
+1cd5 : 09 80 __ ORA #$80
+1cd7 : 85 05 __ STA WORK + 2 
+1cd9 : a5 1d __ LDA ACCU + 2 
+1cdb : 0a __ __ ASL
+1cdc : a5 1e __ LDA ACCU + 3 
+1cde : 2a __ __ ROL
+1cdf : 85 07 __ STA WORK + 4 
+1ce1 : f0 06 __ BEQ $1ce9 ; (freg + 52)
+1ce3 : a5 1d __ LDA ACCU + 2 
+1ce5 : 09 80 __ ORA #$80
+1ce7 : 85 1d __ STA ACCU + 2 
+1ce9 : 60 __ __ RTS
+1cea : 06 1e __ ASL ACCU + 3 
+1cec : a5 07 __ LDA WORK + 4 
+1cee : 6a __ __ ROR
+1cef : 85 1e __ STA ACCU + 3 
+1cf1 : b0 06 __ BCS $1cf9 ; (freg + 68)
+1cf3 : a5 1d __ LDA ACCU + 2 
+1cf5 : 29 7f __ AND #$7f
+1cf7 : 85 1d __ STA ACCU + 2 
+1cf9 : 60 __ __ RTS
 --------------------------------------------------------------------
 faddsub:
-1cd2 : a9 ff __ LDA #$ff
-1cd4 : c5 07 __ CMP WORK + 4 
-1cd6 : f0 04 __ BEQ $1cdc ; (faddsub + 10)
-1cd8 : c5 08 __ CMP WORK + 5 
-1cda : d0 11 __ BNE $1ced ; (faddsub + 27)
-1cdc : a5 1e __ LDA ACCU + 3 
-1cde : 09 7f __ ORA #$7f
-1ce0 : 85 1e __ STA ACCU + 3 
-1ce2 : a9 80 __ LDA #$80
-1ce4 : 85 1d __ STA ACCU + 2 
-1ce6 : a9 00 __ LDA #$00
-1ce8 : 85 1b __ STA ACCU + 0 
-1cea : 85 1c __ STA ACCU + 1 
-1cec : 60 __ __ RTS
-1ced : 38 __ __ SEC
-1cee : a5 07 __ LDA WORK + 4 
-1cf0 : e5 08 __ SBC WORK + 5 
-1cf2 : f0 38 __ BEQ $1d2c ; (faddsub + 90)
-1cf4 : aa __ __ TAX
-1cf5 : b0 25 __ BCS $1d1c ; (faddsub + 74)
-1cf7 : e0 e9 __ CPX #$e9
-1cf9 : b0 0e __ BCS $1d09 ; (faddsub + 55)
-1cfb : a5 08 __ LDA WORK + 5 
-1cfd : 85 07 __ STA WORK + 4 
-1cff : a9 00 __ LDA #$00
-1d01 : 85 1b __ STA ACCU + 0 
-1d03 : 85 1c __ STA ACCU + 1 
-1d05 : 85 1d __ STA ACCU + 2 
-1d07 : f0 23 __ BEQ $1d2c ; (faddsub + 90)
-1d09 : a5 1d __ LDA ACCU + 2 
-1d0b : 4a __ __ LSR
-1d0c : 66 1c __ ROR ACCU + 1 
-1d0e : 66 1b __ ROR ACCU + 0 
-1d10 : e8 __ __ INX
-1d11 : d0 f8 __ BNE $1d0b ; (faddsub + 57)
-1d13 : 85 1d __ STA ACCU + 2 
-1d15 : a5 08 __ LDA WORK + 5 
-1d17 : 85 07 __ STA WORK + 4 
-1d19 : 4c 2c 1d JMP $1d2c ; (faddsub + 90)
-1d1c : e0 18 __ CPX #$18
-1d1e : b0 33 __ BCS $1d53 ; (faddsub + 129)
-1d20 : a5 05 __ LDA WORK + 2 
-1d22 : 4a __ __ LSR
-1d23 : 66 04 __ ROR WORK + 1 
-1d25 : 66 03 __ ROR WORK + 0 
-1d27 : ca __ __ DEX
-1d28 : d0 f8 __ BNE $1d22 ; (faddsub + 80)
-1d2a : 85 05 __ STA WORK + 2 
-1d2c : a5 1e __ LDA ACCU + 3 
-1d2e : 29 80 __ AND #$80
-1d30 : 85 1e __ STA ACCU + 3 
-1d32 : 45 06 __ EOR WORK + 3 
-1d34 : 30 31 __ BMI $1d67 ; (faddsub + 149)
-1d36 : 18 __ __ CLC
-1d37 : a5 1b __ LDA ACCU + 0 
-1d39 : 65 03 __ ADC WORK + 0 
-1d3b : 85 1b __ STA ACCU + 0 
-1d3d : a5 1c __ LDA ACCU + 1 
-1d3f : 65 04 __ ADC WORK + 1 
-1d41 : 85 1c __ STA ACCU + 1 
-1d43 : a5 1d __ LDA ACCU + 2 
-1d45 : 65 05 __ ADC WORK + 2 
-1d47 : 85 1d __ STA ACCU + 2 
-1d49 : 90 08 __ BCC $1d53 ; (faddsub + 129)
-1d4b : 66 1d __ ROR ACCU + 2 
-1d4d : 66 1c __ ROR ACCU + 1 
-1d4f : 66 1b __ ROR ACCU + 0 
-1d51 : e6 07 __ INC WORK + 4 
-1d53 : a5 07 __ LDA WORK + 4 
-1d55 : c9 ff __ CMP #$ff
-1d57 : f0 83 __ BEQ $1cdc ; (faddsub + 10)
-1d59 : 4a __ __ LSR
-1d5a : 05 1e __ ORA ACCU + 3 
-1d5c : 85 1e __ STA ACCU + 3 
-1d5e : b0 06 __ BCS $1d66 ; (faddsub + 148)
-1d60 : a5 1d __ LDA ACCU + 2 
-1d62 : 29 7f __ AND #$7f
-1d64 : 85 1d __ STA ACCU + 2 
-1d66 : 60 __ __ RTS
-1d67 : 38 __ __ SEC
-1d68 : a5 1b __ LDA ACCU + 0 
-1d6a : e5 03 __ SBC WORK + 0 
-1d6c : 85 1b __ STA ACCU + 0 
-1d6e : a5 1c __ LDA ACCU + 1 
-1d70 : e5 04 __ SBC WORK + 1 
-1d72 : 85 1c __ STA ACCU + 1 
-1d74 : a5 1d __ LDA ACCU + 2 
-1d76 : e5 05 __ SBC WORK + 2 
-1d78 : 85 1d __ STA ACCU + 2 
-1d7a : b0 19 __ BCS $1d95 ; (faddsub + 195)
-1d7c : 38 __ __ SEC
-1d7d : a9 00 __ LDA #$00
-1d7f : e5 1b __ SBC ACCU + 0 
-1d81 : 85 1b __ STA ACCU + 0 
-1d83 : a9 00 __ LDA #$00
-1d85 : e5 1c __ SBC ACCU + 1 
-1d87 : 85 1c __ STA ACCU + 1 
-1d89 : a9 00 __ LDA #$00
-1d8b : e5 1d __ SBC ACCU + 2 
-1d8d : 85 1d __ STA ACCU + 2 
-1d8f : a5 1e __ LDA ACCU + 3 
-1d91 : 49 80 __ EOR #$80
-1d93 : 85 1e __ STA ACCU + 3 
-1d95 : a5 1d __ LDA ACCU + 2 
-1d97 : 30 ba __ BMI $1d53 ; (faddsub + 129)
-1d99 : 05 1c __ ORA ACCU + 1 
-1d9b : 05 1b __ ORA ACCU + 0 
-1d9d : f0 0f __ BEQ $1dae ; (faddsub + 220)
-1d9f : c6 07 __ DEC WORK + 4 
-1da1 : f0 0b __ BEQ $1dae ; (faddsub + 220)
-1da3 : 06 1b __ ASL ACCU + 0 
-1da5 : 26 1c __ ROL ACCU + 1 
-1da7 : 26 1d __ ROL ACCU + 2 
-1da9 : 10 f4 __ BPL $1d9f ; (faddsub + 205)
-1dab : 4c 53 1d JMP $1d53 ; (faddsub + 129)
-1dae : a9 00 __ LDA #$00
-1db0 : 85 1b __ STA ACCU + 0 
-1db2 : 85 1c __ STA ACCU + 1 
-1db4 : 85 1d __ STA ACCU + 2 
-1db6 : 85 1e __ STA ACCU + 3 
-1db8 : 60 __ __ RTS
+1cfa : a9 ff __ LDA #$ff
+1cfc : c5 07 __ CMP WORK + 4 
+1cfe : f0 04 __ BEQ $1d04 ; (faddsub + 10)
+1d00 : c5 08 __ CMP WORK + 5 
+1d02 : d0 11 __ BNE $1d15 ; (faddsub + 27)
+1d04 : a5 1e __ LDA ACCU + 3 
+1d06 : 09 7f __ ORA #$7f
+1d08 : 85 1e __ STA ACCU + 3 
+1d0a : a9 80 __ LDA #$80
+1d0c : 85 1d __ STA ACCU + 2 
+1d0e : a9 00 __ LDA #$00
+1d10 : 85 1b __ STA ACCU + 0 
+1d12 : 85 1c __ STA ACCU + 1 
+1d14 : 60 __ __ RTS
+1d15 : 38 __ __ SEC
+1d16 : a5 07 __ LDA WORK + 4 
+1d18 : e5 08 __ SBC WORK + 5 
+1d1a : f0 38 __ BEQ $1d54 ; (faddsub + 90)
+1d1c : aa __ __ TAX
+1d1d : b0 25 __ BCS $1d44 ; (faddsub + 74)
+1d1f : e0 e9 __ CPX #$e9
+1d21 : b0 0e __ BCS $1d31 ; (faddsub + 55)
+1d23 : a5 08 __ LDA WORK + 5 
+1d25 : 85 07 __ STA WORK + 4 
+1d27 : a9 00 __ LDA #$00
+1d29 : 85 1b __ STA ACCU + 0 
+1d2b : 85 1c __ STA ACCU + 1 
+1d2d : 85 1d __ STA ACCU + 2 
+1d2f : f0 23 __ BEQ $1d54 ; (faddsub + 90)
+1d31 : a5 1d __ LDA ACCU + 2 
+1d33 : 4a __ __ LSR
+1d34 : 66 1c __ ROR ACCU + 1 
+1d36 : 66 1b __ ROR ACCU + 0 
+1d38 : e8 __ __ INX
+1d39 : d0 f8 __ BNE $1d33 ; (faddsub + 57)
+1d3b : 85 1d __ STA ACCU + 2 
+1d3d : a5 08 __ LDA WORK + 5 
+1d3f : 85 07 __ STA WORK + 4 
+1d41 : 4c 54 1d JMP $1d54 ; (faddsub + 90)
+1d44 : e0 18 __ CPX #$18
+1d46 : b0 33 __ BCS $1d7b ; (faddsub + 129)
+1d48 : a5 05 __ LDA WORK + 2 
+1d4a : 4a __ __ LSR
+1d4b : 66 04 __ ROR WORK + 1 
+1d4d : 66 03 __ ROR WORK + 0 
+1d4f : ca __ __ DEX
+1d50 : d0 f8 __ BNE $1d4a ; (faddsub + 80)
+1d52 : 85 05 __ STA WORK + 2 
+1d54 : a5 1e __ LDA ACCU + 3 
+1d56 : 29 80 __ AND #$80
+1d58 : 85 1e __ STA ACCU + 3 
+1d5a : 45 06 __ EOR WORK + 3 
+1d5c : 30 31 __ BMI $1d8f ; (faddsub + 149)
+1d5e : 18 __ __ CLC
+1d5f : a5 1b __ LDA ACCU + 0 
+1d61 : 65 03 __ ADC WORK + 0 
+1d63 : 85 1b __ STA ACCU + 0 
+1d65 : a5 1c __ LDA ACCU + 1 
+1d67 : 65 04 __ ADC WORK + 1 
+1d69 : 85 1c __ STA ACCU + 1 
+1d6b : a5 1d __ LDA ACCU + 2 
+1d6d : 65 05 __ ADC WORK + 2 
+1d6f : 85 1d __ STA ACCU + 2 
+1d71 : 90 08 __ BCC $1d7b ; (faddsub + 129)
+1d73 : 66 1d __ ROR ACCU + 2 
+1d75 : 66 1c __ ROR ACCU + 1 
+1d77 : 66 1b __ ROR ACCU + 0 
+1d79 : e6 07 __ INC WORK + 4 
+1d7b : a5 07 __ LDA WORK + 4 
+1d7d : c9 ff __ CMP #$ff
+1d7f : f0 83 __ BEQ $1d04 ; (faddsub + 10)
+1d81 : 4a __ __ LSR
+1d82 : 05 1e __ ORA ACCU + 3 
+1d84 : 85 1e __ STA ACCU + 3 
+1d86 : b0 06 __ BCS $1d8e ; (faddsub + 148)
+1d88 : a5 1d __ LDA ACCU + 2 
+1d8a : 29 7f __ AND #$7f
+1d8c : 85 1d __ STA ACCU + 2 
+1d8e : 60 __ __ RTS
+1d8f : 38 __ __ SEC
+1d90 : a5 1b __ LDA ACCU + 0 
+1d92 : e5 03 __ SBC WORK + 0 
+1d94 : 85 1b __ STA ACCU + 0 
+1d96 : a5 1c __ LDA ACCU + 1 
+1d98 : e5 04 __ SBC WORK + 1 
+1d9a : 85 1c __ STA ACCU + 1 
+1d9c : a5 1d __ LDA ACCU + 2 
+1d9e : e5 05 __ SBC WORK + 2 
+1da0 : 85 1d __ STA ACCU + 2 
+1da2 : b0 19 __ BCS $1dbd ; (faddsub + 195)
+1da4 : 38 __ __ SEC
+1da5 : a9 00 __ LDA #$00
+1da7 : e5 1b __ SBC ACCU + 0 
+1da9 : 85 1b __ STA ACCU + 0 
+1dab : a9 00 __ LDA #$00
+1dad : e5 1c __ SBC ACCU + 1 
+1daf : 85 1c __ STA ACCU + 1 
+1db1 : a9 00 __ LDA #$00
+1db3 : e5 1d __ SBC ACCU + 2 
+1db5 : 85 1d __ STA ACCU + 2 
+1db7 : a5 1e __ LDA ACCU + 3 
+1db9 : 49 80 __ EOR #$80
+1dbb : 85 1e __ STA ACCU + 3 
+1dbd : a5 1d __ LDA ACCU + 2 
+1dbf : 30 ba __ BMI $1d7b ; (faddsub + 129)
+1dc1 : 05 1c __ ORA ACCU + 1 
+1dc3 : 05 1b __ ORA ACCU + 0 
+1dc5 : f0 0f __ BEQ $1dd6 ; (faddsub + 220)
+1dc7 : c6 07 __ DEC WORK + 4 
+1dc9 : f0 0b __ BEQ $1dd6 ; (faddsub + 220)
+1dcb : 06 1b __ ASL ACCU + 0 
+1dcd : 26 1c __ ROL ACCU + 1 
+1dcf : 26 1d __ ROL ACCU + 2 
+1dd1 : 10 f4 __ BPL $1dc7 ; (faddsub + 205)
+1dd3 : 4c 7b 1d JMP $1d7b ; (faddsub + 129)
+1dd6 : a9 00 __ LDA #$00
+1dd8 : 85 1b __ STA ACCU + 0 
+1dda : 85 1c __ STA ACCU + 1 
+1ddc : 85 1d __ STA ACCU + 2 
+1dde : 85 1e __ STA ACCU + 3 
+1de0 : 60 __ __ RTS
 --------------------------------------------------------------------
 fmul:
-1db9 : a5 1b __ LDA ACCU + 0 
-1dbb : 05 1c __ ORA ACCU + 1 
-1dbd : 05 1d __ ORA ACCU + 2 
-1dbf : d0 03 __ BNE $1dc4 ; (fmul + 11)
-1dc1 : 85 1e __ STA ACCU + 3 
-1dc3 : 60 __ __ RTS
-1dc4 : a5 03 __ LDA WORK + 0 
-1dc6 : 05 04 __ ORA WORK + 1 
-1dc8 : 05 05 __ ORA WORK + 2 
-1dca : d0 09 __ BNE $1dd5 ; (fmul + 28)
-1dcc : 85 1b __ STA ACCU + 0 
-1dce : 85 1c __ STA ACCU + 1 
-1dd0 : 85 1d __ STA ACCU + 2 
-1dd2 : 85 1e __ STA ACCU + 3 
-1dd4 : 60 __ __ RTS
-1dd5 : a5 1e __ LDA ACCU + 3 
-1dd7 : 45 06 __ EOR WORK + 3 
-1dd9 : 29 80 __ AND #$80
-1ddb : 85 1e __ STA ACCU + 3 
-1ddd : a9 ff __ LDA #$ff
-1ddf : c5 07 __ CMP WORK + 4 
-1de1 : f0 42 __ BEQ $1e25 ; (fmul + 108)
-1de3 : c5 08 __ CMP WORK + 5 
-1de5 : f0 3e __ BEQ $1e25 ; (fmul + 108)
-1de7 : a9 00 __ LDA #$00
-1de9 : 85 09 __ STA WORK + 6 
-1deb : 85 0a __ STA WORK + 7 
-1ded : 85 0b __ STA $0b 
-1def : a4 1b __ LDY ACCU + 0 
-1df1 : a5 03 __ LDA WORK + 0 
-1df3 : d0 06 __ BNE $1dfb ; (fmul + 66)
-1df5 : a5 04 __ LDA WORK + 1 
-1df7 : f0 0a __ BEQ $1e03 ; (fmul + 74)
-1df9 : d0 05 __ BNE $1e00 ; (fmul + 71)
-1dfb : 20 5a 1e JSR $1e5a ; (fmul8 + 0)
-1dfe : a5 04 __ LDA WORK + 1 
-1e00 : 20 5a 1e JSR $1e5a ; (fmul8 + 0)
-1e03 : a5 05 __ LDA WORK + 2 
-1e05 : 20 5a 1e JSR $1e5a ; (fmul8 + 0)
-1e08 : 38 __ __ SEC
-1e09 : a5 0b __ LDA $0b 
-1e0b : 30 06 __ BMI $1e13 ; (fmul + 90)
-1e0d : 06 09 __ ASL WORK + 6 
-1e0f : 26 0a __ ROL WORK + 7 
-1e11 : 2a __ __ ROL
-1e12 : 18 __ __ CLC
-1e13 : 29 7f __ AND #$7f
+1de1 : a5 1b __ LDA ACCU + 0 
+1de3 : 05 1c __ ORA ACCU + 1 
+1de5 : 05 1d __ ORA ACCU + 2 
+1de7 : d0 03 __ BNE $1dec ; (fmul + 11)
+1de9 : 85 1e __ STA ACCU + 3 
+1deb : 60 __ __ RTS
+1dec : a5 03 __ LDA WORK + 0 
+1dee : 05 04 __ ORA WORK + 1 
+1df0 : 05 05 __ ORA WORK + 2 
+1df2 : d0 09 __ BNE $1dfd ; (fmul + 28)
+1df4 : 85 1b __ STA ACCU + 0 
+1df6 : 85 1c __ STA ACCU + 1 
+1df8 : 85 1d __ STA ACCU + 2 
+1dfa : 85 1e __ STA ACCU + 3 
+1dfc : 60 __ __ RTS
+1dfd : a5 1e __ LDA ACCU + 3 
+1dff : 45 06 __ EOR WORK + 3 
+1e01 : 29 80 __ AND #$80
+1e03 : 85 1e __ STA ACCU + 3 
+1e05 : a9 ff __ LDA #$ff
+1e07 : c5 07 __ CMP WORK + 4 
+1e09 : f0 42 __ BEQ $1e4d ; (fmul + 108)
+1e0b : c5 08 __ CMP WORK + 5 
+1e0d : f0 3e __ BEQ $1e4d ; (fmul + 108)
+1e0f : a9 00 __ LDA #$00
+1e11 : 85 09 __ STA WORK + 6 
+1e13 : 85 0a __ STA WORK + 7 
 1e15 : 85 0b __ STA $0b 
-1e17 : a5 07 __ LDA WORK + 4 
-1e19 : 65 08 __ ADC WORK + 5 
-1e1b : 90 19 __ BCC $1e36 ; (fmul + 125)
-1e1d : e9 7f __ SBC #$7f
-1e1f : b0 04 __ BCS $1e25 ; (fmul + 108)
-1e21 : c9 ff __ CMP #$ff
-1e23 : d0 15 __ BNE $1e3a ; (fmul + 129)
-1e25 : a5 1e __ LDA ACCU + 3 
-1e27 : 09 7f __ ORA #$7f
-1e29 : 85 1e __ STA ACCU + 3 
-1e2b : a9 80 __ LDA #$80
-1e2d : 85 1d __ STA ACCU + 2 
-1e2f : a9 00 __ LDA #$00
-1e31 : 85 1b __ STA ACCU + 0 
-1e33 : 85 1c __ STA ACCU + 1 
-1e35 : 60 __ __ RTS
-1e36 : e9 7e __ SBC #$7e
-1e38 : 90 15 __ BCC $1e4f ; (fmul + 150)
-1e3a : 4a __ __ LSR
-1e3b : 05 1e __ ORA ACCU + 3 
-1e3d : 85 1e __ STA ACCU + 3 
-1e3f : a9 00 __ LDA #$00
-1e41 : 6a __ __ ROR
-1e42 : 05 0b __ ORA $0b 
-1e44 : 85 1d __ STA ACCU + 2 
-1e46 : a5 0a __ LDA WORK + 7 
-1e48 : 85 1c __ STA ACCU + 1 
-1e4a : a5 09 __ LDA WORK + 6 
-1e4c : 85 1b __ STA ACCU + 0 
-1e4e : 60 __ __ RTS
-1e4f : a9 00 __ LDA #$00
-1e51 : 85 1b __ STA ACCU + 0 
-1e53 : 85 1c __ STA ACCU + 1 
+1e17 : a4 1b __ LDY ACCU + 0 
+1e19 : a5 03 __ LDA WORK + 0 
+1e1b : d0 06 __ BNE $1e23 ; (fmul + 66)
+1e1d : a5 04 __ LDA WORK + 1 
+1e1f : f0 0a __ BEQ $1e2b ; (fmul + 74)
+1e21 : d0 05 __ BNE $1e28 ; (fmul + 71)
+1e23 : 20 82 1e JSR $1e82 ; (fmul8 + 0)
+1e26 : a5 04 __ LDA WORK + 1 
+1e28 : 20 82 1e JSR $1e82 ; (fmul8 + 0)
+1e2b : a5 05 __ LDA WORK + 2 
+1e2d : 20 82 1e JSR $1e82 ; (fmul8 + 0)
+1e30 : 38 __ __ SEC
+1e31 : a5 0b __ LDA $0b 
+1e33 : 30 06 __ BMI $1e3b ; (fmul + 90)
+1e35 : 06 09 __ ASL WORK + 6 
+1e37 : 26 0a __ ROL WORK + 7 
+1e39 : 2a __ __ ROL
+1e3a : 18 __ __ CLC
+1e3b : 29 7f __ AND #$7f
+1e3d : 85 0b __ STA $0b 
+1e3f : a5 07 __ LDA WORK + 4 
+1e41 : 65 08 __ ADC WORK + 5 
+1e43 : 90 19 __ BCC $1e5e ; (fmul + 125)
+1e45 : e9 7f __ SBC #$7f
+1e47 : b0 04 __ BCS $1e4d ; (fmul + 108)
+1e49 : c9 ff __ CMP #$ff
+1e4b : d0 15 __ BNE $1e62 ; (fmul + 129)
+1e4d : a5 1e __ LDA ACCU + 3 
+1e4f : 09 7f __ ORA #$7f
+1e51 : 85 1e __ STA ACCU + 3 
+1e53 : a9 80 __ LDA #$80
 1e55 : 85 1d __ STA ACCU + 2 
-1e57 : 85 1e __ STA ACCU + 3 
-1e59 : 60 __ __ RTS
+1e57 : a9 00 __ LDA #$00
+1e59 : 85 1b __ STA ACCU + 0 
+1e5b : 85 1c __ STA ACCU + 1 
+1e5d : 60 __ __ RTS
+1e5e : e9 7e __ SBC #$7e
+1e60 : 90 15 __ BCC $1e77 ; (fmul + 150)
+1e62 : 4a __ __ LSR
+1e63 : 05 1e __ ORA ACCU + 3 
+1e65 : 85 1e __ STA ACCU + 3 
+1e67 : a9 00 __ LDA #$00
+1e69 : 6a __ __ ROR
+1e6a : 05 0b __ ORA $0b 
+1e6c : 85 1d __ STA ACCU + 2 
+1e6e : a5 0a __ LDA WORK + 7 
+1e70 : 85 1c __ STA ACCU + 1 
+1e72 : a5 09 __ LDA WORK + 6 
+1e74 : 85 1b __ STA ACCU + 0 
+1e76 : 60 __ __ RTS
+1e77 : a9 00 __ LDA #$00
+1e79 : 85 1b __ STA ACCU + 0 
+1e7b : 85 1c __ STA ACCU + 1 
+1e7d : 85 1d __ STA ACCU + 2 
+1e7f : 85 1e __ STA ACCU + 3 
+1e81 : 60 __ __ RTS
 --------------------------------------------------------------------
 fmul8:
-1e5a : 38 __ __ SEC
-1e5b : 6a __ __ ROR
-1e5c : 90 1e __ BCC $1e7c ; (fmul8 + 34)
-1e5e : aa __ __ TAX
-1e5f : 18 __ __ CLC
-1e60 : 98 __ __ TYA
-1e61 : 65 09 __ ADC WORK + 6 
-1e63 : 85 09 __ STA WORK + 6 
-1e65 : a5 0a __ LDA WORK + 7 
-1e67 : 65 1c __ ADC ACCU + 1 
-1e69 : 85 0a __ STA WORK + 7 
-1e6b : a5 0b __ LDA $0b 
-1e6d : 65 1d __ ADC ACCU + 2 
-1e6f : 6a __ __ ROR
-1e70 : 85 0b __ STA $0b 
-1e72 : 8a __ __ TXA
-1e73 : 66 0a __ ROR WORK + 7 
-1e75 : 66 09 __ ROR WORK + 6 
-1e77 : 4a __ __ LSR
-1e78 : f0 0d __ BEQ $1e87 ; (fmul8 + 45)
-1e7a : b0 e2 __ BCS $1e5e ; (fmul8 + 4)
-1e7c : 66 0b __ ROR $0b 
-1e7e : 66 0a __ ROR WORK + 7 
-1e80 : 66 09 __ ROR WORK + 6 
-1e82 : 4a __ __ LSR
-1e83 : 90 f7 __ BCC $1e7c ; (fmul8 + 34)
-1e85 : d0 d7 __ BNE $1e5e ; (fmul8 + 4)
-1e87 : 60 __ __ RTS
+1e82 : 38 __ __ SEC
+1e83 : 6a __ __ ROR
+1e84 : 90 1e __ BCC $1ea4 ; (fmul8 + 34)
+1e86 : aa __ __ TAX
+1e87 : 18 __ __ CLC
+1e88 : 98 __ __ TYA
+1e89 : 65 09 __ ADC WORK + 6 
+1e8b : 85 09 __ STA WORK + 6 
+1e8d : a5 0a __ LDA WORK + 7 
+1e8f : 65 1c __ ADC ACCU + 1 
+1e91 : 85 0a __ STA WORK + 7 
+1e93 : a5 0b __ LDA $0b 
+1e95 : 65 1d __ ADC ACCU + 2 
+1e97 : 6a __ __ ROR
+1e98 : 85 0b __ STA $0b 
+1e9a : 8a __ __ TXA
+1e9b : 66 0a __ ROR WORK + 7 
+1e9d : 66 09 __ ROR WORK + 6 
+1e9f : 4a __ __ LSR
+1ea0 : f0 0d __ BEQ $1eaf ; (fmul8 + 45)
+1ea2 : b0 e2 __ BCS $1e86 ; (fmul8 + 4)
+1ea4 : 66 0b __ ROR $0b 
+1ea6 : 66 0a __ ROR WORK + 7 
+1ea8 : 66 09 __ ROR WORK + 6 
+1eaa : 4a __ __ LSR
+1eab : 90 f7 __ BCC $1ea4 ; (fmul8 + 34)
+1ead : d0 d7 __ BNE $1e86 ; (fmul8 + 4)
+1eaf : 60 __ __ RTS
 --------------------------------------------------------------------
 fdiv:
-1e88 : a5 1b __ LDA ACCU + 0 
-1e8a : 05 1c __ ORA ACCU + 1 
-1e8c : 05 1d __ ORA ACCU + 2 
-1e8e : d0 03 __ BNE $1e93 ; (fdiv + 11)
-1e90 : 85 1e __ STA ACCU + 3 
-1e92 : 60 __ __ RTS
-1e93 : a5 1e __ LDA ACCU + 3 
-1e95 : 45 06 __ EOR WORK + 3 
-1e97 : 29 80 __ AND #$80
-1e99 : 85 1e __ STA ACCU + 3 
-1e9b : a5 08 __ LDA WORK + 5 
-1e9d : f0 62 __ BEQ $1f01 ; (fdiv + 121)
-1e9f : a5 07 __ LDA WORK + 4 
-1ea1 : c9 ff __ CMP #$ff
-1ea3 : f0 5c __ BEQ $1f01 ; (fdiv + 121)
-1ea5 : a9 00 __ LDA #$00
-1ea7 : 85 09 __ STA WORK + 6 
-1ea9 : 85 0a __ STA WORK + 7 
-1eab : 85 0b __ STA $0b 
-1ead : a2 18 __ LDX #$18
-1eaf : a5 1b __ LDA ACCU + 0 
-1eb1 : c5 03 __ CMP WORK + 0 
-1eb3 : a5 1c __ LDA ACCU + 1 
-1eb5 : e5 04 __ SBC WORK + 1 
-1eb7 : a5 1d __ LDA ACCU + 2 
-1eb9 : e5 05 __ SBC WORK + 2 
-1ebb : 90 13 __ BCC $1ed0 ; (fdiv + 72)
-1ebd : a5 1b __ LDA ACCU + 0 
-1ebf : e5 03 __ SBC WORK + 0 
-1ec1 : 85 1b __ STA ACCU + 0 
-1ec3 : a5 1c __ LDA ACCU + 1 
-1ec5 : e5 04 __ SBC WORK + 1 
-1ec7 : 85 1c __ STA ACCU + 1 
-1ec9 : a5 1d __ LDA ACCU + 2 
-1ecb : e5 05 __ SBC WORK + 2 
-1ecd : 85 1d __ STA ACCU + 2 
-1ecf : 38 __ __ SEC
-1ed0 : 26 09 __ ROL WORK + 6 
-1ed2 : 26 0a __ ROL WORK + 7 
-1ed4 : 26 0b __ ROL $0b 
-1ed6 : ca __ __ DEX
-1ed7 : f0 0a __ BEQ $1ee3 ; (fdiv + 91)
-1ed9 : 06 1b __ ASL ACCU + 0 
-1edb : 26 1c __ ROL ACCU + 1 
-1edd : 26 1d __ ROL ACCU + 2 
-1edf : b0 dc __ BCS $1ebd ; (fdiv + 53)
-1ee1 : 90 cc __ BCC $1eaf ; (fdiv + 39)
-1ee3 : 38 __ __ SEC
-1ee4 : a5 0b __ LDA $0b 
-1ee6 : 30 06 __ BMI $1eee ; (fdiv + 102)
-1ee8 : 06 09 __ ASL WORK + 6 
-1eea : 26 0a __ ROL WORK + 7 
-1eec : 2a __ __ ROL
-1eed : 18 __ __ CLC
-1eee : 29 7f __ AND #$7f
-1ef0 : 85 0b __ STA $0b 
-1ef2 : a5 07 __ LDA WORK + 4 
-1ef4 : e5 08 __ SBC WORK + 5 
-1ef6 : 90 1a __ BCC $1f12 ; (fdiv + 138)
-1ef8 : 18 __ __ CLC
-1ef9 : 69 7f __ ADC #$7f
-1efb : b0 04 __ BCS $1f01 ; (fdiv + 121)
-1efd : c9 ff __ CMP #$ff
-1eff : d0 15 __ BNE $1f16 ; (fdiv + 142)
-1f01 : a5 1e __ LDA ACCU + 3 
-1f03 : 09 7f __ ORA #$7f
-1f05 : 85 1e __ STA ACCU + 3 
-1f07 : a9 80 __ LDA #$80
-1f09 : 85 1d __ STA ACCU + 2 
-1f0b : a9 00 __ LDA #$00
-1f0d : 85 1c __ STA ACCU + 1 
-1f0f : 85 1b __ STA ACCU + 0 
-1f11 : 60 __ __ RTS
-1f12 : 69 7f __ ADC #$7f
-1f14 : 90 15 __ BCC $1f2b ; (fdiv + 163)
-1f16 : 4a __ __ LSR
-1f17 : 05 1e __ ORA ACCU + 3 
-1f19 : 85 1e __ STA ACCU + 3 
-1f1b : a9 00 __ LDA #$00
-1f1d : 6a __ __ ROR
-1f1e : 05 0b __ ORA $0b 
-1f20 : 85 1d __ STA ACCU + 2 
-1f22 : a5 0a __ LDA WORK + 7 
-1f24 : 85 1c __ STA ACCU + 1 
-1f26 : a5 09 __ LDA WORK + 6 
-1f28 : 85 1b __ STA ACCU + 0 
-1f2a : 60 __ __ RTS
-1f2b : a9 00 __ LDA #$00
+1eb0 : a5 1b __ LDA ACCU + 0 
+1eb2 : 05 1c __ ORA ACCU + 1 
+1eb4 : 05 1d __ ORA ACCU + 2 
+1eb6 : d0 03 __ BNE $1ebb ; (fdiv + 11)
+1eb8 : 85 1e __ STA ACCU + 3 
+1eba : 60 __ __ RTS
+1ebb : a5 1e __ LDA ACCU + 3 
+1ebd : 45 06 __ EOR WORK + 3 
+1ebf : 29 80 __ AND #$80
+1ec1 : 85 1e __ STA ACCU + 3 
+1ec3 : a5 08 __ LDA WORK + 5 
+1ec5 : f0 62 __ BEQ $1f29 ; (fdiv + 121)
+1ec7 : a5 07 __ LDA WORK + 4 
+1ec9 : c9 ff __ CMP #$ff
+1ecb : f0 5c __ BEQ $1f29 ; (fdiv + 121)
+1ecd : a9 00 __ LDA #$00
+1ecf : 85 09 __ STA WORK + 6 
+1ed1 : 85 0a __ STA WORK + 7 
+1ed3 : 85 0b __ STA $0b 
+1ed5 : a2 18 __ LDX #$18
+1ed7 : a5 1b __ LDA ACCU + 0 
+1ed9 : c5 03 __ CMP WORK + 0 
+1edb : a5 1c __ LDA ACCU + 1 
+1edd : e5 04 __ SBC WORK + 1 
+1edf : a5 1d __ LDA ACCU + 2 
+1ee1 : e5 05 __ SBC WORK + 2 
+1ee3 : 90 13 __ BCC $1ef8 ; (fdiv + 72)
+1ee5 : a5 1b __ LDA ACCU + 0 
+1ee7 : e5 03 __ SBC WORK + 0 
+1ee9 : 85 1b __ STA ACCU + 0 
+1eeb : a5 1c __ LDA ACCU + 1 
+1eed : e5 04 __ SBC WORK + 1 
+1eef : 85 1c __ STA ACCU + 1 
+1ef1 : a5 1d __ LDA ACCU + 2 
+1ef3 : e5 05 __ SBC WORK + 2 
+1ef5 : 85 1d __ STA ACCU + 2 
+1ef7 : 38 __ __ SEC
+1ef8 : 26 09 __ ROL WORK + 6 
+1efa : 26 0a __ ROL WORK + 7 
+1efc : 26 0b __ ROL $0b 
+1efe : ca __ __ DEX
+1eff : f0 0a __ BEQ $1f0b ; (fdiv + 91)
+1f01 : 06 1b __ ASL ACCU + 0 
+1f03 : 26 1c __ ROL ACCU + 1 
+1f05 : 26 1d __ ROL ACCU + 2 
+1f07 : b0 dc __ BCS $1ee5 ; (fdiv + 53)
+1f09 : 90 cc __ BCC $1ed7 ; (fdiv + 39)
+1f0b : 38 __ __ SEC
+1f0c : a5 0b __ LDA $0b 
+1f0e : 30 06 __ BMI $1f16 ; (fdiv + 102)
+1f10 : 06 09 __ ASL WORK + 6 
+1f12 : 26 0a __ ROL WORK + 7 
+1f14 : 2a __ __ ROL
+1f15 : 18 __ __ CLC
+1f16 : 29 7f __ AND #$7f
+1f18 : 85 0b __ STA $0b 
+1f1a : a5 07 __ LDA WORK + 4 
+1f1c : e5 08 __ SBC WORK + 5 
+1f1e : 90 1a __ BCC $1f3a ; (fdiv + 138)
+1f20 : 18 __ __ CLC
+1f21 : 69 7f __ ADC #$7f
+1f23 : b0 04 __ BCS $1f29 ; (fdiv + 121)
+1f25 : c9 ff __ CMP #$ff
+1f27 : d0 15 __ BNE $1f3e ; (fdiv + 142)
+1f29 : a5 1e __ LDA ACCU + 3 
+1f2b : 09 7f __ ORA #$7f
 1f2d : 85 1e __ STA ACCU + 3 
-1f2f : 85 1d __ STA ACCU + 2 
-1f31 : 85 1c __ STA ACCU + 1 
-1f33 : 85 1b __ STA ACCU + 0 
-1f35 : 60 __ __ RTS
+1f2f : a9 80 __ LDA #$80
+1f31 : 85 1d __ STA ACCU + 2 
+1f33 : a9 00 __ LDA #$00
+1f35 : 85 1c __ STA ACCU + 1 
+1f37 : 85 1b __ STA ACCU + 0 
+1f39 : 60 __ __ RTS
+1f3a : 69 7f __ ADC #$7f
+1f3c : 90 15 __ BCC $1f53 ; (fdiv + 163)
+1f3e : 4a __ __ LSR
+1f3f : 05 1e __ ORA ACCU + 3 
+1f41 : 85 1e __ STA ACCU + 3 
+1f43 : a9 00 __ LDA #$00
+1f45 : 6a __ __ ROR
+1f46 : 05 0b __ ORA $0b 
+1f48 : 85 1d __ STA ACCU + 2 
+1f4a : a5 0a __ LDA WORK + 7 
+1f4c : 85 1c __ STA ACCU + 1 
+1f4e : a5 09 __ LDA WORK + 6 
+1f50 : 85 1b __ STA ACCU + 0 
+1f52 : 60 __ __ RTS
+1f53 : a9 00 __ LDA #$00
+1f55 : 85 1e __ STA ACCU + 3 
+1f57 : 85 1d __ STA ACCU + 2 
+1f59 : 85 1c __ STA ACCU + 1 
+1f5b : 85 1b __ STA ACCU + 0 
+1f5d : 60 __ __ RTS
 --------------------------------------------------------------------
 divs16:
-1f36 : 24 1c __ BIT ACCU + 1 
-1f38 : 10 0d __ BPL $1f47 ; (divs16 + 17)
-1f3a : 20 54 1f JSR $1f54 ; (negaccu + 0)
-1f3d : 24 04 __ BIT WORK + 1 
-1f3f : 10 0d __ BPL $1f4e ; (divs16 + 24)
-1f41 : 20 62 1f JSR $1f62 ; (negtmp + 0)
-1f44 : 4c 70 1f JMP $1f70 ; (divmod + 0)
-1f47 : 24 04 __ BIT WORK + 1 
-1f49 : 10 f9 __ BPL $1f44 ; (divs16 + 14)
-1f4b : 20 62 1f JSR $1f62 ; (negtmp + 0)
-1f4e : 20 70 1f JSR $1f70 ; (divmod + 0)
-1f51 : 4c 54 1f JMP $1f54 ; (negaccu + 0)
+1f5e : 24 1c __ BIT ACCU + 1 
+1f60 : 10 0d __ BPL $1f6f ; (divs16 + 17)
+1f62 : 20 7c 1f JSR $1f7c ; (negaccu + 0)
+1f65 : 24 04 __ BIT WORK + 1 
+1f67 : 10 0d __ BPL $1f76 ; (divs16 + 24)
+1f69 : 20 8a 1f JSR $1f8a ; (negtmp + 0)
+1f6c : 4c 98 1f JMP $1f98 ; (divmod + 0)
+1f6f : 24 04 __ BIT WORK + 1 
+1f71 : 10 f9 __ BPL $1f6c ; (divs16 + 14)
+1f73 : 20 8a 1f JSR $1f8a ; (negtmp + 0)
+1f76 : 20 98 1f JSR $1f98 ; (divmod + 0)
+1f79 : 4c 7c 1f JMP $1f7c ; (negaccu + 0)
 --------------------------------------------------------------------
 negaccu:
-1f54 : 38 __ __ SEC
-1f55 : a9 00 __ LDA #$00
-1f57 : e5 1b __ SBC ACCU + 0 
-1f59 : 85 1b __ STA ACCU + 0 
-1f5b : a9 00 __ LDA #$00
-1f5d : e5 1c __ SBC ACCU + 1 
-1f5f : 85 1c __ STA ACCU + 1 
-1f61 : 60 __ __ RTS
+1f7c : 38 __ __ SEC
+1f7d : a9 00 __ LDA #$00
+1f7f : e5 1b __ SBC ACCU + 0 
+1f81 : 85 1b __ STA ACCU + 0 
+1f83 : a9 00 __ LDA #$00
+1f85 : e5 1c __ SBC ACCU + 1 
+1f87 : 85 1c __ STA ACCU + 1 
+1f89 : 60 __ __ RTS
 --------------------------------------------------------------------
 negtmp:
-1f62 : 38 __ __ SEC
-1f63 : a9 00 __ LDA #$00
-1f65 : e5 03 __ SBC WORK + 0 
-1f67 : 85 03 __ STA WORK + 0 
-1f69 : a9 00 __ LDA #$00
-1f6b : e5 04 __ SBC WORK + 1 
-1f6d : 85 04 __ STA WORK + 1 
-1f6f : 60 __ __ RTS
+1f8a : 38 __ __ SEC
+1f8b : a9 00 __ LDA #$00
+1f8d : e5 03 __ SBC WORK + 0 
+1f8f : 85 03 __ STA WORK + 0 
+1f91 : a9 00 __ LDA #$00
+1f93 : e5 04 __ SBC WORK + 1 
+1f95 : 85 04 __ STA WORK + 1 
+1f97 : 60 __ __ RTS
 --------------------------------------------------------------------
 divmod:
-1f70 : a5 1c __ LDA ACCU + 1 
-1f72 : d0 31 __ BNE $1fa5 ; (divmod + 53)
-1f74 : a5 04 __ LDA WORK + 1 
-1f76 : d0 1e __ BNE $1f96 ; (divmod + 38)
-1f78 : 85 06 __ STA WORK + 3 
-1f7a : a2 04 __ LDX #$04
-1f7c : 06 1b __ ASL ACCU + 0 
-1f7e : 2a __ __ ROL
-1f7f : c5 03 __ CMP WORK + 0 
-1f81 : 90 02 __ BCC $1f85 ; (divmod + 21)
-1f83 : e5 03 __ SBC WORK + 0 
-1f85 : 26 1b __ ROL ACCU + 0 
-1f87 : 2a __ __ ROL
-1f88 : c5 03 __ CMP WORK + 0 
-1f8a : 90 02 __ BCC $1f8e ; (divmod + 30)
-1f8c : e5 03 __ SBC WORK + 0 
-1f8e : 26 1b __ ROL ACCU + 0 
-1f90 : ca __ __ DEX
-1f91 : d0 eb __ BNE $1f7e ; (divmod + 14)
-1f93 : 85 05 __ STA WORK + 2 
-1f95 : 60 __ __ RTS
-1f96 : a5 1b __ LDA ACCU + 0 
-1f98 : 85 05 __ STA WORK + 2 
-1f9a : a5 1c __ LDA ACCU + 1 
-1f9c : 85 06 __ STA WORK + 3 
-1f9e : a9 00 __ LDA #$00
-1fa0 : 85 1b __ STA ACCU + 0 
-1fa2 : 85 1c __ STA ACCU + 1 
-1fa4 : 60 __ __ RTS
-1fa5 : a5 04 __ LDA WORK + 1 
-1fa7 : d0 1f __ BNE $1fc8 ; (divmod + 88)
-1fa9 : a5 03 __ LDA WORK + 0 
-1fab : 30 1b __ BMI $1fc8 ; (divmod + 88)
-1fad : a9 00 __ LDA #$00
-1faf : 85 06 __ STA WORK + 3 
-1fb1 : a2 10 __ LDX #$10
-1fb3 : 06 1b __ ASL ACCU + 0 
-1fb5 : 26 1c __ ROL ACCU + 1 
-1fb7 : 2a __ __ ROL
-1fb8 : c5 03 __ CMP WORK + 0 
-1fba : 90 02 __ BCC $1fbe ; (divmod + 78)
-1fbc : e5 03 __ SBC WORK + 0 
-1fbe : 26 1b __ ROL ACCU + 0 
-1fc0 : 26 1c __ ROL ACCU + 1 
-1fc2 : ca __ __ DEX
-1fc3 : d0 f2 __ BNE $1fb7 ; (divmod + 71)
-1fc5 : 85 05 __ STA WORK + 2 
-1fc7 : 60 __ __ RTS
-1fc8 : a9 00 __ LDA #$00
-1fca : 85 05 __ STA WORK + 2 
-1fcc : 85 06 __ STA WORK + 3 
-1fce : 84 02 __ STY $02 
-1fd0 : a0 10 __ LDY #$10
-1fd2 : 18 __ __ CLC
-1fd3 : 26 1b __ ROL ACCU + 0 
-1fd5 : 26 1c __ ROL ACCU + 1 
-1fd7 : 26 05 __ ROL WORK + 2 
-1fd9 : 26 06 __ ROL WORK + 3 
-1fdb : 38 __ __ SEC
-1fdc : a5 05 __ LDA WORK + 2 
-1fde : e5 03 __ SBC WORK + 0 
-1fe0 : aa __ __ TAX
-1fe1 : a5 06 __ LDA WORK + 3 
-1fe3 : e5 04 __ SBC WORK + 1 
-1fe5 : 90 04 __ BCC $1feb ; (divmod + 123)
-1fe7 : 86 05 __ STX WORK + 2 
-1fe9 : 85 06 __ STA WORK + 3 
-1feb : 88 __ __ DEY
-1fec : d0 e5 __ BNE $1fd3 ; (divmod + 99)
-1fee : 26 1b __ ROL ACCU + 0 
-1ff0 : 26 1c __ ROL ACCU + 1 
-1ff2 : a4 02 __ LDY $02 
-1ff4 : 60 __ __ RTS
+1f98 : a5 1c __ LDA ACCU + 1 
+1f9a : d0 31 __ BNE $1fcd ; (divmod + 53)
+1f9c : a5 04 __ LDA WORK + 1 
+1f9e : d0 1e __ BNE $1fbe ; (divmod + 38)
+1fa0 : 85 06 __ STA WORK + 3 
+1fa2 : a2 04 __ LDX #$04
+1fa4 : 06 1b __ ASL ACCU + 0 
+1fa6 : 2a __ __ ROL
+1fa7 : c5 03 __ CMP WORK + 0 
+1fa9 : 90 02 __ BCC $1fad ; (divmod + 21)
+1fab : e5 03 __ SBC WORK + 0 
+1fad : 26 1b __ ROL ACCU + 0 
+1faf : 2a __ __ ROL
+1fb0 : c5 03 __ CMP WORK + 0 
+1fb2 : 90 02 __ BCC $1fb6 ; (divmod + 30)
+1fb4 : e5 03 __ SBC WORK + 0 
+1fb6 : 26 1b __ ROL ACCU + 0 
+1fb8 : ca __ __ DEX
+1fb9 : d0 eb __ BNE $1fa6 ; (divmod + 14)
+1fbb : 85 05 __ STA WORK + 2 
+1fbd : 60 __ __ RTS
+1fbe : a5 1b __ LDA ACCU + 0 
+1fc0 : 85 05 __ STA WORK + 2 
+1fc2 : a5 1c __ LDA ACCU + 1 
+1fc4 : 85 06 __ STA WORK + 3 
+1fc6 : a9 00 __ LDA #$00
+1fc8 : 85 1b __ STA ACCU + 0 
+1fca : 85 1c __ STA ACCU + 1 
+1fcc : 60 __ __ RTS
+1fcd : a5 04 __ LDA WORK + 1 
+1fcf : d0 1f __ BNE $1ff0 ; (divmod + 88)
+1fd1 : a5 03 __ LDA WORK + 0 
+1fd3 : 30 1b __ BMI $1ff0 ; (divmod + 88)
+1fd5 : a9 00 __ LDA #$00
+1fd7 : 85 06 __ STA WORK + 3 
+1fd9 : a2 10 __ LDX #$10
+1fdb : 06 1b __ ASL ACCU + 0 
+1fdd : 26 1c __ ROL ACCU + 1 
+1fdf : 2a __ __ ROL
+1fe0 : c5 03 __ CMP WORK + 0 
+1fe2 : 90 02 __ BCC $1fe6 ; (divmod + 78)
+1fe4 : e5 03 __ SBC WORK + 0 
+1fe6 : 26 1b __ ROL ACCU + 0 
+1fe8 : 26 1c __ ROL ACCU + 1 
+1fea : ca __ __ DEX
+1feb : d0 f2 __ BNE $1fdf ; (divmod + 71)
+1fed : 85 05 __ STA WORK + 2 
+1fef : 60 __ __ RTS
+1ff0 : a9 00 __ LDA #$00
+1ff2 : 85 05 __ STA WORK + 2 
+1ff4 : 85 06 __ STA WORK + 3 
+1ff6 : 84 02 __ STY $02 
+1ff8 : a0 10 __ LDY #$10
+1ffa : 18 __ __ CLC
+1ffb : 26 1b __ ROL ACCU + 0 
+1ffd : 26 1c __ ROL ACCU + 1 
+1fff : 26 05 __ ROL WORK + 2 
+2001 : 26 06 __ ROL WORK + 3 
+2003 : 38 __ __ SEC
+2004 : a5 05 __ LDA WORK + 2 
+2006 : e5 03 __ SBC WORK + 0 
+2008 : aa __ __ TAX
+2009 : a5 06 __ LDA WORK + 3 
+200b : e5 04 __ SBC WORK + 1 
+200d : 90 04 __ BCC $2013 ; (divmod + 123)
+200f : 86 05 __ STX WORK + 2 
+2011 : 85 06 __ STA WORK + 3 
+2013 : 88 __ __ DEY
+2014 : d0 e5 __ BNE $1ffb ; (divmod + 99)
+2016 : 26 1b __ ROL ACCU + 0 
+2018 : 26 1c __ ROL ACCU + 1 
+201a : a4 02 __ LDY $02 
+201c : 60 __ __ RTS
 --------------------------------------------------------------------
 mods16:
-1ff5 : 24 1c __ BIT ACCU + 1 
-1ff7 : 10 0d __ BPL $2006 ; (mods16 + 17)
-1ff9 : 20 54 1f JSR $1f54 ; (negaccu + 0)
-1ffc : 24 04 __ BIT WORK + 1 
-1ffe : 10 0d __ BPL $200d ; (mods16 + 24)
-2000 : 20 62 1f JSR $1f62 ; (negtmp + 0)
-2003 : 4c 70 1f JMP $1f70 ; (divmod + 0)
-2006 : 24 04 __ BIT WORK + 1 
-2008 : 10 f9 __ BPL $2003 ; (mods16 + 14)
-200a : 20 62 1f JSR $1f62 ; (negtmp + 0)
-200d : 20 70 1f JSR $1f70 ; (divmod + 0)
-2010 : 38 __ __ SEC
-2011 : a9 00 __ LDA #$00
-2013 : e5 05 __ SBC WORK + 2 
-2015 : 85 05 __ STA WORK + 2 
-2017 : a9 00 __ LDA #$00
-2019 : e5 06 __ SBC WORK + 3 
-201b : 85 06 __ STA WORK + 3 
-201d : 60 __ __ RTS
+201d : 24 1c __ BIT ACCU + 1 
+201f : 10 0d __ BPL $202e ; (mods16 + 17)
+2021 : 20 7c 1f JSR $1f7c ; (negaccu + 0)
+2024 : 24 04 __ BIT WORK + 1 
+2026 : 10 0d __ BPL $2035 ; (mods16 + 24)
+2028 : 20 8a 1f JSR $1f8a ; (negtmp + 0)
+202b : 4c 98 1f JMP $1f98 ; (divmod + 0)
+202e : 24 04 __ BIT WORK + 1 
+2030 : 10 f9 __ BPL $202b ; (mods16 + 14)
+2032 : 20 8a 1f JSR $1f8a ; (negtmp + 0)
+2035 : 20 98 1f JSR $1f98 ; (divmod + 0)
+2038 : 38 __ __ SEC
+2039 : a9 00 __ LDA #$00
+203b : e5 05 __ SBC WORK + 2 
+203d : 85 05 __ STA WORK + 2 
+203f : a9 00 __ LDA #$00
+2041 : e5 06 __ SBC WORK + 3 
+2043 : 85 06 __ STA WORK + 3 
+2045 : 60 __ __ RTS
 --------------------------------------------------------------------
 f32_to_i16:
-201e : 20 b1 1c JSR $1cb1 ; (freg + 36)
-2021 : a5 07 __ LDA WORK + 4 
-2023 : c9 7f __ CMP #$7f
-2025 : b0 07 __ BCS $202e ; (f32_to_i16 + 16)
-2027 : a9 00 __ LDA #$00
-2029 : 85 1b __ STA ACCU + 0 
-202b : 85 1c __ STA ACCU + 1 
-202d : 60 __ __ RTS
-202e : 38 __ __ SEC
-202f : e9 8e __ SBC #$8e
-2031 : 90 0a __ BCC $203d ; (f32_to_i16 + 31)
-2033 : a9 ff __ LDA #$ff
-2035 : 85 1b __ STA ACCU + 0 
-2037 : a9 7f __ LDA #$7f
-2039 : 85 1c __ STA ACCU + 1 
-203b : d0 08 __ BNE $2045 ; (f32_to_i16 + 39)
-203d : aa __ __ TAX
-203e : 46 1d __ LSR ACCU + 2 
-2040 : 66 1c __ ROR ACCU + 1 
-2042 : e8 __ __ INX
-2043 : d0 f9 __ BNE $203e ; (f32_to_i16 + 32)
-2045 : 24 1e __ BIT ACCU + 3 
-2047 : 10 0e __ BPL $2057 ; (f32_to_i16 + 57)
-2049 : 38 __ __ SEC
-204a : a9 00 __ LDA #$00
-204c : e5 1c __ SBC ACCU + 1 
-204e : 85 1b __ STA ACCU + 0 
-2050 : a9 00 __ LDA #$00
-2052 : e5 1d __ SBC ACCU + 2 
-2054 : 85 1c __ STA ACCU + 1 
-2056 : 60 __ __ RTS
-2057 : a5 1c __ LDA ACCU + 1 
-2059 : 85 1b __ STA ACCU + 0 
-205b : a5 1d __ LDA ACCU + 2 
-205d : 85 1c __ STA ACCU + 1 
-205f : 60 __ __ RTS
+2046 : 20 d9 1c JSR $1cd9 ; (freg + 36)
+2049 : a5 07 __ LDA WORK + 4 
+204b : c9 7f __ CMP #$7f
+204d : b0 07 __ BCS $2056 ; (f32_to_i16 + 16)
+204f : a9 00 __ LDA #$00
+2051 : 85 1b __ STA ACCU + 0 
+2053 : 85 1c __ STA ACCU + 1 
+2055 : 60 __ __ RTS
+2056 : 38 __ __ SEC
+2057 : e9 8e __ SBC #$8e
+2059 : 90 0a __ BCC $2065 ; (f32_to_i16 + 31)
+205b : a9 ff __ LDA #$ff
+205d : 85 1b __ STA ACCU + 0 
+205f : a9 7f __ LDA #$7f
+2061 : 85 1c __ STA ACCU + 1 
+2063 : d0 08 __ BNE $206d ; (f32_to_i16 + 39)
+2065 : aa __ __ TAX
+2066 : 46 1d __ LSR ACCU + 2 
+2068 : 66 1c __ ROR ACCU + 1 
+206a : e8 __ __ INX
+206b : d0 f9 __ BNE $2066 ; (f32_to_i16 + 32)
+206d : 24 1e __ BIT ACCU + 3 
+206f : 10 0e __ BPL $207f ; (f32_to_i16 + 57)
+2071 : 38 __ __ SEC
+2072 : a9 00 __ LDA #$00
+2074 : e5 1c __ SBC ACCU + 1 
+2076 : 85 1b __ STA ACCU + 0 
+2078 : a9 00 __ LDA #$00
+207a : e5 1d __ SBC ACCU + 2 
+207c : 85 1c __ STA ACCU + 1 
+207e : 60 __ __ RTS
+207f : a5 1c __ LDA ACCU + 1 
+2081 : 85 1b __ STA ACCU + 0 
+2083 : a5 1d __ LDA ACCU + 2 
+2085 : 85 1c __ STA ACCU + 1 
+2087 : 60 __ __ RTS
 --------------------------------------------------------------------
 sint16_to_float:
-2060 : 24 1c __ BIT ACCU + 1 
-2062 : 30 03 __ BMI $2067 ; (sint16_to_float + 7)
-2064 : 4c 7e 20 JMP $207e ; (uint16_to_float + 0)
-2067 : 38 __ __ SEC
-2068 : a9 00 __ LDA #$00
-206a : e5 1b __ SBC ACCU + 0 
-206c : 85 1b __ STA ACCU + 0 
-206e : a9 00 __ LDA #$00
-2070 : e5 1c __ SBC ACCU + 1 
-2072 : 85 1c __ STA ACCU + 1 
-2074 : 20 7e 20 JSR $207e ; (uint16_to_float + 0)
-2077 : a5 1e __ LDA ACCU + 3 
-2079 : 09 80 __ ORA #$80
-207b : 85 1e __ STA ACCU + 3 
-207d : 60 __ __ RTS
+2088 : 24 1c __ BIT ACCU + 1 
+208a : 30 03 __ BMI $208f ; (sint16_to_float + 7)
+208c : 4c a6 20 JMP $20a6 ; (uint16_to_float + 0)
+208f : 38 __ __ SEC
+2090 : a9 00 __ LDA #$00
+2092 : e5 1b __ SBC ACCU + 0 
+2094 : 85 1b __ STA ACCU + 0 
+2096 : a9 00 __ LDA #$00
+2098 : e5 1c __ SBC ACCU + 1 
+209a : 85 1c __ STA ACCU + 1 
+209c : 20 a6 20 JSR $20a6 ; (uint16_to_float + 0)
+209f : a5 1e __ LDA ACCU + 3 
+20a1 : 09 80 __ ORA #$80
+20a3 : 85 1e __ STA ACCU + 3 
+20a5 : 60 __ __ RTS
 --------------------------------------------------------------------
 uint16_to_float:
-207e : a5 1b __ LDA ACCU + 0 
-2080 : 05 1c __ ORA ACCU + 1 
-2082 : d0 05 __ BNE $2089 ; (uint16_to_float + 11)
-2084 : 85 1d __ STA ACCU + 2 
-2086 : 85 1e __ STA ACCU + 3 
-2088 : 60 __ __ RTS
-2089 : a2 8e __ LDX #$8e
-208b : a5 1c __ LDA ACCU + 1 
-208d : 30 06 __ BMI $2095 ; (uint16_to_float + 23)
-208f : ca __ __ DEX
-2090 : 06 1b __ ASL ACCU + 0 
-2092 : 2a __ __ ROL
-2093 : 10 fa __ BPL $208f ; (uint16_to_float + 17)
-2095 : 29 7f __ AND #$7f
-2097 : 85 1d __ STA ACCU + 2 
-2099 : a5 1b __ LDA ACCU + 0 
-209b : 85 1c __ STA ACCU + 1 
-209d : 8a __ __ TXA
-209e : 4a __ __ LSR
-209f : 85 1e __ STA ACCU + 3 
-20a1 : a9 00 __ LDA #$00
-20a3 : 85 1b __ STA ACCU + 0 
-20a5 : 6a __ __ ROR
-20a6 : 05 1d __ ORA ACCU + 2 
-20a8 : 85 1d __ STA ACCU + 2 
-20aa : 60 __ __ RTS
+20a6 : a5 1b __ LDA ACCU + 0 
+20a8 : 05 1c __ ORA ACCU + 1 
+20aa : d0 05 __ BNE $20b1 ; (uint16_to_float + 11)
+20ac : 85 1d __ STA ACCU + 2 
+20ae : 85 1e __ STA ACCU + 3 
+20b0 : 60 __ __ RTS
+20b1 : a2 8e __ LDX #$8e
+20b3 : a5 1c __ LDA ACCU + 1 
+20b5 : 30 06 __ BMI $20bd ; (uint16_to_float + 23)
+20b7 : ca __ __ DEX
+20b8 : 06 1b __ ASL ACCU + 0 
+20ba : 2a __ __ ROL
+20bb : 10 fa __ BPL $20b7 ; (uint16_to_float + 17)
+20bd : 29 7f __ AND #$7f
+20bf : 85 1d __ STA ACCU + 2 
+20c1 : a5 1b __ LDA ACCU + 0 
+20c3 : 85 1c __ STA ACCU + 1 
+20c5 : 8a __ __ TXA
+20c6 : 4a __ __ LSR
+20c7 : 85 1e __ STA ACCU + 3 
+20c9 : a9 00 __ LDA #$00
+20cb : 85 1b __ STA ACCU + 0 
+20cd : 6a __ __ ROR
+20ce : 05 1d __ ORA ACCU + 2 
+20d0 : 85 1d __ STA ACCU + 2 
+20d2 : 60 __ __ RTS
 --------------------------------------------------------------------
 divmod32:
-20ab : 84 02 __ STY $02 
-20ad : a0 20 __ LDY #$20
-20af : a9 00 __ LDA #$00
-20b1 : 85 07 __ STA WORK + 4 
-20b3 : 85 08 __ STA WORK + 5 
-20b5 : 85 09 __ STA WORK + 6 
-20b7 : 85 0a __ STA WORK + 7 
-20b9 : a5 05 __ LDA WORK + 2 
-20bb : 05 06 __ ORA WORK + 3 
-20bd : d0 39 __ BNE $20f8 ; (divmod32 + 77)
-20bf : 18 __ __ CLC
-20c0 : 26 1b __ ROL ACCU + 0 
-20c2 : 26 1c __ ROL ACCU + 1 
-20c4 : 26 1d __ ROL ACCU + 2 
-20c6 : 26 1e __ ROL ACCU + 3 
-20c8 : 26 07 __ ROL WORK + 4 
-20ca : 26 08 __ ROL WORK + 5 
-20cc : 90 0c __ BCC $20da ; (divmod32 + 47)
-20ce : a5 07 __ LDA WORK + 4 
-20d0 : e5 03 __ SBC WORK + 0 
-20d2 : aa __ __ TAX
-20d3 : a5 08 __ LDA WORK + 5 
-20d5 : e5 04 __ SBC WORK + 1 
-20d7 : 38 __ __ SEC
-20d8 : b0 0c __ BCS $20e6 ; (divmod32 + 59)
-20da : 38 __ __ SEC
-20db : a5 07 __ LDA WORK + 4 
-20dd : e5 03 __ SBC WORK + 0 
-20df : aa __ __ TAX
-20e0 : a5 08 __ LDA WORK + 5 
-20e2 : e5 04 __ SBC WORK + 1 
-20e4 : 90 04 __ BCC $20ea ; (divmod32 + 63)
-20e6 : 86 07 __ STX WORK + 4 
-20e8 : 85 08 __ STA WORK + 5 
-20ea : 88 __ __ DEY
-20eb : d0 d3 __ BNE $20c0 ; (divmod32 + 21)
-20ed : 26 1b __ ROL ACCU + 0 
-20ef : 26 1c __ ROL ACCU + 1 
-20f1 : 26 1d __ ROL ACCU + 2 
-20f3 : 26 1e __ ROL ACCU + 3 
-20f5 : a4 02 __ LDY $02 
-20f7 : 60 __ __ RTS
-20f8 : 18 __ __ CLC
-20f9 : 26 1b __ ROL ACCU + 0 
-20fb : 26 1c __ ROL ACCU + 1 
-20fd : 26 1d __ ROL ACCU + 2 
-20ff : 26 1e __ ROL ACCU + 3 
-2101 : 26 07 __ ROL WORK + 4 
-2103 : 26 08 __ ROL WORK + 5 
-2105 : 26 09 __ ROL WORK + 6 
-2107 : 26 0a __ ROL WORK + 7 
-2109 : a5 07 __ LDA WORK + 4 
-210b : c5 03 __ CMP WORK + 0 
-210d : a5 08 __ LDA WORK + 5 
-210f : e5 04 __ SBC WORK + 1 
-2111 : a5 09 __ LDA WORK + 6 
-2113 : e5 05 __ SBC WORK + 2 
-2115 : a5 0a __ LDA WORK + 7 
-2117 : e5 06 __ SBC WORK + 3 
-2119 : 90 18 __ BCC $2133 ; (divmod32 + 136)
-211b : a5 07 __ LDA WORK + 4 
-211d : e5 03 __ SBC WORK + 0 
-211f : 85 07 __ STA WORK + 4 
-2121 : a5 08 __ LDA WORK + 5 
-2123 : e5 04 __ SBC WORK + 1 
-2125 : 85 08 __ STA WORK + 5 
-2127 : a5 09 __ LDA WORK + 6 
-2129 : e5 05 __ SBC WORK + 2 
-212b : 85 09 __ STA WORK + 6 
-212d : a5 0a __ LDA WORK + 7 
-212f : e5 06 __ SBC WORK + 3 
-2131 : 85 0a __ STA WORK + 7 
-2133 : 88 __ __ DEY
-2134 : d0 c3 __ BNE $20f9 ; (divmod32 + 78)
-2136 : 26 1b __ ROL ACCU + 0 
-2138 : 26 1c __ ROL ACCU + 1 
-213a : 26 1d __ ROL ACCU + 2 
-213c : 26 1e __ ROL ACCU + 3 
-213e : a4 02 __ LDY $02 
-2140 : 60 __ __ RTS
+20d3 : 84 02 __ STY $02 
+20d5 : a0 20 __ LDY #$20
+20d7 : a9 00 __ LDA #$00
+20d9 : 85 07 __ STA WORK + 4 
+20db : 85 08 __ STA WORK + 5 
+20dd : 85 09 __ STA WORK + 6 
+20df : 85 0a __ STA WORK + 7 
+20e1 : a5 05 __ LDA WORK + 2 
+20e3 : 05 06 __ ORA WORK + 3 
+20e5 : d0 39 __ BNE $2120 ; (divmod32 + 77)
+20e7 : 18 __ __ CLC
+20e8 : 26 1b __ ROL ACCU + 0 
+20ea : 26 1c __ ROL ACCU + 1 
+20ec : 26 1d __ ROL ACCU + 2 
+20ee : 26 1e __ ROL ACCU + 3 
+20f0 : 26 07 __ ROL WORK + 4 
+20f2 : 26 08 __ ROL WORK + 5 
+20f4 : 90 0c __ BCC $2102 ; (divmod32 + 47)
+20f6 : a5 07 __ LDA WORK + 4 
+20f8 : e5 03 __ SBC WORK + 0 
+20fa : aa __ __ TAX
+20fb : a5 08 __ LDA WORK + 5 
+20fd : e5 04 __ SBC WORK + 1 
+20ff : 38 __ __ SEC
+2100 : b0 0c __ BCS $210e ; (divmod32 + 59)
+2102 : 38 __ __ SEC
+2103 : a5 07 __ LDA WORK + 4 
+2105 : e5 03 __ SBC WORK + 0 
+2107 : aa __ __ TAX
+2108 : a5 08 __ LDA WORK + 5 
+210a : e5 04 __ SBC WORK + 1 
+210c : 90 04 __ BCC $2112 ; (divmod32 + 63)
+210e : 86 07 __ STX WORK + 4 
+2110 : 85 08 __ STA WORK + 5 
+2112 : 88 __ __ DEY
+2113 : d0 d3 __ BNE $20e8 ; (divmod32 + 21)
+2115 : 26 1b __ ROL ACCU + 0 
+2117 : 26 1c __ ROL ACCU + 1 
+2119 : 26 1d __ ROL ACCU + 2 
+211b : 26 1e __ ROL ACCU + 3 
+211d : a4 02 __ LDY $02 
+211f : 60 __ __ RTS
+2120 : 18 __ __ CLC
+2121 : 26 1b __ ROL ACCU + 0 
+2123 : 26 1c __ ROL ACCU + 1 
+2125 : 26 1d __ ROL ACCU + 2 
+2127 : 26 1e __ ROL ACCU + 3 
+2129 : 26 07 __ ROL WORK + 4 
+212b : 26 08 __ ROL WORK + 5 
+212d : 26 09 __ ROL WORK + 6 
+212f : 26 0a __ ROL WORK + 7 
+2131 : a5 07 __ LDA WORK + 4 
+2133 : c5 03 __ CMP WORK + 0 
+2135 : a5 08 __ LDA WORK + 5 
+2137 : e5 04 __ SBC WORK + 1 
+2139 : a5 09 __ LDA WORK + 6 
+213b : e5 05 __ SBC WORK + 2 
+213d : a5 0a __ LDA WORK + 7 
+213f : e5 06 __ SBC WORK + 3 
+2141 : 90 18 __ BCC $215b ; (divmod32 + 136)
+2143 : a5 07 __ LDA WORK + 4 
+2145 : e5 03 __ SBC WORK + 0 
+2147 : 85 07 __ STA WORK + 4 
+2149 : a5 08 __ LDA WORK + 5 
+214b : e5 04 __ SBC WORK + 1 
+214d : 85 08 __ STA WORK + 5 
+214f : a5 09 __ LDA WORK + 6 
+2151 : e5 05 __ SBC WORK + 2 
+2153 : 85 09 __ STA WORK + 6 
+2155 : a5 0a __ LDA WORK + 7 
+2157 : e5 06 __ SBC WORK + 3 
+2159 : 85 0a __ STA WORK + 7 
+215b : 88 __ __ DEY
+215c : d0 c3 __ BNE $2121 ; (divmod32 + 78)
+215e : 26 1b __ ROL ACCU + 0 
+2160 : 26 1c __ ROL ACCU + 1 
+2162 : 26 1d __ ROL ACCU + 2 
+2164 : 26 1e __ ROL ACCU + 3 
+2166 : a4 02 __ LDY $02 
+2168 : 60 __ __ RTS
 --------------------------------------------------------------------
 __multab3L:
-2141 : __ __ __ BYT 00 03 06 09 0c 0f 12 15 18 1b                   : ..........
+2169 : __ __ __ BYT 00 03 06 09 0c 0f 12 15 18 1b                   : ..........

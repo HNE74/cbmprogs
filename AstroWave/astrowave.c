@@ -296,6 +296,18 @@ void check_player_enemy_collision()
             }
         }
     }
+
+    for (byte i = 0; i < MAX_ENEMY_SHOTS; i++)
+    {
+        if (EnemyShot[i].active == true)
+        {
+            if (EnemyShot[i].xp == Player.xp && EnemyShot[i].yp == Player.yp)
+            {
+                game.state = GS_PLAYER_DEAD;
+                break;
+            }
+        }
+    }    
 }
 
 void check_shot_enemy_collision()
