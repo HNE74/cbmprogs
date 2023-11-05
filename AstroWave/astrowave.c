@@ -22,6 +22,7 @@
 #define ENEMY_CHAR_2 132
 #define ENEMY_CHAR_3 133
 #define ENEMY_SHOT_CHAR 130
+#define EXPLOSION_CHAR 134
 
 const char ChrRedef[] = {
     128, 224, 248, 127, 127, 248, 224, 128,
@@ -29,7 +30,8 @@ const char ChrRedef[] = {
     0, 0, 60, 102, 102, 60, 0, 0,
     28, 127, 198, 31, 31, 198, 127, 28,
     0, 60, 126, 213, 171, 126, 60, 0,
-    40, 60, 110, 223, 95, 254, 60, 20};
+    40, 60, 110, 223, 95, 254, 60, 20,
+    40,86,101,146,105,54,68,42};
 
 char *const Screen = (char *)0xc000;
 char *const Charset = (char *)0xc800;
@@ -387,11 +389,30 @@ void check_shot_enemy_collision()
                 {
                     if (Enemy[i].xp == PlayerShot[j].xp && Enemy[i].yp == PlayerShot[j].yp)
                     {
+                        for(int k=0; k<8; k++)
+                        {
+                           Screen[40 * Enemy[i].yp + Enemy[i].xp] = EXPLOSION_CHAR;
+                           Color[40 * Enemy[i].yp + Enemy[i].xp] = k;
+                           vic_waitFrame(); 
+                        }
+                        
                         Screen[40 * Enemy[i].yp + Enemy[i].xp] = 32;
                         Color[40 * Enemy[i].yp + Enemy[i].xp] = VCOL_BLACK;
                         Enemy[i].active = false;
                         PlayerShot[j].active = false;
-                        game.score += 1;
+                        
+                        if(Enemy[i].screencode == ENEMY_CHAR_1)
+                        {
+                            game.score += 50;
+                        }
+                        else if(Enemy[i].screencode == ENEMY_CHAR_2)
+                        {
+                            game.score += 25;
+                        }
+                        else if(Enemy[i].screencode == ENEMY_CHAR_2)
+                        {
+                            game.score += 10;
+                        }
                     }
                 }
             }
