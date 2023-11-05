@@ -24,18 +24,18 @@
 #define ENEMY_SHOT_CHAR 130
 
 const char ChrRedef[] = {
-    128,224,248,127,127,248,224,128,
-    0,0,96,62,62,96,0,0,
-    0,0,60,102,102,60,0,0,
-    28,127,198,31,31,198,127,28,
-    0,60,126,213,171,126,60,0,
-    40,60,110,223,95,254,60,20
-};
+    128, 224, 248, 127, 127, 248, 224, 128,
+    0, 0, 96, 62, 62, 96, 0, 0,
+    0, 0, 60, 102, 102, 60, 0, 0,
+    28, 127, 198, 31, 31, 198, 127, 28,
+    0, 60, 126, 213, 171, 126, 60, 0,
+    40, 60, 110, 223, 95, 254, 60, 20};
 
-char * const Screen = (char *)0xc000;
-char * const Charset = (char *)0xc800;
-char * const Color = (char *)0xd800;
-char * const Romp = (const char *)0xd000;
+char *const Screen = (char *)0xc000;
+char *const Charset = (char *)0xc800;
+char *const Color = (char *)0xd800;
+char *const Romp = (const char *)0xd000;
+CharWin cwTop;
 
 struct PlayerInfo
 {
@@ -80,21 +80,23 @@ struct Game
 
 void redefine_charset()
 {
-	mmap_trampoline();
-	mmap_set(MMAP_CHAR_ROM);
-	memcpy(Charset, Romp, 2048);	
-	memcpy(Charset + 128 * 8, ChrRedef, sizeof(ChrRedef));
-	mmap_set(MMAP_ROM);
+    mmap_trampoline();
+    mmap_set(MMAP_CHAR_ROM);
+    memcpy(Charset, Romp, 2048);
+    memcpy(Charset + 128 * 8, ChrRedef, sizeof(ChrRedef));
+    mmap_set(MMAP_ROM);
     vic_setmode(VICM_TEXT, Screen, Charset);
 }
 
 void prepare_game_screen()
 {
     memset(Screen, 32, 1000);
-	memset(Color, VCOL_BLACK, 1000);
+    memset(Color, VCOL_BLACK, 1000);
 
-	vic.color_border = VCOL_DARK_GREY;
-	vic.color_back = VCOL_BLACK;
+    vic.color_border = VCOL_DARK_GREY;
+    vic.color_back = VCOL_BLACK;
+
+    cwin_init(&cwTop, Screen, 0, 0, 40, 3);
 }
 
 void init_enemies()
@@ -121,7 +123,7 @@ void init_shots()
         EnemyShot[i].xp = 0;
         EnemyShot[i].yp = 0;
         EnemyShot[i].active = false;
-    }    
+    }
 }
 
 void init_player()
@@ -138,8 +140,11 @@ void init_game_state()
 
 void render_game_state()
 {
-    gotoxy(1,1);
-    printf("\x1ESCORE: %d", game.score);
+    cwin_putat_string(&cwTop, 1, 2, "SCORE:", VCOL_GREEN);
+
+    char str[10];
+    sprintf(str, "%d", game.score);
+    cwin_putat_string(&cwTop, 8, 2, str, VCOL_GREEN);
 }
 
 void render_player_ship()
@@ -204,20 +209,20 @@ void render_enemy_shots()
 
 void spawn_enemy_shot(EnemyInfo *e)
 {
-    if(e->xp < 1)
+    if (e->xp < 1)
     {
         return;
     }
 
-    for(int i=0; i<MAX_ENEMY_SHOTS; i++)
+    for (int i = 0; i < MAX_ENEMY_SHOTS; i++)
     {
-        if(EnemyShot[i].active == false)
+        if (EnemyShot[i].active == false)
         {
             EnemyShot[i].active = true;
-            EnemyShot[i].xp = (e->xp)-1;
+            EnemyShot[i].xp = (e->xp) - 1;
             EnemyShot[i].yp = e->yp;
 
-            gotoxy(20,1);
+            gotoxy(20, 1);
             printf("%d - %d", EnemyShot[i].xp, EnemyShot[i].yp);
             break;
         }
@@ -250,12 +255,12 @@ void move_enemies()
     {
         if (Enemy[i].active == true)
         {
-            if(Enemy[i].yp == Player.yp)
+            if (Enemy[i].yp == Player.yp)
             {
                 spawn_enemy_shot(&Enemy[i]);
                 render_enemy_shots();
             }
-            
+
             Screen[40 * Enemy[i].yp + Enemy[i].xp] = 32;
             Color[40 * Enemy[i].yp + Enemy[i].xp] = VCOL_BLACK;
 
@@ -265,11 +270,7 @@ void move_enemies()
 
                 yd = rand() % 3 - 1;
                 newP = 40 * (Enemy[i].yp + yd) + Enemy[i].xp;
-                if (Screen[newP] != ENEMY_CHAR_1 
-                 && Screen[newP] != ENEMY_CHAR_2
-                 && Screen[newP] != ENEMY_CHAR_3
-                 && Enemy[i].yp + yd >= HEIGHT_MIN 
-                 && Enemy[i].yp + yd <= HEIGHT_MAX)
+                if (Screen[newP] != ENEMY_CHAR_1 && Screen[newP] != ENEMY_CHAR_2 && Screen[newP] != ENEMY_CHAR_3 && Enemy[i].yp + yd >= HEIGHT_MIN && Enemy[i].yp + yd <= HEIGHT_MAX)
                 {
                     Enemy[i].yp += yd;
                 }
@@ -352,7 +353,7 @@ void check_player_enemy_collision()
                 break;
             }
         }
-    }    
+    }
 }
 
 void check_shot_enemy_collision()
@@ -432,7 +433,7 @@ int main(void)
     while (game.state == GS_RUNNING)
     {
         render_game_state();
-        
+
         if (cnt++ % 3 == 0)
         {
             spawn_enemy();
