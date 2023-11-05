@@ -12,7 +12,7 @@
 #define WIDTH_MIN 0
 #define WIDTH_MAX 39
 #define HEIGHT_MIN 4
-#define HEIGHT_MAX 24
+#define HEIGHT_MAX 23
 #define MAX_ENEMIES 10
 #define MAX_PLAYER_SHOTS 3
 #define MAX_ENEMY_SHOTS 3
@@ -476,6 +476,7 @@ int main(void)
             spawn_enemy();
             move_enemies();
             render_enemies();
+            check_shot_enemy_collision();
         }
 
         move_enemy_shots();
