@@ -79,9 +79,12 @@ int main(void)
         Screen[i]=i;
     }
 
-    char t = 128;
-    cwin_put_char_raw(&cwt, t, 1);
+    //char t = 128;
+    //cwin_put_char_raw(&cwt, t, 1);
 
+    char str[10];
+    sprintf(str, "%d", 1000);
+    cwin_put_string(&cwt, str, 1);
   
 	return 0;    
 }
