@@ -11,7 +11,7 @@
 #define false 0
 #define WIDTH_MIN 0
 #define WIDTH_MAX 39
-#define HEIGHT_MIN 3
+#define HEIGHT_MIN 4
 #define HEIGHT_MAX 24
 #define MAX_ENEMIES 10
 #define MAX_PLAYER_SHOTS 3
@@ -48,6 +48,7 @@ struct EnemyInfo
     byte xp;
     byte yp;
     byte screencode;
+    byte color;
     byte active;
 } Enemy[MAX_ENEMIES];
 
@@ -190,7 +191,7 @@ void render_enemies()
         if (Enemy[i].active == true)
         {
             Screen[40 * Enemy[i].yp + Enemy[i].xp] = Enemy[i].screencode;
-            Color[40 * Enemy[i].yp + Enemy[i].xp] = VCOL_ORANGE;
+            Color[40 * Enemy[i].yp + Enemy[i].xp] = Enemy[i].color;
         }
     }
 }
@@ -255,7 +256,7 @@ void move_enemies()
     {
         if (Enemy[i].active == true)
         {
-            if (Enemy[i].yp == Player.yp)
+            if (Enemy[i].screencode == ENEMY_CHAR_1 && Enemy[i].yp == Player.yp)
             {
                 spawn_enemy_shot(&Enemy[i]);
                 render_enemy_shots();
@@ -268,11 +269,14 @@ void move_enemies()
             {
                 Enemy[i].xp--;
 
-                yd = rand() % 3 - 1;
-                newP = 40 * (Enemy[i].yp + yd) + Enemy[i].xp;
-                if (Screen[newP] != ENEMY_CHAR_1 && Screen[newP] != ENEMY_CHAR_2 && Screen[newP] != ENEMY_CHAR_3 && Enemy[i].yp + yd >= HEIGHT_MIN && Enemy[i].yp + yd <= HEIGHT_MAX)
+                if(Enemy[i].screencode != ENEMY_CHAR_3)
                 {
-                    Enemy[i].yp += yd;
+                    yd = rand() % 3 - 1;
+                    newP = 40 * (Enemy[i].yp + yd) + Enemy[i].xp;
+                    if (Screen[newP] != ENEMY_CHAR_1 && Screen[newP] != ENEMY_CHAR_2 && Screen[newP] != ENEMY_CHAR_3 && Enemy[i].yp + yd >= HEIGHT_MIN && Enemy[i].yp + yd <= HEIGHT_MAX)
+                    {
+                        Enemy[i].yp += yd;
+                    }
                 }
             }
             else
@@ -323,7 +327,22 @@ void spawn_enemy()
             Enemy[i].xp = WIDTH_MAX;
             Enemy[i].yp = (rand() % (HEIGHT_MAX - HEIGHT_MIN + 1)) + HEIGHT_MIN;
             Enemy[i].screencode = rand() % 3 + ENEMY_CHAR_1;
+            Enemy[i].color = VCOL_LT_BLUE;
             Enemy[i].active = true;
+
+            if (Enemy[i].screencode == ENEMY_CHAR_1)
+            {
+                Enemy[i].color = VCOL_LT_GREEN;
+            }
+            else if (Enemy[i].screencode == ENEMY_CHAR_2)
+            {
+                Enemy[i].color = VCOL_LT_RED;
+            }
+            else
+            {
+                Enemy[i].color = VCOL_BROWN;
+            }
+
             i = MAX_ENEMIES;
         }
     }
