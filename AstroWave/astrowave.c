@@ -224,9 +224,6 @@ void spawn_enemy_shot(EnemyInfo *e)
             EnemyShot[i].active = true;
             EnemyShot[i].xp = (e->xp) - 1;
             EnemyShot[i].yp = e->yp;
-
-            gotoxy(20, 1);
-            printf("%d - %d", EnemyShot[i].xp, EnemyShot[i].yp);
             break;
         }
     }
