@@ -1,7 +1,10 @@
-#include <c64/joystick.h>
-#include <c64/vic.h>
+#include <string.h>
 #include <conio.h>
 #include <stdio.h>
+#include <c64/vic.h>
+#include <c64/memmap.h>
+#include <c64/charwin.h>
+#include <c64/joystick.h>
 #include <c64/vic.h>
 
 #define true 1
@@ -13,9 +16,26 @@
 #define MAX_ENEMIES 10
 #define MAX_PLAYER_SHOTS 3
 #define MAX_ENEMY_SHOTS 3
-#define ENEMY_CHAR 88
-#define Screen ((byte *)0x0400)
-#define Color ((byte *)0xd800)
+#define PLAYER_CHAR 128
+#define PLAYER_SHOT_CHAR 129
+#define ENEMY_CHAR_1 131
+#define ENEMY_CHAR_2 132
+#define ENEMY_CHAR_3 133
+#define ENEMY_SHOT_CHAR 130
+
+const char ChrRedef[] = {
+    128,224,248,127,127,248,224,128,
+    0,0,96,62,62,96,0,0,
+    0,0,60,102,102,60,0,0,
+    28,127,198,31,31,198,127,28,
+    0,60,126,213,171,126,60,0,
+    40,60,110,223,95,254,60,20
+};
+
+char * const Screen = (char *)0xc000;
+char * const Charset = (char *)0xc800;
+char * const Color = (char *)0xd800;
+char * const Romp = (const char *)0xd000;
 
 struct PlayerInfo
 {
@@ -27,6 +47,7 @@ struct EnemyInfo
 {
     byte xp;
     byte yp;
+    byte screencode;
     byte active;
 } Enemy[MAX_ENEMIES];
 
@@ -56,6 +77,25 @@ struct Game
     GameState state;
     long score;
 } game;
+
+void redefine_charset()
+{
+	mmap_trampoline();
+	mmap_set(MMAP_CHAR_ROM);
+	memcpy(Charset, Romp, 2048);	
+	memcpy(Charset + 128 * 8, ChrRedef, sizeof(ChrRedef));
+	mmap_set(MMAP_ROM);
+    vic_setmode(VICM_TEXT, Screen, Charset);
+}
+
+void prepare_game_screen()
+{
+    memset(Screen, 32, 1000);
+	memset(Color, VCOL_BLACK, 1000);
+
+	vic.color_border = VCOL_DARK_GREY;
+	vic.color_back = VCOL_BLACK;
+}
 
 void init_enemies()
 {
@@ -104,7 +144,7 @@ void render_game_state()
 
 void render_player_ship()
 {
-    Screen[40 * Player.yp + Player.xp] = 81;
+    Screen[40 * Player.yp + Player.xp] = PLAYER_CHAR;
     Color[40 * Player.yp + Player.xp] = VCOL_CYAN;
 }
 
@@ -114,7 +154,7 @@ void render_player_shots()
     {
         if (PlayerShot[i].active == true)
         {
-            Screen[40 * PlayerShot[i].yp + PlayerShot[i].xp] = 43;
+            Screen[40 * PlayerShot[i].yp + PlayerShot[i].xp] = PLAYER_SHOT_CHAR;
             Color[40 * PlayerShot[i].yp + PlayerShot[i].xp] = VCOL_WHITE;
         }
     }
@@ -144,7 +184,7 @@ void render_enemies()
     {
         if (Enemy[i].active == true)
         {
-            Screen[40 * Enemy[i].yp + Enemy[i].xp] = ENEMY_CHAR;
+            Screen[40 * Enemy[i].yp + Enemy[i].xp] = Enemy[i].screencode;
             Color[40 * Enemy[i].yp + Enemy[i].xp] = VCOL_ORANGE;
         }
     }
@@ -156,7 +196,7 @@ void render_enemy_shots()
     {
         if (EnemyShot[i].active == true)
         {
-            Screen[40 * EnemyShot[i].yp + EnemyShot[i].xp] = 31;
+            Screen[40 * EnemyShot[i].yp + EnemyShot[i].xp] = ENEMY_SHOT_CHAR;
             Color[40 * EnemyShot[i].yp + EnemyShot[i].xp] = VCOL_WHITE;
         }
     }
@@ -225,7 +265,11 @@ void move_enemies()
 
                 yd = rand() % 3 - 1;
                 newP = 40 * (Enemy[i].yp + yd) + Enemy[i].xp;
-                if (Screen[newP] != ENEMY_CHAR && Enemy[i].yp + yd >= HEIGHT_MIN && Enemy[i].yp + yd <= HEIGHT_MAX)
+                if (Screen[newP] != ENEMY_CHAR_1 
+                 && Screen[newP] != ENEMY_CHAR_2
+                 && Screen[newP] != ENEMY_CHAR_3
+                 && Enemy[i].yp + yd >= HEIGHT_MIN 
+                 && Enemy[i].yp + yd <= HEIGHT_MAX)
                 {
                     Enemy[i].yp += yd;
                 }
@@ -277,6 +321,7 @@ void spawn_enemy()
         {
             Enemy[i].xp = WIDTH_MAX;
             Enemy[i].yp = (rand() % (HEIGHT_MAX - HEIGHT_MIN + 1)) + HEIGHT_MIN;
+            Enemy[i].screencode = rand() % 3 + ENEMY_CHAR_1;
             Enemy[i].active = true;
             i = MAX_ENEMIES;
         }
@@ -374,20 +419,14 @@ void wait_frames(int frames)
     }
 }
 
-void init_game_screen()
-{
-    clrscr();
-    vic.color_back = VCOL_BLACK;
-    vic.color_border = VCOL_DARK_GREY;
-}
-
 int main(void)
 {
+    redefine_charset();
     init_player();
     init_enemies();
     init_shots();
     init_game_state();
-    init_game_screen();
+    prepare_game_screen();
 
     byte cnt = 0;
     while (game.state == GS_RUNNING)
