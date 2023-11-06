@@ -70,8 +70,10 @@ struct EnemyShotInfo
 
 enum GameState
 {
+    GS_INTRO,
     GS_RUNNING,
-    GS_PLAYER_DEAD
+    GS_PLAYER_DEAD,
+    GS_OVER
 };
 
 // Game data
@@ -79,6 +81,7 @@ struct Game
 {
     GameState state;
     long score;
+    byte ships;
 } game;
 
 void redefine_charset()
@@ -93,9 +96,6 @@ void redefine_charset()
 
 void prepare_game_screen()
 {
-    memset(Screen, 32, 1000);
-    memset(Color, VCOL_BLACK, 1000);
-
     vic.color_border = VCOL_DARK_GREY;
     vic.color_back = VCOL_BLACK;
 
@@ -139,6 +139,7 @@ void init_game_state()
 {
     game.state = GS_RUNNING;
     game.score = 0;
+    game.ships = 3;
 }
 
 void render_game_state()
@@ -148,6 +149,10 @@ void render_game_state()
     char str[10];
     sprintf(str, "%d", game.score);
     cwin_putat_string(&cwTop, 8, 2, str, VCOL_GREEN);
+
+    cwin_putat_string(&cwTop, 32, 2, "SHIPS:", VCOL_LT_BLUE);
+    sprintf(str, "%d", game.ships);
+    cwin_putat_string(&cwTop, 38, 2, str, VCOL_LT_BLUE);
 }
 
 void render_player_ship()
@@ -457,15 +462,14 @@ void wait_frames(int frames)
     }
 }
 
-int main(void)
+void clear_screen()
 {
-    redefine_charset();
-    init_player();
-    init_enemies();
-    init_shots();
-    init_game_state();
-    prepare_game_screen();
+    memset(Screen, 32, 1000);
+    memset(Color, VCOL_BLACK, 1000);
+}
 
+void run_game()
+{
     byte cnt = 0;
     while (game.state == GS_RUNNING)
     {
@@ -491,6 +495,41 @@ int main(void)
         check_shot_enemy_collision();
 
         wait_frames(3);
+    }    
+}
+
+void main_loop()
+{
+    init_game_state();
+    prepare_game_screen();
+
+    do
+    {
+        clear_screen();
+        init_player();
+        init_enemies();
+        init_shots();
+        run_game();  
+        if(game.ships-- == 0)
+        {
+            game.state = GS_OVER;
+        }
+        else 
+        {
+            game.state = GS_RUNNING;       
+        }   
+    } 
+    while (game.state != GS_OVER);
+    game.state = GS_INTRO;
+}
+
+int main(void)
+{
+    game.state = GS_INTRO;
+    redefine_charset();
+    while(game.state == GS_INTRO)
+    {
+        main_loop();
     }
 
     return 0;
