@@ -9,8 +9,8 @@
 
 #define true 1
 #define false 0
-#define WIDTH_MIN 0
-#define WIDTH_MAX 39
+#define WIDTH_MIN 1
+#define WIDTH_MAX 38
 #define HEIGHT_MIN 4
 #define HEIGHT_MAX 23
 #define MAX_ENEMIES 10
@@ -328,7 +328,7 @@ void spawn_enemy()
     {
         if (Enemy[i].active == false)
         {
-            Enemy[i].xp = WIDTH_MAX;
+            Enemy[i].xp = WIDTH_MAX+1;
             Enemy[i].yp = (rand() % (HEIGHT_MAX - HEIGHT_MIN + 1)) + HEIGHT_MIN;
             Enemy[i].screencode = rand() % 3 + ENEMY_CHAR_1;
             Enemy[i].color = VCOL_LT_BLUE;
@@ -352,6 +352,21 @@ void spawn_enemy()
     }
 }
 
+void render_player_dead()
+{
+    for(byte i=0; i<30; i++) {
+        for(sbyte j=-1; j<2; j++)
+        {
+            for(sbyte k=-1; k<2; k++)
+            {
+                Screen[40 * (Player.yp+j) + Player.xp+k] = EXPLOSION_CHAR;
+                Color[40 * (Player.yp+j) + Player.xp+k] = i;
+            }
+        }
+        vic_waitFrame(); 
+    }
+}
+
 void check_player_enemy_collision()
 {
     for (byte i = 0; i < MAX_ENEMIES; i++)
@@ -360,6 +375,7 @@ void check_player_enemy_collision()
         {
             if (Enemy[i].xp == Player.xp && Enemy[i].yp == Player.yp)
             {
+                render_player_dead();
                 game.state = GS_PLAYER_DEAD;
                 i = MAX_ENEMIES;
             }
@@ -372,6 +388,7 @@ void check_player_enemy_collision()
         {
             if (EnemyShot[i].xp == Player.xp && EnemyShot[i].yp == Player.yp)
             {
+                render_player_dead();
                 game.state = GS_PLAYER_DEAD;
                 break;
             }
