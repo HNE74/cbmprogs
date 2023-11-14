@@ -461,11 +461,18 @@ void check_shot_enemy_collision()
                     {
                         for(int k=0; k<8; k++)
                         {
-                           Screen[40 * Enemy[i].yp + Enemy[i].xp] = EXPLOSION_CHAR;
-                           Color[40 * Enemy[i].yp + Enemy[i].xp] = k;
-                           vic_waitFrame(); 
+                            Screen[40 * Enemy[i].yp + Enemy[i].xp] = EXPLOSION_CHAR;
+                            Color[40 * Enemy[i].yp + Enemy[i].xp] = k;
+
+                            sid.voices[0].freq = k * 2000;
+                            sid.voices[0].attdec = SID_ATK_24 | SID_DKY_168;
+                            sid.voices[0].susrel = SID_DKY_24 | 0xf0;
+                            sid.voices[0].ctrl = SID_CTRL_GATE | SID_CTRL_NOISE;
+                            vic_waitFrame(); 
                         }
-                        
+                        sid.voices[0].ctrl = SID_CTRL_TEST;
+                        PlayerShotSound.state == SS_SILENT;
+
                         Screen[40 * Enemy[i].yp + Enemy[i].xp] = 32;
                         Color[40 * Enemy[i].yp + Enemy[i].xp] = VCOL_BLACK;
                         Enemy[i].active = false;
