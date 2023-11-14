@@ -70,12 +70,14 @@ enum SoundState
     SS_STOP
 };
 
-struct PlayerShotSoundInfo
+struct SoundInfo
 {
     unsigned frequency;
     byte frameCnt;
     SoundState state;
 } PlayerShotSound;
+
+SoundInfo EnemyShotSound;
 
 struct EnemyShotInfo
 {
@@ -187,6 +189,33 @@ void play_sound_effects()
         sid.voices[0].ctrl = SID_CTRL_TEST;
         PlayerShotSound.state = SS_SILENT;
     }
+
+    if(EnemyShotSound.state == SS_START)
+    {
+        EnemyShotSound.frequency = 20000;
+        EnemyShotSound.frameCnt = 0;
+        sid.voices[1].freq = PlayerShotSound.frequency;
+        sid.voices[1].attdec = SID_ATK_2 | SID_DKY_168;
+        sid.voices[1].susrel = SID_DKY_24 | 0xf0;
+        sid.voices[1].ctrl = SID_CTRL_GATE | SID_CTRL_TRI;
+        EnemyShotSound.state = SS_PLAYING;
+    }
+    else if(EnemyShotSound.state == SS_PLAYING)
+    {
+        EnemyShotSound.frequency += 500;
+        sid.voices[1].freq = EnemyShotSound.frequency;
+
+        EnemyShotSound.frameCnt += 1;
+        if(EnemyShotSound.frameCnt = 20)
+        {
+            EnemyShotSound.state = SS_STOP;
+        }
+    }
+    else if(EnemyShotSound.state == SS_STOP)
+    {
+        sid.voices[1].ctrl = SID_CTRL_TEST;
+        EnemyShotSound.state = SS_SILENT;
+    }    
 }
 
 void render_game_state()
@@ -276,6 +305,10 @@ void spawn_enemy_shot(EnemyInfo *e)
             EnemyShot[i].active = true;
             EnemyShot[i].xp = (e->xp) - 1;
             EnemyShot[i].yp = e->yp;
+            if(EnemyShotSound.state == SS_SILENT)
+            {
+                EnemyShotSound.state = SS_START;
+            }
             break;
         }
     }
@@ -459,6 +492,8 @@ void check_shot_enemy_collision()
                 {
                     if (Enemy[i].xp == PlayerShot[j].xp && Enemy[i].yp == PlayerShot[j].yp)
                     {
+                        sid.voices[1].ctrl = SID_CTRL_TEST;
+                        EnemyShotSound.state == SS_SILENT;
                         for(int k=0; k<8; k++)
                         {
                             Screen[40 * Enemy[i].yp + Enemy[i].xp] = EXPLOSION_CHAR;
