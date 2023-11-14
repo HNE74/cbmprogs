@@ -62,6 +62,21 @@ struct PlayerShotInfo
     byte active;
 } PlayerShot[MAX_PLAYER_SHOTS];
 
+enum SoundState
+{
+    SS_SILENT,
+    SS_START,
+    SS_PLAYING,
+    SS_STOP
+};
+
+struct PlayerShotSoundInfo
+{
+    unsigned frequency;
+    byte frameCnt;
+    SoundState state;
+} PlayerShotSound;
+
 struct EnemyShotInfo
 {
     byte xp;
@@ -134,6 +149,7 @@ void init_player()
 {
     Player.xp = 5;
     Player.yp = 12;
+    PlayerShotSound.state = SS_SILENT;
 }
 
 void init_game_state()
@@ -141,6 +157,36 @@ void init_game_state()
     game.state = GS_RUNNING;
     game.score = 0;
     game.ships = 3;
+}
+
+void play_sound_effects()
+{
+    if(PlayerShotSound.state == SS_START)
+    {
+        PlayerShotSound.frequency = 1000;
+        PlayerShotSound.frameCnt = 0;
+        sid.voices[0].freq = PlayerShotSound.frequency;
+        sid.voices[0].attdec = SID_ATK_24 | SID_DKY_168;
+        sid.voices[0].susrel = SID_DKY_24 | 0xf0;
+        sid.voices[0].ctrl = SID_CTRL_GATE | SID_CTRL_TRI;
+        PlayerShotSound.state = SS_PLAYING;
+    }
+    else if(PlayerShotSound.state == SS_PLAYING)
+    {
+        PlayerShotSound.frequency += 3000;
+        sid.voices[0].freq = PlayerShotSound.frequency;
+
+        PlayerShotSound.frameCnt += 1;
+        if(PlayerShotSound.frameCnt = 5)
+        {
+            PlayerShotSound.state = SS_STOP;
+        }
+    }
+    else if(PlayerShotSound.state == SS_STOP)
+    {
+        sid.voices[0].ctrl = SID_CTRL_TEST;
+        PlayerShotSound.state = SS_SILENT;
+    }
 }
 
 void render_game_state()
@@ -313,12 +359,10 @@ void spawn_player_shot()
             }
             PlayerShot[i].yp = Player.yp;
             PlayerShot[i].active = true;
-
-            sid.voices[0].freq = NOTE_F(5);
-		    sid.voices[0].attdec = SID_ATK_2 | SID_DKY_6;
-		    sid.voices[0].susrel = SID_DKY_300 | 0xf0;
-		    sid.voices[0].pwm = 0x800;
-		    sid.voices[0].ctrl = SID_CTRL_RECT;
+            if(PlayerShotSound.state == SS_SILENT)
+            {
+                PlayerShotSound.state = SS_START;
+            }
             i = MAX_PLAYER_SHOTS;
         }
     }
@@ -494,11 +538,12 @@ void clear_screen()
 
 void run_game()
 {
-    sid.fmodevol = 15;
+    sid.fmodevol = 255;
     byte cnt = 0;
     while (game.state == GS_RUNNING)
     {
         render_game_state();
+        play_sound_effects();
 
         if (cnt++ % 3 == 0)
         {

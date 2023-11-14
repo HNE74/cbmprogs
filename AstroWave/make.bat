@@ -1,7 +1,7 @@
-rem del astrowave.prg
-rem oscar64 -n astrowave.c
-rem x64 astrowave.prg
+del astrowave.prg
+oscar64 -n astrowave.c
+x64 astrowave.prg
 
-del sound.prg
-oscar64 -n sound.c
-x64 sound.prg
+rem del sound.prg
+rem oscar64 -n sound.c
+rem x64 sound.prg
