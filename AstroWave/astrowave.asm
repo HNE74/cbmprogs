@@ -2676,21 +2676,21 @@ play_sound_effects:
 1988 : c9 01 __ CMP #$01
 198a : d0 2c __ BNE $19b8 ; (play_sound_effects.s2 + 0)
 .s1:
-198c : a9 e8 __ LDA #$e8
+198c : a9 20 __ LDA #$20
 198e : 8d b2 26 STA $26b2 ; (PlayerShotSound + 0)
-1991 : a9 03 __ LDA #$03
+1991 : a9 4e __ LDA #$4e
 1993 : 8d b3 26 STA $26b3 ; (PlayerShotSound + 1)
 1996 : a9 00 __ LDA #$00
 1998 : 8d b4 26 STA $26b4 ; (PlayerShotSound + 2)
-199b : a9 e8 __ LDA #$e8
+199b : a9 20 __ LDA #$20
 199d : 8d 00 d4 STA $d400 
-19a0 : a9 03 __ LDA #$03
+19a0 : a9 4e __ LDA #$4e
 19a2 : 8d 01 d4 STA $d401 
-19a5 : a9 35 __ LDA #$35
+19a5 : a9 05 __ LDA #$05
 19a7 : 8d 05 d4 STA $d405 
 19aa : a9 f1 __ LDA #$f1
 19ac : 8d 06 d4 STA $d406 
-19af : a9 11 __ LDA #$11
+19af : a9 81 __ LDA #$81
 19b1 : 8d 04 d4 STA $d404 
 19b4 : a9 02 __ LDA #$02
 19b6 : d0 35 __ BNE $19ed ; (play_sound_effects.s1008 + 0)
@@ -2699,17 +2699,17 @@ play_sound_effects:
 19ba : d0 26 __ BNE $19e2 ; (play_sound_effects.s5 + 0)
 .s4:
 19bc : ad b2 26 LDA $26b2 ; (PlayerShotSound + 0)
-19bf : 18 __ __ CLC
-19c0 : 69 b8 __ ADC #$b8
+19bf : 38 __ __ SEC
+19c0 : e9 f4 __ SBC #$f4
 19c2 : 8d b2 26 STA $26b2 ; (PlayerShotSound + 0)
 19c5 : ad b3 26 LDA $26b3 ; (PlayerShotSound + 1)
-19c8 : 69 0b __ ADC #$0b
+19c8 : e9 01 __ SBC #$01
 19ca : 8d b3 26 STA $26b3 ; (PlayerShotSound + 1)
 19cd : ad b2 26 LDA $26b2 ; (PlayerShotSound + 0)
 19d0 : 8d 00 d4 STA $d400 
 19d3 : ad b3 26 LDA $26b3 ; (PlayerShotSound + 1)
 19d6 : 8d 01 d4 STA $d401 
-19d9 : a9 05 __ LDA #$05
+19d9 : a9 14 __ LDA #$14
 19db : 8d b4 26 STA $26b4 ; (PlayerShotSound + 2)
 19de : a9 03 __ LDA #$03
 19e0 : d0 0b __ BNE $19ed ; (play_sound_effects.s1008 + 0)

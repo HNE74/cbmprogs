@@ -163,21 +163,21 @@ void play_sound_effects()
 {
     if(PlayerShotSound.state == SS_START)
     {
-        PlayerShotSound.frequency = 1000;
+        PlayerShotSound.frequency = 20000;
         PlayerShotSound.frameCnt = 0;
         sid.voices[0].freq = PlayerShotSound.frequency;
-        sid.voices[0].attdec = SID_ATK_24 | SID_DKY_168;
+        sid.voices[0].attdec = SID_ATK_2 | SID_DKY_168;
         sid.voices[0].susrel = SID_DKY_24 | 0xf0;
-        sid.voices[0].ctrl = SID_CTRL_GATE | SID_CTRL_TRI;
+        sid.voices[0].ctrl = SID_CTRL_GATE | SID_CTRL_NOISE;
         PlayerShotSound.state = SS_PLAYING;
     }
     else if(PlayerShotSound.state == SS_PLAYING)
     {
-        PlayerShotSound.frequency += 3000;
+        PlayerShotSound.frequency -= 500;
         sid.voices[0].freq = PlayerShotSound.frequency;
 
         PlayerShotSound.frameCnt += 1;
-        if(PlayerShotSound.frameCnt = 5)
+        if(PlayerShotSound.frameCnt = 20)
         {
             PlayerShotSound.state = SS_STOP;
         }
