@@ -6,6 +6,7 @@
 #include <c64/charwin.h>
 #include <c64/joystick.h>
 #include <c64/vic.h>
+#include <c64/sid.h>
 
 #define true 1
 #define false 0
@@ -312,6 +313,12 @@ void spawn_player_shot()
             }
             PlayerShot[i].yp = Player.yp;
             PlayerShot[i].active = true;
+
+            sid.voices[0].freq = NOTE_F(5);
+		    sid.voices[0].attdec = SID_ATK_2 | SID_DKY_6;
+		    sid.voices[0].susrel = SID_DKY_300 | 0xf0;
+		    sid.voices[0].pwm = 0x800;
+		    sid.voices[0].ctrl = SID_CTRL_RECT;
             i = MAX_PLAYER_SHOTS;
         }
     }
@@ -487,6 +494,7 @@ void clear_screen()
 
 void run_game()
 {
+    sid.fmodevol = 15;
     byte cnt = 0;
     while (game.state == GS_RUNNING)
     {
