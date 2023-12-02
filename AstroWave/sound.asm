@@ -11,8 +11,8 @@ startup:
 080b : 00 __ __ BRK
 080c : 00 __ __ BRK
 080d : ba __ __ TSX
-080e : 8e cc 08 STX $08cc ; (spentry + 0)
-0811 : a9 cd __ LDA #$cd
+080e : 8e ad 08 STX $08ad ; (spentry + 0)
+0811 : a9 ae __ LDA #$ae
 0813 : 85 19 __ STA IP + 0 
 0815 : a9 08 __ LDA #$08
 0817 : 85 1a __ STA IP + 1 
@@ -30,8 +30,8 @@ startup:
 082c : ca __ __ DEX
 082d : d0 f6 __ BNE $0825 ; (startup + 36)
 082f : 38 __ __ SEC
-0830 : a9 cd __ LDA #$cd
-0832 : e9 cd __ SBC #$cd
+0830 : a9 ae __ LDA #$ae
+0832 : e9 ae __ SBC #$ae
 0834 : f0 08 __ BEQ $083e ; (startup + 61)
 0836 : a8 __ __ TAY
 0837 : a9 00 __ LDA #$00
@@ -59,7 +59,7 @@ startup:
 0862 : 60 __ __ RTS
 --------------------------------------------------------------------
 spentry:
-08cc : __ __ __ BYT 00                                              : .
+08ad : __ __ __ BYT 00                                              : .
 --------------------------------------------------------------------
 main:
 .s0:
@@ -69,35 +69,17 @@ main:
 0887 : 8d 00 d4 STA $d400 
 088a : a9 27 __ LDA #$27
 088c : 8d 01 d4 STA $d401 
-088f : a9 35 __ LDA #$35
+088f : a9 3a __ LDA #$3a
 0891 : 8d 05 d4 STA $d405 
-0894 : a9 f1 __ LDA #$f1
+0894 : a9 00 __ LDA #$00
 0896 : 8d 06 d4 STA $d406 
-0899 : a9 11 __ LDA #$11
-089b : 8d 04 d4 STA $d404 
-089e : a0 00 __ LDY #$00
-.l7:
-08a0 : ad 11 d0 LDA $d011 
-08a3 : 30 fb __ BMI $08a0 ; (main.l7 + 0)
-.l10:
-08a5 : ad 11 d0 LDA $d011 
-08a8 : 10 fb __ BPL $08a5 ; (main.l10 + 0)
-.s6:
-08aa : ad 00 d4 LDA $d400 
-08ad : 18 __ __ CLC
-08ae : 69 e8 __ ADC #$e8
-08b0 : 8d 00 d4 STA $d400 
-08b3 : ad 01 d4 LDA $d401 
-08b6 : 69 03 __ ADC #$03
-08b8 : 8d 01 d4 STA $d401 
-08bb : c8 __ __ INY
-08bc : c0 04 __ CPY #$04
-08be : 90 e0 __ BCC $08a0 ; (main.l7 + 0)
-.s5:
-08c0 : a9 10 __ LDA #$10
-08c2 : 8d 04 d4 STA $d404 
-08c5 : a9 00 __ LDA #$00
-08c7 : 85 1b __ STA ACCU + 0 
-08c9 : 85 1c __ STA ACCU + 1 
+0899 : 8d 02 d4 STA $d402 
+089c : a9 08 __ LDA #$08
+089e : 8d 03 d4 STA $d403 
+08a1 : a9 81 __ LDA #$81
+08a3 : 8d 04 d4 STA $d404 
+08a6 : a9 00 __ LDA #$00
+08a8 : 85 1b __ STA ACCU + 0 
+08aa : 85 1c __ STA ACCU + 1 
 .s1001:
-08cb : 60 __ __ RTS
+08ac : 60 __ __ RTS

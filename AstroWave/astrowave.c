@@ -194,7 +194,7 @@ void play_sound_effects()
     {
         EnemyShotSound.frequency = 20000;
         EnemyShotSound.frameCnt = 0;
-        sid.voices[1].freq = PlayerShotSound.frequency;
+        sid.voices[1].freq = EnemyShotSound.frequency;
         sid.voices[1].attdec = SID_ATK_2 | SID_DKY_168;
         sid.voices[1].susrel = SID_DKY_24 | 0xf0;
         sid.voices[1].ctrl = SID_CTRL_GATE | SID_CTRL_TRI;
@@ -438,7 +438,14 @@ void spawn_enemy()
 
 void render_player_dead()
 {
-    for(byte i=0; i<30; i++) {
+    sid.fmodevol = 255;
+	sid.voices[0].freq = 10000;
+	sid.voices[0].attdec = SID_ATK_24 | SID_DKY_1500;
+	sid.voices[0].susrel = SID_DKY_6;
+    sid.voices[0].pwm = 0x800;
+	sid.voices[0].ctrl = SID_CTRL_GATE | SID_CTRL_NOISE;
+    
+    for(byte i=0; i<50; i++) {
         for(sbyte j=-1; j<2; j++)
         {
             for(sbyte k=-1; k<2; k++)
@@ -449,6 +456,9 @@ void render_player_dead()
         }
         vic_waitFrame(); 
     }
+
+    sid.voices[0].ctrl = SID_CTRL_TEST;
+    PlayerShotSound.state = SS_SILENT;
 }
 
 void check_player_enemy_collision()
@@ -459,9 +469,12 @@ void check_player_enemy_collision()
         {
             if (Enemy[i].xp == Player.xp && Enemy[i].yp == Player.yp)
             {
-                render_player_dead();
-                game.state = GS_PLAYER_DEAD;
-                i = MAX_ENEMIES;
+                if(game.state != GS_PLAYER_DEAD)
+                {
+                    render_player_dead();
+                    game.state = GS_PLAYER_DEAD;
+                    break;
+                }
             }
         }
     }
@@ -472,9 +485,12 @@ void check_player_enemy_collision()
         {
             if (EnemyShot[i].xp == Player.xp && EnemyShot[i].yp == Player.yp)
             {
-                render_player_dead();
-                game.state = GS_PLAYER_DEAD;
-                break;
+                if(game.state != GS_PLAYER_DEAD)
+                {
+                    render_player_dead();
+                    game.state = GS_PLAYER_DEAD;
+                    break;
+                }
             }
         }
     }
