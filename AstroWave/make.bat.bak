@@ -1,0 +1,4 @@
+rem *** Use the Oscar64 to compile the c source file ***
+del astrowave.prg
+oscar64 -n astrowave.c
+x64 astrowave.prg
