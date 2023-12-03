@@ -774,7 +774,6 @@ int main(void)
             {
                 game.state = GS_INTRO;
                 wait_frames(10);
-                ;
             }
         }
     }
