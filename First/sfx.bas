@@ -18,7 +18,7 @@
 165 wv(0)=si+4:wv(1)=si+11:wv(2)=si+18
 170 ad(0)=si+5:ad(1)=si+12:ad(2)=si+19
 175 sr(0)=si+6:sr(1)=si+13:sr(2)=si+20
-200 goto 400
+200 goto 500
 
 300 rem **********************
 305 rem *** short ping sfx ***

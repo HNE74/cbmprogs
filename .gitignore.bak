@@ -4,6 +4,9 @@
 *.tmp
 #*.prg
 *.dup
+*.int
+*.lbl
+*.map
 
 Astroclash/bak/*
 Asterofield2/bak/*
@@ -25,4 +28,5 @@ DragonHort/bak/*
 SimpleMusicPlayer/bak/*
 AssTextouput/bak/*
 Chambers/bak/*
-
+AssRoutines/bak/*
+Swordsman/bak/*
